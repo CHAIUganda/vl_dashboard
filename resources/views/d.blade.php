@@ -111,7 +111,7 @@
 
      <table border='1' cellpadding='0' cellspacing='0' class='filter-tb'>
         <tr>
-            <td width='20%' sytle="display:inline">
+            <td width='20%'>
                 {!! MyHTML::selectYearMonth(2013,date('Y'),"from_date","",["id"=>"from_date","class"=>"selectpicker"],"FROM DATE") !!}
             </td>
             <td width='20%'>
@@ -187,26 +187,52 @@
                     </div>
                    
                     <div class="col-lg-6 facilties-sect " >
-                        <p ng-if="facility_numbers.length < 0"> loading facilities</p>
+                        <span class='dist_faclty_toggle' ng-model="show_fclties" ng-init="show_fclties=false" ng-click="nana()">
+                            <span class='active' id='d_shw'>&nbsp;&nbsp;DISTRICTS&nbsp;&nbsp;</span>
+                            <span id='f_shw'>&nbsp;&nbsp;FACILITIES &nbsp;&nbsp;</span>
+                        </span>
+                        <div ng-hide="show_fclties">
                         <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
-                                    <th>Facility</th>
-                                    <th>Samples Received</th>
-                                    <th>DBS %</th>
-                                    <th>Samples Tested</th>
+                                    <th width='70%'>District</th>
+                                    <th width='10%'>Samples Received</th>
+                                    <th width='10%'>DBS (%)</th>
+                                    <th width='10%'>Samples Tested</th>
                                 </tr>
                             </thead>
                             <tbody>                                
-                                <tr ng-repeat="f in facility_numbers | filter:empty('name','no') " >
-                                    <td class="ng-cloak" width='80%'><% f.name %></td>
-                                    <td class="ng-cloak" width='10%'><% f.initiation_rate %></td>
-                                    <td class="ng-cloak" width='10%'><% f.initiation_rate %></td>
-                                    <td class="ng-cloak" width='10%'><% f.total_results %></td>
+                                <tr ng-repeat="d in district_numbers" >
+                                    <td class="ng-cloak"><% +d.name %></td>
+                                    <td class="ng-cloak"><% d.samples_received %></td>
+                                    <td class="ng-cloak"><% ((d.dbs_samples/d.samples_received)*100 )| number:1 %> %</td>
+                                    <td class="ng-cloak"><% d.total_results %></td>
 
                                 </tr>                        
                              </tbody>
                          </table>
+                         </div>
+                         <div ng-show="show_fclties">
+                         <table datatable="ng" ng-hide="checked" class="row-border hover table table-bordered table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th width='70%'>Facility</th>
+                                    <th width='10%'>Samples Received</th>
+                                    <th width='10%'>DBS (%)</th>
+                                    <th width='10%'>Samples Tested</th>
+                                </tr>
+                            </thead>
+                            <tbody>                                
+                                <tr ng-repeat="f in facility_numbers" >
+                                    <td class="ng-cloak"><% +f.name %></td>
+                                    <td class="ng-cloak"><% f.samples_received %></td>
+                                    <td class="ng-cloak"><% ((f.dbs_samples/f.samples_received)*100 )| number:1 %> %</td>
+                                    <td class="ng-cloak"><% f.total_results %></td>
+
+                                </tr>                        
+                             </tbody>
+                         </table>
+                         </div>
 
                     </div>
 
@@ -228,15 +254,14 @@
                                 <tr>
                                     <th width='84%'>Facility</th>                                   
                                     <th width='8%'>Valid Results </th>
-                                    <th width='8%'>Suppression Rate </th>
-
+                                    <th width='8%'>Suppression Rate (%)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="f in facility_numbers | filter:compare('facility_name','ne',null)">
-                                    <td class="ng-cloak"><% f.facility_name %></td>
-                                    <td class="ng-cloak"><% f.total_results %></td>
-                                    <td class="ng-cloak"><% f.initiation_rate %></td>
+                                <tr ng-repeat="f in facility_numbers">
+                                    <td class="ng-cloak"><% f.name %></td>
+                                    <td class="ng-cloak"><% f.valid_results %></td>
+                                    <td class="ng-cloak"><% ((f.suppressed/f.valid_results)*100)|number:1 %> %</td>
                                 </tr>                        
                              </tbody>
                          </table>
@@ -261,10 +286,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="f in facility_numbers | filter:compare('initiation_rate','gt',0)">
-                                    <td class="ng-cloak"><% f.facility_name %></td>                                    
-                                    <td class="ng-cloak"><% f.abs_positives %></td>
-                                    <td class="ng-cloak"><% f.initiation_rate %></td>
+                                <tr ng-repeat="f in facility_numbers">
+                                    <td class="ng-cloak"><% f.name %></td>                                    
+                                    <td class="ng-cloak"><% f.samples_received %></td>
+                                    <td class="ng-cloak"><% ((f.suppressed/f.samples_received)*100)|number:1 %> %</td>
                                 </tr>                        
                              </tbody>
                          </table>
@@ -413,10 +438,13 @@ var ctrllers={};
 
 ctrllers.DashController=function($scope,$timeout,$http){
 
-    var districts_json=[];
+    var districts_json={};
+    var district_data_json={};
     var hubs_json={};
     var age_group_json={};
-    var facility_json={};
+    var facilities_json={};
+    var facility_data_json={};
+   
     var results_json={};
 
 
@@ -425,13 +453,77 @@ ctrllers.DashController=function($scope,$timeout,$http){
         districts_json=data['districts']||{};
         hubs_json=data['hubs']||{};
         age_group_json=data['age_group']||{};
-        facility_json=data['facilities']||{};
-        results_json=data['results']||{};
+        facilities_json=data['facilities']||{};
+        facility_data_json=facilities_json;
+        //district_data_json=districts_json;        
 
         $scope.districts_slct=districts_json;
         $scope.hubs_slct=hubs_json;
         $scope.age_group_slct=age_group_json;
-        //$scope.facility_numbers=facility_json;
+
+        var res=data['results']||{};
+        for(var i in res){
+           var that=res[i];
+           var facility_id=that.facility_id;
+           var facility_details=facilities_json[facility_id];
+           var dist_id=facility_details.district_id;
+           results_json[i]={
+                'time':that.year+"-"+that.month,
+                'facility_id':facility_id,
+                'facility_name':facility_details.name,
+                'hub_id':facility_details.hub_id,
+                'district_id':dist_id,
+                'district_name':districts_json[dist_id],
+
+                'age_group':that.age_group,
+                'samples_received':that.samples_received,
+                'valid_results':that.valid_results,
+                'rejected_samples':that.rejected_samples,
+                'suppressed':that.suppressed,
+
+                'cd4_less_than_500':that.cd4_less_than_500,
+                'pmtct_option_b_plus':that.pmtct_option_b_plus,
+                'children_under_5':that.children_under_5,
+                'other_treatment':that.other_treatment,
+                'treatment_blank_on_form':that.treatment_blank_on_form
+                };
+
+            var f_obj=facility_data_json[facility_id]||{};
+
+            var f_smpls_rvd=f_obj.samples_received||0;
+            var f_vls_rsts=f_obj.valid_results||0;
+            var f_rjctd_smpls=f_obj.rejected_samples||0;
+            var f_sprrsd=f_obj.suppressed||0;
+            var f_dbs_smpls=f_obj.dbs_samples||0;
+            var f_ttl_results=f_obj.total_results||0;
+
+            f_obj.samples_received=f_smpls_rvd+that.samples_received;
+            f_obj.valid_results=f_vls_rsts+that.valid_results;
+            f_obj.rejected_samples=f_rjctd_smpls+that.rejected_samples;
+            f_obj.suppressed=f_sprrsd+that.suppressed;
+            f_obj.dbs_samples=f_dbs_smpls+that.dbs_samples;
+            f_obj.total_results=f_ttl_results+that.total_results;
+
+            if(dist_id!=0){
+                 district_data_json[dist_id]=district_data_json[dist_id]||{};
+                 var d_smpls_rvd=district_data_json[dist_id].samples_received||0;
+                 var d_dbs_smpls=district_data_json[dist_id].dbs_samples||0;
+                 var d_ttl_results=district_data_json[dist_id].total_results||0;
+
+                 district_data_json[dist_id].samples_received=d_smpls_rvd+that.samples_received;
+                 district_data_json[dist_id].dbs_samples=d_dbs_smpls+that.dbs_samples;
+                 district_data_json[dist_id].total_results=d_ttl_results+that.total_results;
+                 district_data_json[dist_id].name=districts_json[dist_id];
+                 district_data_json[dist_id].id=dist_id;
+             }
+
+           
+        }
+
+        $scope.facility_numbers=facility_data_json;
+        $scope.district_numbers=district_data_json;
+
+        console.log("distrcts data:: "+JSON.stringify($scope.district_numbers));
     });
 
     $scope.filter=function(mode){
@@ -498,12 +590,24 @@ ctrllers.DashController=function($scope,$timeout,$http){
                 case null:
                 case false:
                 case typeof this == "undefined":
-                if(status=='no'){ return false; } else { return true };
-                    default :  if(status=='no'){ return true; } else { return false };
+                if(status=='no'){ return false; } else { return true; };
+                    default :  if(status=='no'){ return true; } else { return false; };
                 }
         }
            
     };
+
+    $scope.nana=function(){
+        if($scope.show_fclties==true){
+            $("#d_shw").attr("class","active");
+            $("#f_shw").attr("class","");
+            $scope.show_fclties=false;
+        }else{
+            $("#f_shw").attr("class","active");
+            $("#d_shw").attr("class","");
+            $scope.show_fclties=true;
+        }
+    }
 
     $scope.displayRejectionRate=function(){
         nv.addGraph( function(){

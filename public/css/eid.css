@@ -418,4 +418,19 @@ div.addition-metrics{
 	color: #9F82D1;
 }
 
+.dist_faclty_toggle{
+	cursor: pointer;
+	margin-left: 35%;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border: 1px solid #009688; 
+}
+
+.dist_faclty_toggle>.active{
+	background-color:#009688; 
+	color:#FFF;
+	padding-top: inherit;
+	padding-bottom: inherit;
+}
+
 

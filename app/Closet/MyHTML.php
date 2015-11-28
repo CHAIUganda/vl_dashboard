@@ -163,7 +163,7 @@ class MyHTML{
 		$yrs_arr=!empty($label)?[""=>$label]:[];
 
 		for($i=$max;$i>=$min;$i--){
-			$yrs_arr[$i]=["1-$i"=>'Jan',"2-$i"=>'Feb',"3-$i"=>'Mar',"4-$i"=>'Apr',"5-$i"=>'May',"6-$i"=>'Jun',"7-$i"=>'Jul',"8-$i"=>'Aug',"9-$i"=>'Sept',"10-$i"=>'Oct',"11-$i"=>'Nov',"12-$i"=>'Dec'];
+			$yrs_arr[$i]=["$i-1"=>'Jan',"$i-2"=>'Feb',"$i-3"=>'Mar',"$i-4"=>'Apr',"$i-5"=>'May',"$i-6"=>'Jun',"$i-7"=>'Jul',"$i-8"=>'Aug',"$i-9"=>'Sept',"$i-10"=>'Oct',"$i-11"=>'Nov',"$i-12"=>'Dec'];
 		} 
 		return Form::select($name,$yrs_arr,$default,$options);
 	}

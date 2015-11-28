@@ -49,10 +49,10 @@ function hubs(){
 
 function facilities(){
 	$ret=[];
-	$res=mysql_query("SELECT id,facility,districtID,hubID from facilities");
+	$res=mysql_query("SELECT id,facility,districtID,hubID from facilities where facility!=''");
 	while ($row=mysql_fetch_array($res)){
 		extract($row);
-		$ret[]=['id'=>$id,'name'=>$facility,'district_id'=>$districtID,'hub_id'=>$hubID];
+		$ret[$id]=['id'=>$id,'name'=>$facility,'district_id'=>$districtID,'hub_id'=>$hubID];
 	}
 	return $ret;
 }
@@ -75,8 +75,10 @@ foreach ($years as $year) {
 		foreach ($data['facilities'] as $facility) {
 			foreach ($data['age_group'] as $ag_k=>$ag) {
 				$samples_received=rand(10,20);
-				$valid_results=rand(0,($samples_received-1));
-				$rejected_samples=rand(0,($samples_received-1));
+				$dbs_samples=rand(1,$samples_received-5);
+				$total_results=rand(10,$samples_received-1);
+				$valid_results=rand(0,$total_results);
+				$rejected_samples=$samples_received-$total_results;
 				$suppressed=rand(0,$valid_results);
 
 				$cd4_less_than_500=rand(1,2);
@@ -93,6 +95,8 @@ foreach ($years as $year) {
 					'age_group'=>$ag_k,
 
 					'samples_received'=>$samples_received,
+					'dbs_samples'=>$dbs_samples,
+					'total_results'=>$total_results,
 					'valid_results'=>$valid_results,
 					'rejected_samples'=>$rejected_samples,
 					'suppressed'=>$suppressed,
