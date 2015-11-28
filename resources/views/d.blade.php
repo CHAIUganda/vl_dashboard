@@ -44,7 +44,7 @@
 <div class="navbar-custom navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/"> <span class='glyphicon glyphicon-home'></span> VLS</a>
+            <a class="navbar-brand" href="/"> <span class='glyphicon glyphicon-home'></span> VIRAL LOAD</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -57,10 +57,52 @@
 <div class='container'>
     <br>
     <?php //if(!isset($filter_val)) $filter_val="National Metrics, ".$time." thus far" ?>
-     <label class='hdr hdr-grey'> FILTERS:</label> 
-     <!-- 
-     <label class='hdr val-grey'>
-        <label class='filter-val ng-cloak' ng-model='from_date_label' ng-init="from_date_label='~'"><% from_date_label %></label> 
+      
+     <?php 
+     $year=date('Y');
+     $init_duration=[];
+     $m=1;
+     while($m<=12){
+        $init_duration[]="$year-$m";
+        $m++;
+     }
+
+     ?>
+
+
+     <div style="overflow: auto;padding:5px;white-space: nowrap;">
+        <label class='hdr hdr-grey'> FILTERS:</label>
+        <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!}'>
+            <span class="filter-val ng-cloak">FROM: <% filter_duration[0] %></span>
+            <span class="filter-val ng-cloak">TO: <% filter_duration[filter_duration.length-1] %></span>
+        </span>
+
+        <span ng-model='filter_districts' ng-init='filter_districts={}'>
+            <span ng-repeat="(d_nr,d_name) in filter_districts"> 
+                <span class="filter-val ng-cloak"><% d_name %> (d) <x ng-click='removeTag("district",d_nr)'>&#120;</x></span> 
+            </span>
+        </span>
+
+        <span ng-model='filter_hubs' ng-init='filter_hubs={}'>
+            <span ng-repeat="(h_nr,h_name) in filter_hubs">
+                <span class="filter-val ng-cloak"><% h_name %> (h) <x ng-click='removeTag("hub",h_nr)'>&#120;</x></span> 
+            </span>
+        </span>
+
+        <span ng-model='filter_age_group' ng-init='filter_age_group={}'>
+            <span ng-repeat="(ag_nr,ag_name) in filter_age_group">
+                <span class="filter-val ng-cloak"><% ag_name %> (a) <x ng-click='removeTag("age_group",ag_nr)'>&#120;</x></span> 
+            </span>
+        </span>
+
+
+     </div>
+
+     
+     <!-- <label class='hdr val-grey'>
+        <label class='filter-val ng-cloak' ng-model='from_date_label' ng-init="from_date_label='~'">
+            <% from_date_label %>
+        </label> 
         <label class='filter-val ng-cloak' ng-model='to_date_label' ng-init="to_date_label='~'"><% to_date_label %></label>
         <label class='filter-val ng-cloak' ng-model='district_label' ng-init="district_label='~'"><% district_label %></label> 
         <label class='filter-val ng-cloak' ng-model='hub_label' ng-init="hub_label='~'"><% hub_label %></label> 
@@ -76,26 +118,26 @@
                {!! MyHTML::selectYearMonth(2013,date('Y'),"to_date","",["id"=>"to_date","class"=>"selectpicker"],"TO DATE") !!}   
             </td>
             <td width='20%' id='dist_elmt'>
-                <select ng-model="district" ng-init="district='all'" ng-change="filter('district')">
-                    <option value="all">DISTRICTS</option>
-                    <option class="ng-cloak" ng-repeat="(dist_nr,dist_name) in districts_slct" value="<% dist_nr %>">
-                        <% dist_name %>
+                <select ng-model="district" ng-init="district=''" ng-change="filter('district')">
+                    <option value="">DISTRICTS</option>
+                    <option class="ng-cloak" ng-repeat="(d_nr,dist) in districts_slct" value="<% d_nr %>">
+                        <% dist %>
                     </option>
                 </select>
             </td>
             <td width='20%' id='dist_elmt'>
-                <select ng-model="hub" ng-init="hub='all'" ng-change="filter('hub')">
-                    <option value="all">HUBS</option>
-                    <option class="ng-cloak" ng-repeat="(hub_nr,hub_name) in hubs_slct" value="<% hub_nr %>">
-                        <% hub_name %>
+                <select ng-model="hub" ng-init="hub=''" ng-change="filter('hub')">
+                    <option value="">HUBS</option>
+                    <option class="ng-cloak" ng-repeat="(h_nr,hub) in hubs_slct" value="<% h_nr %>">
+                        <% hub %>
                     </option>
                 </select>
             </td>
             <td width='20%' id='dist_elmt'>
-                <select ng-model="age_group" ng-init="age_group='all'" ng-change="filter('age_group')">
-                    <option value="all">AGE GROUP</option>
-                    <option class="ng-cloak" ng-repeat="(age_group_nr,age_group_name) in age_group_slct" value="<% age_group_nr %>">
-                        <% age_group_name %>
+                <select ng-model="age_group" ng-init="age_group=''" ng-change="filter('age_group')">
+                    <option value="">AGE GROUP</option>
+                    <option class="ng-cloak" ng-repeat="(ag_nr,ag) in age_group_slct" value="<% ag_nr %>">
+                        <% ag %>
                     </option>
                 </select>
             </td>
@@ -135,8 +177,6 @@
                 </li>
             </ul>
         </nav>
-        <?php $key_nat="<label class='sm_box national'>&nbsp;</label>&nbsp;National"   ?>
-
         <div class="content-wrap">
             <section id="tab1">
                 <div class="row">
@@ -147,6 +187,7 @@
                     </div>
                    
                     <div class="col-lg-6 facilties-sect " >
+                        <p ng-if="facility_numbers.length < 0"> loading facilities</p>
                         <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
@@ -154,18 +195,19 @@
                                     <th>Samples Received</th>
                                     <th>DBS %</th>
                                     <th>Samples Tested</th>
-
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr ng-repeat="f in facility_numbers | filter:compare('abs_positives','ge',1)">
-                                    <td class="ng-cloak" width='80%'><% f.facility_name %></td>
+                            <tbody>                                
+                                <tr ng-repeat="f in facility_numbers | filter:empty('name','no') " >
+                                    <td class="ng-cloak" width='80%'><% f.name %></td>
                                     <td class="ng-cloak" width='10%'><% f.initiation_rate %></td>
                                     <td class="ng-cloak" width='10%'><% f.initiation_rate %></td>
                                     <td class="ng-cloak" width='10%'><% f.total_results %></td>
+
                                 </tr>                        
                              </tbody>
                          </table>
+
                     </div>
 
                 </div>
@@ -310,16 +352,6 @@ $chart_stuff2=[
 $st2= ["Jan"=>2, "Feb"=>2, "Mar"=>3, "Apr"=>6, "May"=>3, "Jun"=>6, "Jul"=>6,"Aug"=>6,"Sept"=>6,"Oct"=>2,"Nov"=>6,"Dec"=>2];
 ?>
 
-<?php
-$count_positives_arr=array_values($count_positives_arr);
-$av_positivity_arr=array_values($av_positivity_arr);
-$nums_by_months=array_values($nums_by_months);
-$av_initiation_rate_months=array_values($av_initiation_rate_months);
-
-
-
-?>
-
 <script type="text/javascript">
 
 var samples_received_data=[
@@ -350,37 +382,6 @@ $(document).ready( function(){
 var months=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug","Sept","Oct","Nov","Dec"];
 var months_init={"1":0, "2":0, "3":0, "4":0, "5":0, "6":0, "7":0,"8":0,"9":0,"10":0,"11":0,"12":0};
 
-var nice_counts=<?php echo json_encode($nice_counts) ?>;
-var nice_counts_positives=<?php echo json_encode($nice_counts_positives) ?>;
-var nice_counts_art_inits=<?php echo json_encode($nice_counts_art_inits) ?>;
-
-var reg_districts=<?php echo json_encode($reg_districts) ?>;
-var dist_n_reg_ids=<?php echo json_encode($dist_n_reg_ids) ?>;
-var districts_json=<?php echo json_encode($districts) ?>;
-var regions_json=<?php echo json_encode($regions) ?>;
-var facility_levels_json=<?php echo json_encode($facility_levels) ?>;
-
-var count_positives_json=<?php echo json_encode($chart_stuff + ["data"=>$count_positives_arr]) ?>;
-
-//var count_positives_json2=<?php echo json_encode($chart_stuff2 + ["data"=>$st2]) ?>;
-var av_positivity_json=<?php echo json_encode($chart_stuff + ["data"=>$av_positivity_arr]) ?>;
-
-var nums_json=<?php echo json_encode($chart_stuff+["data"=>$nums_by_months]) ?>;
-
-var first_pcr_ttl_grped=<?php echo json_encode($first_pcr_ttl_grped) ?>;
-var sec_pcr_ttl_grped=<?php echo json_encode($sec_pcr_ttl_grped) ?>;
-var samples_ttl_grped=<?php echo json_encode($samples_ttl_grped) ?>;
-var initiated_ttl_grped=<?php echo json_encode($initiated_ttl_grped) ?>;
-
-var first_pcr_total_init=<?php echo $first_pcr_total ?>;
-var sec_pcr_total_init=<?php echo $sec_pcr_total ?>;
-var first_pcr_median_age_init=<?php echo $first_pcr_median_age ?>;
-var sec_pcr_median_age_init=<?php echo $sec_pcr_median_age ?>;
-var total_initiated_init=<?php echo $total_initiated ?>;
-var total_samples_init=<?php echo $total_samples ?>;
-
-var av_initiation_rate_months_json=<?php echo json_encode($chart_stuff+["data"=>$av_initiation_rate_months]) ?>;
-
 
 /*$(document).ready( function(){
     var ctx = $("#hiv_postive_infants").get(0).getContext("2d");
@@ -410,22 +411,55 @@ var app=angular.module('dashboard', ['datatables'], function($interpolateProvide
     });
 var ctrllers={};
 
-ctrllers.DashController=function($scope,$timeout){
+ctrllers.DashController=function($scope,$timeout,$http){
 
-    $scope.count_positives_init=<?php echo $count_positives ?>;
-    $scope.total_samples_init=<?php echo $total_samples ?>;
-    $scope.av_initiation_rate_init=<?php echo $av_initiation_rate ?>;
-    $scope.av_positivity_init=<?php echo $av_positivity ?>;
-    $scope.total_initiated_init=<?php echo $total_initiated ?>
-    //for filtering by region
+    var districts_json=[];
+    var hubs_json={};
+    var age_group_json={};
+    var facility_json={};
+    var results_json={};
 
-    $scope.regions_slct=<?php echo json_encode($regions) ?>;
-    $scope.districts_slct=<?php echo json_encode($districts) ?>;
-    $scope.facility_levels_slct=<?php echo json_encode($facility_levels) ?>;
 
-    $scope.facility_numbers=<?php echo json_encode($facility_numbers) ?>;
-    $scope.facility_numbers_init=<?php echo json_encode($facility_numbers) ?>;
+    //fetch the data from the json file
+    $http.get("{{ asset('/json/data.json') }}").success(function(data) {
+        districts_json=data['districts']||{};
+        hubs_json=data['hubs']||{};
+        age_group_json=data['age_group']||{};
+        facility_json=data['facilities']||{};
+        results_json=data['results']||{};
 
+        $scope.districts_slct=districts_json;
+        $scope.hubs_slct=hubs_json;
+        $scope.age_group_slct=age_group_json;
+        //$scope.facility_numbers=facility_json;
+    });
+
+    $scope.filter=function(mode){
+        switch(mode){
+            case "district":
+            $scope.filter_districts[$scope.district]=districts_json[$scope.district];
+            $scope.district="";
+            break;
+
+            case "hub":
+            $scope.filter_hubs[$scope.hub]=hubs_json[$scope.hub];
+            $scope.hub="";
+            break;
+
+            case "age_group":
+            $scope.filter_age_group[$scope.age_group]=age_group_json[$scope.age_group];
+            $scope.age_group="";
+            break;
+        }
+
+    }
+
+    
+   
+
+    //data for filterin
+
+    //$scope.filter_districts=[];
 
     $scope.compare = function(prop,comparator, val){
         return function(item){
@@ -445,6 +479,30 @@ ctrllers.DashController=function($scope,$timeout){
                 return false;
             }
         }
+    };
+
+    $scope.removeTag=function(mode,nr){
+        switch(mode){
+            case "district": delete $scope.filter_districts[nr];break;
+            case "hub": delete $scope.filter_hubs[nr];break;
+            case "age_group": delete $scope.filter_age_group[nr];break;
+        }
+    };
+
+    $scope.empty=function(prop,status){
+        return function(item){
+            switch(item[prop]) {
+                case "":
+                case 0:
+                case "0":
+                case null:
+                case false:
+                case typeof this == "undefined":
+                if(status=='no'){ return false; } else { return true };
+                    default :  if(status=='no'){ return true; } else { return false };
+                }
+        }
+           
     };
 
     $scope.displayRejectionRate=function(){
@@ -493,7 +551,7 @@ ctrllers.DashController=function($scope,$timeout){
             $scope.facility_numbers=$scope.facility_numbers_init;    
         }       
     };
-
+/*
     $scope.filteredfcltys=function(options){
         var ret={};
         for (var i in $scope.facility_numbers_init){
@@ -520,23 +578,9 @@ ctrllers.DashController=function($scope,$timeout){
                $scope.districts_slct=reg_districts[$scope.region]; 
            }            
         }
-
-       /* $scope.setCountPos(filterer);
-        $scope.avUptakeRate(filterer);
-        $scope.avInitRate(filterer);
-        $scope.avPositivity(filterer);
-        $scope.setAdditionalMetrics(filterer);
-
-        $scope.region_label=$scope.region!="all"?"Region: "+regions_json[$scope.region]:"~";
-        $scope.district_label=$scope.district!="all"?"District: "+districts_json[$scope.district]:"~";
-        $scope.care_level_label=$scope.care_level!="all"?"Care Level: "+facility_levels_json[$scope.care_level]:"~"; 
-        
-        $scope.facility_filter();*/
         
     };
-
-  
-
+    */
 
 
 
