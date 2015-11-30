@@ -49,7 +49,7 @@ function hubs(){
 
 function facilities(){
 	$ret=[];
-	$res=mysql_query("SELECT id,facility,districtID,hubID from facilities where facility!=''");
+	$res=mysql_query("SELECT id,facility,districtID,hubID from facilities where facility!='' LIMIT 500");
 	while ($row=mysql_fetch_array($res)){
 		extract($row);
 		$ret[$id]=['id'=>$id,'name'=>$facility,'district_id'=>$districtID,'hub_id'=>$hubID];
@@ -83,9 +83,9 @@ foreach ($years as $year) {
 
 				$cd4_less_than_500=rand(1,2);
 				$pmtct_option_b_plus=rand(1,2);
-				$children_under_5=rand(1,2);
+				$children_under_15=rand(1,2);
 				$other_treatment=rand(1,2);
-				$treatment_blank_on_form=$samples_received-($cd4_less_than_500+$pmtct_option_b_plus+$children_under_5+$other_treatment);
+				$treatment_blank_on_form=$samples_received-($cd4_less_than_500+$pmtct_option_b_plus+$children_under_15+$other_treatment);
 
 				$results[]=[
 					'month'=>$month,
@@ -103,7 +103,7 @@ foreach ($years as $year) {
 
 					'cd4_less_than_500'=>$cd4_less_than_500,
 					'pmtct_option_b_plus'=>$pmtct_option_b_plus,
-					'children_under_5'=>$children_under_5,
+					'children_under_15'=>$children_under_15,
 					'other_treatment'=>$other_treatment,
 					'treatment_blank_on_form'=>$treatment_blank_on_form
 					];

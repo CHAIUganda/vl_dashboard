@@ -48,7 +48,7 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                    <li id='l1' class='active'>{!! link_to("/","DASH BOARD",['class'=>'hdr']) !!}</li>            
+                    <li id='l1' class='active'>{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>            
             </ul>
         </div>
     </div>
@@ -70,7 +70,7 @@
      ?>
 
 
-     <div style="overflow: auto;padding:5px;white-space: nowrap;">
+     <div class="filter-section">
         <label class='hdr hdr-grey'> FILTERS:</label>
         <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!}'>
             <span class="filter-val ng-cloak">FROM: <% filter_duration[0] %></span>
@@ -94,20 +94,7 @@
                 <span class="filter-val ng-cloak"><% ag_name %> (a) <x ng-click='removeTag("age_group",ag_nr)'>&#120;</x></span> 
             </span>
         </span>
-
-
      </div>
-
-     
-     <!-- <label class='hdr val-grey'>
-        <label class='filter-val ng-cloak' ng-model='from_date_label' ng-init="from_date_label='~'">
-            <% from_date_label %>
-        </label> 
-        <label class='filter-val ng-cloak' ng-model='to_date_label' ng-init="to_date_label='~'"><% to_date_label %></label>
-        <label class='filter-val ng-cloak' ng-model='district_label' ng-init="district_label='~'"><% district_label %></label> 
-        <label class='filter-val ng-cloak' ng-model='hub_label' ng-init="hub_label='~'"><% hub_label %></label> 
-        <label class='filter-val ng-cloak' ng-model='age_group_label' ng-init="age_group_label='~'"><% age_group_label %></label> 
-    </label> --><br>
 
      <table border='1' cellpadding='0' cellspacing='0' class='filter-tb'>
         <tr>
@@ -118,24 +105,24 @@
                {!! MyHTML::selectYearMonth(2013,date('Y'),"to_date","",["id"=>"to_date","class"=>"selectpicker"],"TO DATE") !!}   
             </td>
             <td width='20%' id='dist_elmt'>
-                <select ng-model="district" ng-init="district=''" ng-change="filter('district')">
-                    <option value="">DISTRICTS</option>
+                <select ng-model="district" ng-init="district='all'" ng-change="filter('district')">
+                    <option value='all'>DISTRICTS</option>
                     <option class="ng-cloak" ng-repeat="(d_nr,dist) in districts_slct" value="<% d_nr %>">
                         <% dist %>
                     </option>
                 </select>
             </td>
             <td width='20%' id='dist_elmt'>
-                <select ng-model="hub" ng-init="hub=''" ng-change="filter('hub')">
-                    <option value="">HUBS</option>
+                <select ng-model="hub" ng-init="hub='all'" ng-change="filter('hub')">
+                    <option value='all'>HUBS</option>
                     <option class="ng-cloak" ng-repeat="(h_nr,hub) in hubs_slct" value="<% h_nr %>">
                         <% hub %>
                     </option>
                 </select>
             </td>
             <td width='20%' id='dist_elmt'>
-                <select ng-model="age_group" ng-init="age_group=''" ng-change="filter('age_group')">
-                    <option value="">AGE GROUP</option>
+                <select ng-model="age_group" ng-init="age_group='all'" ng-change="filter('age_group')">
+                    <option value='all'>AGE GROUP</option>
                     <option class="ng-cloak" ng-repeat="(ag_nr,ag) in age_group_slct" value="<% ag_nr %>">
                         <% ag %>
                     </option>
@@ -153,7 +140,7 @@
             <ul>
                 <li id='tb_hd1'>
                     <a href="#tab1" id='tb_lnk1' ng-click="displaySamplesRecieved()">
-                        <span class="num ng-cloak" ng-model="samples_received" ng-init="samples_received={!! 300000 !!}" >
+                        <span class="num ng-cloak" ng-model="samples_received" ng-init="samples_received=0">
                             <% samples_received|number %>
                         </span>
                         <span class="desc">samples received</span>
@@ -161,16 +148,16 @@
                 </li>
                 <li id='tb_hd2'>
                     <a href="#tab2" id='tb_lnk2'  ng-click="displaySupressionRate()">
-                        <span class="num ng-cloak" ng-model="supression_rate" ng-init="supression_rate={!! 26 !!}">
-                            <% supression_rate|number %>%
+                        <span class="num ng-cloak" ng-model="suppression_rate" ng-init="suppression_rate=0">
+                            <% suppression_rate|number:1 %>%
                         </span>
                         <span class="desc">supression rate</span>
                     </a>
                 </li>
                 <li id='tb_hd3'>
                     <a href="#tab3" id='tb_lnk3' ng-click="displayRejectionRate()">
-                        <span class="num ng-cloak" ng-model="rejection_rate" ng-init="rejection_rate={!! 30 !!}">
-                            <% rejection_rate|number %>%
+                        <span class="num ng-cloak" ng-model="rejection_rate" ng-init="rejection_rate=0">
+                            <% rejection_rate|number:1 %>%
                         </span>
                         <span class="desc">rejection rate</span>
                     </a>
@@ -228,7 +215,6 @@
                                     <td class="ng-cloak"><% f.samples_received %></td>
                                     <td class="ng-cloak"><% ((f.dbs_samples/f.samples_received)*100 )| number:1 %> %</td>
                                     <td class="ng-cloak"><% f.total_results %></td>
-
                                 </tr>                        
                              </tbody>
                          </table>
@@ -304,28 +290,28 @@
     <div class='addition-metrics'>
        <div class='row'>
         <div class='col-sm-2'>
-            <font class='addition-metrics figure ng-cloak' ng-init="low_cd4={!! 30 !!}" ng-model='low_cd4'><% low_cd4|number %>%</font><br>
+            <font class='addition-metrics figure ng-cloak' ng-init="cd4_less_than_500=0" ng-model='cd4_less_than_500'><% cd4_less_than_500|number:1 %>%</font><br>
             <font class='addition-metrics desc'>CD4 < 500</font>            
         </div>
         <div class='col-sm-2'>
-            <font class='addition-metrics figure ng-cloak' ng-init="optionb_plus={!! 47 !!}" ng-model='optionb_plus'><% optionb_plus|number %>%</font><br>
+            <font class='addition-metrics figure ng-cloak' ng-init="pmtct_option_b_plus=0" ng-model='pmtct_option_b_plus'><% pmtct_option_b_plus|number:1 %>%</font><br>
             <font class='addition-metrics desc'>PMTCT/OPTION B+</font>            
         </div>       
         <div class='col-sm-2'>
-            <font class='addition-metrics figure ng-cloak' ng-init="children_under15={!! 15 !!}" ng-model="children_under15">
-                <% children_under15|number %>%
+            <font class='addition-metrics figure ng-cloak' ng-init="children_under_15=0" ng-model="children_under_15">
+                <% children_under_15|number:1 %>%
             </font><br>
             <font class='addition-metrics desc'>CHILDREN UNDER 15</font>            
         </div>
         <div class='col-sm-2'>
-            <font class='addition-metrics figure ng-cloak' ng-init="other_treatment={!! 40 !!}" ng-model="other_treatment">
-                <% other_treatment|number %>%
+            <font class='addition-metrics figure ng-cloak' ng-init="other_treatment=0" ng-model="other_treatment">
+                <% other_treatment|number:1 %>%
             </font><br>
             <font class='addition-metrics desc'>OTHER</font>            
         </div>
         <div class='col-sm-2'>
-            <font class='addition-metrics figure ng-cloak' ng-init="blank_on_paper={!! 7 !!}" ng-model="blank_on_paper">
-                <% blank_on_paper|number %>%
+            <font class='addition-metrics figure ng-cloak' ng-init="treatment_blank_on_form=0" ng-model="treatment_blank_on_form">
+                <% treatment_blank_on_form|number:1 %>%
             </font><br>
             <font class='addition-metrics desc'>BLANK ON PAPER</font>            
         </div>
@@ -334,15 +320,13 @@
     <br>
 </div>
 <script src=" {{ asset('js/cbpFWTabs.js') }} "></script>
-        <script>
-            (function() {
-
-                [].slice.call( document.querySelectorAll( '.tabss' ) ).forEach( function( el ) {
-                    new CBPFWTabs( el );
-                });
-
-            })();
-        </script>
+<script>
+(function() {
+    [].slice.call( document.querySelectorAll( '.tabss' ) ).forEach( function( el ) {
+        new CBPFWTabs( el );
+    });
+})();
+</script>
 
 
 </body>
@@ -378,6 +362,10 @@ $st2= ["Jan"=>2, "Feb"=>2, "Mar"=>3, "Apr"=>6, "May"=>3, "Jun"=>6, "Jul"=>6,"Aug
 ?>
 
 <script type="text/javascript">
+
+function count(json_obj){
+    return Object.keys(json_obj).length;
+}
 
 var samples_received_data=[
      {"key":"DBS","values":[{"x":"Jan","y":1200},{"x":"Feb","y":1290},{"x":"Mar","y":1300},{"x":"Apr","y":998},{"x":"May","y":1118},{"x":"Jun","y":1187},{"x":"Jul","y":1900},{"x":"Aug","y":1200},{"x":"Sep","y":1740},{"x":"Oct","y":1800},{"x":"Nov","y":1700},{"x":"Dec","y":1200}] },
@@ -427,6 +415,12 @@ $("#time_fltr").change(function(){
     return window.location.assign("/"+this.value);
 });
 
+$(".xxx").mouseover(function() {
+    console.log(" mouser over");
+    
+    }).mouseout(function() { 
+        console.log(" mouser out");
+     })
 
 
 //angular stuff
@@ -447,9 +441,21 @@ ctrllers.DashController=function($scope,$timeout,$http){
    
     var results_json={};
 
+    var samples_received=0;
+    var valid_results=0;
+    var suppressed=0;
+    var rejected_samples=0;
+
+    var cd4_less_than_500=0;
+    var pmtct_option_b_plus=0;
+    var children_under_15=0;
+    var other_treatment=0;
+    var treatment_blank_on_form=0;
 
     //fetch the data from the json file
     $http.get("{{ asset('/json/data.json') }}").success(function(data) {
+        $scope.rights=0;
+        $scope.wrongs=0;
         districts_json=data['districts']||{};
         hubs_json=data['hubs']||{};
         age_group_json=data['age_group']||{};
@@ -462,6 +468,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
         $scope.age_group_slct=age_group_json;
 
         var res=data['results']||{};
+        $scope.samples_received=0
         for(var i in res){
            var that=res[i];
            var facility_id=that.facility_id;
@@ -483,7 +490,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
 
                 'cd4_less_than_500':that.cd4_less_than_500,
                 'pmtct_option_b_plus':that.pmtct_option_b_plus,
-                'children_under_5':that.children_under_5,
+                'children_under_15':that.children_under_15,
                 'other_treatment':that.other_treatment,
                 'treatment_blank_on_form':that.treatment_blank_on_form
                 };
@@ -517,97 +524,146 @@ ctrllers.DashController=function($scope,$timeout,$http){
                  district_data_json[dist_id].id=dist_id;
              }
 
+             samples_received+=that.samples_received;
+             suppressed+=that.suppressed;
+             valid_results+=that.valid_results;
+             rejected_samples+=that.rejected_samples;
+             
+             cd4_less_than_500+=that.cd4_less_than_500;
+             pmtct_option_b_plus+=that.pmtct_option_b_plus;
+             children_under_15+=that.children_under_15;
+             other_treatment+=that.other_treatment;
+             treatment_blank_on_form+=that.treatment_blank_on_form;
            
         }
+
+        $scope.results_json=results_json;
 
         $scope.facility_numbers=facility_data_json;
         $scope.district_numbers=district_data_json;
 
-        console.log("distrcts data:: "+JSON.stringify($scope.district_numbers));
+        $scope.samples_received=samples_received;
+        $scope.suppression_rate=(suppressed/valid_results)*100;
+        $scope.rejection_rate=(rejected_samples/samples_received)*100;
+
+        $scope.cd4_less_than_500=(cd4_less_than_500/samples_received)*100;
+        $scope.pmtct_option_b_plus=(pmtct_option_b_plus/samples_received)*100;
+        $scope.children_under_15=(children_under_15/samples_received)*100;
+        $scope.other_treatment=(other_treatment/samples_received)*100;
+        $scope.treatment_blank_on_form=(treatment_blank_on_form/samples_received)*100;
+
+        //console.log("distrcts data:: "+JSON.stringify($scope.district_numbers));
     });
 
     $scope.filter=function(mode){
         switch(mode){
             case "district":
             $scope.filter_districts[$scope.district]=districts_json[$scope.district];
-            $scope.district="";
+            $scope.district='all';
+            
             break;
 
             case "hub":
             $scope.filter_hubs[$scope.hub]=hubs_json[$scope.hub];
-            $scope.hub="";
+            $scope.hub='all';
             break;
 
             case "age_group":
             $scope.filter_age_group[$scope.age_group]=age_group_json[$scope.age_group];
-            $scope.age_group="";
+            $scope.age_group='all';
             break;
         }
 
+        delete $scope.filter_districts["all"];
+        delete $scope.filter_hubs["all"];
+        delete $scope.filter_age_group["all"];
+
+        $scope.generalFilter();
+        $scope.displaySamplesRecieved();
+        $scope.displayRejectionRate();
+        $scope.displaySupressionRate();
+
     }
 
-    
-   
 
-    //data for filterin
 
-    //$scope.filter_districts=[];
+    $scope.evaluator=function(that){  
+        var d_num=count($scope.filter_districts);
+        var h_num=count($scope.filter_hubs);
+        var a_num=count($scope.filter_age_group);
 
-    $scope.compare = function(prop,comparator, val){
-        return function(item){
-            if(comparator=='eq'){
-                return item[prop] == val;
-            }else if (comparator=='ne'){
-               return item[prop] != val;
-            }else if (comparator=='gt'){
-               return item[prop] > val;
-            }else if (comparator=='lt'){
-               return item[prop] < val;
-            }else if (comparator=='ge'){
-               return (item[prop] > val)||(item[prop] == val);
-            }else if (comparator=='le'){
-               return (item[prop] < val)||(item[prop] == val);
-            }else{
-                return false;
-            }
-        }
-    };
+        var dist_eval=$scope.filter_districts.hasOwnProperty(that.district_id);
+        var hub_eval=$scope.filter_hubs.hasOwnProperty(that.hub_id);
+        var ag_eval=$scope.filter_age_group.hasOwnProperty(that.age_group);
 
-    $scope.removeTag=function(mode,nr){
-        switch(mode){
-            case "district": delete $scope.filter_districts[nr];break;
-            case "hub": delete $scope.filter_hubs[nr];break;
-            case "age_group": delete $scope.filter_age_group[nr];break;
-        }
-    };
+        var eval1=d_num==0&&h_num==0&&a_num==0;     // districts(OFF) and hubs(OFF) and age_groups (OFF)
+        var eval2=dist_eval&&h_num==0&&a_num==0;    // districts(ON) and hubs(OFF) and age_groups (OFF)
+        var eval3=(dist_eval||hub_eval)&&a_num==0;  // districts(ON) or hubs(ON) and age_groups (OFF)
+        var eval4=dist_eval&&h_num==0&&ag_eval;     // districts(ON) and hubs(OFF) and age_groups (ON)
+        var eval5=(dist_eval||hub_eval)&&ag_eval;   // districts(ON) or hubs(ON) and age_groups (ON)
+        var eval6=d_num==0&&hub_eval&&ag_eval;      // districts(OFF) and hubs(ON) and age_groups (ON)
+        var eval7=d_num==0&&hub_eval&&a_num==0;     // districts(OFF) and hubs(ON) and age_groups (OFF)
+        var eval8=d_num==0&&h_num==0&&ag_eval;      // districts(OFF) and hubs(OFF) and age_groups (ON)
 
-    $scope.empty=function(prop,status){
-        return function(item){
-            switch(item[prop]) {
-                case "":
-                case 0:
-                case "0":
-                case null:
-                case false:
-                case typeof this == "undefined":
-                if(status=='no'){ return false; } else { return true; };
-                    default :  if(status=='no'){ return true; } else { return false; };
-                }
-        }
-           
-    };
-
-    $scope.nana=function(){
-        if($scope.show_fclties==true){
-            $("#d_shw").attr("class","active");
-            $("#f_shw").attr("class","");
-            $scope.show_fclties=false;
+        if(eval1||eval2||eval3||eval4||eval5||eval6||eval7||eval8){
+            return true;
         }else{
-            $("#f_shw").attr("class","active");
-            $("#d_shw").attr("class","");
-            $scope.show_fclties=true;
+            return false;
         }
     }
+
+    $scope.generalFilter=function(){
+        var samples_received=0,suppressed=0,valid_results=0,rejected_samples=0;
+        var cd4_less_than_500=0,pmtct_option_b_plus=0,children_under_15=0,other_treatment=0,treatment_blank_on_form=0;
+        for(var i in results_json){
+            var that = results_json[i];
+            if($scope.evaluator(that)){
+                //key indicators
+                samples_received+=that.samples_received;
+                suppressed+=that.suppressed;
+                valid_results+=that.valid_results;
+                rejected_samples+=that.rejected_samples;
+
+
+                //other filters
+                cd4_less_than_500+=that.cd4_less_than_500;
+                pmtct_option_b_plus+=that.pmtct_option_b_plus;
+                children_under_15+=that.children_under_15;
+                other_treatment+=that.other_treatment;
+                treatment_blank_on_form+=that.treatment_blank_on_form;
+
+            }         
+        }
+
+        //key indicators
+        $scope.samples_received=samples_received;
+        $scope.suppression_rate=(suppressed/valid_results)*100;
+        $scope.rejection_rate=(rejected_samples/samples_received)*100;
+
+        //final setting for other indicators
+        $scope.cd4_less_than_500=((cd4_less_than_500/samples_received)*100)||0;
+        $scope.pmtct_option_b_plus=((pmtct_option_b_plus/samples_received))*100||0;
+        $scope.children_under_15=((children_under_15/samples_received))*100||0;
+        $scope.other_treatment=((other_treatment/samples_received)*100)||0;
+        $scope.treatment_blank_on_form=((treatment_blank_on_form/samples_received)*100)||0;
+
+       /* 
+        $scope.cd4_less_than_500=cd4_less_than_500;
+        $scope.pmtct_option_b_plus=pmtct_option_b_plus;
+        $scope.children_under_15=children_under_15;
+        $scope.other_treatment=other_treatment;
+        $scope.treatment_blank_on_form=treatment_blank_on_form;*/
+
+    };
+
+
+    $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;
+        nv.addGraph( function(){
+            var chart = nv.models.multiBarChart().reduceXTicks(false).color(["#00786A","#526CFD"]);
+            d3.select('#samples_received svg').datum(samples_received_data).transition().duration(500).call(chart);
+            return chart;
+        });
+    };
 
     $scope.displayRejectionRate=function(){
         nv.addGraph( function(){
@@ -655,6 +711,64 @@ ctrllers.DashController=function($scope,$timeout,$http){
             $scope.facility_numbers=$scope.facility_numbers_init;    
         }       
     };
+
+
+     $scope.compare = function(prop,comparator, val){
+        return function(item){
+            if(comparator=='eq'){
+                return item[prop] == val;
+            }else if (comparator=='ne'){
+               return item[prop] != val;
+            }else if (comparator=='gt'){
+               return item[prop] > val;
+            }else if (comparator=='lt'){
+               return item[prop] < val;
+            }else if (comparator=='ge'){
+               return (item[prop] > val)||(item[prop] == val);
+            }else if (comparator=='le'){
+               return (item[prop] < val)||(item[prop] == val);
+            }else{
+                return false;
+            }
+        }
+    };
+
+    $scope.removeTag=function(mode,nr){
+        switch(mode){
+            case "district": delete $scope.filter_districts[nr];break;
+            case "hub": delete $scope.filter_hubs[nr];break;
+            case "age_group": delete $scope.filter_age_group[nr];break;
+        }
+        $scope.filter(mode);
+    };
+
+    $scope.empty=function(prop,status){
+        return function(item){
+            switch(item[prop]) {
+                case "":
+                case 0:
+                case "0":
+                case null:
+                case false:
+                case typeof this == "undefined":
+                if(status=='no'){ return false; } else { return true; };
+                    default :  if(status=='no'){ return true; } else { return false; };
+                }
+        }
+           
+    };
+
+    $scope.nana=function(){
+        if($scope.show_fclties==true){
+            $("#d_shw").attr("class","active");
+            $("#f_shw").attr("class","");
+            $scope.show_fclties=false;
+        }else{
+            $("#f_shw").attr("class","active");
+            $("#d_shw").attr("class","");
+            $scope.show_fclties=true;
+        }
+    }
 /*
     $scope.filteredfcltys=function(options){
         var ret={};
@@ -693,5 +807,17 @@ ctrllers.DashController=function($scope,$timeout,$http){
 };
 
 app.controller(ctrllers);
+
+
+
+/*
+-Hide empty filters --- don't show the (~)
+-Xes on the filter labels  and make the same background color
+-Open sense for the font style
+-bug on the graphs when o =n hover for av. positivity --- try with wakiso --HCIV, Hospital, HC III
+
+
+
+*/
 </script>
 </html>

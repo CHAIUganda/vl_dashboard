@@ -369,26 +369,25 @@ div.addition-metrics{
 	background-color: #009688;
 	padding-left: 15px;
 	padding-right: 15px;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding-top: 7px;
+	padding-bottom: 7px;
 	border-radius: 15px;
 	font-size: 13px;
+}
+
+.filter-val>.remove{
+	-webkit-box-shadow: 0px 0px 2px #641818;
+	 box-shadow: 0px 0px 2px #641818;
 }
 
 .filter-val>x{
 	color: #d2d2d2;
 	cursor: pointer;
-	/*padding-left:5px;
-	padding-right:5px;*/
+	font-size: 18px;
 }
 
 .filter-val>x:hover{
 	color: #fff;
-	/*background-color: red;
-	height: 10px;
-	width: 10px;
-	border-radius: 5px;
-	border-color: red;*/
 }
 
 .facilties-sect{
@@ -420,7 +419,7 @@ div.addition-metrics{
 
 .dist_faclty_toggle{
 	cursor: pointer;
-	margin-left: 35%;
+	margin-left: 30%;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	border: 1px solid #009688; 
@@ -431,6 +430,13 @@ div.addition-metrics{
 	color:#FFF;
 	padding-top: inherit;
 	padding-bottom: inherit;
+}
+
+
+.filter-section{
+	overflow: auto;
+	padding:15px;
+	white-space: nowrap;
 }
 
 
