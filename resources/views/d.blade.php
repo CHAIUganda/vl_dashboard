@@ -147,16 +147,17 @@
                 </li>
                 <li id='tb_hd2'>
                     <a href="#tab2" id='tb_lnk2'  ng-click="displaySupressionRate()">
-                        <span class="num ng-cloak" ng-model="suppression_rate" ng-init="suppression_rate=0">
-                            <% suppression_rate|number:1 %>%
+                        <span ng-model="valid_results" ng-init="valid_results=0"></span>
+                        <span class="num ng-cloak" ng-model="suppressed" ng-init="suppressed=0">
+                            <% ((suppressed/valid_results)*100) |number:1 %>%
                         </span>
-                        <span class="desc">supression rate</span>
+                        <span class="desc">suppression rate</span>
                     </a>
                 </li>
                 <li id='tb_hd3'>
                     <a href="#tab3" id='tb_lnk3' ng-click="displayRejectionRate()">
-                        <span class="num ng-cloak" ng-model="rejection_rate" ng-init="rejection_rate=0">
-                            <% rejection_rate|number:1 %>%
+                        <span class="num ng-cloak" ng-model="rejected_samples" ng-init="rejected_samples=0">
+                            <% ((rejected_samples/samples_received)*100)|number:1 %>%
                         </span>
                         <span class="desc">rejection rate</span>
                     </a>
@@ -189,7 +190,7 @@
                             </thead>
                             <tbody>                                
                                 <tr ng-repeat="d in district_numbers" >
-                                    <td class="ng-cloak"><% +d.name %></td>
+                                    <td class="ng-cloak"><% d.name %></td>
                                     <td class="ng-cloak"><% d.samples_received %></td>
                                     <td class="ng-cloak"><% ((d.dbs_samples/d.samples_received)*100 )| number:1 %> %</td>
                                     <td class="ng-cloak"><% d.total_results %></td>
@@ -210,7 +211,7 @@
                             </thead>
                             <tbody>                                
                                 <tr ng-repeat="f in facility_numbers" >
-                                    <td class="ng-cloak"><% +f.name %></td>
+                                    <td class="ng-cloak"><% f.name %></td>
                                     <td class="ng-cloak"><% f.samples_received %></td>
                                     <td class="ng-cloak"><% ((f.dbs_samples/f.samples_received)*100 )| number:1 %> %</td>
                                     <td class="ng-cloak"><% f.total_results %></td>
@@ -289,42 +290,35 @@
     <div class='addition-metrics'>
        <div class='row'>
         <div class='col-sm-2'>
-            <font class='addition-metrics figure ng-cloak' ng-init="cd4_less_than_500=0" ng-model='cd4_less_than_500'><% cd4_less_than_500|number:1 %>%</font><br>
+            <font class='addition-metrics figure ng-cloak' ng-init="cd4_less_than_500=0" ng-model='cd4_less_than_500'>
+                <% ((cd4_less_than_500/samples_received)*100)|number:1 %>%
+            </font><br>
             <font class='addition-metrics desc'>CD4 < 500</font>            
         </div>
         <div class='col-sm-2'>
-            <font class='addition-metrics figure ng-cloak' ng-init="pmtct_option_b_plus=0" ng-model='pmtct_option_b_plus'><% pmtct_option_b_plus|number:1 %>%</font><br>
+            <font class='addition-metrics figure ng-cloak' ng-init="pmtct_option_b_plus=0" ng-model='pmtct_option_b_plus'>
+                <% ((pmtct_option_b_plus/samples_received)*100)|number:1 %>%
+            </font><br>
             <font class='addition-metrics desc'>PMTCT/OPTION B+</font>            
         </div>       
         <div class='col-sm-2'>
             <font class='addition-metrics figure ng-cloak' ng-init="children_under_15=0" ng-model="children_under_15">
-                <% children_under_15|number:1 %>%
+                <% ((children_under_15/samples_received)*100)|number:1 %>%
             </font><br>
             <font class='addition-metrics desc'>CHILDREN UNDER 15</font>            
         </div>
         <div class='col-sm-2'>
             <font class='addition-metrics figure ng-cloak' ng-init="other_treatment=0" ng-model="other_treatment">
-                <% other_treatment|number:1 %>%
+                <% ((other_treatment/samples_received)*100)|number:1 %>%
             </font><br>
             <font class='addition-metrics desc'>OTHER</font>            
         </div>
         <div class='col-sm-2'>
             <font class='addition-metrics figure ng-cloak' ng-init="treatment_blank_on_form=0" ng-model="treatment_blank_on_form">
-                <% treatment_blank_on_form|number:1 %>%
+                <% ((treatment_blank_on_form/samples_received)*100)|number:1 %>%
             </font><br>
             <font class='addition-metrics desc'>BLANK ON PAPER</font>            
         </div>
-       <!--  
-       <div class='col-sm-2'>
-            <font class='addition-metrics figure ng-cloak' ng-init="dbs_samples=0" ng-model="dbs_samples">
-                <% dbs_samples|number:1 %>%
-            </font><br>
-            <font class='addition-metrics desc'>dbs_samples</font>  
-            <font class='addition-metrics figure ng-cloak' ng-init="plasma=0" ng-model="plasma">
-                <% plasma|number:1 %>%
-            </font><br>
-            <font class='addition-metrics desc'>plasma</font>           
-        </div> -->
        </div>
     </div>
     <br>
@@ -377,15 +371,7 @@ function count(json_obj){
     return Object.keys(json_obj).length;
 }
 
-var samples_received_data=[
-     {"key":"DBS","values":[{"x":"Jan","y":1200},{"x":"Feb","y":1290},{"x":"Mar","y":1300},{"x":"Apr","y":998},{"x":"May","y":1118},{"x":"Jun","y":1187},{"x":"Jul","y":1900},{"x":"Aug","y":1200},{"x":"Sep","y":1740},{"x":"Oct","y":1800},{"x":"Nov","y":1700},{"x":"Dec","y":1200}] },
-     {"key":"PLASMA","values":[{"x":"Jan","y":500},{"x":"Feb","y":499},{"x":"Mar","y":688},{"x":"Apr","y":490},{"x":"May","y":318},{"x":"Jun","y":347},{"x":"Jul","y":600},{"x":"Aug","y":700},{"x":"Sep","y":830},{"x":"Oct","y":480},{"x":"Nov","y":570},{"x":"Dec","y":600}] }
-     ];
 
-var supression_rate_data=[
-    {"key":"SUPRESSION RATE","color": "#6D6D6D","values":[["Jan",80],["Feb",78],["Mar",90],["Apr",89],["May",100],["Jun",89],["Jul",97],["Aug",86],["Sep",91],["Oct",98],["Nov",91],["Dec",81]] },
-    {"key":"VALID RESULTS","bar":true,"color": "#00786A","values":[["Jan",20],["Feb",18],["Mar",20],["Apr",19],["May",30],["Jun",19],["Jul",27],["Aug",16],["Sep",31],["Oct",18],["Nov",21],["Dec",31]] },
-    ];
 
 var rejection_rate_data=[
 {"key":"SAMPLE QUALITY","values":[{"x":"Jan","y":20},{"x":"Feb","y":10},{"x":"Mar","y":10},{"x":"Apr","y":0},{"x":"May","y":30},{"x":"Jun","y":20},{"x":"Jul","y":50},{"x":"Aug","y":20},{"x":"Sep","y":40},{"x":"Oct","y":30},{"x":"Nov","y":20},{"x":"Dec","y":30}] },
@@ -393,45 +379,6 @@ var rejection_rate_data=[
      {"key":"ELIGIBILITY","values":[{"x":"Jan","y":40},{"x":"Feb","y":45},{"x":"Mar","y":30},{"x":"Apr","y":35},{"x":"May","y":20},{"x":"Jun","y":25},{"x":"Jul","y":10},{"x":"Aug","y":50},{"x":"Sep","y":30},{"x":"Oct","y":35},{"x":"Nov","y":40},{"x":"Dec","y":35}] }
      
      ];
-$(document).ready( function(){
-   nv.addGraph( function(){
-    var chart = nv.models.multiBarChart().reduceXTicks(false).color(["#00786A","#526CFD"]);
-     d3.select('#samples_received svg').datum(samples_received_data).transition().duration(250).call(chart);
-    return chart;
-   });
-})
-
-
-var months=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug","Sept","Oct","Nov","Dec"];
-var months_init={"1":0, "2":0, "3":0, "4":0, "5":0, "6":0, "7":0,"8":0,"9":0,"10":0,"11":0,"12":0};
-
-
-/*$(document).ready( function(){
-    var ctx = $("#hiv_postive_infants").get(0).getContext("2d");
-   // This will get the first returned node in the jQuery collection. 
-   var data = {
-        labels: months,
-        datasets: [count_positives_json] 
-    };
-    var myLineChart = new Chart(ctx).Line(data);
-});
-*/
-/*$(document).ready(function() {
-    setTimeout($('#tab_id').DataTable(),3000);
-    
-  });*/
-
-$("#time_fltr").change(function(){
-    return window.location.assign("/"+this.value);
-});
-
-$(".xxx").mouseover(function() {
-    console.log(" mouser over");
-    
-    }).mouseout(function() { 
-        console.log(" mouser out");
-     })
-
 
 //angular stuff
 var app=angular.module('dashboard', ['datatables'], function($interpolateProvider) {
@@ -443,45 +390,25 @@ var ctrllers={};
 ctrllers.DashController=function($scope,$timeout,$http){
 
     var districts_json={};
-    var district_data_json={};
     var hubs_json={};
-    var age_group_json={};
-    var facilities_json={};
-    var facility_data_json={};
-   
-    var results_json={};
+    var age_group_json={};    
+    var facilities_json={};   
+    var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
 
-    var samples_received=0;
-    var valid_results=0;
-    var suppressed=0;
-    var rejected_samples=0;
+    var vvvrrr=0;
 
-    var cd4_less_than_500=0;
-    var pmtct_option_b_plus=0;
-    var children_under_15=0;
-    var other_treatment=0;
-    var treatment_blank_on_form=0;
-
-    //var samples_received_data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
-    //var samples_received_data=$scope.filter_duration;
-
-    //fetch the data from the json file
     $http.get("{{ asset('/json/data.json') }}").success(function(data) {
-        $scope.rights=0;
-        $scope.wrongs=0;
         districts_json=data['districts']||{};
         hubs_json=data['hubs']||{};
         age_group_json=data['age_group']||{};
         facilities_json=data['facilities']||{};
-        facility_data_json=facilities_json;
-        //district_data_json=districts_json;        
+  
 
         $scope.districts_slct=districts_json;
         $scope.hubs_slct=hubs_json;
         $scope.age_group_slct=age_group_json;
 
         var res=data['results']||{};
-        $scope.samples_received=0
         for(var i in res){
            var that=res[i];
            var facility_id=that.facility_id;
@@ -489,19 +416,19 @@ ctrllers.DashController=function($scope,$timeout,$http){
            var dist_id=facility_details.district_id;
            results_json[i]={
                 'year_month':that.year+"-"+that.month,
-                'facility_id':facility_id,
+                'facility_id':that.facility_id,
                 'facility_name':facility_details.name,
                 'hub_id':facility_details.hub_id,
                 'district_id':dist_id,
                 'district_name':districts_json[dist_id],
-
-
                 'age_group':that.age_group,
+
                 'samples_received':that.samples_received,
                 'valid_results':that.valid_results,
                 'rejected_samples':that.rejected_samples,
                 'suppressed':that.suppressed,
                 'dbs_samples':that.dbs_samples,
+                'total_results':that.total_results,
 
                 'cd4_less_than_500':that.cd4_less_than_500,
                 'pmtct_option_b_plus':that.pmtct_option_b_plus,
@@ -509,80 +436,11 @@ ctrllers.DashController=function($scope,$timeout,$http){
                 'other_treatment':that.other_treatment,
                 'treatment_blank_on_form':that.treatment_blank_on_form
                 };
+            vvvrrr+=that.valid_results;
 
-            var f_obj=facility_data_json[facility_id]||{};
-
-            var f_smpls_rvd=f_obj.samples_received||0;
-            var f_vls_rsts=f_obj.valid_results||0;
-            var f_rjctd_smpls=f_obj.rejected_samples||0;
-            var f_sprrsd=f_obj.suppressed||0;
-            var f_dbs_smpls=f_obj.dbs_samples||0;
-            var f_ttl_results=f_obj.total_results||0;
-
-            f_obj.samples_received=f_smpls_rvd+that.samples_received;
-            f_obj.valid_results=f_vls_rsts+that.valid_results;
-            f_obj.rejected_samples=f_rjctd_smpls+that.rejected_samples;
-            f_obj.suppressed=f_sprrsd+that.suppressed;
-            f_obj.dbs_samples=f_dbs_smpls+that.dbs_samples;
-            f_obj.total_results=f_ttl_results+that.total_results;
-
-            if(dist_id!=0){
-                 district_data_json[dist_id]=district_data_json[dist_id]||{};
-                 var d_smpls_rvd=district_data_json[dist_id].samples_received||0;
-                 var d_dbs_smpls=district_data_json[dist_id].dbs_samples||0;
-                 var d_ttl_results=district_data_json[dist_id].total_results||0;
-
-                 district_data_json[dist_id].samples_received=d_smpls_rvd+that.samples_received;
-                 district_data_json[dist_id].dbs_samples=d_dbs_smpls+that.dbs_samples;
-                 district_data_json[dist_id].total_results=d_ttl_results+that.total_results;
-                 district_data_json[dist_id].name=districts_json[dist_id];
-                 district_data_json[dist_id].id=dist_id;
-             }
-
-             samples_received+=that.samples_received;
-             suppressed+=that.suppressed;
-             valid_results+=that.valid_results;
-             rejected_samples+=that.rejected_samples;
-             
-             cd4_less_than_500+=that.cd4_less_than_500;
-             pmtct_option_b_plus+=that.pmtct_option_b_plus;
-             children_under_15+=that.children_under_15;
-             other_treatment+=that.other_treatment;
-             treatment_blank_on_form+=that.treatment_blank_on_form;
-
-
-
-             //samples_received_data[0].values.=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
-
-
-           
         }
 
-
-
-
-
-        var samples_received_data=[
-     {"key":"DBS","values":[{"x":"Jan","y":1200},{"x":"Feb","y":1290},{"x":"Mar","y":1300},{"x":"Apr","y":998},{"x":"May","y":1118},{"x":"Jun","y":1187},{"x":"Jul","y":1900},{"x":"Aug","y":1200},{"x":"Sep","y":1740},{"x":"Oct","y":1800},{"x":"Nov","y":1700},{"x":"Dec","y":1200}] },
-     {"key":"PLASMA","values":[{"x":"Jan","y":500},{"x":"Feb","y":499},{"x":"Mar","y":688},{"x":"Apr","y":490},{"x":"May","y":318},{"x":"Jun","y":347},{"x":"Jul","y":600},{"x":"Aug","y":700},{"x":"Sep","y":830},{"x":"Oct","y":480},{"x":"Nov","y":570},{"x":"Dec","y":600}] }
-     ];
-
-        $scope.results_json=results_json;
-
-        $scope.facility_numbers=facility_data_json;
-        $scope.district_numbers=district_data_json;
-
-        $scope.samples_received=samples_received;
-        $scope.suppression_rate=(suppressed/valid_results)*100;
-        $scope.rejection_rate=(rejected_samples/samples_received)*100;
-
-        $scope.cd4_less_than_500=(cd4_less_than_500/samples_received)*100;
-        $scope.pmtct_option_b_plus=(pmtct_option_b_plus/samples_received)*100;
-        $scope.children_under_15=(children_under_15/samples_received)*100;
-        $scope.other_treatment=(other_treatment/samples_received)*100;
-        $scope.treatment_blank_on_form=(treatment_blank_on_form/samples_received)*100;
-
-        //console.log("distrcts data:: "+JSON.stringify($scope.district_numbers));
+       generalFilter(); //call the filter for the first time
     });
 
     $scope.filter=function(mode){
@@ -608,12 +466,12 @@ ctrllers.DashController=function($scope,$timeout,$http){
         delete $scope.filter_hubs["all"];
         delete $scope.filter_age_group["all"];
 
-        $scope.generalFilter();
+        generalFilter(); //filter the results for each required event
     }
 
 
 
-    $scope.evaluator=function(that){  
+    var evaluator=function(that){  
         var d_num=count($scope.filter_districts);
         var h_num=count($scope.filter_hubs);
         var a_num=count($scope.filter_age_group);
@@ -639,99 +497,136 @@ ctrllers.DashController=function($scope,$timeout,$http){
         }
     }
 
-    $scope.initMonths=function(){
-        var ret={};
-        for(var i in $scope.filter_duration){
-            ret[$scope.filter_duration[i]]=0; 
-        }
-        return ret;
+    var setKeyIndicators=function(that){
+        $scope.samples_received+=that.samples_received;
+        $scope.suppressed+=that.suppressed;
+        $scope.valid_results+=that.valid_results;
+        $scope.rejected_samples+=that.rejected_samples;
     }
 
+    var setOtherIndicators=function(that){
+        $scope.cd4_less_than_500+=that.cd4_less_than_500;
+        $scope.pmtct_option_b_plus+=that.pmtct_option_b_plus;
+        $scope.children_under_15+=that.children_under_15;
+        $scope.other_treatment+=that.other_treatment;
+        $scope.treatment_blank_on_form+=that.treatment_blank_on_form;  
+    }
 
+    var setDataByDuration=function(that){
+        var prev_plasma=$scope.samples_received_data.plasma[that.year_month]||0;
+        var prev_dbs= $scope.samples_received_data.dbs[that.year_month]||0;
+        $scope.samples_received_data.plasma[that.year_month]=prev_plasma+(that.samples_received-that.dbs_samples);
+        $scope.samples_received_data.dbs[that.year_month]=prev_dbs+that.dbs_samples;
+        var prev_sprsd= $scope.suppressed_by_duration[that.year_month]||0;
+        $scope.suppressed_by_duration[that.year_month]=prev_sprsd+that.suppressed;
+        var prev_vld= $scope.valid_res_by_duration[that.year_month]||0;
+        $scope.valid_res_by_duration[that.year_month]=prev_vld+that.valid_results;
+        var prev_rjctd= $scope.rejected_by_duration[that.year_month]||0;
+        $scope.rejected_by_duration[that.year_month]=prev_rjctd+that.rejected_samples;
+    }
 
-    $scope.generalFilter=function(){
-        var samples_received=0,suppressed=0,valid_results=0,rejected_samples=0;
-        var cd4_less_than_500=0,pmtct_option_b_plus=0,children_under_15=0,other_treatment=0,treatment_blank_on_form=0;
-        var inited_ms=$scope.initMonths();
-        var samples_received_data={'plasma':inited_ms,'dbs':inited_ms};
-        /*var dbs_samples=0;
-        var plasma=0;*/
+    var setDataByFacility=function(that){
+        $scope.facility_numbers[that.facility_id]=$scope.facility_numbers[that.facility_id]||{};
+        var f_smpls_rvd=$scope.facility_numbers[that.facility_id].samples_received||0;
+        var f_vls_rsts=$scope.facility_numbers[that.facility_id].valid_results||0;
+        var f_rjctd_smpls=$scope.facility_numbers[that.facility_id].rejected_samples||0;
+        var f_sprrsd=$scope.facility_numbers[that.facility_id].suppressed||0;
+        var f_dbs_smpls=$scope.facility_numbers[that.facility_id].dbs_samples||0;
+        var f_ttl_results=$scope.facility_numbers[that.facility_id].total_results||0;
+
+        $scope.facility_numbers[that.facility_id].samples_received=f_smpls_rvd+that.samples_received;
+        $scope.facility_numbers[that.facility_id].valid_results=f_vls_rsts+that.valid_results;
+        $scope.facility_numbers[that.facility_id].rejected_samples=f_rjctd_smpls+that.rejected_samples;
+        $scope.facility_numbers[that.facility_id].suppressed=f_sprrsd+that.suppressed;
+        $scope.facility_numbers[that.facility_id].dbs_samples=f_dbs_smpls+that.dbs_samples;
+        $scope.facility_numbers[that.facility_id].total_results=f_ttl_results+that.total_results;
+        $scope.facility_numbers[that.facility_id].name=that.facility_name;
+    }
+
+    var setDistrictData=function(that){
+        $scope.district_numbers[that.district_id]=$scope.district_numbers[that.district_id]||{};
+
+        var d_smpls_rvd=$scope.district_numbers[that.district_id].samples_received||0;
+        var d_dbs_smpls=$scope.district_numbers[that.district_id].dbs_samples||0;
+        var d_ttl_results=$scope.district_numbers[that.district_id].total_results||0;
+
+        $scope.district_numbers[that.district_id].samples_received=d_smpls_rvd+that.samples_received;
+        $scope.district_numbers[that.district_id].dbs_samples=d_dbs_smpls+that.dbs_samples;
+        $scope.district_numbers[that.district_id].total_results=d_ttl_results+that.total_results;
+        $scope.district_numbers[that.district_id].name=that.district_name;
+    }
+
+    var generalFilter=function(){
+        $scope.samples_received=0;$scope.suppressed=0;$scope.valid_results=0;$scope.rejected_samples=0;        
+        $scope.cd4_less_than_500=0;$scope.pmtct_option_b_plus=0;$scope.children_under_15=0;
+        $scope.other_treatment=0;$scope.treatment_blank_on_form=0;        
+        $scope.samples_received_data={'plasma':{},'dbs':{}};
+        $scope.suppressed_by_duration={};
+        $scope.valid_res_by_duration={};
+        $scope.rejected_by_duration={};
+        $scope.facility_numbers={};
+        $scope.district_numbers={};
+
         for(var i in results_json){
             var that = results_json[i];
-
-
-            if($scope.evaluator(that)){
-                //key indicators
-                samples_received+=that.samples_received;
-                suppressed+=that.suppressed;
-                valid_results+=that.valid_results;
-                rejected_samples+=that.rejected_samples;
-
-                //other filters
-                cd4_less_than_500+=that.cd4_less_than_500;
-                pmtct_option_b_plus+=that.pmtct_option_b_plus;
-                children_under_15+=that.children_under_15;
-                other_treatment+=that.other_treatment;
-                treatment_blank_on_form+=that.treatment_blank_on_form;
-
-                samples_received_data.plasma[that.year_month]+=2;
-                samples_received_data.dbs[that.year_month]+=1;
-
-
-               /* p_val=samples_received_data.plasma[that.year_month];
-                d_val=samples_received_data.dbs[that.year_month];
-
-                samples_received_data.plasma[that.year_month]=((that.samples_received-that.dbs_samples)+p_val)||0;
-                samples_received_data.dbs[that.year_month]=(that.dbs_samples+d_val)||0;*/
-                /*dbs_samples+=that.dbs_samples;
-                plasma+=(that.samples_received-that.dbs_samples);*/
-
+            if(evaluator(that)){
+                setKeyIndicators(that); //set the values for the key indicators
+                setOtherIndicators(that); //set the values for other indicators
+                setDataByDuration(that); //set data by duration to be displayed in graphs    
+                setDataByFacility(that); //set data by facility to be displayed in tables
+                setDistrictData(that); //set data by district to displayed in the table
             }         
         }
-
-        //key indicators
-        // $scope.dbs_samples=dbs_samples;
-        // $scope.plasma=plasma;
-
-
-        $scope.samples_received=samples_received;
-        $scope.suppression_rate=(suppressed/valid_results)*100;
-        $scope.rejection_rate=(rejected_samples/samples_received)*100;
-
-        //final setting for other indicators
-        $scope.cd4_less_than_500=((cd4_less_than_500/samples_received)*100)||0;
-        $scope.pmtct_option_b_plus=((pmtct_option_b_plus/samples_received))*100||0;
-        $scope.children_under_15=((children_under_15/samples_received))*100||0;
-        $scope.other_treatment=((other_treatment/samples_received)*100)||0;
-        $scope.treatment_blank_on_form=((treatment_blank_on_form/samples_received)*100)||0;
-
-        $scope.displaySamplesRecieved(samples_received_data);
-
-       /* 
-        $scope.cd4_less_than_500=cd4_less_than_500;
-        $scope.pmtct_option_b_plus=pmtct_option_b_plus;
-        $scope.children_under_15=children_under_15;
-        $scope.other_treatment=other_treatment;
-        $scope.treatment_blank_on_form=treatment_blank_on_form;*/
-
+        $scope.displaySamplesRecieved();
+        $scope.displaySupressionRate();
     };
 
 
-    $scope.displaySamplesRecieved=function(srd){       //$scope.samples_received=100000;
-        console.log("graph stuff :"+JSON.stringify(srd));
+    $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;
+        var srd=$scope.samples_received_data;        
         var data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
-        for(var i in $scope.filter_duration){
-            var mth=$scope.filter_duration[i];
-            data[0].values.push({"x":mth,"y":srd.plasma[mth]});
-            data[1].values.push({"x":mth,"y":srd.dbs[mth]});
+
+        for(var i in srd.dbs){
+            data[0].values.push({"x":i,"y":srd.dbs[i]});
+            data[1].values.push({"x":i,"y":srd.plasma[i]});            
         }
 
         nv.addGraph( function(){
-            var chart = nv.models.multiBarChart().color(["#00786A","#526CFD"]);
+            var chart = nv.models.multiBarChart().color(["#00786A","#526CFD"]).reduceXTicks(false);
             d3.select('#samples_received svg').datum(data).transition().duration(500).call(chart);
             return chart;
         });
     };
+
+
+    $scope.displaySupressionRate=function(){
+        var data=[{"key":"SUPRESSION RATE","color": "#6D6D6D","values":[] },
+                  {"key":"VALID RESULTS","bar":true,"color": "#00786A","values":[]}];
+
+        for(var i in $scope.valid_res_by_duration){
+            var sprsd=$scope.suppressed_by_duration[i]||0;
+            var vld=$scope.valid_res_by_duration[i]||0;
+            var s_rate=(sprsd/vld)*100;
+            s_rate.toPrecision(3);
+            data[0].values.push([i,s_rate]);
+            data[1].values.push([i,vld]);
+        } 
+        nv.addGraph(function() {
+            var chart = nv.models.linePlusBarChart()
+                        .margin({right: 60,})
+                        .x(function(d,i) { return i })
+                        .y(function(d,i) {return d[1] }).focusEnable(false);
+
+            chart.xAxis.tickFormat(function(d) {
+                return data[0].values[d] && data[0].values[d][0] || " ";
+            });
+            //chart.reduceXTicks(false);
+            chart.bars.forceY([0]);
+            chart.lines.forceY([0,100]);
+            d3.select('#supression_rate svg').datum(data).transition().duration(9500).call(chart);
+            return chart;
+        });
+    }
 
     $scope.displayRejectionRate=function(){
         nv.addGraph( function(){
@@ -741,47 +636,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
         });
     };
 
-    $scope.displaySupressionRate=function(){
-        nv.addGraph(function() {
-            var chart = nv.models.linePlusBarChart()
-                        .margin({right: 60,})
-                        .x(function(d,i) { return i })
-                        .y(function(d,i) {return d[1] }).focusEnable(false);
-
-            chart.xAxis.tickFormat(function(d) {
-                return supression_rate_data[0].values[d] && supression_rate_data[0].values[d][0] || " ";
-            });
-            //chart.reduceXTicks(false);
-
-            chart.bars.forceY([0,40]);
-            chart.lines.forceY([0,100]);
-            d3.select('#supression_rate svg').datum(supression_rate_data).transition().duration(9500).call(chart);
-            return chart;
-        });
-    }
-
-    $scope.facility_filter=function(){
-        if($scope.district!="all"){
-            if($scope.care_level!="all"){
-                $scope.facility_numbers=$scope.filteredfcltys({"district_id":$scope.district,"level_id":$scope.care_level});
-            }else{
-                $scope.facility_numbers=$scope.filteredfcltys({"district_id":$scope.district});
-            }
-        }else if ($scope.region!="all"){
-            if($scope.care_level!="all"){
-                $scope.facility_numbers=$scope.filteredfcltys({"region_id":$scope.region,"level_id":$scope.care_level});
-            }else{
-                $scope.facility_numbers=$scope.filteredfcltys({"region_id":$scope.region});
-            }
-        }else if($scope.care_level!="all"){
-            $scope.facility_numbers=$scope.filteredfcltys({"level_id":$scope.care_level});
-        }else{
-            $scope.facility_numbers=$scope.facility_numbers_init;    
-        }       
-    };
-
-
-     $scope.compare = function(prop,comparator, val){
+    $scope.compare = function(prop,comparator, val){
         return function(item){
             if(comparator=='eq'){
                 return item[prop] == val;
@@ -838,47 +693,13 @@ ctrllers.DashController=function($scope,$timeout,$http){
         }
     }
 
-   function inArray(val,arr){
-    var ret=false;
-    for(var i in arr){
-        if(val==arr[i]) ret=true;
-    }
-    return ret;
-}
-/*
-    $scope.filteredfcltys=function(options){
-        var ret={};
-        for (var i in $scope.facility_numbers_init){
-            var arr=$scope.facility_numbers_init[i];
-            var no_match=0;
-            for(var j in options){
-                if((options[j] != arr[j])){
-                    no_match=1;
-                }
-            }            
-            if(no_match==0){
-                ret[i]=arr;
-            }
-        };
-        return ret;
-    };
-
-    $scope.filter=function(filterer){
-        if(filterer=='region'){
-            $scope.district="all";
-            if($scope.region=="all"){
-                $scope.districts_slct=districts_json;
-            }else{
-               $scope.districts_slct=reg_districts[$scope.region]; 
-           }            
+    var inArray=function(val,arr){
+        var ret=false;
+        for(var i in arr){
+            if(val==arr[i]) ret=true;
         }
-        
-    };
-    */
-
-
-
-
+        return ret;
+    }
 
 };
 
