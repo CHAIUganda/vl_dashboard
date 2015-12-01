@@ -371,15 +371,6 @@ function count(json_obj){
     return Object.keys(json_obj).length;
 }
 
-
-
-var rejection_rate_data=[
-{"key":"SAMPLE QUALITY","values":[{"x":"Jan","y":20},{"x":"Feb","y":10},{"x":"Mar","y":10},{"x":"Apr","y":0},{"x":"May","y":30},{"x":"Jun","y":20},{"x":"Jul","y":50},{"x":"Aug","y":20},{"x":"Sep","y":40},{"x":"Oct","y":30},{"x":"Nov","y":20},{"x":"Dec","y":30}] },
-     {"key":"INCOMPLETE FORM","values":[{"x":"Jan","y":40},{"x":"Feb","y":45},{"x":"Mar","y":60},{"x":"Apr","y":65},{"x":"May","y":50},{"x":"Jun","y":55},{"x":"Jul","y":40},{"x":"Aug","y":30},{"x":"Sep","y":30},{"x":"Oct","y":35},{"x":"Nov","y":40},{"x":"Dec","y":35}] },
-     {"key":"ELIGIBILITY","values":[{"x":"Jan","y":40},{"x":"Feb","y":45},{"x":"Mar","y":30},{"x":"Apr","y":35},{"x":"May","y":20},{"x":"Jun","y":25},{"x":"Jul","y":10},{"x":"Aug","y":50},{"x":"Sep","y":30},{"x":"Oct","y":35},{"x":"Nov","y":40},{"x":"Dec","y":35}] }
-     
-     ];
-
 //angular stuff
 var app=angular.module('dashboard', ['datatables'], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
@@ -427,32 +418,14 @@ ctrllers.DashController=function($scope,$timeout,$http){
         var res=data['results']||{};
         for(var i in res){
            var that=res[i];
-           var facility_id=that.facility_id;
-           var facility_details=facilities_json[facility_id];
-           var dist_id=facility_details.district_id;
-           results_json[i]={
-                'year_month':that.year+"-"+that.month,
-                'facility_id':that.facility_id,
-                'facility_name':facility_details.name,
-                'hub_id':facility_details.hub_id,
-                'district_id':dist_id,
-                'district_name':districts_json[dist_id],
-                'age_group':that.age_group,
-
-                'samples_received':that.samples_received,
-                'valid_results':that.valid_results,
-                'rejected_samples':that.rejected_samples,
-                'suppressed':that.suppressed,
-                'dbs_samples':that.dbs_samples,
-                'total_results':that.total_results,
-
-                'cd4_less_than_500':that.cd4_less_than_500,
-                'pmtct_option_b_plus':that.pmtct_option_b_plus,
-                'children_under_15':that.children_under_15,
-                'other_treatment':that.other_treatment,
-                'treatment_blank_on_form':that.treatment_blank_on_form
-                };
-            vvvrrr+=that.valid_results;
+           var facility_details=facilities_json[that.facility_id];
+        
+           results_json[i]=that;
+           results_json[i].year_month=that.year+"-"+that.month;
+           results_json[i].facility_name=facility_details.name;
+           results_json[i].hub_id=facility_details.hub_id;
+           results_json[i].district_id=facility_details.district_id;
+           results_json[i].district_name=districts_json[facility_details.district_id];
 
         }
 
@@ -533,12 +506,24 @@ ctrllers.DashController=function($scope,$timeout,$http){
         var prev_dbs= $scope.samples_received_data.dbs[that.year_month]||0;
         $scope.samples_received_data.plasma[that.year_month]=prev_plasma+(that.samples_received-that.dbs_samples);
         $scope.samples_received_data.dbs[that.year_month]=prev_dbs+that.dbs_samples;
+        
         var prev_sprsd= $scope.suppressed_by_duration[that.year_month]||0;
         $scope.suppressed_by_duration[that.year_month]=prev_sprsd+that.suppressed;
+        
         var prev_vld= $scope.valid_res_by_duration[that.year_month]||0;
         $scope.valid_res_by_duration[that.year_month]=prev_vld+that.valid_results;
-        var prev_rjctd= $scope.rejected_by_duration[that.year_month]||0;
-        $scope.rejected_by_duration[that.year_month]=prev_rjctd+that.rejected_samples;
+
+        rjrctionSetter(that);//for rejection graphs
+    }
+
+    var rjrctionSetter=function(that){
+        var prev_sq=$scope.rejected_by_duration.sample_quality[that.year_month]||0;
+        var prev_eli=$scope.rejected_by_duration.eligibility[that.year_month]||0;
+        var prev_inc=$scope.rejected_by_duration.incomplete_form[that.year_month]||0;
+
+        $scope.rejected_by_duration.sample_quality[that.year_month]=prev_sq+that.sample_quality_rejections;
+        $scope.rejected_by_duration.eligibility[that.year_month]=prev_eli+that.eligibility_rejections;
+        $scope.rejected_by_duration.incomplete_form[that.year_month]=prev_inc+that.incomplete_form_rejections;
     }
 
     var setDataByFacility=function(that){
@@ -573,13 +558,13 @@ ctrllers.DashController=function($scope,$timeout,$http){
     }
 
     var generalFilter=function(){
-        $scope.samples_received=0;$scope.suppressed=0;$scope.valid_results=0;$scope.rejected_samples=0;        
+        $scope.samples_received=0;$scope.suppressed=0;$scope.valid_results=0;$scope.rejected_samples=0;   
         $scope.cd4_less_than_500=0;$scope.pmtct_option_b_plus=0;$scope.children_under_15=0;
         $scope.other_treatment=0;$scope.treatment_blank_on_form=0;        
         $scope.samples_received_data={'plasma':{},'dbs':{}};
         $scope.suppressed_by_duration={};
         $scope.valid_res_by_duration={};
-        $scope.rejected_by_duration={};
+        $scope.rejected_by_duration={'sample_quality':{},'eligibility':{},'incomplete_form':{}};
         $scope.facility_numbers={};
         $scope.district_numbers={};
 
@@ -595,6 +580,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
         }
         $scope.displaySamplesRecieved();
         $scope.displaySupressionRate();
+        $scope.displayRejectionRate();
     };
 
 
@@ -645,9 +631,19 @@ ctrllers.DashController=function($scope,$timeout,$http){
     }
 
     $scope.displayRejectionRate=function(){
+        var rbd=$scope.rejected_by_duration;
+        var data=[{"key":"SAMPLE QUALITY","values":[]},
+                  {"key":"INCOMPLETE FORM","values":[] },
+                  {"key":"ELIGIBILITY","values":[] }];
+
+        for(var i in rbd.sample_quality){
+            data[0].values.push({"x":i,"y":rbd.sample_quality[i]});
+            data[1].values.push({"x":i,"y":rbd.incomplete_form[i]});
+            data[2].values.push({"x":i,"y":rbd.eligibility[i]});
+        }
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().reduceXTicks(false).stacked(true).color(["#526CFD","#B1DEDA","#009688"]);
-            d3.select('#rejection_rate svg').datum(rejection_rate_data).transition().duration(500).call(chart);
+            d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
             return chart;
         });
     };

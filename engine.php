@@ -81,6 +81,13 @@ foreach ($years as $year) {
 				$rejected_samples=$samples_received-$total_results;
 				$suppressed=rand(0,$valid_results);
 
+				$sqr=rand(0,$rejected_samples);
+				$er=rand(0,($rejected_samples-$sqr));
+				$ifr=$rejected_samples-($sqr+$er);
+				$sqr=$sqr>0?$sqr:0;
+				$er=$er>0?$er:0;
+				$ifr=$ifr>0?$ifr:0;
+
 				$cd4_less_than_500=rand(1,2);
 				$pmtct_option_b_plus=rand(1,2);
 				$children_under_15=rand(1,2);
@@ -100,6 +107,10 @@ foreach ($years as $year) {
 					'valid_results'=>$valid_results,
 					'rejected_samples'=>$rejected_samples,
 					'suppressed'=>$suppressed,
+
+					'sample_quality_rejections'=>$sqr,
+					'eligibility_rejections'=>$er,
+					'incomplete_form_rejections'=>$ifr,
 
 					'cd4_less_than_500'=>$cd4_less_than_500,
 					'pmtct_option_b_plus'=>$pmtct_option_b_plus,
