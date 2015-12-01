@@ -397,6 +397,22 @@ ctrllers.DashController=function($scope,$timeout,$http){
 
     var vvvrrr=0;
 
+    /*
+    $http.get("http://vl.trailanalytics.com/json/districts/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/").success(function(data) {
+        for(var i in data){
+            console.log(" first piece is "+i+" and "+JSON.stringify(data[i]));
+        }
+
+        //Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://vl.trailanalytics.com/json/districts/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/. This can be fixed by moving the resource to the same domain or enabling CORS.
+    
+    })*/
+
+    /*$http.get("{{ asset('/json/hh.json') }}").success(function(data) {
+        for(var i in data){
+            console.log(" first piece is "+i+" and "+JSON.stringify(data[i]));
+        }
+    })*/
+
     $http.get("{{ asset('/json/data.json') }}").success(function(data) {
         districts_json=data['districts']||{};
         hubs_json=data['hubs']||{};
