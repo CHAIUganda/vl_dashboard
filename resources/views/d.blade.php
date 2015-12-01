@@ -73,8 +73,7 @@
      <div class="filter-section">
         <label class='hdr hdr-grey'> FILTERS:</label>
         <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!}'>
-            <span class="filter-val ng-cloak">FROM: <% filter_duration[0] %></span>
-            <span class="filter-val ng-cloak">TO: <% filter_duration[filter_duration.length-1] %></span>
+            <span class="filter-val ng-cloak"><% filter_duration[0] %> TO <% filter_duration[filter_duration.length-1] %></span>
         </span>
 
         <span ng-model='filter_districts' ng-init='filter_districts={}'>
@@ -315,6 +314,17 @@
             </font><br>
             <font class='addition-metrics desc'>BLANK ON PAPER</font>            
         </div>
+       <!--  
+       <div class='col-sm-2'>
+            <font class='addition-metrics figure ng-cloak' ng-init="dbs_samples=0" ng-model="dbs_samples">
+                <% dbs_samples|number:1 %>%
+            </font><br>
+            <font class='addition-metrics desc'>dbs_samples</font>  
+            <font class='addition-metrics figure ng-cloak' ng-init="plasma=0" ng-model="plasma">
+                <% plasma|number:1 %>%
+            </font><br>
+            <font class='addition-metrics desc'>plasma</font>           
+        </div> -->
        </div>
     </div>
     <br>
@@ -452,6 +462,9 @@ ctrllers.DashController=function($scope,$timeout,$http){
     var other_treatment=0;
     var treatment_blank_on_form=0;
 
+    //var samples_received_data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
+    //var samples_received_data=$scope.filter_duration;
+
     //fetch the data from the json file
     $http.get("{{ asset('/json/data.json') }}").success(function(data) {
         $scope.rights=0;
@@ -475,18 +488,20 @@ ctrllers.DashController=function($scope,$timeout,$http){
            var facility_details=facilities_json[facility_id];
            var dist_id=facility_details.district_id;
            results_json[i]={
-                'time':that.year+"-"+that.month,
+                'year_month':that.year+"-"+that.month,
                 'facility_id':facility_id,
                 'facility_name':facility_details.name,
                 'hub_id':facility_details.hub_id,
                 'district_id':dist_id,
                 'district_name':districts_json[dist_id],
 
+
                 'age_group':that.age_group,
                 'samples_received':that.samples_received,
                 'valid_results':that.valid_results,
                 'rejected_samples':that.rejected_samples,
                 'suppressed':that.suppressed,
+                'dbs_samples':that.dbs_samples,
 
                 'cd4_less_than_500':that.cd4_less_than_500,
                 'pmtct_option_b_plus':that.pmtct_option_b_plus,
@@ -534,8 +549,23 @@ ctrllers.DashController=function($scope,$timeout,$http){
              children_under_15+=that.children_under_15;
              other_treatment+=that.other_treatment;
              treatment_blank_on_form+=that.treatment_blank_on_form;
+
+
+
+             //samples_received_data[0].values.=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
+
+
            
         }
+
+
+
+
+
+        var samples_received_data=[
+     {"key":"DBS","values":[{"x":"Jan","y":1200},{"x":"Feb","y":1290},{"x":"Mar","y":1300},{"x":"Apr","y":998},{"x":"May","y":1118},{"x":"Jun","y":1187},{"x":"Jul","y":1900},{"x":"Aug","y":1200},{"x":"Sep","y":1740},{"x":"Oct","y":1800},{"x":"Nov","y":1700},{"x":"Dec","y":1200}] },
+     {"key":"PLASMA","values":[{"x":"Jan","y":500},{"x":"Feb","y":499},{"x":"Mar","y":688},{"x":"Apr","y":490},{"x":"May","y":318},{"x":"Jun","y":347},{"x":"Jul","y":600},{"x":"Aug","y":700},{"x":"Sep","y":830},{"x":"Oct","y":480},{"x":"Nov","y":570},{"x":"Dec","y":600}] }
+     ];
 
         $scope.results_json=results_json;
 
@@ -579,10 +609,6 @@ ctrllers.DashController=function($scope,$timeout,$http){
         delete $scope.filter_age_group["all"];
 
         $scope.generalFilter();
-        $scope.displaySamplesRecieved();
-        $scope.displayRejectionRate();
-        $scope.displaySupressionRate();
-
     }
 
 
@@ -592,6 +618,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
         var h_num=count($scope.filter_hubs);
         var a_num=count($scope.filter_age_group);
 
+        var time_eval=inArray(that.year_month,$scope.filter_duration);
         var dist_eval=$scope.filter_districts.hasOwnProperty(that.district_id);
         var hub_eval=$scope.filter_hubs.hasOwnProperty(that.hub_id);
         var ag_eval=$scope.filter_age_group.hasOwnProperty(that.age_group);
@@ -605,25 +632,40 @@ ctrllers.DashController=function($scope,$timeout,$http){
         var eval7=d_num==0&&hub_eval&&a_num==0;     // districts(OFF) and hubs(ON) and age_groups (OFF)
         var eval8=d_num==0&&h_num==0&&ag_eval;      // districts(OFF) and hubs(OFF) and age_groups (ON)
 
-        if(eval1||eval2||eval3||eval4||eval5||eval6||eval7||eval8){
+        if( time_eval && (eval1||eval2||eval3||eval4||eval5||eval6||eval7||eval8)){
             return true;
         }else{
             return false;
         }
     }
 
+    $scope.initMonths=function(){
+        var ret={};
+        for(var i in $scope.filter_duration){
+            ret[$scope.filter_duration[i]]=0; 
+        }
+        return ret;
+    }
+
+
+
     $scope.generalFilter=function(){
         var samples_received=0,suppressed=0,valid_results=0,rejected_samples=0;
         var cd4_less_than_500=0,pmtct_option_b_plus=0,children_under_15=0,other_treatment=0,treatment_blank_on_form=0;
+        var inited_ms=$scope.initMonths();
+        var samples_received_data={'plasma':inited_ms,'dbs':inited_ms};
+        /*var dbs_samples=0;
+        var plasma=0;*/
         for(var i in results_json){
             var that = results_json[i];
+
+
             if($scope.evaluator(that)){
                 //key indicators
                 samples_received+=that.samples_received;
                 suppressed+=that.suppressed;
                 valid_results+=that.valid_results;
                 rejected_samples+=that.rejected_samples;
-
 
                 //other filters
                 cd4_less_than_500+=that.cd4_less_than_500;
@@ -632,10 +674,26 @@ ctrllers.DashController=function($scope,$timeout,$http){
                 other_treatment+=that.other_treatment;
                 treatment_blank_on_form+=that.treatment_blank_on_form;
 
+                samples_received_data.plasma[that.year_month]+=2;
+                samples_received_data.dbs[that.year_month]+=1;
+
+
+               /* p_val=samples_received_data.plasma[that.year_month];
+                d_val=samples_received_data.dbs[that.year_month];
+
+                samples_received_data.plasma[that.year_month]=((that.samples_received-that.dbs_samples)+p_val)||0;
+                samples_received_data.dbs[that.year_month]=(that.dbs_samples+d_val)||0;*/
+                /*dbs_samples+=that.dbs_samples;
+                plasma+=(that.samples_received-that.dbs_samples);*/
+
             }         
         }
 
         //key indicators
+        // $scope.dbs_samples=dbs_samples;
+        // $scope.plasma=plasma;
+
+
         $scope.samples_received=samples_received;
         $scope.suppression_rate=(suppressed/valid_results)*100;
         $scope.rejection_rate=(rejected_samples/samples_received)*100;
@@ -647,6 +705,8 @@ ctrllers.DashController=function($scope,$timeout,$http){
         $scope.other_treatment=((other_treatment/samples_received)*100)||0;
         $scope.treatment_blank_on_form=((treatment_blank_on_form/samples_received)*100)||0;
 
+        $scope.displaySamplesRecieved(samples_received_data);
+
        /* 
         $scope.cd4_less_than_500=cd4_less_than_500;
         $scope.pmtct_option_b_plus=pmtct_option_b_plus;
@@ -657,10 +717,18 @@ ctrllers.DashController=function($scope,$timeout,$http){
     };
 
 
-    $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;
+    $scope.displaySamplesRecieved=function(srd){       //$scope.samples_received=100000;
+        console.log("graph stuff :"+JSON.stringify(srd));
+        var data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
+        for(var i in $scope.filter_duration){
+            var mth=$scope.filter_duration[i];
+            data[0].values.push({"x":mth,"y":srd.plasma[mth]});
+            data[1].values.push({"x":mth,"y":srd.dbs[mth]});
+        }
+
         nv.addGraph( function(){
-            var chart = nv.models.multiBarChart().reduceXTicks(false).color(["#00786A","#526CFD"]);
-            d3.select('#samples_received svg').datum(samples_received_data).transition().duration(500).call(chart);
+            var chart = nv.models.multiBarChart().color(["#00786A","#526CFD"]);
+            d3.select('#samples_received svg').datum(data).transition().duration(500).call(chart);
             return chart;
         });
     };
@@ -769,6 +837,14 @@ ctrllers.DashController=function($scope,$timeout,$http){
             $scope.show_fclties=true;
         }
     }
+
+   function inArray(val,arr){
+    var ret=false;
+    for(var i in arr){
+        if(val==arr[i]) ret=true;
+    }
+    return ret;
+}
 /*
     $scope.filteredfcltys=function(options){
         var ret={};

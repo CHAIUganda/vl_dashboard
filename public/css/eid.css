@@ -275,6 +275,8 @@ dsktp img{
 }
 
 .db-charts{
+	overflow: auto;
+	white-space: nowrap;
     width: 600px;
     height: 450px;
 }
