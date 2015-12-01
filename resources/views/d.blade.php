@@ -637,9 +637,13 @@ ctrllers.DashController=function($scope,$timeout,$http){
                   {"key":"ELIGIBILITY","values":[] }];
 
         for(var i in rbd.sample_quality){
-            data[0].values.push({"x":i,"y":rbd.sample_quality[i]});
-            data[1].values.push({"x":i,"y":rbd.incomplete_form[i]});
-            data[2].values.push({"x":i,"y":rbd.eligibility[i]});
+            var ttl=rbd.sample_quality[i]+rbd.incomplete_form[i]+rbd.eligibility[i];
+            var sq_rate=(rbd.sample_quality[i]/ttl)*100;
+            var inc_rate=(rbd.incomplete_form[i]/ttl)*100;
+            var el_rate=(rbd.eligibility[i]/ttl)*100;
+            data[0].values.push({"x":i,"y":sq_rate });
+            data[1].values.push({"x":i,"y":inc_rate});
+            data[2].values.push({"x":i,"y":el_rate});
         }
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().reduceXTicks(false).stacked(true).color(["#526CFD","#B1DEDA","#009688"]);
