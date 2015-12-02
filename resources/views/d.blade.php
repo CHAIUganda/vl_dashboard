@@ -94,7 +94,7 @@
      <div class="filter-section">
         <label class='hdr hdr-grey'> FILTERS:</label>
         <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!}'>
-          <span class="filter-val ng-cloak"><% filter_duration[0] |d_format %>TO<% filter_duration[filter_duration.length-1] | d_format %> 
+          <span class="filter-val ng-cloak"><% filter_duration[0] |d_format %> - <% filter_duration[filter_duration.length-1] | d_format %> 
             </span>
         </span>
 
