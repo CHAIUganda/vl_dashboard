@@ -85,7 +85,8 @@
         $init_duration[]="$current_year-$m";
         $m++;
      }
-     $months_by_years=yearByMonths(2011,1);    
+     $months_by_years=yearByMonths(2014,1); 
+     //krsort($months_by_years);
      ?>
      <span ng-model="month_labels" ng-init='month_labels={!! json_encode(MyHTML::months()) !!}'></span>
      <span ng-model="filters_present" ng-init='filters_present=false'></span>
@@ -93,7 +94,8 @@
      <div class="filter-section">
         <label class='hdr hdr-grey'> FILTERS:</label>
         <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!}'>
-            <span class="filter-val ng-cloak"><% filter_duration[0] %> TO <% filter_duration[filter_duration.length-1] %></span>
+          <span class="filter-val ng-cloak"><% filter_duration[0] |d_format %>TO<% filter_duration[filter_duration.length-1] | d_format %> 
+            </span>
         </span>
 
         <span ng-model='filter_districts' ng-init='filter_districts={}'>
@@ -126,9 +128,9 @@
                 <span ng-model='fro_date_slct' ng-init='fro_date_slct={!! json_encode($months_by_years) !!}'></span>
                 <select ng-model="fro_date" ng-init="fro_date='all'" ng-change="dateFilter('fro')">
                     <option value='all'>FROM DATE</option>
-                    <optgroup class="ng-cloak" ng-repeat="(yr,mths) in fro_date_slct" label="<% yr %>">
+                    <optgroup class="ng-cloak" ng-repeat="(yr,mths) in fro_date_slct | orderBy:'-yr'" label="<% yr %>">
                         <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %>-<% mth %>"> 
-                            <% month_labels[mth] %>
+                            <% month_labels[mth] %> '<% yr|slice:-2 %>
                         </option>
                     </optgroup>
                 </select>
@@ -139,7 +141,7 @@
                     <option value='all'>TO DATE</option>
                     <optgroup class="ng-cloak" ng-repeat="(yr,mths) in to_date_slct" label="<% yr %>">
                         <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %>-<% mth %>"> 
-                            <% month_labels[mth] %>
+                            <% month_labels[mth] %> '<% yr|slice:-2 %>
                         </option>
                     </optgroup>
                 </select>
@@ -419,6 +421,33 @@ var app=angular.module('dashboard', ['datatables'], function($interpolateProvide
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
     });
+
+app.filter('ssplit', function() {
+        return function(input, splitChar,splitIndex) {
+            // do some bounds checking here to ensure it has that index
+            var arr=input.split(splitChar);
+            return arr[splitIndex];
+        }
+    });
+
+app.filter('slice', function() {
+        return function(input, length) {
+            return input.slice(length);
+        }
+    });
+
+app.filter('d_format', function() {
+        return function(y_m) {
+            var month_labels={1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sept',10:'Oct',11:'Nov',12:'Dec'};
+            var arr=y_m.split('-');
+            var yr=arr[0]||"";
+            var mth=arr[1]||"";
+            return month_labels[mth]+" '"+yr.slice(-2);
+        }
+    });
+
+
+
 var ctrllers={};
 
 ctrllers.DashController=function($scope,$timeout,$http){
@@ -677,8 +706,8 @@ ctrllers.DashController=function($scope,$timeout,$http){
         var data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
 
         for(var i in srd.dbs){
-            data[0].values.push({"x":i,"y":srd.dbs[i]});
-            data[1].values.push({"x":i,"y":srd.plasma[i]});            
+            data[0].values.push({"x":dateFormat(i),"y":srd.dbs[i]});
+            data[1].values.push({"x":dateFormat(i),"y":srd.plasma[i]});            
         }
 
         nv.addGraph( function(){
@@ -698,8 +727,8 @@ ctrllers.DashController=function($scope,$timeout,$http){
             var vld=$scope.valid_res_by_duration[i]||0;
             var s_rate=(sprsd/vld)*100;
             //s_rate.toPrecision(3);
-            data[0].values.push([i,s_rate]);
-            data[1].values.push([i,vld]);
+            data[0].values.push([dateFormat(i),s_rate]);
+            data[1].values.push([dateFormat(i),vld]);
         } 
         nv.addGraph( function() {
             var chart = nv.models.linePlusBarChart()
@@ -730,9 +759,9 @@ ctrllers.DashController=function($scope,$timeout,$http){
             var sq_rate=(rbd.sample_quality[i]/ttl)*100;
             var inc_rate=(rbd.incomplete_form[i]/ttl)*100;
             var el_rate=(rbd.eligibility[i]/ttl)*100;
-            data[0].values.push({"x":i,"y":sq_rate });
-            data[1].values.push({"x":i,"y":inc_rate});
-            data[2].values.push({"x":i,"y":el_rate});
+            data[0].values.push({"x":dateFormat(i),"y":sq_rate });
+            data[1].values.push({"x":dateFormat(i),"y":inc_rate});
+            data[2].values.push({"x":dateFormat(i),"y":el_rate});
         }
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().reduceXTicks(false).stacked(true).color(["#526CFD","#B1DEDA","#009688"]);
@@ -812,6 +841,18 @@ ctrllers.DashController=function($scope,$timeout,$http){
         }
         return ret;
     }
+
+    var dateFormat=function(y_m){
+        var arr=y_m.split('-');
+        var yr=arr[0];
+        var mth=arr[1];
+        return $scope.month_labels[mth]+" '"+yr.slice(-2);
+    }
+
+
+    $scope.splice = function(prop,indx){
+        prop.splice(indx);
+    };
 
 };
 
