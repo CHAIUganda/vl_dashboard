@@ -63,7 +63,7 @@ $data=[];
 $data['districts']=districts();
 $data['hubs']=hubs();
 $data['facilities']=facilities();
-$data['age_group']=[1=>" < 2 years",2=>" 2 to 5 years",3=>" above 5 years"];
+$data['age_group']=[1=>" < 5",2=>" 5 - 9",3=>" 10 - 18",4=>"19 - 25","26+"];
 
 
 $years=[2014,2015];
@@ -134,4 +134,25 @@ echo "\n".count($results)." rows found in results";
 echo "finished at ".date("H:i:s")."\n";
 
 //var_dump($data['facilities']);
+
+
+/*
+
+from_year=2013,from_month=2
+to_year=2015,to_month=5
+
+i=from_year;
+duration=[];
+while(i<=to_year){
+	stat=(i==from_year)?from_month:1;
+	end=(i==to_year)?to_month:12;
+	j=stat;
+	while(j<=end){
+		duration=[i."-".j];
+		j++;	
+	}	
+	i++;	
+}
+
+*/
 ?>

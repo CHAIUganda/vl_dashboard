@@ -59,14 +59,34 @@
     <?php //if(!isset($filter_val)) $filter_val="National Metrics, ".$time." thus far" ?>
       
      <?php 
-     $year=date('Y');
+
+     function yearByMonths($from_year=1900,$from_month=1,$to_year="",$to_month=""){
+        if(empty($to_year)) $to_year=date("Y");
+        if(empty($to_month)) $to_month=date("m");
+        $ret=[];
+        $i=$from_year;
+        while($i<=$to_year){
+            $stat=($i==$from_year)?$from_month:1;
+            $end=($i==$to_year)?$to_month:12;
+            $j=$stat;
+            while($j<=$end){
+                $ret[$i][]=$j;
+                $j++;   
+            } 
+            $i++; 
+        }
+        return $ret;
+    }
+
+     //$start_year=2011,$start_month=1;
+     $current_year=date('Y');$current_month=date('m');
      $init_duration=[];
      $m=1;
-     while($m<=12){
-        $init_duration[]="$year-$m";
+     while($m<=$current_month){
+        $init_duration[]="$current_year-$m";
         $m++;
      }
-
+     //print_r(yearByMonths(2011,1));    
      ?>
 
 
@@ -98,7 +118,9 @@
      <table border='1' cellpadding='0' cellspacing='0' class='filter-tb'>
         <tr>
             <td width='20%'>
-                {!! MyHTML::selectYearMonth(2013,date('Y'),"from_date","",["id"=>"from_date","class"=>"selectpicker"],"FROM DATE") !!}
+                <span style="text-alignment:left;cursor:pointer">FROM DATE</span>
+
+                <!-- {!! MyHTML::selectYearMonth(2013,date('Y'),"from_date","",["id"=>"from_date","class"=>"selectpicker"],"FROM DATE") !!} -->
             </td>
             <td width='20%'>
                {!! MyHTML::selectYearMonth(2013,date('Y'),"to_date","",["id"=>"to_date","class"=>"selectpicker"],"TO DATE") !!}   
@@ -317,7 +339,7 @@
             <font class='addition-metrics figure ng-cloak' ng-init="treatment_blank_on_form=0" ng-model="treatment_blank_on_form">
                 <% ((treatment_blank_on_form/samples_received)*100)|number:1 %>%
             </font><br>
-            <font class='addition-metrics desc'>BLANK ON PAPER</font>            
+            <font class='addition-metrics desc'>BLANK ON FORM</font>            
         </div>
        </div>
     </div>
