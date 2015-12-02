@@ -9,21 +9,20 @@
     <link href="{{ asset('/css/jquery.dataTables.css') }}" rel="stylesheet">    
     <link href="{{ asset('/css/jquery-ui.css')}}" rel="stylesheet" >
 
-
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/demo.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabs.css') }} " />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabstyles.css') }}" />
 
-        <link href="{{ asset('/css/eid.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/eid.css') }}" rel="stylesheet">
 
     <script src="{{ asset('/js/modernizr.custom.js') }}"></script>
 
-
+    
     <script src="{{ asset('/js/general.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/jquery-2.1.3.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/jquery-ui.js')}}" type="text/javascript"></script>
-
+    <script src="{{ asset('/twitter-bootstrap-3.3/js/bootstrap.min.js') }}" type="text/javascript" ></script>
 
     <script src="{{ asset('/js/Chart.js')}}" type="text/javascript"></script>
     <script src="{{ asset('/js/angular.min.js')}}" type="text/javascript"></script>
@@ -58,7 +57,7 @@
     <br>
     <?php //if(!isset($filter_val)) $filter_val="National Metrics, ".$time." thus far" ?>
       
-     <?php 
+     <?php
 
      function yearByMonths($from_year=1900,$from_month=1,$to_year="",$to_month=""){
         if(empty($to_year)) $to_year=date("Y");
@@ -86,9 +85,10 @@
         $init_duration[]="$current_year-$m";
         $m++;
      }
-     //print_r(yearByMonths(2011,1));    
+     $months_by_years=yearByMonths(2011,1);    
      ?>
-
+     <span ng-model="month_labels" ng-init='month_labels={!! json_encode(MyHTML::months()) !!}'></span>
+     <span ng-model="filters_present" ng-init='filters_present=false'></span>
 
      <div class="filter-section">
         <label class='hdr hdr-grey'> FILTERS:</label>
@@ -113,17 +113,36 @@
                 <span class="filter-val ng-cloak"><% ag_name %> (a) <x ng-click='removeTag("age_group",ag_nr)'>&#120;</x></span> 
             </span>
         </span>
+
+        <span ng-show="filters_present" class="filter_clear" ng-click="clearAllFilters()">clear all</span>
+
      </div>
+
+
 
      <table border='1' cellpadding='0' cellspacing='0' class='filter-tb'>
         <tr>
-            <td width='20%'>
-                <span style="text-alignment:left;cursor:pointer">FROM DATE</span>
-
-                <!-- {!! MyHTML::selectYearMonth(2013,date('Y'),"from_date","",["id"=>"from_date","class"=>"selectpicker"],"FROM DATE") !!} -->
+            <td width='20%' >
+                <span ng-model='fro_date_slct' ng-init='fro_date_slct={!! json_encode($months_by_years) !!}'></span>
+                <select ng-model="fro_date" ng-init="fro_date='all'" ng-change="dateFilter('fro')">
+                    <option value='all'>FROM DATE</option>
+                    <optgroup class="ng-cloak" ng-repeat="(yr,mths) in fro_date_slct" label="<% yr %>">
+                        <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %>-<% mth %>"> 
+                            <% month_labels[mth] %>
+                        </option>
+                    </optgroup>
+                </select>
             </td>
-            <td width='20%'>
-               {!! MyHTML::selectYearMonth(2013,date('Y'),"to_date","",["id"=>"to_date","class"=>"selectpicker"],"TO DATE") !!}   
+            <td width='20%' >
+                <span ng-model='to_date_slct' ng-init='to_date_slct={!! json_encode($months_by_years) !!}'></span>
+                <select ng-model="to_date" ng-init="to_date='all'" ng-change="dateFilter('to')">
+                    <option value='all'>TO DATE</option>
+                    <optgroup class="ng-cloak" ng-repeat="(yr,mths) in to_date_slct" label="<% yr %>">
+                        <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %>-<% mth %>"> 
+                            <% month_labels[mth] %>
+                        </option>
+                    </optgroup>
+                </select>
             </td>
             <td width='20%' id='dist_elmt'>
                 <select ng-model="district" ng-init="district='all'" ng-change="filter('district')">
@@ -311,6 +330,7 @@
     <label class='hdr hdr-grey'> TREATMENT INDICATION</label>
     <div class='addition-metrics'>
        <div class='row'>
+        <div class='col-sm-1'></div>
         <div class='col-sm-2'>
             <font class='addition-metrics figure ng-cloak' ng-init="cd4_less_than_500=0" ng-model='cd4_less_than_500'>
                 <% ((cd4_less_than_500/samples_received)*100)|number:1 %>%
@@ -341,6 +361,7 @@
             </font><br>
             <font class='addition-metrics desc'>BLANK ON FORM</font>            
         </div>
+        <div class='col-sm-1'></div>
        </div>
     </div>
     <br>
@@ -453,6 +474,49 @@ ctrllers.DashController=function($scope,$timeout,$http){
 
        generalFilter(); //call the filter for the first time
     });
+
+    $scope.dateFilter=function(mode){
+        if($scope.fro_date!="all" && $scope.to_date!="all"){
+            var vals={};var fro_s=$scope.fro_date.split("-");var to_s=$scope.to_date.split("-");
+            vals.from_year=Number(fro_s[0]);
+            vals.from_month=Number(fro_s[1]);
+            vals.to_year=Number(to_s[0]);
+            vals.to_month=Number(to_s[1]);
+
+            var eval1=vals.from_year<=vals.to_year;
+            var eval2=(vals.from_month>vals.to_month)&&(vals.from_year<vals.to_year);
+            var eval3=(vals.from_month<=vals.to_month);
+
+            if(eval1 && (eval2||eval3)){
+                console.log("duration expression passed");
+                computeDuration(vals);
+                if(count($scope.filter_duration)<=12){
+                    $scope.filter("duration");
+                }else{
+                    alert("Please choose a duration of 12 months or less");
+                }
+                
+            }else{
+                console.log("duration expression failing eval1="+eval1+" eval2"+eval2+" eval3"+eval3);
+                console.log("fro yr="+vals.from_year+" fro m"+vals.from_month+" to yr="+vals.to_year+" to m"+vals.to_month);
+            }
+        }
+    }
+
+    var computeDuration=function(vals){
+        $scope.filter_duration=[];
+        var i=vals.from_year;
+        while(i<=vals.to_year){
+            var stat=(i==vals.from_year)?vals.from_month:1;
+            var end=(i==vals.to_year)?vals.to_month:12;
+            var j=stat;
+            while(j<=end){
+                $scope.filter_duration.push(i+"-"+j);
+                j++;   
+            }   
+            i++;  
+        }
+    }
 
     $scope.filter=function(mode){
         switch(mode){
@@ -603,6 +667,8 @@ ctrllers.DashController=function($scope,$timeout,$http){
         $scope.displaySamplesRecieved();
         $scope.displaySupressionRate();
         $scope.displayRejectionRate();
+
+        $scope.filters_present=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group);
     };
 
 
@@ -631,11 +697,11 @@ ctrllers.DashController=function($scope,$timeout,$http){
             var sprsd=$scope.suppressed_by_duration[i]||0;
             var vld=$scope.valid_res_by_duration[i]||0;
             var s_rate=(sprsd/vld)*100;
-            s_rate.toPrecision(3);
+            //s_rate.toPrecision(3);
             data[0].values.push([i,s_rate]);
             data[1].values.push([i,vld]);
         } 
-        nv.addGraph(function() {
+        nv.addGraph( function() {
             var chart = nv.models.linePlusBarChart()
                         .margin({right: 60,})
                         .x(function(d,i) { return i })
@@ -645,9 +711,10 @@ ctrllers.DashController=function($scope,$timeout,$http){
                 return data[0].values[d] && data[0].values[d][0] || " ";
             });
             //chart.reduceXTicks(false);
-            chart.bars.forceY([0]);
+            //chart.bars.forceY([0]);
             chart.lines.forceY([0,100]);
-            d3.select('#supression_rate svg').datum(data).transition().duration(9500).call(chart);
+            $('#supression_rate svg').html(" ");
+            d3.select('#supression_rate svg').datum(data).transition().duration(500).call(chart);
             return chart;
         });
     }
@@ -702,6 +769,13 @@ ctrllers.DashController=function($scope,$timeout,$http){
         }
         $scope.filter(mode);
     };
+
+    $scope.clearAllFilters=function(){
+        $scope.filter_districts={};
+        $scope.filter_hubs={};
+        $scope.filter_age_group={};
+        generalFilter();
+    }
 
     $scope.empty=function(prop,status){
         return function(item){

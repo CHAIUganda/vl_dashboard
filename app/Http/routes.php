@@ -15,3 +15,7 @@
 
 Route::get('/{time?}',"DashboardController@show");
 
+/*Route::get('/w',function(){
+	return view("welcome");
+});*/
+
