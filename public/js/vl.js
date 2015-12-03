@@ -170,9 +170,9 @@ ctrllers.DashController=function($scope,$timeout,$http){
 
         var eval1=d_num==0&&h_num==0&&a_num==0;     // districts(OFF) and hubs(OFF) and age_groups (OFF)
         var eval2=dist_eval&&h_num==0&&a_num==0;    // districts(ON) and hubs(OFF) and age_groups (OFF)
-        var eval3=(dist_eval||hub_eval)&&a_num==0;  // districts(ON) or hubs(ON) and age_groups (OFF)
+        var eval3=(dist_eval&&hub_eval)&&a_num==0;  // districts(ON) or hubs(ON) and age_groups (OFF)
         var eval4=dist_eval&&h_num==0&&ag_eval;     // districts(ON) and hubs(OFF) and age_groups (ON)
-        var eval5=(dist_eval||hub_eval)&&ag_eval;   // districts(ON) or hubs(ON) and age_groups (ON)
+        var eval5=(dist_eval&&hub_eval)&&ag_eval;   // districts(ON) or hubs(ON) and age_groups (ON)
         var eval6=d_num==0&&hub_eval&&ag_eval;      // districts(OFF) and hubs(ON) and age_groups (ON)
         var eval7=d_num==0&&hub_eval&&a_num==0;     // districts(OFF) and hubs(ON) and age_groups (OFF)
         var eval8=d_num==0&&h_num==0&&ag_eval;      // districts(OFF) and hubs(OFF) and age_groups (ON)
@@ -294,7 +294,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
         }
 
         nv.addGraph( function(){
-            var chart = nv.models.multiBarChart().color(["#00786A","#526CFD"]).reduceXTicks(false);
+            var chart = nv.models.multiBarChart().color(["#F44336","#607D8B"]).reduceXTicks(false);
             $('#samples_received svg').html(" ");
             d3.select('#samples_received svg').datum(data).transition().duration(500).call(chart);
             return chart;
@@ -303,8 +303,8 @@ ctrllers.DashController=function($scope,$timeout,$http){
 
 
     $scope.displaySupressionRate=function(){
-        var data=[{"key":"SUPRESSION RATE","color": "#6D6D6D","values":[] },
-                  {"key":"VALID RESULTS","bar":true,"color": "#00786A","values":[]}];
+        var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
+                  {"key":"VALID RESULTS","bar":true,"color": "#F44336","values":[]}];
 
         for(var i in $scope.valid_res_by_duration){
             var sprsd=$scope.suppressed_by_duration[i]||0;
@@ -348,7 +348,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
             data[2].values.push({"x":dateFormat(i),"y":el_rate});
         }
         nv.addGraph( function(){
-            var chart = nv.models.multiBarChart().reduceXTicks(false).stacked(true).color(["#526CFD","#B1DEDA","#009688"]);
+            var chart = nv.models.multiBarChart().reduceXTicks(false).stacked(true).color(["#607D8B","#B1DEDA","#F44336"]);
             $('#rejection_rate svg').html(" ");
             d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
             return chart;

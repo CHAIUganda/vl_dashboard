@@ -68,8 +68,8 @@ body{
 .tabs-style-flip nav a:hover,
 .tabs-style-flip nav a:focus,
 .tabs-style-flip nav li.tab-current a{
-	border-color:  #009688;
-	color: #009688;
+	border-color:  #F44336;
+	color: #F44336;
 }
 
 
@@ -80,11 +80,12 @@ body{
 }
 
 .tabs-style-flip nav a span.num {
-	letter-spacing: 1px;
+	letter-spacing: 1.5px;
 	font-size:30px;
 }
 
 .tabs-style-flip nav a span.desc {
+	letter-spacing: 1px;
 	display:block;
 	font-size:12px;
 }
@@ -138,5 +139,5 @@ body{
 }*/
 
 #tab1,#tab2,#tab3,#tab4{
-	border-color:  #009688;
+	border-color: #F44336;
 }

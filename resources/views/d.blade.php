@@ -91,8 +91,9 @@
      <span ng-model="month_labels" ng-init='month_labels={!! json_encode(MyHTML::months()) !!}'></span>
      <span ng-model="filters_present" ng-init='filters_present=false'></span>
 
-     <div class="filter-section">
-        <label class='hdr hdr-grey'> FILTERS:</label>
+     <div class='row'><div class='col-md-1' style="padding-top:17px; font-size:bolder"><span class='hdr hdr-grey'>FILTERS:</span> </div>
+         
+     <div class="filter-section col-md-9">        
         <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!}'>
           <span class="filter-val ng-cloak">
             <% filter_duration[0] |d_format %> - <% filter_duration[filter_duration.length-1] | d_format %> 
@@ -118,10 +119,9 @@
             </span>
         </span>
 
-        <label ng-show="filters_present" class="filter_clear" ng-click="clearAllFilters()">clear all</label>
+        <span ng-show="filters_present" class="filter_clear" ng-click="clearAllFilters()">clear all</span>
 
-     </div>
-
+     </div></div>
 
 
      <table border='1' cellpadding='0' cellspacing='0' class='filter-tb'>
