@@ -468,6 +468,8 @@ div.addition-metrics{
 .filter_clear{
 	cursor: pointer;
 	color: #8A0808;
+	vertical-align: text-bottom;
+	float: right;
 }
 
 
