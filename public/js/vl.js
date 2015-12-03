@@ -295,6 +295,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
 
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().color(["#00786A","#526CFD"]).reduceXTicks(false);
+            $('#samples_received svg').html(" ");
             d3.select('#samples_received svg').datum(data).transition().duration(500).call(chart);
             return chart;
         });
@@ -348,6 +349,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
         }
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().reduceXTicks(false).stacked(true).color(["#526CFD","#B1DEDA","#009688"]);
+            $('#rejection_rate svg').html(" ");
             d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
             return chart;
         });
