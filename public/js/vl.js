@@ -31,6 +31,7 @@ app.filter('d_format', function() {
 
 
 
+
 var ctrllers={};
 
 ctrllers.DashController=function($scope,$timeout,$http){
@@ -43,8 +44,8 @@ ctrllers.DashController=function($scope,$timeout,$http){
 
     var vvvrrr=0;
 
-    /*
-    $http.get("http://vl.trailanalytics.com/json/districts/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/").success(function(data) {
+    
+   /* $http.get("http://vl.trailanalytics.com/json/districts/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/").success(function(data) {
         for(var i in data){
             console.log(" first piece is "+i+" and "+JSON.stringify(data[i]));
         }
@@ -57,6 +58,11 @@ ctrllers.DashController=function($scope,$timeout,$http){
         for(var i in data){
             console.log(" first piece is "+i+" and "+JSON.stringify(data[i]));
         }
+    })*/
+
+   /* $http.get("http://vl.trailanalytics.com/json/data/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/").success(function(datah){
+        var lenght=count(datah);
+        console.log("the length is "+lenght);
     })*/
 
     $http.get("../json/data.json").success(function(data) {

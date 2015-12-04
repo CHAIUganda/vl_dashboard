@@ -21,19 +21,18 @@
     <script src="{{ asset('/js/general.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/jquery-2.1.3.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/js/jquery-ui.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('/js/jquery-ui.min.js')}}" type="text/javascript"></script>
     <script src="{{ asset('/twitter-bootstrap-3.3/js/bootstrap.min.js') }}" type="text/javascript" ></script>
 
-    <script src="{{ asset('/js/Chart.js')}}" type="text/javascript"></script>
     <script src="{{ asset('/js/angular.min.js')}}" type="text/javascript"></script>
     <script src="{{ asset('/js/angular-route.js')}}" type="text/javascript"></script>
 
     <script src="{{ asset('/js/angular-datatables.min.js') }}" type="text/javascript"></script>
 
 
-    <link href="{{ asset('/css/nv.d3.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('/css/nv.d3.min.css') }}" rel="stylesheet" type="text/css">
     <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
-    <script src="{{ asset('/js/nv.d3.js') }}"></script>
+    <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
     <script src="{{ asset('/js/stream_layers.js') }}"></script>
 
     
@@ -59,7 +58,7 @@
       
      <?php
 
-     function yearByMonths($from_year=1900,$from_month=1,$to_year="",$to_month=""){
+    function yearByMonths($from_year=1900,$from_month=1,$to_year="",$to_month=""){
         if(empty($to_year)) $to_year=date("Y");
         if(empty($to_month)) $to_month=date("m");
         $ret=[];
