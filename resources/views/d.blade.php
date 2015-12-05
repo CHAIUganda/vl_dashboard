@@ -88,12 +88,12 @@
      //krsort($months_by_years);
      ?>
      <span ng-model="month_labels" ng-init='month_labels={!! json_encode(MyHTML::months()) !!}'></span>
-     <span ng-model="filters_present" ng-init='filters_present=false'></span>
+     <span ng-model="filtered" ng-init='filtered=false'></span>
 
      <div class='row'><div class='col-md-1' style="padding-top:17px; font-size:bolder"><span class='hdr hdr-grey'>FILTERS:</span> </div>
          
      <div class="filter-section col-md-9">        
-        <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!}'>
+        <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!};init_duration={!! json_encode($init_duration) !!};'>
           <span class="filter-val ng-cloak">
             <% filter_duration[0] |d_format %> - <% filter_duration[filter_duration.length-1] | d_format %> 
         </span>
@@ -118,7 +118,7 @@
             </span>
         </span>
 
-        <span ng-show="filters_present" class="filter_clear" ng-click="clearAllFilters()">clear all</span>
+        <span ng-show="filtered" class="filter_clear" ng-click="clearAllFilters()">reset all</span>
 
      </div></div>
 
@@ -226,9 +226,9 @@
                         <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
-                                    <th width='70%'>District</th>
+                                    <th width='60%'>District</th>
                                     <th width='10%'>Samples Received</th>
-                                    <th width='10%'>DBS (%)</th>
+                                    <th width='20%'>DBS (%)</th>
                                     <th width='10%'>Samples Tested</th>
                                 </tr>
                             </thead>

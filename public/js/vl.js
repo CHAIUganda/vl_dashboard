@@ -34,11 +34,11 @@ app.filter('d_format', function() {
 
 var ctrllers={};
 
-ctrllers.DashController=function($scope,$timeout,$http){
+ctrllers.DashController=function($scope,$http){
 
     var districts_json={};
     var hubs_json={};
-    var age_group_json={};    
+    var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};    
     var facilities_json={};   
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
 
@@ -65,7 +65,8 @@ ctrllers.DashController=function($scope,$timeout,$http){
         console.log("the length is "+lenght);
     })*/
 
-    $http.get("../json/data.json").success(function(data) {
+    /*$http.get("../json/data.json").success(function(data) {
+        console.log(JSON.stringify(data[0]));
         districts_json=data['districts']||{};
         hubs_json=data['hubs']||{};
         age_group_json=data['age_group']||{};
@@ -79,8 +80,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
         var res=data['results']||{};
         for(var i in res){
            var that=res[i];
-           var facility_details=facilities_json[that.facility_id];
-        
+           var facility_details=facilities_json[that.facility_id];        
            results_json[i]=that;
            results_json[i].year_month=that.year+"-"+that.month;
            results_json[i].facility_name=facility_details.name;
@@ -90,6 +90,75 @@ ctrllers.DashController=function($scope,$timeout,$http){
 
         }
 
+       generalFilter(); //call the filter for the first time
+    });*/
+
+    $http.get("../json/districts.20151204.json").success(function(data){
+        for(var i in data){
+            var dst=data[i];
+            districts_json[dst.id]=dst.district;
+        }
+        console.log("number of districts:"+count(districts_json));
+    });
+
+    $http.get("../json/hubs.20151204.json").success(function(data){
+        for(var i in data){
+            var hb=data[i];
+            hubs_json[hb.id]=hb.hub;
+        }
+        console.log("number of hubs:"+count(hubs_json));
+    });
+
+    $http.get("../json/facilities.20151204.json").success(function(data){
+        for(var i in data){
+            var f=data[i];
+            facilities_json[f.id]={'id':f.id,'name':f.facility,'district_id':f.districtID,'hub_id':f.hubID};
+        }
+        console.log("number of facilities:"+count(facilities_json));
+        console.log("first facility:"+JSON.stringify(facilities_json[2]));
+    });
+
+    $http.get("../json/data.20151204.json").success(function(data) {
+       
+        $scope.districts_slct=districts_json;
+        $scope.hubs_slct=hubs_json;
+        $scope.age_group_slct=age_group_json;
+
+        var res=data||{};
+        for(var i in res){
+           var that=res[i];
+           var facility_details=facilities_json[that.facility_id]||{};  
+           results_json[i]={}; 
+           results_json[i].year_month=that.year+"-"+that.month;
+           results_json[i].facility_id=that.facility_id;
+           results_json[i].age_group=that.age_group_id           
+           results_json[i].facility_name=facility_details.name||"";
+           results_json[i].hub_id=facility_details.hub_id;
+           results_json[i].district_id=facility_details.district_id;
+           results_json[i].district_name=districts_json[facility_details.district_id];
+
+           results_json[i].samples_received=Number(that.samples_received)||0;
+           results_json[i].dbs_samples=Number(that.dbs_samples)||0;
+           results_json[i].total_results=Number(that.total_results)||0;
+           results_json[i].valid_results=Number(that.valid_results)||0;
+           results_json[i].rejected_samples=Number(that.rejected_samples)||0;
+           results_json[i].suppressed=Number(that.suppressed)||0;
+
+           results_json[i].sample_quality_rejections=Number(that.sample_quality_rejections)||0;
+           results_json[i].eligibility_rejections=Number(that.eligibility_rejections)||0;
+           results_json[i].incomplete_form_rejections=Number(that.incomplete_form_rejections)||0;
+
+           results_json[i].cd4_less_than_500=Number(that.cd4_less_than_500)||0;
+           results_json[i].pmtct_option_b_plus=Number(that.pmtct_option_b_plus)||0;
+           results_json[i].children_under_15=Number(that.children_under_15)||0;
+           results_json[i].other_treatment=Number(that.other_treatment)||0;
+           results_json[i].treatment_blank_on_form=Number(that.treatment_blank_on_form)||0;
+           
+        }
+
+        console.log("first facility:"+JSON.stringify(results_json[0]));
+
+        console.log("number of data records:"+count(data));
        generalFilter(); //call the filter for the first time
     });
 
@@ -108,12 +177,15 @@ ctrllers.DashController=function($scope,$timeout,$http){
             if(eval1 && (eval2||eval3)){
                 console.log("duration expression passed");
                 computeDuration(vals);
-                if(count($scope.filter_duration)<=12){
-                    $scope.filter("duration");
+               /* if(count($scope.filter_duration)<=12){
+                    
                 }else{
                     alert("Please choose a duration of 12 months or less");
-                }
-                
+                }*/
+                $scope.date_filtered=true;
+                $scope.fro_date="all";
+                $scope.to_date="all";
+                $scope.filter("duration");                
             }else{
                 console.log("duration expression failing eval1="+eval1+" eval2"+eval2+" eval3"+eval3);
                 console.log("fro yr="+vals.from_year+" fro m"+vals.from_month+" to yr="+vals.to_year+" to m"+vals.to_month);
@@ -286,7 +358,7 @@ ctrllers.DashController=function($scope,$timeout,$http){
         $scope.displaySupressionRate();
         $scope.displayRejectionRate();
 
-        $scope.filters_present=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group);
+        $scope.filtered=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;
     };
 
 
@@ -394,6 +466,8 @@ ctrllers.DashController=function($scope,$timeout,$http){
         $scope.filter_districts={};
         $scope.filter_hubs={};
         $scope.filter_age_group={};
+        $scope.filter_duration=$scope.init_duration;
+        $scope.filtered=false;
         generalFilter();
     }
 
