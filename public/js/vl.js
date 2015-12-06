@@ -334,6 +334,7 @@ ctrllers.DashController=function($scope,$http){
     }
 
     var generalFilter=function(){
+        $scope.loading=true;
         $scope.samples_received=0;$scope.suppressed=0;$scope.valid_results=0;$scope.rejected_samples=0;   
         $scope.cd4_less_than_500=0;$scope.pmtct_option_b_plus=0;$scope.children_under_15=0;
         $scope.other_treatment=0;$scope.treatment_blank_on_form=0;        
@@ -359,6 +360,7 @@ ctrllers.DashController=function($scope,$http){
         $scope.displayRejectionRate();
 
         $scope.filtered=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;
+        $scope.loading=false;    
     };
 
 
@@ -468,6 +470,7 @@ ctrllers.DashController=function($scope,$http){
         $scope.filter_age_group={};
         $scope.filter_duration=$scope.init_duration;
         $scope.filtered=false;
+        $scope.date_filtered=false;
         generalFilter();
     }
 

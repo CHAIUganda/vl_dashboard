@@ -122,7 +122,6 @@
 
      </div></div>
 
-
      <table border='1' cellpadding='0' cellspacing='0' class='filter-tb'>
         <tr>
             <td width='20%' >
@@ -175,6 +174,8 @@
              
         </tr>
      </table>
+      <span ng-model="loading" ng-init="loading=true"></span>
+      <div ng-show="loading" style="text-align: center;padding:10px;"> <img src="{{ asset('/images/loading.gif') }}" height="20" width="20"> processing</div>
      <br>
      <label class='hdr hdr-grey'> KEY METRICS</label>
      <br>
