@@ -35,6 +35,7 @@ app.filter('d_format', function() {
 var ctrllers={};
 
 ctrllers.DashController=function($scope,$http){
+    $scope.identity = angular.identity;
 
     var districts_json={};
     var hubs_json={};
@@ -43,6 +44,9 @@ ctrllers.DashController=function($scope,$http){
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
 
     var vvvrrr=0;
+
+    $scope.districts2=[];
+    $scope.hubs2=[];
 
     
    /* $http.get("http://vl.trailanalytics.com/json/districts/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/").success(function(data) {
@@ -97,14 +101,16 @@ ctrllers.DashController=function($scope,$http){
         for(var i in data){
             var dst=data[i];
             districts_json[dst.id]=dst.district;
+            $scope.districts2.push({"id":dst.id,"name":dst.district});
         }
-        console.log("number of districts:"+count(districts_json));
+        console.log("number of districts:"+count($scope.districts2)+"  "+dist);
     });
 
     $http.get("../json/hubs.20151204.json").success(function(data){
         for(var i in data){
             var hb=data[i];
             hubs_json[hb.id]=hb.hub;
+            $scope.hubs2.push({"id":hb.id,"name":hb.hub});
         }
         console.log("number of hubs:"+count(hubs_json));
     });

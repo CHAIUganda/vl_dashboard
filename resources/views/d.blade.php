@@ -149,16 +149,16 @@
             <td width='20%' id='dist_elmt'>
                 <select ng-model="district" ng-init="district='all'" ng-change="filter('district')">
                     <option value='all'>DISTRICTS</option>
-                    <option class="ng-cloak" ng-repeat="(d_nr,dist) in districts_slct" value="<% d_nr %>">
-                        <% dist %>
+                    <option class="ng-cloak" ng-repeat="dist in districts2 | orderBy:'name'" value="<% dist.id %>">
+                        <% dist.name %>
                     </option>
                 </select>
             </td>
             <td width='20%' id='dist_elmt'>
                 <select ng-model="hub" ng-init="hub='all'" ng-change="filter('hub')">
                     <option value='all'>HUBS</option>
-                    <option class="ng-cloak" ng-repeat="(h_nr,hub) in hubs_slct" value="<% h_nr %>">
-                        <% hub %>
+                    <option class="ng-cloak" ng-repeat="hb in hubs2|orderBy:'name'" value="<% hb.id %>">
+                        <% hb.name %>
                     </option>
                 </select>
             </td>
