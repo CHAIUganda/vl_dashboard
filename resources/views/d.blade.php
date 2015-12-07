@@ -334,7 +334,6 @@
     <label class='hdr hdr-grey'> TREATMENT INDICATION</label>
     <div class='addition-metrics'>
        <div class='row'>
-        <div class='col-sm-1'></div>
         <div class='col-sm-2'>
             <font class='addition-metrics figure ng-cloak' ng-init="cd4_less_than_500=0" ng-model='cd4_less_than_500'>
                 <% ((cd4_less_than_500/samples_received)*100)|number:1 %>%
@@ -365,7 +364,13 @@
             </font><br>
             <font class='addition-metrics desc'>BLANK ON FORM</font>            
         </div>
-        <div class='col-sm-1'></div>
+        <div class='col-sm-2'>
+            <font class='addition-metrics figure ng-cloak' ng-init="tb_infection=0" ng-model="tb_infection">
+                <% ((tb_infection/samples_received)*100)|number:1 %>%
+            </font><br>
+            <font class='addition-metrics desc'>TB INFECTION</font>            
+        </div>
+        
        </div>
     </div>
     <br>
