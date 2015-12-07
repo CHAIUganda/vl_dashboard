@@ -41,8 +41,9 @@
 <body ng-app="dashboard" ng-controller="DashController">
 <div class="navbar-custom navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/"> <span class='glyphicon glyphicon-home'></span> VIRAL LOAD</a>
+        <div class="navbar-header"> 
+            <!-- <img src="{{ asset('/images/icon.png') }}" height="20" width="20"> -->
+            <a class="navbar-brand" href="/" style="font-weight:800px;color:#FFF"> UGANDA VIRAL LOAD</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">

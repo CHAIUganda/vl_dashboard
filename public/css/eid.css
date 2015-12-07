@@ -472,5 +472,15 @@ div.addition-metrics{
 	color: #F44336;
 }
 
+.navbar-custom > navbar-brand{
+	letter-spacing: 1px;
+	font-weight: 800px;
+	color: white;
+	padding-right: 30px;
+	padding-top: 100px;
+	font-size: 50px;
+}
+
+
 
 

@@ -380,12 +380,13 @@ ctrllers.DashController=function($scope,$http){
         var data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
 
         for(var i in srd.dbs){
-            data[0].values.push({"x":dateFormat(i),"y":srd.dbs[i]});
-            data[1].values.push({"x":dateFormat(i),"y":srd.plasma[i]});            
+            data[0].values.push({"x":dateFormat(i),"y":Math.round(srd.dbs[i])});
+            data[1].values.push({"x":dateFormat(i),"y":Math.round(srd.plasma[i])});            
         }
 
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().color(["#F44336","#607D8B"]).reduceXTicks(false);
+            chart.yAxis.tickFormat(d3.format(',.0d'));
             $('#samples_received svg').html(" ");
             d3.select('#samples_received svg').datum(data).transition().duration(500).call(chart);
             return chart;
@@ -440,6 +441,7 @@ ctrllers.DashController=function($scope,$http){
         }
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().reduceXTicks(false).stacked(true).color(["#607D8B","#B1DEDA","#F44336"]);
+            chart.yAxis.tickFormat(d3.format(',.0d'));
             $('#rejection_rate svg').html(" ");
             d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
             return chart;
