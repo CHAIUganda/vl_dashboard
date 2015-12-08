@@ -103,7 +103,7 @@ ctrllers.DashController=function($scope,$http){
             districts_json[dst.id]=dst.district;
             $scope.districts2.push({"id":dst.id,"name":dst.district});
         }
-        console.log("number of districts:"+count($scope.districts2)+"  "+dist);
+        //console.log("number of districts:"+count($scope.districts2)+"  "+dist);
     });
 
     $http.get("../json/hubs.20151204.json").success(function(data){
@@ -112,7 +112,7 @@ ctrllers.DashController=function($scope,$http){
             hubs_json[hb.id]=hb.hub;
             $scope.hubs2.push({"id":hb.id,"name":hb.hub});
         }
-        console.log("number of hubs:"+count(hubs_json));
+        //console.log("number of hubs:"+count(hubs_json));
     });
 
     $http.get("../json/facilities.20151204.json").success(function(data){
@@ -120,8 +120,8 @@ ctrllers.DashController=function($scope,$http){
             var f=data[i];
             facilities_json[f.id]={'id':f.id,'name':f.facility,'district_id':f.districtID,'hub_id':f.hubID};
         }
-        console.log("number of facilities:"+count(facilities_json));
-        console.log("first facility:"+JSON.stringify(facilities_json[2]));
+        //console.log("number of facilities:"+count(facilities_json));
+        //console.log("first facility:"+JSON.stringify(facilities_json[2]));
     });
 
     $http.get("../json/data.20151206.json").success(function(data) {
@@ -163,9 +163,9 @@ ctrllers.DashController=function($scope,$http){
            
         }
 
-        console.log("first facility:"+JSON.stringify(results_json[0]));
+        // console.log("first facility:"+JSON.stringify(results_json[0]));
 
-        console.log("number of data records:"+count(data));
+        //console.log("number of data records:"+count(data));
        generalFilter(); //call the filter for the first time
     });
 
@@ -182,7 +182,7 @@ ctrllers.DashController=function($scope,$http){
             var eval3=(vals.from_month<=vals.to_month);
 
             if(eval1 && (eval2||eval3)){
-                console.log("duration expression passed");
+                //console.log("duration expression passed");
                 computeDuration(vals);
                /* if(count($scope.filter_duration)<=12){
                     
@@ -195,8 +195,8 @@ ctrllers.DashController=function($scope,$http){
                 $scope.filter("duration");                
             }else{
                 alert("Please make sure that the fro date is earlier than the to date");
-                console.log("duration expression failing eval1="+eval1+" eval2"+eval2+" eval3"+eval3);
-                console.log("fro yr="+vals.from_year+" fro m"+vals.from_month+" to yr="+vals.to_year+" to m"+vals.to_month);
+                //console.log("duration expression failing eval1="+eval1+" eval2"+eval2+" eval3"+eval3);
+                //console.log("fro yr="+vals.from_year+" fro m"+vals.from_month+" to yr="+vals.to_year+" to m"+vals.to_month);
             }
         }
     }
@@ -256,9 +256,9 @@ ctrllers.DashController=function($scope,$http){
 
         var eval1=d_num==0&&h_num==0&&a_num==0;     // districts(OFF) and hubs(OFF) and age_groups (OFF)
         var eval2=dist_eval&&h_num==0&&a_num==0;    // districts(ON) and hubs(OFF) and age_groups (OFF)
-        var eval3=(dist_eval&&hub_eval)&&a_num==0;  // districts(ON) or hubs(ON) and age_groups (OFF)
+        var eval3=(dist_eval&&hub_eval)&&a_num==0;  // districts(ON) and hubs(ON) and age_groups (OFF)
         var eval4=dist_eval&&h_num==0&&ag_eval;     // districts(ON) and hubs(OFF) and age_groups (ON)
-        var eval5=(dist_eval&&hub_eval)&&ag_eval;   // districts(ON) or hubs(ON) and age_groups (ON)
+        var eval5=(dist_eval&&hub_eval)&&ag_eval;   // districts(ON) and hubs(ON) and age_groups (ON)
         var eval6=d_num==0&&hub_eval&&ag_eval;      // districts(OFF) and hubs(ON) and age_groups (ON)
         var eval7=d_num==0&&hub_eval&&a_num==0;     // districts(OFF) and hubs(ON) and age_groups (OFF)
         var eval8=d_num==0&&h_num==0&&ag_eval;      // districts(OFF) and hubs(OFF) and age_groups (ON)
@@ -452,6 +452,27 @@ ctrllers.DashController=function($scope,$http){
         });
     };
 
+     $scope.removeTag=function(mode,nr){
+        switch(mode){
+            case "district": delete $scope.filter_districts[nr];break;
+            case "hub": delete $scope.filter_hubs[nr];break;
+            case "age_group": delete $scope.filter_age_group[nr];break;
+        }
+        $scope.filter(mode);
+    };
+
+    $scope.clearAllFilters=function(){
+        $scope.filter_districts={};
+        $scope.filter_hubs={};
+        $scope.filter_age_group={};
+        $scope.filter_duration=$scope.init_duration;
+        $scope.filtered=false;
+        $scope.date_filtered=false;
+        $scope.fro_date="all";
+        $scope.to_date="all";
+        generalFilter();
+    }
+
     $scope.compare = function(prop,comparator, val){
         return function(item){
             if(comparator=='eq'){
@@ -471,25 +492,6 @@ ctrllers.DashController=function($scope,$http){
             }
         }
     };
-
-    $scope.removeTag=function(mode,nr){
-        switch(mode){
-            case "district": delete $scope.filter_districts[nr];break;
-            case "hub": delete $scope.filter_hubs[nr];break;
-            case "age_group": delete $scope.filter_age_group[nr];break;
-        }
-        $scope.filter(mode);
-    };
-
-    $scope.clearAllFilters=function(){
-        $scope.filter_districts={};
-        $scope.filter_hubs={};
-        $scope.filter_age_group={};
-        $scope.filter_duration=$scope.init_duration;
-        $scope.filtered=false;
-        $scope.date_filtered=false;
-        generalFilter();
-    }
 
     $scope.empty=function(prop,status){
         return function(item){

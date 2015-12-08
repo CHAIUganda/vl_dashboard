@@ -9,6 +9,8 @@
     <link href="{{ asset('/css/jquery.dataTables.css') }}" rel="stylesheet">    
     <link href="{{ asset('/css/jquery-ui.css')}}" rel="stylesheet" >
 
+     <link href="{{ asset('/css/nv.d3.min.css') }}" rel="stylesheet" type="text/css">
+
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/demo.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabs.css') }} " />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabstyles.css') }}" />
@@ -30,7 +32,7 @@
     <script src="{{ asset('/js/angular-datatables.min.js') }}" type="text/javascript"></script>
 
 
-    <link href="{{ asset('/css/nv.d3.min.css') }}" rel="stylesheet" type="text/css">
+   
     <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
     <script src="{{ asset('/js/stream_layers.js') }}"></script>
@@ -388,14 +390,4 @@
 </body>
 
 <script type="text/javascript" src=" {{ asset('js/vl.js') }} "></script>
-
-<script type="text/javascript">
-$(document).ready(
-setTimeout(function() {
-    $('#sr_dists').DataTable( {
-        "order": [[ 3, "desc" ]]
-    } );
-} ,10000);
-);
-</script>
 </html>
