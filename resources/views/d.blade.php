@@ -85,7 +85,7 @@
         $init_duration[]="$current_year-$m";
         $m++;
      }
-     $months_by_years=yearByMonths(2014,1); 
+     $months_by_years=yearByMonths(2014,8); 
      //krsort($months_by_years);
      ?>
      <span ng-model="month_labels" ng-init='month_labels={!! json_encode(MyHTML::months()) !!}'></span>
@@ -225,7 +225,7 @@
                             <span id='f_shw'>&nbsp;&nbsp;FACILITIES &nbsp;&nbsp;</span>
                         </span>
                         <div ng-hide="show_fclties">
-                        <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
+                        <table id="sr_dists" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
                                     <th width='60%'>District</th>
@@ -235,12 +235,11 @@
                                 </tr>
                             </thead>
                             <tbody>                                
-                                <tr ng-repeat="d in district_numbers" >
+                                <tr ng-repeat="d in district_numbers | orderBy:'-samples_received'" >
                                     <td class="ng-cloak"><% d.name %></td>
                                     <td class="ng-cloak"><% d.samples_received %></td>
                                     <td class="ng-cloak"><% ((d.dbs_samples/d.samples_received)*100 )| number:1 %> %</td>
                                     <td class="ng-cloak"><% d.total_results %></td>
-
                                 </tr>                        
                              </tbody>
                          </table>
@@ -389,4 +388,14 @@
 </body>
 
 <script type="text/javascript" src=" {{ asset('js/vl.js') }} "></script>
+
+<script type="text/javascript">
+$(document).ready(
+setTimeout(function() {
+    $('#sr_dists').DataTable( {
+        "order": [[ 3, "desc" ]]
+    } );
+} ,10000);
+);
+</script>
 </html>

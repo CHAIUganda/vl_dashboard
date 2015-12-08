@@ -312,7 +312,7 @@ div.addition-metrics{
 }
 
 .addition-metrics.desc{
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .filter-tb {
@@ -320,7 +320,8 @@ div.addition-metrics{
     color: #74777b;
     text-align: center;
     width: 100%;
-    font-size: 15px;    
+    font-size: 12px; 
+    letter-spacing: 1px;   
 }
 
 .filter-tb select{

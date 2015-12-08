@@ -190,10 +190,11 @@ ctrllers.DashController=function($scope,$http){
                     alert("Please choose a duration of 12 months or less");
                 }*/
                 $scope.date_filtered=true;
-                $scope.fro_date="all";
-                $scope.to_date="all";
+               /* $scope.fro_date="all";
+                $scope.to_date="all";*/
                 $scope.filter("duration");                
             }else{
+                alert("Please make sure that the fro date is earlier than the to date");
                 console.log("duration expression failing eval1="+eval1+" eval2"+eval2+" eval3"+eval3);
                 console.log("fro yr="+vals.from_year+" fro m"+vals.from_month+" to yr="+vals.to_year+" to m"+vals.to_month);
             }
@@ -385,7 +386,9 @@ ctrllers.DashController=function($scope,$http){
         }
 
         nv.addGraph( function(){
-            var chart = nv.models.multiBarChart().color(["#F44336","#607D8B"]).reduceXTicks(false);
+            var chart = nv.models.multiBarChart().color(["#F44336","#607D8B"]);
+            if(count(srd.dbs)<=8) { chart.reduceXTicks(false); }
+
             chart.yAxis.tickFormat(d3.format(',.0d'));
             $('#samples_received svg').html(" ");
             d3.select('#samples_received svg').datum(data).transition().duration(500).call(chart);
@@ -440,7 +443,8 @@ ctrllers.DashController=function($scope,$http){
             data[2].values.push({"x":dateFormat(i),"y":Math.round(el_rate)});
         }
         nv.addGraph( function(){
-            var chart = nv.models.multiBarChart().reduceXTicks(false).stacked(true).color(["#607D8B","#B1DEDA","#F44336"]);
+            var chart = nv.models.multiBarChart().stacked(true).color(["#607D8B","#FFCDD2","#F44336"]);
+            if(count(rbd.sample_quality)<=8) { chart.reduceXTicks(false); }
             chart.yAxis.tickFormat(d3.format(',.0d'));
             $('#rejection_rate svg').html(" ");
             d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
