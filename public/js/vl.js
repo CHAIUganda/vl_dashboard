@@ -333,10 +333,16 @@ ctrllers.DashController=function($scope,$http){
         $scope.district_numbers[that.district_id]=$scope.district_numbers[that.district_id]||{};
 
         var d_smpls_rvd=$scope.district_numbers[that.district_id].samples_received||0;
+        var d_vls_rsts=$scope.district_numbers[that.district_id].valid_results||0;
+        var d_rjctd_smpls=$scope.district_numbers[that.district_id].rejected_samples||0;
+        var d_sprrsd=$scope.district_numbers[that.district_id].suppressed||0;
         var d_dbs_smpls=$scope.district_numbers[that.district_id].dbs_samples||0;
         var d_ttl_results=$scope.district_numbers[that.district_id].total_results||0;
 
         $scope.district_numbers[that.district_id].samples_received=d_smpls_rvd+that.samples_received;
+        $scope.district_numbers[that.district_id].valid_results=d_vls_rsts+that.valid_results;
+        $scope.district_numbers[that.district_id].rejected_samples=d_rjctd_smpls+that.rejected_samples;
+        $scope.district_numbers[that.district_id].suppressed=d_sprrsd+that.suppressed;
         $scope.district_numbers[that.district_id].dbs_samples=d_dbs_smpls+that.dbs_samples;
         $scope.district_numbers[that.district_id].total_results=d_ttl_results+that.total_results;
         $scope.district_numbers[that.district_id].name=that.district_name;
@@ -509,15 +515,30 @@ ctrllers.DashController=function($scope,$http){
            
     };
 
-    $scope.nana=function(){
-        if($scope.show_fclties==true){
-            $("#d_shw").attr("class","active");
-            $("#f_shw").attr("class","");
-            $scope.show_fclties=false;
+    $scope.showF=function(i){
+        var show_f=false;
+        switch(i){
+            case 1:
+            show_f=$scope.show_fclties1;
+            $scope.show_fclties1=show_f==false?true:false;        
+            break;
+
+            case 2:
+            show_f=$scope.show_fclties2;
+            $scope.show_fclties2=show_f==false?true:false;
+            break;
+
+            case 3:
+            show_f=$scope.show_fclties3;
+            $scope.show_fclties3=show_f==false?true:false;
+            break;
+        }
+        if(show_f==true){
+            $("#d_shw"+i).attr("class","active");
+            $("#f_shw"+i).attr("class","");
         }else{
-            $("#f_shw").attr("class","active");
-            $("#d_shw").attr("class","");
-            $scope.show_fclties=true;
+            $("#f_shw"+i).attr("class","active");
+            $("#d_shw"+i).attr("class","");
         }
     }
 

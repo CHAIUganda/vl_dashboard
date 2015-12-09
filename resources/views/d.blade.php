@@ -93,7 +93,8 @@
      <span ng-model="month_labels" ng-init='month_labels={!! json_encode(MyHTML::months()) !!}'></span>
      <span ng-model="filtered" ng-init='filtered=false'></span>
 
-     <div class='row'><div class='col-md-1' style="padding-top:17px; font-size:bolder"><span class='hdr hdr-grey'>FILTERS:</span> </div>
+     <div class='row'>
+        <div class='col-md-1' style="padding-top:17px; font-size:bolder"><span class='hdr hdr-grey'>FILTERS:</span></div>
          
      <div class="filter-section col-md-9">        
         <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!};init_duration={!! json_encode($init_duration) !!};'>
@@ -222,12 +223,12 @@
                     </div>
                    
                     <div class="col-lg-6 facilties-sect " >
-                        <span class='dist_faclty_toggle' ng-model="show_fclties" ng-init="show_fclties=false" ng-click="nana()">
-                            <span class='active' id='d_shw'>&nbsp;&nbsp;DISTRICTS&nbsp;&nbsp;</span>
-                            <span id='f_shw'>&nbsp;&nbsp;FACILITIES &nbsp;&nbsp;</span>
+                        <span class='dist_faclty_toggle' ng-model="show_fclties1" ng-init="show_fclties1=false" ng-click="showF(1)">
+                            <span class='active' id='d_shw1'>&nbsp;&nbsp;DISTRICTS&nbsp;&nbsp;</span>
+                            <span id='f_shw1'>&nbsp;&nbsp;FACILITIES &nbsp;&nbsp;</span>
                         </span>
-                        <div ng-hide="show_fclties">
-                        <table id="sr_dists" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
+                        <div ng-hide="show_fclties1">
+                        <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
                                     <th width='60%'>District</th>
@@ -239,36 +240,35 @@
                             <tbody>                                
                                 <tr ng-repeat="d in district_numbers | orderBy:'-samples_received'" >
                                     <td class="ng-cloak"><% d.name %></td>
-                                    <td class="ng-cloak"><% d.samples_received %></td>
+                                    <td class="ng-cloak"><% d.samples_received|number %></td>
                                     <td class="ng-cloak"><% ((d.dbs_samples/d.samples_received)*100 )| number:1 %> %</td>
-                                    <td class="ng-cloak"><% d.total_results %></td>
+                                    <td class="ng-cloak"><% d.total_results|number %></td>
                                 </tr>                        
                              </tbody>
                          </table>
                          </div>
-                         <div ng-show="show_fclties">
+                         <div ng-show="show_fclties1">
                          <table datatable="ng" ng-hide="checked" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
-                                    <th width='70%'>Facility</th>
+                                    <th width='60%'>Facility</th>
                                     <th width='10%'>Samples Received</th>
-                                    <th width='10%'>DBS (%)</th>
+                                    <th width='20%'>DBS (%)</th>
                                     <th width='10%'>Samples Tested</th>
                                 </tr>
                             </thead>
                             <tbody>                                
                                 <tr ng-repeat="f in facility_numbers" >
                                     <td class="ng-cloak"><% f.name %></td>
-                                    <td class="ng-cloak"><% f.samples_received %></td>
+                                    <td class="ng-cloak"><% f.samples_received|number %></td>
                                     <td class="ng-cloak"><% ((f.dbs_samples/f.samples_received)*100 )| number:1 %> %</td>
-                                    <td class="ng-cloak"><% f.total_results %></td>
+                                    <td class="ng-cloak"><% f.total_results|number %></td>
                                 </tr>                        
                              </tbody>
                          </table>
                          </div>
 
                     </div>
-
                 </div>
             </section>
 
@@ -282,22 +282,47 @@
                     </div>
                    
                     <div class="col-lg-6 facilties-sect" >
+
+                         <span class='dist_faclty_toggle' ng-init="show_fclties2=false" ng-click="showF(2)">
+                            <span class='active' id='d_shw2'>&nbsp;&nbsp;DISTRICTS&nbsp;&nbsp;</span>
+                            <span id='f_shw2'>&nbsp;&nbsp;FACILITIES &nbsp;&nbsp;</span>
+                        </span>
+                        <div ng-hide="show_fclties2">
                         <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
-                                    <th width='84%'>Facility</th>                                   
-                                    <th width='8%'>Valid Results </th>
-                                    <th width='8%'>Suppression Rate (%)</th>
+                                    <th width='80%'>District</th>
+                                    <th width='10%'>Valid Results</th>
+                                    <th width='10%'>Suppression Rate (%)</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr ng-repeat="f in facility_numbers">
+                            <tbody>                                
+                                <tr ng-repeat="d in district_numbers" >
+                                    <td class="ng-cloak"><% d.name %></td>
+                                    <td class="ng-cloak"><% d.valid_results|number %></td>
+                                    <td class="ng-cloak"><% ((d.suppressed/d.valid_results)*100)|number:1 %> %</td>
+                                </tr>                        
+                             </tbody>
+                         </table>
+                         </div>
+                         <div ng-show="show_fclties2">
+                         <table datatable="ng" ng-hide="checked" class="row-border hover table table-bordered table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th width='90%'>Facility</th>
+                                    <th width='5%'>Valid Results</th>
+                                    <th width='5%'>Suppression rate (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>                                
+                                <tr ng-repeat="f in facility_numbers" >
                                     <td class="ng-cloak"><% f.name %></td>
-                                    <td class="ng-cloak"><% f.valid_results %></td>
+                                    <td class="ng-cloak"><% f.valid_results|number %></td>
                                     <td class="ng-cloak"><% ((f.suppressed/f.valid_results)*100)|number:1 %> %</td>
                                 </tr>                        
                              </tbody>
                          </table>
+                         </div>
                     </div>
                 </div> 
             </section>
@@ -310,22 +335,48 @@
                     </div>
                    
                     <div class="col-lg-6 facilties-sect" >
+
+                         <span class='dist_faclty_toggle' ng-init="show_fclties3=false" ng-click="showF(3)">
+                            <span class='active' id='d_shw3'>&nbsp;&nbsp;DISTRICTS&nbsp;&nbsp;</span>
+                            <span id='f_shw3'>&nbsp;&nbsp;FACILITIES &nbsp;&nbsp;</span>
+                        </span>
+                        <div ng-hide="show_fclties3">
                         <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
-                                    <th width='80%'>Facility</th>
+                                    <th width='80%'>District</th>
                                     <th width='10%'>Samples Received</th>
-                                    <th width='10%'>Rejection Rate (%)</th>                                    
+                                    <th width='10%'>Rejection Rate (%)</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr ng-repeat="f in facility_numbers">
-                                    <td class="ng-cloak"><% f.name %></td>                                    
-                                    <td class="ng-cloak"><% f.samples_received %></td>
-                                    <td class="ng-cloak"><% ((f.suppressed/f.samples_received)*100)|number:1 %> %</td>
+                            <tbody>                                
+                                <tr ng-repeat="d in district_numbers" >
+                                    <td class="ng-cloak"><% d.name %></td>
+                                    <td class="ng-cloak"><% d.samples_received|number %></td>
+                                    <td class="ng-cloak"><% ((d.rejected_samples/d.samples_received)*100)|number:1 %> %</td>
                                 </tr>                        
                              </tbody>
                          </table>
+
+                         </div>
+                         <div ng-show="show_fclties3">
+                         <table datatable="ng" ng-hide="checked" class="row-border hover table table-bordered table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th width='90%'>Facility</th>
+                                    <th width='5%'>Samples Received</th>
+                                    <th width='5%'>Rejection rate (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>                                
+                                <tr ng-repeat="f in facility_numbers" >
+                                    <td class="ng-cloak"><% f.name %></td>
+                                    <td class="ng-cloak"><% f.samples_received %></td>
+                                    <td class="ng-cloak"><% ((f.rejected_samples/f.samples_received)*100)|number:1 %> %</td>
+                                </tr>                        
+                             </tbody>
+                         </table>
+                         </div>
                     </div>
                 </div>                
             </section>
@@ -333,7 +384,7 @@
     </div><!-- /tabs -->
     
     <br>
-    <label class='hdr hdr-grey'> TREATMENT INDICATION</label>
+    <label class='hdr hdr-grey'> TREATMENT INDICATION (as indicated on the form)</label>
     <div class='addition-metrics'>
        <div class='row'>
         <div class='col-sm-2'>
