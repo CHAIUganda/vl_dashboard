@@ -427,6 +427,8 @@ ctrllers.DashController=function($scope,$http){
             //chart.reduceXTicks(false);
             //chart.bars.forceY([0]);
             chart.lines.forceY([0,100]);
+            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)")
+            
             $('#supression_rate svg').html(" ");
             d3.select('#supression_rate svg').datum(data).transition().duration(500).call(chart);
             return chart;
