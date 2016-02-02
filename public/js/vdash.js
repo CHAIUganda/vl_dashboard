@@ -1,5 +1,16 @@
 
 //angular stuff
+
+/*
+Authors
+Name                        @       Period      Role       
+Logan Smith                 CHAI    2015(v1)    Interface Design, Q/A
+Lena Derisavifard           CHAI    2015(v1)    Req Specification, Q/A, UAT
+Kitutu Paul                 CHAI    2015(v1)    System development
+Sam Otim                    CHAI    2015(v1)    System development
+
+Credit to CHAI Uganda, CPHL and stakholders
+*/
 var app=angular.module('dashboard', ['datatables'], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
@@ -124,7 +135,7 @@ ctrllers.DashController=function($scope,$http){
         //console.log("first facility:"+JSON.stringify(facilities_json[2]));
     });
 
-    $http.get("../json/data.20151206.json").success(function(data) {
+    $http.get("../json/data.20151204.json").success(function(data) {
        
         $scope.districts_slct=districts_json;
         $scope.hubs_slct=hubs_json;
@@ -428,7 +439,7 @@ ctrllers.DashController=function($scope,$http){
             //chart.bars.forceY([0]);
             chart.lines.forceY([0,100]);
             chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)")
-            
+
             $('#supression_rate svg').html(" ");
             d3.select('#supression_rate svg').datum(data).transition().duration(500).call(chart);
             return chart;

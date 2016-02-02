@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <title>@yield('meta-title', 'VLS')</title>
+     <title>@yield('meta-title', 'Uganda Viral Load Dashboard')</title>
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/jquery.dataTables.css') }}" rel="stylesheet">    
     <link href="{{ asset('/css/jquery-ui.css')}}" rel="stylesheet" >
@@ -15,7 +15,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabs.css') }} " />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabstyles.css') }}" />
 
-    <link href="{{ asset('/css/eid.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/dash.css') }}" rel="stylesheet">
+    <link rel="Shortcut Icon" href="{{ asset('/images/icon.png') }}" />
 
     <script src="{{ asset('/js/modernizr.custom.js') }}"></script>
 
@@ -36,6 +37,14 @@
     <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
     <script src="{{ asset('/js/stream_layers.js') }}"></script>
+
+    <style type="text/css">
+    .nv-point {
+        stroke-opacity: 1!important;
+        stroke-width: 5px!important;
+        fill-opacity: 1!important;
+    }
+    </style>
 
     
 </head>
@@ -61,6 +70,21 @@
       
      <?php
 
+    function latestNMonths($n=12){
+        $ret=[];
+        $m=date('n');
+        $y=date('Y');
+        for($i=1;$i<=$n;$i++){
+            if($m==0){
+                $m=12;
+                $y--;
+            }
+            array_unshift($ret, "$y-$m");
+            $m--;
+        }
+        return $ret;
+    }
+
     function yearByMonths($from_year=1900,$from_month=1,$to_year="",$to_month=""){
         if(empty($to_year)) $to_year=date("Y");
         if(empty($to_month)) $to_month=date("m");
@@ -80,14 +104,8 @@
     }
 
      //$start_year=2011,$start_month=1;
-     $current_year=date('Y');$current_month=date('m');
-     $init_duration=[];
-     $m=1;
-     while($m<=$current_month){
-        $init_duration[]="$current_year-$m";
-        $m++;
-     }
-     $months_by_years=yearByMonths(2014,8); 
+    $init_duration=latestNMonths(12);  
+    $months_by_years=yearByMonths(2014,8); 
      //krsort($months_by_years);
      ?>
      <span ng-model="month_labels" ng-init='month_labels={!! json_encode(MyHTML::months()) !!}'></span>
@@ -440,5 +458,5 @@
 
 </body>
 
-<script type="text/javascript" src=" {{ asset('js/vl.js') }} "></script>
+<script type="text/javascript" src=" {{ asset('js/vdash.js') }} "></script>
 </html>
