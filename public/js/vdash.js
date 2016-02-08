@@ -135,7 +135,7 @@ ctrllers.DashController=function($scope,$http){
         //console.log("first facility:"+JSON.stringify(facilities_json[2]));
     });
 
-    $http.get("../json/data.20151204.json").success(function(data) {
+    $http.get("../json/data.20151206.json").success(function(data) {
        
         $scope.districts_slct=districts_json;
         $scope.hubs_slct=hubs_json;
