@@ -398,8 +398,8 @@ ctrllers.DashController=function($scope,$http){
         var data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
 
         for(var i in srd.dbs){
-            data[0].values.push({"x":dateFormat(i),"y":Math.round(srd.dbs[i])});
-            data[1].values.push({"x":dateFormat(i),"y":Math.round(srd.plasma[i])});            
+            data[0].values.push({"x":dateFormat(i),"y":Math.round((srd.dbs[i])||0)});
+            data[1].values.push({"x":dateFormat(i),"y":Math.round((srd.plasma[i]||0))});            
         }
 
         nv.addGraph( function(){
@@ -421,7 +421,7 @@ ctrllers.DashController=function($scope,$http){
         for(var i in $scope.valid_res_by_duration){
             var sprsd=$scope.suppressed_by_duration[i]||0;
             var vld=$scope.valid_res_by_duration[i]||0;
-            var s_rate=(sprsd/vld)*100;
+            var s_rate=((sprsd/vld)||0)*100;
             //s_rate.toPrecision(3);
             data[0].values.push([dateFormat(i),Math.round(s_rate)]);
             data[1].values.push([dateFormat(i),vld]);
@@ -438,7 +438,7 @@ ctrllers.DashController=function($scope,$http){
             //chart.reduceXTicks(false);
             //chart.bars.forceY([0]);
             chart.lines.forceY([0,100]);
-            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)")
+            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
 
             $('#supression_rate svg').html(" ");
             d3.select('#supression_rate svg').datum(data).transition().duration(500).call(chart);
@@ -454,9 +454,9 @@ ctrllers.DashController=function($scope,$http){
 
         for(var i in rbd.sample_quality){
             var ttl=rbd.sample_quality[i]+rbd.incomplete_form[i]+rbd.eligibility[i];
-            var sq_rate=(rbd.sample_quality[i]/ttl)*100;
-            var inc_rate=(rbd.incomplete_form[i]/ttl)*100;
-            var el_rate=(rbd.eligibility[i]/ttl)*100;
+            var sq_rate=((rbd.sample_quality[i]/ttl)||0)*100;
+            var inc_rate=((rbd.incomplete_form[i]/ttl)||0)*100;
+            var el_rate=((rbd.eligibility[i]/ttl)||0)*100;
             data[0].values.push({"x":dateFormat(i),"y":Math.round(sq_rate) });
             data[1].values.push({"x":dateFormat(i),"y":Math.round(inc_rate)});
             data[2].values.push({"x":dateFormat(i),"y":Math.round(el_rate)});
