@@ -142,6 +142,7 @@ ctrllers.DashController=function($scope,$http){
         $scope.age_group_slct=age_group_json;
 
         var res=data.results||{};
+        $scope.data_date=data.data_date||"";
         for(var i in res){
            var that=res[i];
            var facility_details=facilities_json[that.facility_id]||{};  
