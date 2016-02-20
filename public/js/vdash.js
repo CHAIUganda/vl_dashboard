@@ -108,7 +108,7 @@ ctrllers.DashController=function($scope,$http){
        generalFilter(); //call the filter for the first time
     });*/
 
-    $http.get("../json/districts.20151204.json").success(function(data){
+    $http.get("../json/districts.json").success(function(data){
         for(var i in data){
             var dst=data[i];
             districts_json[dst.id]=dst.district;
@@ -117,7 +117,7 @@ ctrllers.DashController=function($scope,$http){
         //console.log("number of districts:"+count($scope.districts2)+"  "+dist);
     });
 
-    $http.get("../json/hubs.20151204.json").success(function(data){
+    $http.get("../json/hubs.json").success(function(data){
         for(var i in data){
             var hb=data[i];
             hubs_json[hb.id]=hb.hub;
@@ -126,7 +126,7 @@ ctrllers.DashController=function($scope,$http){
         //console.log("number of hubs:"+count(hubs_json));
     });
 
-    $http.get("../json/facilities.20151204.json").success(function(data){
+    $http.get("../json/facilities.json").success(function(data){
         for(var i in data){
             var f=data[i];
             facilities_json[f.id]={'id':f.id,'name':f.facility,'district_id':f.districtID,'hub_id':f.hubID};
@@ -135,42 +135,42 @@ ctrllers.DashController=function($scope,$http){
         //console.log("first facility:"+JSON.stringify(facilities_json[2]));
     });
 
-    $http.get("../json/data.20151206.json").success(function(data) {
+    $http.get("../json/data.json").success(function(data) {
        
         $scope.districts_slct=districts_json;
         $scope.hubs_slct=hubs_json;
         $scope.age_group_slct=age_group_json;
 
-        var res=data||{};
+        var res=data.results||{};
         for(var i in res){
            var that=res[i];
            var facility_details=facilities_json[that.facility_id]||{};  
            results_json[i]={}; 
            results_json[i].year_month=that.year+"-"+that.month;
            results_json[i].facility_id=that.facility_id;
-           results_json[i].age_group=that.age_group_id           
+           results_json[i].age_group=that.age_group_id;           
            results_json[i].facility_name=facility_details.name||"";
            results_json[i].hub_id=facility_details.hub_id;
            results_json[i].district_id=facility_details.district_id;
            results_json[i].district_name=districts_json[facility_details.district_id];
 
-           results_json[i].samples_received=Number(that.samples_received)||0;
-           results_json[i].dbs_samples=Number(that.dbs_samples)||0;
-           results_json[i].total_results=Number(that.total_results)||0;
-           results_json[i].valid_results=Number(that.valid_results)||0;
-           results_json[i].rejected_samples=Number(that.rejected_samples)||0;
+           results_json[i].samples_received=Number(that.samples_received)||0;//on
+           results_json[i].dbs_samples=Number(that.dbs_samples)||0;//on
+           results_json[i].total_results=Number(that.total_results)||0;//on
+           results_json[i].valid_results=Number(that.valid_results)||0;//on
+           results_json[i].rejected_samples=Number(that.rejected_samples)||0;//on
            results_json[i].suppressed=Number(that.suppressed)||0;
 
-           results_json[i].sample_quality_rejections=Number(that.sample_quality_rejections)||0;
-           results_json[i].eligibility_rejections=Number(that.eligibility_rejections)||0;
-           results_json[i].incomplete_form_rejections=Number(that.incomplete_form_rejections)||0;
+           results_json[i].sample_quality_rejections=Number(that.sample_quality_rejections)||0;//on
+           results_json[i].eligibility_rejections=Number(that.eligibility_rejections)||0;//on
+           results_json[i].incomplete_form_rejections=Number(that.incomplete_form_rejections)||0;//on
 
-           results_json[i].cd4_less_than_500=Number(that.cd4_less_than_500)||0;
-           results_json[i].pmtct_option_b_plus=Number(that.pmtct_option_b_plus)||0;
-           results_json[i].children_under_15=Number(that.children_under_15)||0;
-           results_json[i].other_treatment=Number(that.other_treatment)||0;
-           results_json[i].treatment_blank_on_form=Number(that.treatment_blank_on_form)||0;
-           results_json[i].tb_infection=Number(that.tb_infection)||0;
+           results_json[i].cd4_less_than_500=Number(that.cd4_less_than_500)||0;//on
+           results_json[i].pmtct_option_b_plus=Number(that.pmtct_option_b_plus)||0;//on
+           results_json[i].children_under_15=Number(that.children_under_15)||0;//on
+           results_json[i].other_treatment=Number(that.other_treatment)||0;//on
+           results_json[i].treatment_blank_on_form=Number(that.treatment_blank_on_form)||0;//on
+           results_json[i].tb_infection=Number(that.tb_infection)||0;//on
            
         }
 
@@ -323,40 +323,47 @@ ctrllers.DashController=function($scope,$http){
     }
 
     var setDataByFacility=function(that){
-        $scope.facility_numbers[that.facility_id]=$scope.facility_numbers[that.facility_id]||{};
-        var f_smpls_rvd=$scope.facility_numbers[that.facility_id].samples_received||0;
-        var f_vls_rsts=$scope.facility_numbers[that.facility_id].valid_results||0;
-        var f_rjctd_smpls=$scope.facility_numbers[that.facility_id].rejected_samples||0;
-        var f_sprrsd=$scope.facility_numbers[that.facility_id].suppressed||0;
-        var f_dbs_smpls=$scope.facility_numbers[that.facility_id].dbs_samples||0;
-        var f_ttl_results=$scope.facility_numbers[that.facility_id].total_results||0;
+        if(that.facility_name!=''){
+            $scope.facility_numbers[that.facility_id]=$scope.facility_numbers[that.facility_id]||{};
+            var f_smpls_rvd=$scope.facility_numbers[that.facility_id].samples_received||0;
+            var f_vls_rsts=$scope.facility_numbers[that.facility_id].valid_results||0;
+            var f_rjctd_smpls=$scope.facility_numbers[that.facility_id].rejected_samples||0;
+            var f_sprrsd=$scope.facility_numbers[that.facility_id].suppressed||0;
+            var f_dbs_smpls=$scope.facility_numbers[that.facility_id].dbs_samples||0;
+            var f_ttl_results=$scope.facility_numbers[that.facility_id].total_results||0;
 
-        $scope.facility_numbers[that.facility_id].samples_received=f_smpls_rvd+that.samples_received;
-        $scope.facility_numbers[that.facility_id].valid_results=f_vls_rsts+that.valid_results;
-        $scope.facility_numbers[that.facility_id].rejected_samples=f_rjctd_smpls+that.rejected_samples;
-        $scope.facility_numbers[that.facility_id].suppressed=f_sprrsd+that.suppressed;
-        $scope.facility_numbers[that.facility_id].dbs_samples=f_dbs_smpls+that.dbs_samples;
-        $scope.facility_numbers[that.facility_id].total_results=f_ttl_results+that.total_results;
-        $scope.facility_numbers[that.facility_id].name=that.facility_name;
+            $scope.facility_numbers[that.facility_id].samples_received=f_smpls_rvd+that.samples_received;
+            $scope.facility_numbers[that.facility_id].valid_results=f_vls_rsts+that.valid_results;
+            $scope.facility_numbers[that.facility_id].rejected_samples=f_rjctd_smpls+that.rejected_samples;
+            $scope.facility_numbers[that.facility_id].suppressed=f_sprrsd+that.suppressed;
+            $scope.facility_numbers[that.facility_id].dbs_samples=f_dbs_smpls+that.dbs_samples;
+            $scope.facility_numbers[that.facility_id].total_results=f_ttl_results+that.total_results;
+            $scope.facility_numbers[that.facility_id].name=that.facility_name;
+            $scope.facility_numbers[that.facility_id].id=that.facility_id;
+        }
     }
 
     var setDistrictData=function(that){
-        $scope.district_numbers[that.district_id]=$scope.district_numbers[that.district_id]||{};
+        if(that.district_id!=null){
+            $scope.district_numbers[that.district_id]=$scope.district_numbers[that.district_id]||{};
 
-        var d_smpls_rvd=$scope.district_numbers[that.district_id].samples_received||0;
-        var d_vls_rsts=$scope.district_numbers[that.district_id].valid_results||0;
-        var d_rjctd_smpls=$scope.district_numbers[that.district_id].rejected_samples||0;
-        var d_sprrsd=$scope.district_numbers[that.district_id].suppressed||0;
-        var d_dbs_smpls=$scope.district_numbers[that.district_id].dbs_samples||0;
-        var d_ttl_results=$scope.district_numbers[that.district_id].total_results||0;
+            var d_smpls_rvd=$scope.district_numbers[that.district_id].samples_received||0;
+            var d_vls_rsts=$scope.district_numbers[that.district_id].valid_results||0;
+            var d_rjctd_smpls=$scope.district_numbers[that.district_id].rejected_samples||0;
+            var d_sprrsd=$scope.district_numbers[that.district_id].suppressed||0;
+            var d_dbs_smpls=$scope.district_numbers[that.district_id].dbs_samples||0;
+            var d_ttl_results=$scope.district_numbers[that.district_id].total_results||0;
 
-        $scope.district_numbers[that.district_id].samples_received=d_smpls_rvd+that.samples_received;
-        $scope.district_numbers[that.district_id].valid_results=d_vls_rsts+that.valid_results;
-        $scope.district_numbers[that.district_id].rejected_samples=d_rjctd_smpls+that.rejected_samples;
-        $scope.district_numbers[that.district_id].suppressed=d_sprrsd+that.suppressed;
-        $scope.district_numbers[that.district_id].dbs_samples=d_dbs_smpls+that.dbs_samples;
-        $scope.district_numbers[that.district_id].total_results=d_ttl_results+that.total_results;
-        $scope.district_numbers[that.district_id].name=that.district_name;
+        
+            $scope.district_numbers[that.district_id].samples_received=d_smpls_rvd+that.samples_received;
+            $scope.district_numbers[that.district_id].valid_results=d_vls_rsts+that.valid_results;
+            $scope.district_numbers[that.district_id].rejected_samples=d_rjctd_smpls+that.rejected_samples;
+            $scope.district_numbers[that.district_id].suppressed=d_sprrsd+that.suppressed;
+            $scope.district_numbers[that.district_id].dbs_samples=d_dbs_smpls+that.dbs_samples;
+            $scope.district_numbers[that.district_id].total_results=d_ttl_results+that.total_results;
+            $scope.district_numbers[that.district_id].name=that.district_name;
+            $scope.district_numbers[that.district_id].id=that.district_id;
+        }
     }
 
     var generalFilter=function(){
