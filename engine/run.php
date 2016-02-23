@@ -188,7 +188,7 @@ file_put_contents("../public/json/districts.json", json_encode($districts));
 file_put_contents("../public/json/hubs.json", json_encode($hubs));
 file_put_contents("../public/json/facilities.json", json_encode($facilities));
 
-$year=2015;
+$year=2013;
 $current_year=date('Y');
 $results=[];
 
