@@ -36,6 +36,7 @@
    
     <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
+    
     <script src="{{ asset('/js/stream_layers.js') }}"></script>
 
     <style type="text/css">

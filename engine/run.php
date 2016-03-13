@@ -91,7 +91,7 @@ function getResults($year,$cond="1"){
 	$ret=[];
 	$age_grp_case=ageGroupCase();
 
-	$sql="SELECT facilityID,month(s.created) AS mth,count(r.id) AS num,$age_grp_case AS age_group 
+	$sql="SELECT facilityID,month(s.created) AS mth,count(DISTINCT r.vlSampleID) AS num,$age_grp_case AS age_group 
 		  FROM vl_results_merged AS r
 		  LEFT JOIN vl_samples AS s ON r.vlSampleID=s.vlSampleID
 		  LEFT JOIN vl_patients AS p ON s.patientID=p.id
@@ -108,7 +108,7 @@ function getResults($year,$cond="1"){
 	}
 	return $ret;
 }
-
+//60,521 	39.9 % 	56,659
 function getRejects($year){
 	$ret=[];
 	$age_grp_case=ageGroupCase();
