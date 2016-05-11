@@ -69,6 +69,9 @@
     <br>
     <?php //if(!isset($filter_val)) $filter_val="National Metrics, ".$time." thus far" ?>
       
+      <span style="font-size:20px">eid</span>
+      <span style="font-size:20px">scd</span>
+      <span style="font-size:20px">vl</span>
      <?php
 
     function latestNMonths($n=12){

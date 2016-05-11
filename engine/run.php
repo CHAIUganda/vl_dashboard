@@ -208,7 +208,7 @@ while($year<=$current_year){
 	echo $v_rslts."\n";
 	echo $sprsd."\n";
 	break;*/
-
+	
 	foreach ($samples as $mth => $age_groups) {
 		foreach ($age_groups as $age_group_id => $facilities) {
 			foreach ($facilities as $facility_id => $num) {
@@ -241,6 +241,8 @@ while($year<=$current_year){
 
 				//print_r($data)."\n";
 				if(array_key_exists($facility_id, $facilities)) $results[]=$data;
+
+				
 			}
 		}
 	}
@@ -248,9 +250,29 @@ while($year<=$current_year){
 	$year++;
 }
 
-$data['results']=$results;
-$data['data_date']="Data last updated at ".date("H:i:s")." on ".date("d/m/Y");
+$data2['results']=$results;
+$data2['data_date']="Data last updated at ".date("H:i:s")." on ".date("d/m/Y");
 
-file_put_contents("../public/json/data.json", json_encode($data));
+file_put_contents("../public/json/data.json", json_encode($data2));
 echo "finished at ".date("H:i:s")."\n";
+
+mysql_select_db("vldash",$link);
+foreach ($data2['results'] as $row) {
+	if(insert($row,"data")) echo "inserted\n";
+	# code...
+}
+function insert($data,$table){
+	$columns_str=$values_str="";
+	foreach ($data as $k => $v) {
+		$columns_str.="`$k`,";
+		$val=str_replace("'", "''", $v);
+		$values_str.="'$val',";	
+	}
+	$columns_str=rtrim($columns_str,",");
+	$values_str=rtrim($values_str,",");
+
+	$res=mysql_query("INSERT INTO `$table` ($columns_str) VALUES ($values_str)");
+	$ret=$res?1:0;
+	return $ret;
+}
 ?>
