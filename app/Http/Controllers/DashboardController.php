@@ -3,14 +3,7 @@
 use EID\Http\Requests;
 use EID\Http\Controllers\Controller;
 
-//use EID\Models\Pilot;
-use EID\Models\Facility;
-use EID\Models\PilotFacility;
-use EID\Models\Location\Region;
-use EID\Models\Location\District;
-use EID\Models\FacilityLevel;
-use EID\Models\Sample;
-
+use EID\Dashboard;
 use Validator;
 use Lang;
 use Redirect;
@@ -29,6 +22,33 @@ class DashboardController extends Controller {
 
 		return view('d');
 	}
+
+	public function dash($fro_date="",$to_date=""){
+		if(empty($fro_date) && empty($to_date)){
+			$n_months=$this->_latestNMonths(12);
+			$fro_date=$n_months[0];
+			$to_date=end($n_months);
+		}
+		$sample_data=Dashboard::getSampleData($fro_date,$to_date);
+		return $sample_data;
+		//return view('vdash',compact("sample_data"));		
+	}
+
+
+	private function _latestNMonths($n=12){
+        $ret=[];
+        $m=date('m');
+        $y=date('Y');
+        for($i=1;$i<=$n;$i++){
+            if($m==0){
+                $m=12;
+                $y--;
+            }
+            array_unshift($ret, $y.str_pad($m, 2,0, STR_PAD_LEFT));
+            $m--;
+        }
+        return $ret;
+    }
 
 
 	private function median($arr){
@@ -165,6 +185,8 @@ class DashboardController extends Controller {
 		}
 		return $ret;
 	}
+
+
 
 	/*
 

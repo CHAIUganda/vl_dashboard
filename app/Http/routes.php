@@ -13,7 +13,13 @@
 
 //Route::get('/',function(){ return view('db/show'); });
 
-Route::get('/{time?}',"DashboardController@show");
+//Route::get('/{time?}',"DashboardController@show");
+
+Route::get('/vdash/{fro_date?}/{to_date?}',"DashboardController@dash");
+
+Route::get('/poll/',function(){
+	return view('vdash');
+});
 
 /*Route::get('/w',function(){
 	return view("welcome");

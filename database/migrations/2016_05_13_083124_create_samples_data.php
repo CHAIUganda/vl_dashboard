@@ -19,7 +19,7 @@ class CreateSamplesData extends Migration
             $table->tinyInteger('age_group_id')->unsigned();
             $table->integer('facility_id')->unsigned();
             $table->enum('gender', ['m','f','x'])->default('x');
-            $table->enum('treatment_indication', ['b_plus','tb']);
+            $table->enum('treatment_indication', ['b_plus','tb','x'])->default('x');
             $table->smallInteger('regimen_group_id')->unsigned();            
 
             $table->integer('samples_received')->unsigned();
