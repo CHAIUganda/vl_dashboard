@@ -72,7 +72,7 @@ ctrllers.DashController=function($scope,$http){
         $http.get("/vdash/"+fro_date+"/"+to_date).success(function(data){
             
         });
-    }
+    };
     
     $http.get("/other_data/").success(function(data){
         for(var i in data.districts){
@@ -175,7 +175,7 @@ ctrllers.DashController=function($scope,$http){
                 //console.log("fro yr="+vals.from_year+" fro m"+vals.from_month+" to yr="+vals.to_year+" to m"+vals.to_month);
             }
         }
-    }
+    };
 
     var computeDuration=function(vals){
         $scope.filter_duration=[];
@@ -190,7 +190,7 @@ ctrllers.DashController=function($scope,$http){
             }   
             i++;  
         }
-    }
+    };
 
     $scope.filter=function(mode){
         switch(mode){
@@ -216,8 +216,7 @@ ctrllers.DashController=function($scope,$http){
         delete $scope.filter_age_group["all"];
 
         generalFilter(); //filter the results for each required event
-    }
-
+    };
 
 
     var evaluator=function(that){  
@@ -244,14 +243,14 @@ ctrllers.DashController=function($scope,$http){
         }else{
             return false;
         }
-    }
+    };
 
     var setKeyIndicators=function(that){
         $scope.samples_received+=that.samples_received;
         $scope.suppressed+=that.suppressed;
         $scope.valid_results+=that.valid_results;
         $scope.rejected_samples+=that.rejected_samples;
-    }
+    };
 
     var setOtherIndicators=function(that){
 
@@ -280,7 +279,7 @@ ctrllers.DashController=function($scope,$http){
             break;
 
         }
-    }
+    };
 
     var setDataByDuration=function(that){
         var prev_plasma=$scope.samples_received_data.plasma[that.year_month]||0;
@@ -295,7 +294,7 @@ ctrllers.DashController=function($scope,$http){
         $scope.valid_res_by_duration[that.year_month]=prev_vld+that.valid_results;
 
         rjrctionSetter(that);//for rejection graphs
-    }
+    };
 
 
 
@@ -307,7 +306,7 @@ ctrllers.DashController=function($scope,$http){
         $scope.rejected_by_duration.sample_quality[that.year_month]=prev_sq+that.sample_quality_rejections;
         $scope.rejected_by_duration.eligibility[that.year_month]=prev_eli+that.eligibility_rejections;
         $scope.rejected_by_duration.incomplete_form[that.year_month]=prev_inc+that.incomplete_form_rejections;
-    }
+    };
 
     var setDataByFacility=function(that){
         if(that.facility_name!=''){
@@ -328,7 +327,7 @@ ctrllers.DashController=function($scope,$http){
             $scope.facility_numbers[that.facility_id].name=that.facility_name;
             $scope.facility_numbers[that.facility_id].id=that.facility_id;
         }
-    }
+    };
 
     var setDistrictData=function(that){
         if(that.district_id!=null){
@@ -351,29 +350,37 @@ ctrllers.DashController=function($scope,$http){
             $scope.district_numbers[that.district_id].name=that.district_name;
             $scope.district_numbers[that.district_id].id=that.district_id;
         }
-    }
+    };
 
     var setDataByRegimenGroup=function(that){
+        $scope.regimen_group_numbers[that.regimen_group_id]=$scope.regimen_group_numbers[that.regimen_group_id]||{};
         var prev_smpls_rcvd=$scope.regimen_group_numbers[that.regimen_group_id].samples_received||0;
         var prev_ttl_rsts=$scope.regimen_group_numbers[that.regimen_group_id].total_results||0;
         var prev_sprsd=$scope.regimen_group_numbers[that.regimen_group_id].suppressed||0;
+        var prev_vld=$scope.regimen_group_numbers[that.regimen_group_id].valid_results||0;
 
         $scope.regimen_group_numbers[that.regimen_group_id].samples_received=prev_smpls_rcvd+that.samples_received;
         $scope.regimen_group_numbers[that.regimen_group_id].total_results=prev_ttl_rsts+that.total_results;
         $scope.regimen_group_numbers[that.regimen_group_id].suppressed=prev_sprsd+that.suppressed;
+        $scope.regimen_group_numbers[that.regimen_group_id].valid_results=prev_vld+that.valid_results;
         $scope.regimen_group_numbers[that.regimen_group_id].name=regimen_groups_json[that.regimen_group_id];
-    }
+
+    };
 
     var setDataByRegimenTime=function(that){
+        $scope.regimen_time_numbers[that.regimen_time_id]=$scope.regimen_time_numbers[that.regimen_time_id]||{};
         var prev_smpls_rcvd=$scope.regimen_time_numbers[that.regimen_time_id].samples_received||0;
         var prev_ttl_rsts=$scope.regimen_time_numbers[that.regimen_time_id].total_results||0;
         var prev_sprsd=$scope.regimen_time_numbers[that.regimen_time_id].suppressed||0;
+        var prev_vld=$scope.regimen_time_numbers[that.regimen_time_id].valid_results||0;
+
 
         $scope.regimen_time_numbers[that.regimen_time_id].samples_received=prev_smpls_rcvd+that.samples_received;
         $scope.regimen_time_numbers[that.regimen_time_id].total_results=prev_ttl_rsts+that.total_results;
         $scope.regimen_time_numbers[that.regimen_time_id].suppressed=prev_sprsd+that.suppressed;
-        $scope.regimen_time_numbers[that.regimen_time_id].name=regimen_groups_json[that.regimen_time_id];
-    }
+        $scope.regimen_time_numbers[that.regimen_time_id].valid_results=prev_vld+that.valid_results;
+        $scope.regimen_time_numbers[that.regimen_time_id].name=regimen_times_json[that.regimen_time_id];
+    };
 
     var generalFilter=function(){
         $scope.loading=true;
@@ -464,7 +471,7 @@ ctrllers.DashController=function($scope,$http){
             d3.select('#supression_rate svg').datum(data).transition().duration(500).call(chart);
             return chart;
         });
-    }
+    };
 
     $scope.displayRejectionRate=function(){
         var rbd=$scope.rejected_by_duration;
@@ -491,6 +498,78 @@ ctrllers.DashController=function($scope,$http){
         });
     };
 
+    $scope.displayRegimenGroups=function(){
+
+        var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
+                  {"key":"VALID RESULTS","bar":true,"color": "#F44336","values":[]}];
+
+        for(var i in $scope.regimen_group_numbers){
+            var obj=$scope.regimen_group_numbers[i];
+            var sprsd=obj.suppressed||0;
+            var vld=obj.valid_results||0;
+            var s_rate=((sprsd/vld)||0)*100;
+            //s_rate.toPrecision(3);
+            data[0].values.push([obj.name,Math.round(s_rate)]);
+            data[1].values.push([obj.name,vld]);
+        } 
+        nv.addGraph( function() {
+            var chart = nv.models.linePlusBarChart()
+                        .margin({right: 60,})
+                        .x(function(d,i) { return i })
+                        .y(function(d,i) {return d[1] }).focusEnable(false);
+
+            chart.xAxis.tickFormat(function(d) {
+                return data[0].values[d] && data[0].values[d][0] || " ";
+            });
+            //chart.reduceXTicks(false);
+            //chart.bars.forceY([0]);
+            chart.lines.forceY([0,100]);
+            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
+
+            $('#regimen_groups svg').html(" ");
+            d3.select('#regimen_groups svg').datum(data).transition().duration(500).call(chart);
+            return chart;
+        });
+
+        
+    };
+
+
+    $scope.displayRegimenTime=function(){
+        var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
+                  {"key":"SAMPLES RECEIVED","bar":true,"color": "#F44336","values":[]}];
+
+        for(var i in $scope.regimen_time_numbers){
+            var obj=$scope.regimen_time_numbers[i];
+            var sprsd=obj.suppressed||0;
+            var vld=obj.valid_results||0;
+            var s_rate=((sprsd/vld)||0)*100;
+            //s_rate.toPrecision(3);
+            data[0].values.push([obj.name,Math.round(s_rate)]);
+            data[1].values.push([obj.name,obj.samples_received]);
+        } 
+        nv.addGraph( function() {
+            var chart = nv.models.linePlusBarChart()
+                        .margin({right: 60,})
+                        .x(function(d,i) { return i })
+                        .y(function(d,i) {return d[1] }).focusEnable(false);
+
+            chart.xAxis.tickFormat(function(d) {
+                return data[0].values[d] && data[0].values[d][0] || " ";
+            });
+            //chart.reduceXTicks(false);
+            //chart.bars.forceY([0]);
+            chart.lines.forceY([0,100]);
+            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
+
+            $('#regimen_time svg').html(" ");
+            d3.select('#regimen_time svg').datum(data).transition().duration(500).call(chart);
+            return chart;
+        });
+    };
+
+
+
      $scope.removeTag=function(mode,nr){
         switch(mode){
             case "district": delete $scope.filter_districts[nr];break;
@@ -510,7 +589,7 @@ ctrllers.DashController=function($scope,$http){
         $scope.fro_date="all";
         $scope.to_date="all";
         generalFilter();
-    }
+    };
 
     $scope.compare = function(prop,comparator, val){
         return function(item){
@@ -573,7 +652,7 @@ ctrllers.DashController=function($scope,$http){
             $("#f_shw"+i).attr("class","active");
             $("#d_shw"+i).attr("class","");
         }
-    }
+    };
 
     var inArray=function(val,arr){
         var ret=false;
@@ -581,18 +660,18 @@ ctrllers.DashController=function($scope,$http){
             if(val==arr[i]) ret=true;
         }
         return ret;
-    }
+    };
 
     var dateFormat=function(y_m){
         var arr=y_m.split('-');
         var yr=arr[0];
         var mth=arr[1];
         return $scope.month_labels[mth]+" '"+yr.slice(-2);
-    }
+    };
 
     var count=function(json_obj){
         return Object.keys(json_obj).length;
-    }
+    };
 
 };
 

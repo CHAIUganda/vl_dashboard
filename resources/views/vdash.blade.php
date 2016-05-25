@@ -149,12 +149,31 @@
                         <span class="desc">rejection rate</span>
                     </a>
                 </li>
+                <li id='tb_hd4'>
+                    <a href="#tab4" id='tb_lnk4' ng-click="displayRegimenGroups()">
+                        <span class="num ng-cloak" >
+                            &nbsp;                             
+                        </span>
+                        <span class="desc">current regimen</span>
+                    </a>
+                </li>
+
+                <li id='tb_hd5'>
+                    <a href="#tab5" id='tb_lnk5' ng-click="displayRegimenTime()">
+                        <span class="num ng-cloak">
+                            &nbsp;                            
+                        </span>
+                        <span class="desc">regimen durations</span>
+                    </a>
+                </li>
             </ul>
         </nav>
         <div class="content-wrap">
             <section id="tab1"> @include('sections._samples_received') </section>
             <section id="tab2"> @include('sections._suppression_rate') </section>
             <section id="tab3"> @include('sections._rejections')</section>
+            <section id="tab4"> @include('sections._regimen_groups')</section>
+            <section id="tab5"> @include('sections._regimen_time')</section>
         </div><!-- /content -->
     </div><!-- /tabs -->
     
