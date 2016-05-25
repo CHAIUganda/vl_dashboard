@@ -397,7 +397,7 @@ ctrllers.DashController=function($scope,$http){
                 setDataByDuration(that); //set data by duration to be displayed in graphs    
                 setDataByFacility(that); //set data by facility to be displayed in tables
                 setDistrictData(that); //set data by district to displayed in the table
-                setDataByRegimenType(that);
+                setDataByRegimenGroup(that);
                 setDataByRegimenTime(that);
             }         
         }
