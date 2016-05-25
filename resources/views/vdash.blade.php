@@ -110,7 +110,7 @@
     //echo "<br><br><br>xxx".$sample_data;
 
      //$start_year=2011,$start_month=1;
-    $init_duration=latestNMonths(12);  
+    $init_duration=latestNMonths(30);  
     $months_by_years=yearByMonths(2014,8); 
      //krsort($months_by_years);
      ?>

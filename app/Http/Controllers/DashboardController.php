@@ -4,6 +4,13 @@ use EID\Http\Requests;
 use EID\Http\Controllers\Controller;
 
 use EID\Dashboard;
+use EID\SamplesData;
+use EID\TreatmentIndication;
+
+use EID\Hub;
+use EID\District;
+use EID\Facility;
+
 use Validator;
 use Lang;
 use Redirect;
@@ -12,28 +19,33 @@ use Session;
 
 class DashboardController extends Controller {
 
+/*	$scope.loading=true;
+        
+
+       
+        */
+
 	public function __construct(){
 		$this->months=\MyHTML::initMonths();
 		//$this->middleware('auth');
 	}
 
-	public function show($time=""){
-		if(empty($time)) $time=date("Y");
-
-		return view('d');
-	}
-
 	public function dash($fro_date="",$to_date=""){
 		if(empty($fro_date) && empty($to_date)){
-			$n_months=$this->_latestNMonths(12);
+			$n_months=$this->_latestNMonths(6);
 			$fro_date=$n_months[0];
 			$to_date=end($n_months);
 		}
-		$sample_data=Dashboard::getSampleData($fro_date,$to_date);
-		return $sample_data;
-		//return view('vdash',compact("sample_data"));		
+		return Dashboard::getSampleData($fro_date,$to_date);	
 	}
 
+	public function other_data(){
+		$ret=[];
+		$ret["hubs"]=Hub::all();
+		$ret["districts"]=District::all();
+		$ret["facilities"]=Facility::all();
+		return json_encode($ret);
+	}
 
 	private function _latestNMonths($n=12){
         $ret=[];
@@ -49,6 +61,103 @@ class DashboardController extends Controller {
         }
         return $ret;
     }
+
+	public function show($time=""){
+		if(empty($time)) $time=date("Y");
+
+		return view('d');
+	}
+
+	public function live(){
+		extract(\Request::all());
+		if(empty($fro_date) && empty($to_date)){
+			$n_months=$this->_latestNMonths(12);
+			$fro_date=$n_months[0];
+			$to_date=end($n_months);
+		}
+		$conds=" `year_month`>=$fro_date AND `year_month`<=$to_date";
+		$conds.=!empty($districts)?" AND f.district_id in ($districts) ":"";
+		$conds.=!empty($hubs)?" AND f.hub_id in ($hubs) ":"";
+		$conds.=!empty($age_ids)?" AND s.age_group_id in ($age_ids) ":"";
+
+		$ret=[];
+
+		$sd_numbers=$this->_wholeNumbers($conds);
+		$ret["samples_received"]=$sd_numbers->samples_received; 
+		$ret["suppressed"]=$sd_numbers->suppressed;
+		$ret["valid_results"]=$sd_numbers->valid_results;
+		$ret["rejected_samples"]=$sd_numbers->rejected_samples;
+
+		$ret["facility_numbers"]=$this->_facilityNumbers($conds);
+		$ret["district_numbers"]=$this->_districtNumbers($conds);
+		$ret["duration_numbers"]=$this->_durationNumbers($conds);
+
+		$ret["treatment_indication"]=$this->_treatmentIndicationNumbers($conds);
+		return json_encode($ret);
+	}
+
+	private function _wholeNumbers($conds){
+		$cols=" SUM(samples_received) AS samples_received,
+				SUM(suppressed) AS suppressed,
+				SUM(valid_results) AS valid_results,
+				SUM(rejected_samples) AS rejected_samples";
+		return SamplesData::getSamplesData($cols,$conds)->first();
+	}
+
+	private function _wholeTINumbers($conds){
+		$cols=" SUM(cd4_less_than_500) AS cd4_less_than_500,
+				SUM(pmtct_option_b_plus) AS pmtct_option_b_plus	,
+				SUM(children_under_15) AS children_under_15,
+				SUM(other_treatment) AS other_treatment,
+				SUM(treatment_blank_on_form) AS treatment_blank_on_form,
+				SUM(tb_infection) AS tb_infection";
+		return TreatmentIndication::getTIData($cols,$conds)->first();
+	}
+
+	private function _treatmentIndicationNumbers($conds){
+		$cols="treatment_indication_id,SUM(samples_received) AS samples_received";
+		$res=SamplesData::getSamplesData($cols,$conds,"treatment_indication_id");
+		$ret=[];
+		foreach($res AS $row) $ret[$row->treatment_indication_id]=$row->samples_received;
+		return $ret;
+	}
+
+	private function _facilityNumbers($conds){
+		$cols=" f.facility_id,f.name,
+				SUM(samples_received) AS samples_received,
+				SUM(suppressed) AS suppressed,
+				SUM(valid_results) AS valid_results,
+				SUM(rejected_samples) AS rejected_samples,
+				SUM(dbs_samples) AS dbs_samples,
+				SUM(total_results) AS total_results
+				";
+		return SamplesData::getSamplesData($cols,$conds,'f.facility_id');
+	}
+
+	private function _districtNumbers($conds){
+		$cols=" d.district_id,d.name,
+				SUM(samples_received) AS samples_received,
+				SUM(suppressed) AS suppressed,
+				SUM(valid_results) AS valid_results,
+				SUM(rejected_samples) AS rejected_samples,
+				SUM(dbs_samples) AS dbs_samples,
+				SUM(total_results) AS total_results
+				";
+		return SamplesData::getSamplesData($cols,$conds,'d.district_id');
+	}
+
+	private function _durationNumbers($conds){
+		$cols=" `year_month`,
+				SUM(samples_received-dbs_samples) AS plasma_samples,
+				SUM(dbs_samples) AS dbs_samples,
+				SUM(suppressed) AS suppressed,
+				SUM(valid_results) AS valid_results,
+				SUM(sample_quality_rejections) AS sample_quality_rejections,
+				SUM(eligibility_rejections) AS eligibility_rejections,
+				SUM(incomplete_form_rejections) AS incomplete_form_rejections				
+				";
+		return SamplesData::getSamplesData($cols,$conds,'year_month');
+	}
 
 
 	private function median($arr){

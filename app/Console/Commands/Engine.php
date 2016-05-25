@@ -50,8 +50,14 @@ class Engine extends Command
     {
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
+        //
+
+        /*$this->_loadHubs();
+        $this->_loadDistricts();
+        $this->_loadFacilities();
+        $this->_loadIPs();*/
         $this->_loadData();
-        // $this->_loadHubs();
+
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
 
     }
@@ -61,8 +67,6 @@ class Engine extends Command
         $current_year=date('Y');
         while($year<=$current_year){
             $samples=LiveData::getSamples($year);
-            /*print_r($samples);
-            break;*/
             $dbs_samples=LiveData::getSamples($year," sampleTypeID=1 ");
             $rjctn_rsns=LiveData::getRejects($year);
             $rjctn_rsns2=LiveData::getRejects2($year);
@@ -70,81 +74,93 @@ class Engine extends Command
             $t_rslts=LiveData::getResults($year);
             $v_rslts=LiveData::getResults($year,$this->_validCases());
             $sprsd_cond=$this->_validCases()." AND ".$this->_suppressedCases();
-            $sprsd=LiveData::getResults($year,$sprsd_cond);
-            //mth,age_group,facilityID,sex,reg,trt
+            $sprsd=LiveData::getResults($year,$sprsd_cond); 
+            $i=0;
+            foreach($samples AS $s){
+                $key=$s->mth.$s->age_group.$s->facilityID.$s->sex;
+                $key.=$s->reg_type.$s->reg_line.$s->reg_time.$s->trt;
 
-            $trmt_indctn=LiveData::getTrmtIndctn($year);
-
-            foreach($samples AS $smpl){
-                $smpl=(array)$smpl;
-                $conds=[];
-                $conds2=[];
                 $sample_data = new SamplesData;
-                $sample_data->year_month = $year.str_pad($smpl['mth'],2,0,STR_PAD_LEFT);
-                $sample_data->age_group_id = $conds['age_group'] = $smpl['age_group'];
-                $sample_data->facility_id = $conds['facilityID'] = $smpl['facilityID'];
-                $sample_data->gender= $conds['sex'] = $smpl['sex'];
-                $sample_data->treatment_indication = $conds['trt'] = $smpl['trt'];
-                $sample_data->regimen_group_id = $conds['reg'] = $smpl['reg'];
-                $sample_data->samples_received=$smpl['num'];
-                
-                $conds['mth'] = $conds2['mth'] =$smpl['mth'];
-                $sample_data->dbs_samples = $this->_multi_search($dbs_samples,$conds,'num');
-                $sample_data->rejected_samples = $this->_multi_search($rjctn_rsns,$conds,'num');
-                $sample_data->sample_quality_rejections=$this->_multi_search($rjctn_rsns2,$conds+['rjctn_rsn'=>'quality_of_sample'],'num');
-                $sample_data->incomplete_form_rejections=$this->_multi_search($rjctn_rsns2,$conds+['rjctn_rsn'=>'incomplete_form'],'num');
-                $sample_data->eligibility_rejections=$this->_multi_search($rjctn_rsns2,$conds+['rjctn_rsn'=>'eligibility'],'num');
+                //filter params
+                $sample_data->year_month = $year.str_pad($s->mth,2,0,STR_PAD_LEFT);
+                $sample_data->age_group_id = isset($s->age_group)?$s->age_group:0;
+                $sample_data->facility_id = isset($s->facilityID)?$s->facilityID:0;
+                $sample_data->gender = isset($s->sex)?$s->sex:0; 
+                $sample_data->treatment_indication_id = isset($s->trt)?$s->trt:0;
+                $sample_data->regimen_group_id = isset($s->reg_type)?$s->reg_type:0;
+                $sample_data->regimen_line = isset($s->reg_line)?$s->reg_line:0;
+                $sample_data->regimen_time_id = isset($s->reg_time)?$s->reg_time:0;
 
-                $sample_data->total_results = $this->_multi_search($t_rslts,$conds,'num');
-                $sample_data->valid_results = $this->_multi_search($v_rslts,$conds,'num');
-                $sample_data->suppressed = $this->_multi_search($sprsd,$conds,'num');
+                //numbers
+                $sample_data->samples_received = isset($s->num)?$s->num:0;
+                $sample_data->dbs_samples = isset($dbs_samples[$key])?$dbs_samples[$key]:0;
+                $sample_data->rejected_samples = isset($rjctn_rsns[$key])?$rjctn_rsns[$key]:0;
 
+                $sample_data->sample_quality_rejections=isset($rjctn_rsns2[$key.'quality_of_sample'])?$rjctn_rsns2[$key.'quality_of_sample']:0;
+                $sample_data->incomplete_form_rejections=isset($rjctn_rsns2[$key.'incomplete_form'])?$rjctn_rsns2[$key.'incomplete_form']:0;
+                $sample_data->eligibility_rejections=isset($rjctn_rsns2[$key.'eligibility'])?$rjctn_rsns2[$key.'eligibility']:0;
+
+                $sample_data->total_results = isset($t_rslts[$key])?$t_rslts[$key]:0;
+                $sample_data->valid_results = isset($v_rslts[$key])?$v_rslts[$key]:0;
+                $sample_data->suppressed = isset($sprsd[$key])?$sprsd[$key]:0;
                 $sample_data->save();
-
-                $trmt_indctn_obj = new TreatmentIndication;
-                $trmt_indctn_obj->year_month=$conds2[]=$year.str_pad($smpl['mth'],2,0,STR_PAD_LEFT);
-                $trmt_indctn_obj->age_group_id = $conds2['age_group'] = $smpl['age_group'];
-                $trmt_indctn_obj->facility_id = $conds2['facilityID'] = $smpl['facilityID'];
-                $trmt_indctn_obj->cd4_less_than_500 = $this->_multi_search($t_rslts,$conds2+['treatmentInitiationID'=>3],'num');
-                $trmt_indctn_obj->pmtct_option_b_plus = $this->_multi_search($t_rslts,$conds2+['treatmentInitiationID'=>1],'num');
-                $trmt_indctn_obj->children_under_15 = $this->_multi_search($t_rslts,$conds2+['treatmentInitiationID'=>2],'num');
-                $trmt_indctn_obj->other_treatment = $this->_multi_search($t_rslts,$conds2+['treatmentInitiationID'=>5],'num');
-                $trmt_indctn_obj->treatment_blank_on_form = $this->_multi_search($t_rslts,$conds2+['treatmentInitiationID'=>0],'num');
-                $trmt_indctn_obj->tb_infection = $this->_multi_search($t_rslts,$conds2+['treatmentInitiationID'=>4],'num');
-                
-                $trmt_indctn_obj->save();
+                $i++;
+                //echo "$i\n";                
             }
-
+            echo " inserted $i records for $year\n";
             $year++;
-
         }
-
-
-       /* $this->_loadSampleData(); 
-        $this->_loadRegimenData();
-        $this->_loadTreatmentIndicationData();*/
-    }
-
-    private function _loadSampleData(){
-
-    }
-
-    private function _loadRegimenData(){
-
-    }
-
-    private function _loadTreatmentIndicationData(){
-
     }
 
     private function _loadHubs(){
         $hubs=LiveData::getHubs();
+        $sql="";
         foreach ($hubs as $hub) {
-            $hb=new Hub; 
-            $hb->hub_id=$hub->id;         
-            $hb->name=$hub->hub;
-            $hb->save();
+            $h=new \stdClass;
+            $h->hub_id=$hub->id;
+            $h->name=$hub->hub;
+            $sql.=$this->_insertSQL($h,"hubs");
         }
+        \DB::unprepared($sql);
+    }
+
+    private function _loadFacilities(){
+        $res=LiveData::getFacilities();
+        $sql="";
+        foreach ($res as $row) {
+            $f=new \stdClass;
+            $f->facility_id=$row->id;         
+            $f->name=$row->facility;
+            $f->district_id=$row->districtID;
+            $f->hub_id=$row->hubID;
+            $f->ip_id=$row->ipID;
+            $sql.=$this->_insertSQL($f,"facilities");
+        }
+        \DB::unprepared($sql);
+    }
+
+    private function _loadDistricts(){
+        $res=LiveData::getDistricts();
+        $sql="";
+        foreach ($res as $row) {
+            $d=new \stdClass;
+            $d->district_id=$row->id;         
+            $d->name=$row->district;            
+            $sql.=$this->_insertSQL($d,"districts");
+        }
+        \DB::unprepared($sql);
+    }
+
+    private function _loadIPs(){
+        $res=LiveData::getIPs();
+        $sql="";
+        foreach ($res as $row) {
+            $p=new \stdClass;
+            $p->ip_id=$row->id;         
+            $p->name=$row->ip;            
+            $sql.=$this->_insertSQL($p,"ips");
+        }
+        \DB::unprepared($sql);
     }
 
 
@@ -182,5 +198,17 @@ class Engine extends Command
             return true;
         });
         return current($filtered_arr)?current($filtered_arr)->$ret_item:0;
+    }
+
+    private function _insertSQL($data,$table){
+        $columns_str=$values_str="";
+        foreach ($data as $k => $v) {
+            $columns_str.="`$k`,";
+            $val=str_replace("'", "''", $v);
+            $val=trim($val);
+            $values_str.="'$val',"; 
+        }
+        $now=date("YmdHis");
+        return "INSERT INTO `$table` ($columns_str `created_at`,`updated_at`) VALUES ($values_str '$now','$now');";
     }
 }

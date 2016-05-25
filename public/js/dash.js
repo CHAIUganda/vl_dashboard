@@ -48,9 +48,13 @@ var ctrllers={};
 ctrllers.DashController=function($scope,$http){
     $scope.identity = angular.identity;
 
+    var months_interchange={'01':'1','02':'2','03':'3','04':'4','05':'5','06':'6','07':'7','08':'8','09':'9','10':'10','11':'11','12':'12'};
+
     var districts_json={};
     var hubs_json={};
-    var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};    
+    var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};   
+    var regimen_groups_json={1:'AZT' ,2:'TDF/XTC/EFV' ,3:'TDF/XTC/NVP', 4:'ABC',5:'TDF/XTC/LPV/r' , 6:'TDF/XTC/ATV/r', 7:'Other'};
+    var regimen_times_json={1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'}; 
     var facilities_json={};   
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
 
@@ -59,115 +63,58 @@ ctrllers.DashController=function($scope,$http){
     $scope.districts2=[];
     $scope.hubs2=[];
 
-    
-   /* $http.get("http://vl.trailanalytics.com/json/districts/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/").success(function(data) {
-        for(var i in data){
-            console.log(" first piece is "+i+" and "+JSON.stringify(data[i]));
-        }
-
-        //Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://vl.trailanalytics.com/json/districts/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/. This can be fixed by moving the resource to the same domain or enabling CORS.
-    
-    })*/
-
-    /*$http.get("{{ asset('/json/hh.json') }}").success(function(data) {
-        for(var i in data){
-            console.log(" first piece is "+i+" and "+JSON.stringify(data[i]));
-        }
-    })*/
-
-   /* $http.get("http://vl.trailanalytics.com/json/data/amg299281fmlasd5dc02bd238919260fg6ad261d094zafd9/").success(function(datah){
-        var lenght=count(datah);
-        console.log("the length is "+lenght);
-    })*/
-
-    /*$http.get("../json/data.json").success(function(data) {
-        console.log(JSON.stringify(data[0]));
-        districts_json=data['districts']||{};
-        hubs_json=data['hubs']||{};
-        age_group_json=data['age_group']||{};
-        facilities_json=data['facilities']||{};
-  
-
-        $scope.districts_slct=districts_json;
-        $scope.hubs_slct=hubs_json;
-        $scope.age_group_slct=age_group_json;
-
-        var res=data['results']||{};
-        for(var i in res){
-           var that=res[i];
-           var facility_details=facilities_json[that.facility_id];        
-           results_json[i]=that;
-           results_json[i].year_month=that.year+"-"+that.month;
-           results_json[i].facility_name=facility_details.name;
-           results_json[i].hub_id=facility_details.hub_id;
-           results_json[i].district_id=facility_details.district_id;
-           results_json[i].district_name=districts_json[facility_details.district_id];
-
-        }
-
-       generalFilter(); //call the filter for the first time
-    });*/
-
-    $http.get("../json/districts.json").success(function(data){
-        for(var i in data){
-            var dst=data[i];
-            districts_json[dst.id]=dst.district;
-            $scope.districts2.push({"id":dst.id,"name":dst.district});
-        }
-        //console.log("number of districts:"+count($scope.districts2)+"  "+dist);
-    });
-
-    $http.get("../json/hubs.json").success(function(data){
-        for(var i in data){
-            var hb=data[i];
-            hubs_json[hb.id]=hb.hub;
-            $scope.hubs2.push({"id":hb.id,"name":hb.hub});
-        }
-        //console.log("number of hubs:"+count(hubs_json));
-    });
-
-    $http.get("../json/facilities.json").success(function(data){
-        for(var i in data){
-            var f=data[i];
-            facilities_json[f.id]={'id':f.id,'name':f.facility,'district_id':f.districtID,'hub_id':f.hubID};
-        }
-        //console.log("number of facilities:"+count(facilities_json));
-        //console.log("first facility:"+JSON.stringify(facilities_json[2]));
-    });
 
 
-
-    $http.get("/vdash/").success(function(data){
-        console.log("we go this :: "+count(data));
-        /*for(var i in data){
-            var f=data[i];
-            facilities_json[f.id]={'id':f.id,'name':f.facility,'district_id':f.districtID,'hub_id':f.hubID};
-        }*/
-        //console.log("number of facilities:"+count(facilities_json));
-        //console.log("first facility:"+JSON.stringify(facilities_json[2]));
-    });
 
 
     $scope.getData=function(){
-        $http.get("/vdash/201507/201510").success(function(data){
-            console.log("we now have this :: "+count(data));
+
+        $http.get("/vdash/"+fro_date+"/"+to_date).success(function(data){
+            
         });
     }
+    
+    $http.get("/other_data/").success(function(data){
+        for(var i in data.districts){
+            var id=data.districts[i].district_id;
+            var name=data.districts[i].name;
+            districts_json[id]=name;
+            $scope.districts2.push({"id":id,"name":name});
+        }
+
+        for(var i in data.hubs){
+            var id=data.hubs[i].hub_id;
+            var name=data.hubs[i].name;
+            hubs_json[id]=name;
+            $scope.hubs2.push({"id":id,"name":name});
+        }
+
+        for(var i in data.facilities){
+            var f=data.facilities[i];
+            facilities_json[f.facility_id]={'id':f.facility_id,'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
+        }
+    });
+
 
     //$http.get("../json/data.json").success(function(data) {
-    $http.get("../json/data.json").success(function(data) {
+    $http.get("/vdash").success(function(data) {
        
-        $scope.districts_slct=districts_json;
-        $scope.hubs_slct=hubs_json;
-        $scope.age_group_slct=age_group_json;
+       //console.log("ccccc:"+JSON.stringify(data));
+        // $scope.districts_slct=districts_json;
+        // $scope.hubs_slct=hubs_json;
+        // $scope.age_group_slct=age_group_json;
 
-        var res=data.results||{};
-        $scope.data_date=data.data_date||"";
+        var res=data||{};
+        //var t_res=data.t_data||{};
+        //console.log("we got this::"+JSON.stringify(data));
+        //$scope.data_date=data.data_date||"";
         for(var i in res){
            var that=res[i];
            var facility_details=facilities_json[that.facility_id]||{};  
            results_json[i]={}; 
-           results_json[i].year_month=that.year+"-"+that.month;
+           //results_json[i].year_month=that.year+"-"+that.month;
+           var ym=that.year_month.toString()||"";
+           results_json[i].year_month=ym.slice(0,4)+"-"+months_interchange[ym.slice(4)];
            results_json[i].facility_id=that.facility_id;
            results_json[i].age_group=that.age_group_id;           
            results_json[i].facility_name=facility_details.name||"";
@@ -186,12 +133,9 @@ ctrllers.DashController=function($scope,$http){
            results_json[i].eligibility_rejections=Number(that.eligibility_rejections)||0;//on
            results_json[i].incomplete_form_rejections=Number(that.incomplete_form_rejections)||0;//on
 
-           results_json[i].cd4_less_than_500=Number(that.cd4_less_than_500)||0;//on
-           results_json[i].pmtct_option_b_plus=Number(that.pmtct_option_b_plus)||0;//on
-           results_json[i].children_under_15=Number(that.children_under_15)||0;//on
-           results_json[i].other_treatment=Number(that.other_treatment)||0;//on
-           results_json[i].treatment_blank_on_form=Number(that.treatment_blank_on_form)||0;//on
-           results_json[i].tb_infection=Number(that.tb_infection)||0;//on
+           results_json[i].treatment_indication_id=that.treatment_indication_id;
+           results_json[i].regimen_group_id=that.regimen_group_id;
+           results_json[i].regimen_time_id=that.regimen_time_id;
            
         }
 
@@ -310,12 +254,32 @@ ctrllers.DashController=function($scope,$http){
     }
 
     var setOtherIndicators=function(that){
-        $scope.cd4_less_than_500+=that.cd4_less_than_500;
-        $scope.pmtct_option_b_plus+=that.pmtct_option_b_plus;
-        $scope.children_under_15+=that.children_under_15;
-        //$scope.other_treatment+=that.other_treatment;
-        $scope.treatment_blank_on_form+=that.treatment_blank_on_form;  
-        $scope.tb_infection+=that.tb_infection;
+
+        switch(that.treatment_indication_id){
+            case 1:
+            $scope.pmtct_option_b_plus+=that.samples_received;            
+            break;
+
+            case 2:
+            $scope.children_under_15+=that.samples_received;            
+            break;
+
+            case 3:
+            $scope.cd4_less_than_500+=that.samples_received;            
+            break;
+
+            case 4:
+            $scope.tb_infection+=that.samples_received;            
+            break;
+
+            case 5:
+            $scope.other_treatment+=that.samples_received;            
+            break;
+            default:
+            $scope.treatment_blank_on_form+=that.samples_received;            
+            break;
+
+        }
     }
 
     var setDataByDuration=function(that){
@@ -332,6 +296,8 @@ ctrllers.DashController=function($scope,$http){
 
         rjrctionSetter(that);//for rejection graphs
     }
+
+
 
     var rjrctionSetter=function(that){
         var prev_sq=$scope.rejected_by_duration.sample_quality[that.year_month]||0;
@@ -387,6 +353,28 @@ ctrllers.DashController=function($scope,$http){
         }
     }
 
+    var setDataByRegimenGroup=function(that){
+        var prev_smpls_rcvd=$scope.regimen_group_numbers[that.regimen_group_id].samples_received||0;
+        var prev_ttl_rsts=$scope.regimen_group_numbers[that.regimen_group_id].total_results||0;
+        var prev_sprsd=$scope.regimen_group_numbers[that.regimen_group_id].suppressed||0;
+
+        $scope.regimen_group_numbers[that.regimen_group_id].samples_received=prev_smpls_rcvd+that.samples_received;
+        $scope.regimen_group_numbers[that.regimen_group_id].total_results=prev_ttl_rsts+that.total_results;
+        $scope.regimen_group_numbers[that.regimen_group_id].suppressed=prev_sprsd+that.suppressed;
+        $scope.regimen_group_numbers[that.regimen_group_id].name=regimen_groups_json[that.regimen_group_id];
+    }
+
+    var setDataByRegimenTime=function(that){
+        var prev_smpls_rcvd=$scope.regimen_time_numbers[that.regimen_time_id].samples_received||0;
+        var prev_ttl_rsts=$scope.regimen_time_numbers[that.regimen_time_id].total_results||0;
+        var prev_sprsd=$scope.regimen_time_numbers[that.regimen_time_id].suppressed||0;
+
+        $scope.regimen_time_numbers[that.regimen_time_id].samples_received=prev_smpls_rcvd+that.samples_received;
+        $scope.regimen_time_numbers[that.regimen_time_id].total_results=prev_ttl_rsts+that.total_results;
+        $scope.regimen_time_numbers[that.regimen_time_id].suppressed=prev_sprsd+that.suppressed;
+        $scope.regimen_time_numbers[that.regimen_time_id].name=regimen_groups_json[that.regimen_time_id];
+    }
+
     var generalFilter=function(){
         $scope.loading=true;
         $scope.samples_received=0;$scope.suppressed=0;$scope.valid_results=0;$scope.rejected_samples=0;   
@@ -398,6 +386,8 @@ ctrllers.DashController=function($scope,$http){
         $scope.rejected_by_duration={'sample_quality':{},'eligibility':{},'incomplete_form':{}};
         $scope.facility_numbers={};
         $scope.district_numbers={};
+        $scope.regimen_group_numbers={};
+        $scope.regimen_time_numbers={};
 
         for(var i in results_json){
             var that = results_json[i];
@@ -407,6 +397,8 @@ ctrllers.DashController=function($scope,$http){
                 setDataByDuration(that); //set data by duration to be displayed in graphs    
                 setDataByFacility(that); //set data by facility to be displayed in tables
                 setDistrictData(that); //set data by district to displayed in the table
+                setDataByRegimenType(that);
+                setDataByRegimenTime(that);
             }         
         }
 

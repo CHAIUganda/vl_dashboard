@@ -11,7 +11,7 @@ class Dashboard extends Model
 
 
     public static function getSampleData($fro_date,$to_date){
-    	return Dashboard::select("*")->from("data")
+    	return Dashboard::select("*")->from("samples_data")
     					->where("year_month",">=",$fro_date)
     					->where("year_month","<=",$to_date)
     					->get()->toJson();

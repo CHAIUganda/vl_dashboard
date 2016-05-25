@@ -17,9 +17,18 @@
 
 Route::get('/vdash/{fro_date?}/{to_date?}',"DashboardController@dash");
 
-Route::get('/poll/',function(){
-	return view('vdash');
-});
+Route::get('/poll/',function(){ return view('vdash'); });
+
+Route::get("/districts","DashboardController@districts");
+
+Route::get("/hubs","DashboardController@hubs");
+
+Route::get("/facilities","DashboardController@facilities");
+
+Route::get("/live","DashboardController@live");
+
+
+Route::get("/other_data/","DashboardController@other_data");
 
 /*Route::get('/w',function(){
 	return view("welcome");

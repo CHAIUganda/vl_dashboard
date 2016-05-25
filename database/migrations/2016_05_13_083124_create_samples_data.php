@@ -15,22 +15,23 @@ class CreateSamplesData extends Migration
         //
          Schema::create('samples_data', function (Blueprint $table) {
             $table->increments('id');
-            $table->mediumInteger('year_month')->unsigned();
-            $table->tinyInteger('age_group_id')->unsigned();
-            $table->integer('facility_id')->unsigned();
-            $table->enum('gender', ['m','f','x'])->default('x');
-            $table->enum('treatment_indication', ['b_plus','tb','x'])->default('x');
-            $table->smallInteger('regimen_group_id')->unsigned();            
-
-            $table->integer('samples_received')->unsigned();
-            $table->integer('dbs_samples')->unsigned();            
-            $table->integer('rejected_samples')->unsigned();
-            $table->integer('sample_quality_rejections')->unsigned();
-            $table->integer('eligibility_rejections')->unsigned();
-            $table->integer('incomplete_form_rejections')->unsigned();
-            $table->integer('total_results')->unsigned();
-            $table->integer('valid_results')->unsigned();
-            $table->integer('suppressed')->unsigned();
+            $table->mediumInteger('year_month')->unsigned()->default(0);
+            $table->tinyInteger('age_group_id')->unsigned()->default(0);
+            $table->integer('facility_id')->unsigned()->default(0);
+            $table->enum('gender', ['m','f','x'])->default('x');            
+            $table->smallInteger('regimen_group_id')->unsigned()->default(0);
+            $table->tinyInteger('regimen_line')->unsigned()->default(0);
+            $table->smallInteger('regimen_time_id')->unsigned()->default(0);
+            $table->tinyInteger('treatment_indication_id')->unsigned()->default(0);      
+            $table->integer('samples_received')->unsigned()->default(0);
+            $table->integer('dbs_samples')->unsigned()->default(0);            
+            $table->integer('rejected_samples')->unsigned()->default(0);
+            $table->integer('sample_quality_rejections')->unsigned()->default(0);
+            $table->integer('eligibility_rejections')->unsigned()->default(0);
+            $table->integer('incomplete_form_rejections')->unsigned()->default(0);
+            $table->integer('total_results')->unsigned()->default(0);
+            $table->integer('valid_results')->unsigned()->default(0);
+            $table->integer('suppressed')->unsigned()->default(0);
             $table->timestamps();
         });
     }
