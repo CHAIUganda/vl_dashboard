@@ -37,6 +37,11 @@ class DashboardController extends Controller {
 			$to_date=end($n_months);
 		}
 		return Dashboard::getSampleData($fro_date,$to_date);	
+		$connection = new \MongoClient();
+		$res=$connection->vldash->samples_data->find([ '$and'=> [  ['year_month'=>  ['$gte'=> $fro_date] ] , [ 'year_month'=>  ['$lte'=> $to_date] ]  ] ]);
+		//return $res->count();
+		return json_encode(iterator_to_array($res));
+		//foreach ($res as $item)   echo $item['facility_id']."<br>";
 	}
 
 	public function other_data(){

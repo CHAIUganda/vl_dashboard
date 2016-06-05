@@ -98,6 +98,7 @@ ctrllers.DashController=function($scope,$http){
 
     //$http.get("../json/data.json").success(function(data) {
     $http.get("/vdash").success(function(data) {
+
        
        //console.log("ccccc:"+JSON.stringify(data));
         // $scope.districts_slct=districts_json;
@@ -113,7 +114,8 @@ ctrllers.DashController=function($scope,$http){
            var facility_details=facilities_json[that.facility_id]||{};  
            results_json[i]={}; 
            //results_json[i].year_month=that.year+"-"+that.month;
-           var ym=that.year_month.toString()||"";
+           var ym=that.year_month;
+           ym=isNaN(ym)?ym:ym.toString();
            results_json[i].year_month=ym.slice(0,4)+"-"+months_interchange[ym.slice(4)];
            results_json[i].facility_id=that.facility_id;
            results_json[i].age_group=that.age_group_id;           

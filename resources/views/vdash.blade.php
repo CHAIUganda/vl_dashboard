@@ -152,7 +152,7 @@
                 <li id='tb_hd4'>
                     <a href="#tab4" id='tb_lnk4' ng-click="displayRegimenGroups()">
                         <span class="num ng-cloak" >
-                            &nbsp;                             
+                            &nbsp;72% <span style='font-size:9px'>on 1st line</span>                             
                         </span>
                         <span class="desc">current regimen</span>
                     </a>
@@ -161,7 +161,7 @@
                 <li id='tb_hd5'>
                     <a href="#tab5" id='tb_lnk5' ng-click="displayRegimenTime()">
                         <span class="num ng-cloak">
-                            &nbsp;                            
+                            &nbsp;72% <span style='font-size:9px'>on 1st line</span>                             
                         </span>
                         <span class="desc">regimen durations</span>
                     </a>
