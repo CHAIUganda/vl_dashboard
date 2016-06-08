@@ -30,6 +30,14 @@ Route::get("/live","DashboardController@live");
 
 Route::get("/other_data/","DashboardController@other_data");
 
+Route::get("/immy",function(){
+	$all=\Request::all();
+	extract($all);
+	//$dists=json_decode($districts);
+	//print_r($districts);
+	foreach ($districts as $k) echo $k;  
+});
+
 /*Route::get('/w',function(){
 	return view("welcome");
 });*/

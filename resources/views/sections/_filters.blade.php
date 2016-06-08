@@ -33,6 +33,18 @@
             </span>
         </span>
 
+         <span ng-model='filter_gender' ng-init='filter_gender={}'>
+            <span ng-repeat="(g_nr,g_name) in filter_gender">
+                <span class="filter-val ng-cloak"> <% g_name %> (g) <x ng-click='removeTag("gender",g_nr)'>&#120;</x></span> 
+            </span>
+        </span>
+
+        <span ng-model='filter_regimen' ng-init='filter_regimen={}'>
+            <span ng-repeat="(r_nr,r_name) in filter_regimen">
+                <span class="filter-val ng-cloak"> <% r_name %> (g) <x ng-click='removeTag("regimen",r_nr)'>&#120;</x></span> 
+            </span>
+        </span>
+
         <span ng-show="filtered" class="filter_clear" ng-click="clearAllFilters()">reset all</span>
 
     </div>
@@ -40,7 +52,7 @@
 
 <table border='1' cellpadding='0' cellspacing='0' class='filter-tb'>
     <tr>
-        <td width='20%' >
+        <td width='10%' >
             <span ng-model='fro_date_slct' ng-init='fro_date_slct={!! json_encode($months_by_years) !!}'></span>
             <select ng-model="fro_date" ng-init="fro_date='all'" ng-change="dateFilter('fro')">
                 <option value='all'>FROM DATE</option>
@@ -51,7 +63,7 @@
                 </optgroup>
             </select>
         </td>
-        <td width='20%' >
+        <td width='10%' >
             <span ng-model='to_date_slct' ng-init='to_date_slct={!! json_encode($months_by_years) !!}'></span>
             <select ng-model="to_date" ng-init="to_date='all'" ng-change="dateFilter('to');getData()">
                 <option value='all'>TO DATE</option>
@@ -62,7 +74,7 @@
                 </optgroup>
             </select>
         </td>
-        <td width='20%' id='dist_elmt'>
+        <td width='10%' id='dist_elmt'>
             <select ng-model="district" ng-init="district='all'" ng-change="filter('district')">
                 <option value='all'>DISTRICTS</option>
                 <option class="ng-cloak" ng-repeat="dist in districts2 | orderBy:'name'" value="<% dist.id %>">
@@ -70,7 +82,7 @@
                 </option>
             </select>
         </td>
-        <td width='20%' id='dist_elmt'>
+        <td width='10%' id='dist_elmt'>
             <select ng-model="hub" ng-init="hub='all'" ng-change="filter('hub')">
                 <option value='all'>HUBS</option>
                 <option class="ng-cloak" ng-repeat="hb in hubs2|orderBy:'name'" value="<% hb.id %>">
@@ -78,15 +90,29 @@
                 </option>
             </select>
         </td>
-        <td width='20%' id='dist_elmt'>
+        <td width='10%' id='dist_elmt'>
             <select ng-model="age_group" ng-init="age_group='all'" ng-change="filter('age_group')">
                 <option value='all'>AGE GROUP</option>
-                <option class="ng-cloak" ng-repeat="(ag_nr,ag) in age_group_slct" value="<% ag_nr %>">
+                <option class="ng-cloak" ng-repeat="(ag_nr,ag) in labels.age_grps" value="<% ag_nr %>">
                     <% ag %>
                 </option>
             </select>
         </td>
-
-         
+        <td width='10%' id='dist_elmt'>
+            <select ng-model="gender" ng-init="gender='all'" ng-change="filter('gender')">
+                <option value='all'>GENDER</option>
+                <option class="ng-cloak" ng-repeat="(g_nr,gnd) in labels.genders" value="<% g_nr %>">
+                    <% gnd %>
+                </option>
+            </select>
+        </td>
+        <td width='10%' id='dist_elmt'>
+            <select ng-model="regimen" ng-init="regimen='all'" ng-change="filter('regimen')">
+                <option value='all'>REGIMEN</option>
+                <option class="ng-cloak" ng-repeat="(r_nr,rg) in labels.reg_grps" value="<% r_nr %>">
+                    <% rg %>
+                </option>
+            </select>
+        </td>        
     </tr>
 </table>

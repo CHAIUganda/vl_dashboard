@@ -50,60 +50,75 @@ ctrllers.DashController=function($scope,$http){
 
     var districts_json={};
     var hubs_json={};
-    var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};    
+    var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};  
+    var regimen_groups_json={1:'AZT' ,2:'TDF/XTC/EFV' ,3:'TDF/XTC/NVP', 4:'ABC',5:'TDF/XTC/LPV/r' , 6:'TDF/XTC/ATV/r', 7:'Other'};
+    var regimen_times_json={1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};   
     var facilities_json={};   
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
+    var genders_json={'m':'Male','f':'Female','x':'Unknown'};
+
+    $scope.labels={};
+    $scope.labels.reg_grps=regimen_groups_json;
+    $scope.labels.reg_times=regimen_times_json;
+    $scope.labels.age_grps=age_group_json;
+    $scope.labels.genders=genders_json;
 
     var vvvrrr=0;
 
     $scope.districts2=[];
     $scope.hubs2=[];
+    $scope.age_group_slct=age_group_json
 
-    var districts_str="1";
+    var districts_str="";
     var hubs_str="";
     var age_ids_str="";
 
     $http.get("/other_data/").success(function(data){
         for(var i in data.districts){
-            var id=data.districts[i].district_id;
-            var name=data.districts[i].name;
-            districts_json[id]=name;
-            $scope.districts2.push({"id":id,"name":name});
+            var obj=data.districts[i];
+            districts_json[obj.id]=obj.name;
+            $scope.districts2.push({"id":obj.id,"name":obj.name});
         }
 
         for(var i in data.hubs){
-            var id=data.hubs[i].hub_id;
-            var name=data.hubs[i].name;
-            hubs_json[id]=name;
-            $scope.hubs2.push({"id":id,"name":name});
+            var obj=data.hubs[i];
+            hubs_json[obj.id]=obj.name;
+            $scope.hubs2.push({"id":obj.id,"name":obj.name});
         }
 
         for(var i in data.facilities){
             var f=data.facilities[i];
-            facilities_json[f.facility_id]={'id':f.facility_id,'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
+            facilities_json[f.id]={'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
         }
     });
+
+    $scope.labels.facilities=facilities_json;
+    $scope.labels.districts=districts_json;
 
     var getData=function(){
             $http({method:'GET',url:"/live/",params:{districts:districts_str,hubs:hubs_str,age_ids:age_ids_str} }).success(function(data) {
                 $scope.loading=true;
-                $scope.samples_received=data.samples_received||0;
-                $scope.suppressed=data.suppressed||0;
-                $scope.valid_results=data.valid_results||0;
-                $scope.rejected_samples=data.rejected_samples||0;   
-                $scope.cd4_less_than_500=data.treatment_indication[3]||0;
-                $scope.pmtct_option_b_plus=data.treatment_indication[1]||0;
-                $scope.children_under_15=data.treatment_indication[2]||0;
-                $scope.tb_infection=data.treatment_indication[4]||0;
-                $scope.other_treatment=data.treatment_indication[5]||0;
-                $scope.treatment_blank_on_form=data.treatment_indication[0]|| 0;        
-                $scope.duration_numbers=data.duration_numbers||{};
-                $scope.facility_numbers=data.facility_numbers||{};
-                $scope.district_numbers=data.district_numbers||{};
 
-                $scope.displaySamplesRecieved();
-                $scope.displaySupressionRate();
-                $scope.displayRejectionRate();
+                $scope.samples_received=data.whole_numbers.samples_received||0;
+                $scope.suppressed=data.whole_numbers.suppressed||0;
+                $scope.valid_results=data.whole_numbers.valid_results||0;
+                $scope.rejected_samples=data.whole_numbers.rejected_samples||0;   
+
+                $scope.cd4_less_than_500=data.t_indication[3]||0;
+                $scope.pmtct_option_b_plus=data.t_indication[1]||0;
+                $scope.children_under_15=data.t_indication[2]||0;
+                $scope.tb_infection=data.t_indication[4]||0;
+                $scope.other_treatment=data.t_indication[5]||0;
+                $scope.treatment_blank_on_form=data.t_indication[0]|| 0; 
+
+                $scope.duration_numbers=data.drn_numbers||{};
+                $scope.facility_numbers=data.f_numbers||{};
+                $scope.district_numbers=data.dist_numbers||{};
+                $scope.regimen_group_numbers=data.reg_groups||{};
+                $scope.regimen_time_numbers=data.reg_times||{};
+
+                $scope.displaySamplesRecieved(); //to display the samples graph - for the first time
+    
                 $scope.loading=false;
                 //console.log("lalallalal:: samples_received:: "+data.samples_received+" suppressed:: "+data.suppressed+" "+data.valid_results);
             });
@@ -191,8 +206,8 @@ ctrllers.DashController=function($scope,$http){
 
         for(var i in $scope.duration_numbers){
             var obj=$scope.duration_numbers[i];
-            data[0].values.push({"x":obj.year_month,"y":Math.round(obj.dbs_samples||0)});
-            data[1].values.push({"x":obj.year_month,"y":Math.round(obj.plasma_samples||0)});            
+            data[0].values.push({"x":obj._id,"y":Math.round(obj.dbs_samples||0)});
+            data[1].values.push({"x":obj._id,"y":Math.round(obj.plasma_samples||0)});            
         }
 
         nv.addGraph( function(){
@@ -217,8 +232,8 @@ ctrllers.DashController=function($scope,$http){
             var vld=obj.valid_results||0;
             var s_rate=((sprsd/vld)||0)*100;
             //s_rate.toPrecision(3);
-            data[0].values.push([obj.year_month,Math.round(s_rate)]);
-            data[1].values.push([obj.year_month,vld]);
+            data[0].values.push([obj._id,Math.round(s_rate)]);
+            data[1].values.push([obj._id,vld]);
         } 
         nv.addGraph( function() {
             var chart = nv.models.linePlusBarChart()
@@ -251,9 +266,9 @@ ctrllers.DashController=function($scope,$http){
             var sq_rate=((obj.sample_quality/ttl)||0)*100;
             var inc_rate=((obj.incomplete_form/ttl)||0)*100;
             var el_rate=((obj.eligibility/ttl)||0)*100;
-            data[0].values.push({"x":obj.year_month,"y":Math.round(sq_rate) });
-            data[1].values.push({"x":obj.year_month,"y":Math.round(inc_rate)});
-            data[2].values.push({"x":obj.year_month,"y":Math.round(el_rate)});
+            data[0].values.push({"x":obj._id,"y":Math.round(sq_rate) });
+            data[1].values.push({"x":obj._id,"y":Math.round(inc_rate)});
+            data[2].values.push({"x":obj._id,"y":Math.round(el_rate)});
         }
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().stacked(true).color(["#607D8B","#FFCDD2","#F44336"]);
@@ -261,6 +276,78 @@ ctrllers.DashController=function($scope,$http){
             chart.yAxis.tickFormat(d3.format(',.0d'));
             $('#rejection_rate svg').html(" ");
             d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
+            return chart;
+        });
+    };
+
+     $scope.displayRegimenGroups=function(){
+
+        var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
+                  {"key":"VALID RESULTS","bar":true,"color": "#F44336","values":[]}];
+
+        for(var i in $scope.regimen_group_numbers){
+            var obj=$scope.regimen_group_numbers[i];
+            var sprsd=obj.suppressed||0;
+            var vld=obj.valid_results||0;
+            var s_rate=((sprsd/vld)||0)*100;
+            //s_rate.toPrecision(3);
+            var label=regimen_groups_json[obj._id];
+            data[0].values.push([label,Math.round(s_rate)]);
+            data[1].values.push([label,vld]);
+        } 
+        nv.addGraph( function() {
+            var chart = nv.models.linePlusBarChart()
+                        .margin({right: 60,})
+                        .x(function(d,i) { return i })
+                        .y(function(d,i) {return d[1] }).focusEnable(false);
+
+            chart.xAxis.tickFormat(function(d) {
+                return data[0].values[d] && data[0].values[d][0] || " ";
+            });
+            //chart.reduceXTicks(false);
+            //chart.bars.forceY([0]);
+            chart.lines.forceY([0,100]);
+            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
+
+            $('#regimen_groups svg').html(" ");
+            d3.select('#regimen_groups svg').datum(data).transition().duration(500).call(chart);
+            return chart;
+        });
+
+        
+    };
+
+
+    $scope.displayRegimenTime=function(){
+        var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
+                  {"key":"SAMPLES RECEIVED","bar":true,"color": "#F44336","values":[]}];
+
+        for(var i in $scope.regimen_time_numbers){
+            var obj=$scope.regimen_time_numbers[i];
+            var sprsd=obj.suppressed||0;
+            var vld=obj.valid_results||0;
+            var s_rate=((sprsd/vld)||0)*100;
+            //s_rate.toPrecision(3);
+            var label=regimen_times_json[obj._id];
+            data[0].values.push([label,Math.round(s_rate)]);
+            data[1].values.push([label,obj.samples_received]);
+        } 
+        nv.addGraph( function() {
+            var chart = nv.models.linePlusBarChart()
+                        .margin({right: 60,})
+                        .x(function(d,i) { return i })
+                        .y(function(d,i) {return d[1] }).focusEnable(false);
+
+            chart.xAxis.tickFormat(function(d) {
+                return data[0].values[d] && data[0].values[d][0] || " ";
+            });
+            //chart.reduceXTicks(false);
+            //chart.bars.forceY([0]);
+            chart.lines.forceY([0,100]);
+            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
+
+            $('#regimen_time svg').html(" ");
+            d3.select('#regimen_time svg').datum(data).transition().duration(500).call(chart);
             return chart;
         });
     };

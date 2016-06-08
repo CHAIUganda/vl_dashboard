@@ -18,7 +18,7 @@
             </thead>
             <tbody>                                
                 <tr ng-repeat="r in regimen_group_numbers | orderBy:'-samples_received'" >
-                    <td class="ng-cloak"><% r.name %></td>
+                    <td class="ng-cloak"><% labels.reg_grps[r._id] %></td>
                     <td class="ng-cloak"><% r.samples_received|number %></td>
                     <td class="ng-cloak"><% r.total_results|number %></td>
                     <td class="ng-cloak"><% r.suppressed|number %></td>

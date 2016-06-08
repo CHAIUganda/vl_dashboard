@@ -18,16 +18,31 @@ use Request;
 use Session;
 
 class DashboardController extends Controller {
-
-/*	$scope.loading=true;
-        
-
-       
-        */
+	//private $mongo = \MongoClient::connect('vldash');
 
 	public function __construct(){
 		$this->months=\MyHTML::initMonths();
+		$connect = new \MongoClient();
+		$this->mongo=$connect->vldash;
+		$this->conditions=$this->_setConditions();
+
 		//$this->middleware('auth');
+	}
+
+	private function _setConditions(){
+		extract(\Request::all());
+		if(empty($fro_date) && empty($to_date)){
+			$n_months=$this->_latestNMonths(12);
+			$fro_date=$n_months[0];
+			$to_date=end($n_months);
+		}
+		$conds=[];
+		$conds['$and'][]=['year_month'=>  ['$gte'=> (int)$fro_date] ];
+		$conds['$and'][]=[ 'year_month'=>  ['$lte'=> (int)$to_date] ];
+		if(!empty($districts)) $conds['$and'][]=[ 'district_id'=>  ['$in'=> json_decode($districts)] ];
+		if(!empty($hubs)) $conds['$and'][]=[ 'hub_id'=>  ['$in'=> json_decode($hubs)] ];
+		if(!empty($age_ids)) $conds['$and'][]=[ 'age_group_id'=>  ['$in'=> json_decode($age_ids)] ];
+		return $conds;
 	}
 
 	public function dash($fro_date="",$to_date=""){
@@ -36,20 +51,18 @@ class DashboardController extends Controller {
 			$fro_date=$n_months[0];
 			$to_date=end($n_months);
 		}
-		return Dashboard::getSampleData($fro_date,$to_date);	
-		$connection = new \MongoClient();
-		$res=$connection->vldash->samples_data->find([ '$and'=> [  ['year_month'=>  ['$gte'=> $fro_date] ] , [ 'year_month'=>  ['$lte'=> $to_date] ]  ] ]);
+		//return Dashboard::getSampleData($fro_date,$to_date);	
+		$res=$this->mongo->samples_data->find([ '$and'=> [  ['year_month'=>  ['$gte'=> $fro_date] ] , [ 'year_month'=>  ['$lte'=> $to_date] ]  ] ]);
 		//return $res->count();
 		return json_encode(iterator_to_array($res));
 		//foreach ($res as $item)   echo $item['facility_id']."<br>";
 	}
 
 	public function other_data(){
-		$ret=[];
-		$ret["hubs"]=Hub::all();
-		$ret["districts"]=District::all();
-		$ret["facilities"]=Facility::all();
-		return json_encode($ret);
+		$hubs=iterator_to_array($this->mongo->hubs->find());
+		$districts=iterator_to_array($this->mongo->districts->find());
+		$facilities=iterator_to_array($this->mongo->facilities->find());
+		return compact("hubs","districts","facilities");
 	}
 
 	private function _latestNMonths($n=12){
@@ -73,7 +86,7 @@ class DashboardController extends Controller {
 		return view('d');
 	}
 
-	public function live(){
+	/*public function live(){
 		extract(\Request::all());
 		if(empty($fro_date) && empty($to_date)){
 			$n_months=$this->_latestNMonths(12);
@@ -99,35 +112,59 @@ class DashboardController extends Controller {
 
 		$ret["treatment_indication"]=$this->_treatmentIndicationNumbers($conds);
 		return json_encode($ret);
+	}*/
+
+	public function live(){
+		$whole_numbers=$this->_wholeNumbers();
+		//return ['y'=>8,'a'=>9,'c'=>13,'x'=>19];
+		$t_indication=$this->_treatmentIndicationNumbers();
+		$f_numbers=$this->_facilityNumbers();
+		$dist_numbers=$this->_districtNumbers();
+		$drn_numbers=$this->_durationNumbers();
+		$reg_groups=$this->_regimenGroupNumbers();
+		$reg_times=$this->_regimenTimeNumbers();
+		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers","reg_groups","reg_times");
 	}
 
-	private function _wholeNumbers($conds){
+	/*private function _wholeNumbers($conds){
 		$cols=" SUM(samples_received) AS samples_received,
 				SUM(suppressed) AS suppressed,
 				SUM(valid_results) AS valid_results,
 				SUM(rejected_samples) AS rejected_samples";
 		return SamplesData::getSamplesData($cols,$conds)->first();
+	}*/
+
+
+	private function _wholeNumbers(){
+		$grp=[];
+		$grp['_id']=null;
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
+		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
+		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		return $res['result'][0];
 	}
 
-	private function _wholeTINumbers($conds){
-		$cols=" SUM(cd4_less_than_500) AS cd4_less_than_500,
-				SUM(pmtct_option_b_plus) AS pmtct_option_b_plus	,
-				SUM(children_under_15) AS children_under_15,
-				SUM(other_treatment) AS other_treatment,
-				SUM(treatment_blank_on_form) AS treatment_blank_on_form,
-				SUM(tb_infection) AS tb_infection";
-		return TreatmentIndication::getTIData($cols,$conds)->first();
-	}
-
-	private function _treatmentIndicationNumbers($conds){
+	/*private function _treatmentIndicationNumbers($conds){
 		$cols="treatment_indication_id,SUM(samples_received) AS samples_received";
 		$res=SamplesData::getSamplesData($cols,$conds,"treatment_indication_id");
 		$ret=[];
 		foreach($res AS $row) $ret[$row->treatment_indication_id]=$row->samples_received;
 		return $ret;
+	}*/
+
+	private function _treatmentIndicationNumbers(){
+		$grp=[];
+		$grp['_id']='$treatment_indication_id';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
+		$ret=[];
+		foreach ($res['result'] as $row) $ret[$row['_id']]=$row['samples_received'];
+		return $ret;
 	}
 
-	private function _facilityNumbers($conds){
+	/*private function _facilityNumbers($conds){
 		$cols=" f.facility_id,f.name,
 				SUM(samples_received) AS samples_received,
 				SUM(suppressed) AS suppressed,
@@ -137,9 +174,22 @@ class DashboardController extends Controller {
 				SUM(total_results) AS total_results
 				";
 		return SamplesData::getSamplesData($cols,$conds,'f.facility_id');
+	}*/
+
+	private function _facilityNumbers(){
+		$grp=[];
+		$grp['_id']='$facility_id';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
+		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
+		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
+		$grp['total_results']=['$sum'=>'$total_results'];
+		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		return $res['result'];
 	}
 
-	private function _districtNumbers($conds){
+	/*private function _districtNumbers($conds){
 		$cols=" d.district_id,d.name,
 				SUM(samples_received) AS samples_received,
 				SUM(suppressed) AS suppressed,
@@ -149,9 +199,22 @@ class DashboardController extends Controller {
 				SUM(total_results) AS total_results
 				";
 		return SamplesData::getSamplesData($cols,$conds,'d.district_id');
+	}*/
+
+	private function _districtNumbers(){
+		$grp=[];
+		$grp['_id']='$district_id';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
+		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
+		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
+		$grp['total_results']=['$sum'=>'$total_results'];
+		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		return $res['result'];
 	}
 
-	private function _durationNumbers($conds){
+	/*private function _durationNumbers($conds){
 		$cols=" `year_month`,
 				SUM(samples_received-dbs_samples) AS plasma_samples,
 				SUM(dbs_samples) AS dbs_samples,
@@ -162,8 +225,44 @@ class DashboardController extends Controller {
 				SUM(incomplete_form_rejections) AS incomplete_form_rejections				
 				";
 		return SamplesData::getSamplesData($cols,$conds,'year_month');
+	}*/
+
+	private function _durationNumbers(){
+		$grp=[];
+		$grp['_id']='$year_month';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
+		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
+		$grp['sample_quality_rejections']=['$sum'=>'$sample_quality_rejections'];
+		$grp['eligibility_rejections']=['$sum'=>'$eligibility_rejections'];
+		$grp['incomplete_form_rejections']=['$sum'=>'$incomplete_form_rejections'];
+
+		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		return $res['result'];
 	}
 
+	private function _regimenGroupNumbers(){
+		$grp=[];
+		$grp['_id']='$regimen_group_id';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['total_results']=['$sum'=>'$total_results'];
+
+		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		return $res['result'];
+	}
+
+	private function _regimenTimeNumbers(){
+		$grp=[];
+		$grp['_id']='$regimen_time_id';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['total_results']=['$sum'=>'$total_results'];
+		
+		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		return $res['result'];
+	}
 
 	private function median($arr){
 		sort($arr);

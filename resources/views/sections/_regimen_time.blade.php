@@ -18,7 +18,7 @@
             </thead>
             <tbody>                                
                 <tr ng-repeat="r in regimen_time_numbers | orderBy:'-samples_received'" >
-                    <td class="ng-cloak"><% r.name %></td>
+                    <td class="ng-cloak"><% labels.reg_times[r._id] %></td>
                     <td class="ng-cloak"><% r.samples_received|number %></td>
                     <td class="ng-cloak"><% ((r.samples_received/samples_received)*100 )| number:1 %> %</td>
                     <td class="ng-cloak"><% r.total_results|number %></td>

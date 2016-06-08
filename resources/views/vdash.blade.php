@@ -194,5 +194,5 @@
 
 </body>
 
-<script type="text/javascript" src=" {{ asset('js/dash.js') }} "></script>
+<script type="text/javascript" src=" {{ asset('js/live.js') }} "></script>
 </html>

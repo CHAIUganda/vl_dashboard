@@ -23,7 +23,7 @@
                 </thead>
                 <tbody>                                
                     <tr ng-repeat="d in district_numbers" >
-                        <td class="ng-cloak"><% d.name %></td>
+                        <td class="ng-cloak"><% labels.districts[d._id] %></td>
                         <td class="ng-cloak"><% d.valid_results|number %></td>
                         <td class="ng-cloak"><% ((d.suppressed/d.valid_results)*100)|number:1 %> %</td>
                     </tr>                        
@@ -41,7 +41,7 @@
                 </thead>
                 <tbody>                                
                     <tr ng-repeat="f in facility_numbers" >
-                        <td class="ng-cloak"><% f.name %></td>
+                        <td class="ng-cloak"><% labels.facilities[f._id].name %></td>
                         <td class="ng-cloak"><% f.valid_results|number %></td>
                         <td class="ng-cloak"><% ((f.suppressed/f.valid_results)*100)|number:1 %> %</td>
                     </tr>                        
