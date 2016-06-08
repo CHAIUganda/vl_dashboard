@@ -143,7 +143,8 @@ class DashboardController extends Controller {
 		$grp['valid_results']=['$sum'=>'$valid_results'];
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
 		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
-		return $res['result'][0];
+		$ret=isset($res['result'][0])?$res['result'][0]:[];
+		return $ret;
 	}
 
 	/*private function _treatmentIndicationNumbers($conds){
@@ -160,7 +161,8 @@ class DashboardController extends Controller {
 		$grp['samples_received']=['$sum'=>'$samples_received'];
 		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
 		$ret=[];
-		foreach ($res['result'] as $row) $ret[$row['_id']]=$row['samples_received'];
+
+		if(isset($res['result'])) foreach ($res['result'] as $row) $ret[$row['_id']]=$row['samples_received'];
 		return $ret;
 	}
 
@@ -186,7 +188,7 @@ class DashboardController extends Controller {
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
 		$grp['total_results']=['$sum'=>'$total_results'];
 		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
-		return $res['result'];
+		return isset($res['result'])?$res['result']:[];
 	}
 
 	/*private function _districtNumbers($conds){
@@ -211,7 +213,7 @@ class DashboardController extends Controller {
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
 		$grp['total_results']=['$sum'=>'$total_results'];
 		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
-		return $res['result'];
+		return isset($res['result'])?$res['result']:[];
 	}
 
 	/*private function _durationNumbers($conds){
@@ -239,7 +241,7 @@ class DashboardController extends Controller {
 		$grp['incomplete_form_rejections']=['$sum'=>'$incomplete_form_rejections'];
 
 		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
-		return $res['result'];
+		return isset($res['result'])?$res['result']:[];
 	}
 
 	private function _regimenGroupNumbers(){
@@ -250,7 +252,7 @@ class DashboardController extends Controller {
 		$grp['total_results']=['$sum'=>'$total_results'];
 
 		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
-		return $res['result'];
+		return isset($res['result'])?$res['result']:[];
 	}
 
 	private function _regimenTimeNumbers(){
@@ -261,7 +263,7 @@ class DashboardController extends Controller {
 		$grp['total_results']=['$sum'=>'$total_results'];
 		
 		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
-		return $res['result'];
+		return isset($res['result'])?$res['result']:[];
 	}
 
 	private function median($arr){

@@ -76,14 +76,14 @@
 
     function latestNMonths($n=12){
         $ret=[];
-        $m=date('n');
+        $m=date('m');
         $y=date('Y');
         for($i=1;$i<=$n;$i++){
             if($m==0){
                 $m=12;
                 $y--;
             }
-            array_unshift($ret, "$y-$m");
+            array_unshift($ret, $y.str_pad($m, 2,0, STR_PAD_LEFT));
             $m--;
         }
         return $ret;
@@ -99,7 +99,7 @@
             $end=($i==$to_year)?$to_month:12;
             $j=$stat;
             while($j<=$end){
-                $ret[$i][]=$j;
+                $ret[$i][]=str_pad($j, 2,0, STR_PAD_LEFT);
                 $j++;   
             } 
             $i++; 
@@ -110,7 +110,7 @@
     //echo "<br><br><br>xxx".$sample_data;
 
      //$start_year=2011,$start_month=1;
-    $init_duration=latestNMonths(30);  
+    $init_duration=latestNMonths(12);  
     $months_by_years=yearByMonths(2014,8); 
      //krsort($months_by_years);
      ?>

@@ -32,11 +32,8 @@ app.filter('slice', function() {
 
 app.filter('d_format', function() {
         return function(y_m) {
-            var month_labels={1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sept',10:'Oct',11:'Nov',12:'Dec'};
-            var arr=y_m.split('-');
-            var yr=arr[0]||"";
-            var mth=arr[1]||"";
-            return month_labels[mth]+" '"+yr.slice(-2);
+            var month_labels={'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
+            return month_labels[y_m.slice(-2)]+" '"+y_m.slice(2,4);
         }
     });
 
@@ -47,6 +44,7 @@ var ctrllers={};
 
 ctrllers.DashController=function($scope,$http){
     $scope.identity = angular.identity;
+    $scope.params = {'districts':[],'hubs':[],'age_ids':[]};
 
     var districts_json={};
     var hubs_json={};
@@ -56,6 +54,8 @@ ctrllers.DashController=function($scope,$http){
     var facilities_json={};   
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json={'m':'Male','f':'Female','x':'Unknown'};
+
+    $scope.month_labels={'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
 
     $scope.labels={};
     $scope.labels.reg_grps=regimen_groups_json;
@@ -67,11 +67,7 @@ ctrllers.DashController=function($scope,$http){
 
     $scope.districts2=[];
     $scope.hubs2=[];
-    $scope.age_group_slct=age_group_json
-
-    var districts_str="";
-    var hubs_str="";
-    var age_ids_str="";
+    $scope.age_group_slct=age_group_json;
 
     $http.get("/other_data/").success(function(data){
         for(var i in data.districts){
@@ -96,8 +92,13 @@ ctrllers.DashController=function($scope,$http){
     $scope.labels.districts=districts_json;
 
     var getData=function(){
-            $http({method:'GET',url:"/live/",params:{districts:districts_str,hubs:hubs_str,age_ids:age_ids_str} }).success(function(data) {
+            var prms={};
+            prms.districts=JSON.stringify($scope.params.districts);
+            prms.hubs=JSON.stringify($scope.params.hubs);
+            prms.age_ids=JSON.stringify($scope.params.age_ids);
+            $http({method:'GET',url:"/live/",params:prms}).success(function(data) {
                 $scope.loading=true;
+                //console.log("we rrrr"+JSON.stringify($scope.params));
 
                 $scope.samples_received=data.whole_numbers.samples_received||0;
                 $scope.suppressed=data.whole_numbers.suppressed||0;
@@ -127,50 +128,19 @@ ctrllers.DashController=function($scope,$http){
     getData();    
 
 
-    $scope.dateFilter=function(mode){
+    $scope.dateFilter=function(){
         if($scope.fro_date!="all" && $scope.to_date!="all"){
-            var vals={};var fro_s=$scope.fro_date.split("-");var to_s=$scope.to_date.split("-");
-            vals.from_year=Number(fro_s[0]);
-            vals.from_month=Number(fro_s[1]);
-            vals.to_year=Number(to_s[0]);
-            vals.to_month=Number(to_s[1]);
+            var fro_nr=Number($scope.fro_date);//numberise the fro date
+            var to_nr=Number($scope.to_date);//numberise the to date
 
-            var eval1=vals.from_year<=vals.to_year;
-            var eval2=(vals.from_month>vals.to_month)&&(vals.from_year<vals.to_year);
-            var eval3=(vals.from_month<=vals.to_month);
-
-            if(eval1 && (eval2||eval3)){
-                //console.log("duration expression passed");
-                computeDuration(vals);
-               /* if(count($scope.filter_duration)<=12){
-                    
-                }else{
-                    alert("Please choose a duration of 12 months or less");
-                }*/
-                $scope.date_filtered=true;
-               /* $scope.fro_date="all";
-                $scope.to_date="all";*/
-                $scope.filter("duration");                
-            }else{
+            if(fro_nr>to_nr){
                 alert("Please make sure that the fro date is earlier than the to date");
-                //console.log("duration expression failing eval1="+eval1+" eval2"+eval2+" eval3"+eval3);
-                //console.log("fro yr="+vals.from_year+" fro m"+vals.from_month+" to yr="+vals.to_year+" to m"+vals.to_month);
+            }else{
+                $scope.date_filtered=true;
+                $scope.params.fro_date=fro_nr;
+                $scope.params.to_date=to_nr;
+                $scope.filter("duration");
             }
-        }
-    }
-
-    var computeDuration=function(vals){
-        $scope.filter_duration=[];
-        var i=vals.from_year;
-        while(i<=vals.to_year){
-            var stat=(i==vals.from_year)?vals.from_month:1;
-            var end=(i==vals.to_year)?vals.to_month:12;
-            var j=stat;
-            while(j<=end){
-                $scope.filter_duration.push(i+"-"+j);
-                j++;   
-            }   
-            i++;  
         }
     }
 
@@ -178,24 +148,29 @@ ctrllers.DashController=function($scope,$http){
         switch(mode){
             case "district":
             $scope.filter_districts[$scope.district]=districts_json[$scope.district];
-            $scope.district='all';
-            
+            $scope.params.districts.push(Number($scope.district));
+            $scope.district='all';            
             break;
 
             case "hub":
             $scope.filter_hubs[$scope.hub]=hubs_json[$scope.hub];
+            $scope.params.hubs.push(Number($scope.hub));
             $scope.hub='all';
             break;
 
             case "age_group":
             $scope.filter_age_group[$scope.age_group]=age_group_json[$scope.age_group];
+            $scope.params.age_ids.push(Number($scope.age_group));
             $scope.age_group='all';
+
             break;
         }
 
         delete $scope.filter_districts["all"];
         delete $scope.filter_hubs["all"];
         delete $scope.filter_age_group["all"];
+
+        getData();
 
         //generalFilter(); //filter the results for each required event
     }
@@ -206,8 +181,8 @@ ctrllers.DashController=function($scope,$http){
 
         for(var i in $scope.duration_numbers){
             var obj=$scope.duration_numbers[i];
-            data[0].values.push({"x":obj._id,"y":Math.round(obj.dbs_samples||0)});
-            data[1].values.push({"x":obj._id,"y":Math.round(obj.plasma_samples||0)});            
+            data[0].values.push({"x":dateFormat(obj._id),"y":Math.round(obj.dbs_samples||0)});
+            data[1].values.push({"x":dateFormat(obj._id),"y":Math.round(obj.plasma_samples||0)});            
         }
 
         nv.addGraph( function(){
@@ -232,8 +207,8 @@ ctrllers.DashController=function($scope,$http){
             var vld=obj.valid_results||0;
             var s_rate=((sprsd/vld)||0)*100;
             //s_rate.toPrecision(3);
-            data[0].values.push([obj._id,Math.round(s_rate)]);
-            data[1].values.push([obj._id,vld]);
+            data[0].values.push([dateFormat(obj._id),Math.round(s_rate)]);
+            data[1].values.push([dateFormat(obj._id),vld]);
         } 
         nv.addGraph( function() {
             var chart = nv.models.linePlusBarChart()
@@ -266,9 +241,9 @@ ctrllers.DashController=function($scope,$http){
             var sq_rate=((obj.sample_quality/ttl)||0)*100;
             var inc_rate=((obj.incomplete_form/ttl)||0)*100;
             var el_rate=((obj.eligibility/ttl)||0)*100;
-            data[0].values.push({"x":obj._id,"y":Math.round(sq_rate) });
-            data[1].values.push({"x":obj._id,"y":Math.round(inc_rate)});
-            data[2].values.push({"x":obj._id,"y":Math.round(el_rate)});
+            data[0].values.push({"x":dateFormat(obj._id),"y":Math.round(sq_rate) });
+            data[1].values.push({"x":dateFormat(obj._id),"y":Math.round(inc_rate)});
+            data[2].values.push({"x":dateFormat(obj._id),"y":Math.round(el_rate)});
         }
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().stacked(true).color(["#607D8B","#FFCDD2","#F44336"]);
@@ -370,7 +345,8 @@ ctrllers.DashController=function($scope,$http){
         $scope.date_filtered=false;
         $scope.fro_date="all";
         $scope.to_date="all";
-        generalFilter();
+        getData({});
+        //generalFilter();
     }
 
     $scope.compare = function(prop,comparator, val){
@@ -444,11 +420,16 @@ ctrllers.DashController=function($scope,$http){
         return ret;
     }
 
-    var dateFormat=function(y_m){
+    /*var dateFormat=function(y_m){
         var arr=y_m.split('-');
         var yr=arr[0];
         var mth=arr[1];
         return $scope.month_labels[mth]+" '"+yr.slice(-2);
+    }*/
+
+    var dateFormat=function(x){
+        var ym=isNaN(x)?x:x.toString();
+        return $scope.month_labels[ym.slice(-2)]+" '"+ym.slice(2,4);
     }
 
     var count=function(json_obj){

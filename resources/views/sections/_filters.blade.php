@@ -1,4 +1,3 @@
-<span ng-model="month_labels" ng-init='month_labels={!! json_encode(MyHTML::months()) !!}'></span>
 <span ng-model="filtered" ng-init='filtered=false'></span>
 <span class="hdr hdr-grey" style="float:right;font-size:11px"><% data_date %></span><br>
 
@@ -54,10 +53,10 @@
     <tr>
         <td width='10%' >
             <span ng-model='fro_date_slct' ng-init='fro_date_slct={!! json_encode($months_by_years) !!}'></span>
-            <select ng-model="fro_date" ng-init="fro_date='all'" ng-change="dateFilter('fro')">
+            <select ng-model="fro_date" ng-init="fro_date='all'">
                 <option value='all'>FROM DATE</option>
                 <optgroup class="ng-cloak" ng-repeat="(yr,mths) in fro_date_slct | orderBy:'-yr'" label="<% yr %>">
-                    <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %>-<% mth %>"> 
+                    <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %><% mth %>"> 
                         <% month_labels[mth] %> '<% yr|slice:-2 %>
                     </option>
                 </optgroup>
@@ -65,10 +64,10 @@
         </td>
         <td width='10%' >
             <span ng-model='to_date_slct' ng-init='to_date_slct={!! json_encode($months_by_years) !!}'></span>
-            <select ng-model="to_date" ng-init="to_date='all'" ng-change="dateFilter('to');getData()">
+            <select ng-model="to_date" ng-init="to_date='all'" ng-change="dateFilter()">
                 <option value='all'>TO DATE</option>
                 <optgroup class="ng-cloak" ng-repeat="(yr,mths) in to_date_slct" label="<% yr %>">
-                    <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %>-<% mth %>"> 
+                    <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %><% mth %>"> 
                         <% month_labels[mth] %> '<% yr|slice:-2 %>
                     </option>
                 </optgroup>
