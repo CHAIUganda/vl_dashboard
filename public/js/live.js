@@ -44,7 +44,7 @@ var ctrllers={};
 
 ctrllers.DashController=function($scope,$http){
     $scope.identity = angular.identity;
-    $scope.params = {'districts':[],'hubs':[],'age_ids':[]};
+    $scope.params = {'districts':[],'hubs':[],'age_ids':[],'genders':[],'regimens':[],'lines':[]};
 
     var districts_json={};
     var hubs_json={};
@@ -54,6 +54,7 @@ ctrllers.DashController=function($scope,$http){
     var facilities_json={};   
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json={'m':'Male','f':'Female','x':'Unknown'};
+    var lines_json={1:'1st Line',2:'2nd Line',4:'4',5:'5'};
 
     $scope.month_labels={'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
 
@@ -62,6 +63,7 @@ ctrllers.DashController=function($scope,$http){
     $scope.labels.reg_times=regimen_times_json;
     $scope.labels.age_grps=age_group_json;
     $scope.labels.genders=genders_json;
+    $scope.labels.lines=lines_json;
 
     var vvvrrr=0;
 
@@ -96,21 +98,21 @@ ctrllers.DashController=function($scope,$http){
             prms.districts=JSON.stringify($scope.params.districts);
             prms.hubs=JSON.stringify($scope.params.hubs);
             prms.age_ids=JSON.stringify($scope.params.age_ids);
+            prms.genders=JSON.stringify($scope.params.genders);
+            prms.regimens=JSON.stringify($scope.params.regimens);
+            prms.lines=JSON.stringify($scope.params.lines);
+            prms.fro_date=$scope.fro_date;
+            prms.to_date=$scope.to_date;
             $http({method:'GET',url:"/live/",params:prms}).success(function(data) {
                 $scope.loading=true;
-                //console.log("we rrrr"+JSON.stringify($scope.params));
+                console.log("we rrrr"+JSON.stringify($scope.params));
 
                 $scope.samples_received=data.whole_numbers.samples_received||0;
                 $scope.suppressed=data.whole_numbers.suppressed||0;
                 $scope.valid_results=data.whole_numbers.valid_results||0;
-                $scope.rejected_samples=data.whole_numbers.rejected_samples||0;   
+                $scope.rejected_samples=data.whole_numbers.rejected_samples||0;  
 
-                $scope.cd4_less_than_500=data.t_indication[3]||0;
-                $scope.pmtct_option_b_plus=data.t_indication[1]||0;
-                $scope.children_under_15=data.t_indication[2]||0;
-                $scope.tb_infection=data.t_indication[4]||0;
-                $scope.other_treatment=data.t_indication[5]||0;
-                $scope.treatment_blank_on_form=data.t_indication[0]|| 0; 
+                $scope.t_indications=data.t_indication; 
 
                 $scope.duration_numbers=data.drn_numbers||{};
                 $scope.facility_numbers=data.f_numbers||{};
@@ -137,9 +139,9 @@ ctrllers.DashController=function($scope,$http){
                 alert("Please make sure that the fro date is earlier than the to date");
             }else{
                 $scope.date_filtered=true;
-                $scope.params.fro_date=fro_nr;
-                $scope.params.to_date=to_nr;
-                $scope.filter("duration");
+                $scope.fro_date_label=$scope.fro_date;
+                $scope.to_date_label=$scope.to_date;
+                getData();
             }
         }
     }
@@ -162,18 +164,92 @@ ctrllers.DashController=function($scope,$http){
             $scope.filter_age_group[$scope.age_group]=age_group_json[$scope.age_group];
             $scope.params.age_ids.push(Number($scope.age_group));
             $scope.age_group='all';
+            break;
 
+            case "gender":
+            $scope.filter_gender[$scope.gender]=genders_json[$scope.gender];
+            $scope.params.genders.push($scope.gender);
+            $scope.gender='all';
+            break;
+
+            case "regimen":
+            $scope.filter_regimen[$scope.regimen]=regimen_groups_json[$scope.regimen];
+            $scope.params.regimens.push(Number($scope.regimen));
+            $scope.regimen='all';
+            break;
+
+            case "line":
+            $scope.filter_line[$scope.line]=lines_json[$scope.line];
+            $scope.params.lines.push(Number($scope.line));
+            $scope.line='all';
             break;
         }
 
         delete $scope.filter_districts["all"];
         delete $scope.filter_hubs["all"];
         delete $scope.filter_age_group["all"];
+        delete $scope.filter_gender["all"];
+        delete $scope.filter_regimen["all"];
+        delete $scope.filter_line["all"];
 
         getData();
 
         //generalFilter(); //filter the results for each required event
     }
+
+    $scope.removeTag=function(mode,nr){
+        switch(mode){
+            case "district": 
+            delete $scope.filter_districts[nr];
+            delete $scope.params.districts[nr];
+            break;
+
+            case "hub": 
+            delete $scope.filter_hubs[nr];
+            delete $scope.params.hubs[nr];
+            break;
+
+            case "age_group": 
+            delete $scope.filter_age_group[nr];
+            delete $scope.params.age_ids[nr];
+            break;
+
+            case "gender": 
+            delete $scope.filter_gender[nr];
+            delete $scope.params.genders[nr];
+            break;
+
+            case "regimen": 
+            delete $scope.filter_regimen[nr];
+            delete $scope.params.regimens[nr];
+            break;
+
+            case "line": 
+            delete $scope.filter_line[nr];
+            delete $scope.params.lines[nr];
+            break;
+        }
+        //$scope.filter(mode);
+        getData();
+
+    };
+
+    $scope.clearAllFilters=function(){
+        $scope.filter_districts={};
+        $scope.filter_hubs={};
+        $scope.filter_age_group={};
+        $scope.filter_gender={};
+        $scope.filter_regimen={};
+        $scope.filter_line={};
+        $scope.filter_duration=$scope.init_duration;
+        $scope.filtered=false;
+        $scope.date_filtered=false;
+        $scope.fro_date="all";
+        $scope.to_date="all";
+        $scope.params = {'districts':[],'hubs':[],'age_ids':[],'genders':[],'regimens':[],'lines':[]};
+        getData();
+        //generalFilter();
+    };
 
 
     $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;       
@@ -327,28 +403,6 @@ ctrllers.DashController=function($scope,$http){
         });
     };
 
-     $scope.removeTag=function(mode,nr){
-        switch(mode){
-            case "district": delete $scope.filter_districts[nr];break;
-            case "hub": delete $scope.filter_hubs[nr];break;
-            case "age_group": delete $scope.filter_age_group[nr];break;
-        }
-        $scope.filter(mode);
-    };
-
-    $scope.clearAllFilters=function(){
-        $scope.filter_districts={};
-        $scope.filter_hubs={};
-        $scope.filter_age_group={};
-        $scope.filter_duration=$scope.init_duration;
-        $scope.filtered=false;
-        $scope.date_filtered=false;
-        $scope.fro_date="all";
-        $scope.to_date="all";
-        getData({});
-        //generalFilter();
-    }
-
     $scope.compare = function(prop,comparator, val){
         return function(item){
             if(comparator=='eq'){
@@ -410,7 +464,7 @@ ctrllers.DashController=function($scope,$http){
             $("#f_shw"+i).attr("class","active");
             $("#d_shw"+i).attr("class","");
         }
-    }
+    };
 
     var inArray=function(val,arr){
         var ret=false;
@@ -418,7 +472,7 @@ ctrllers.DashController=function($scope,$http){
             if(val==arr[i]) ret=true;
         }
         return ret;
-    }
+    };
 
     /*var dateFormat=function(y_m){
         var arr=y_m.split('-');
@@ -430,11 +484,11 @@ ctrllers.DashController=function($scope,$http){
     var dateFormat=function(x){
         var ym=isNaN(x)?x:x.toString();
         return $scope.month_labels[ym.slice(-2)]+" '"+ym.slice(2,4);
-    }
+    };
 
     var count=function(json_obj){
         return Object.keys(json_obj).length;
-    }
+    };
 
 };
 

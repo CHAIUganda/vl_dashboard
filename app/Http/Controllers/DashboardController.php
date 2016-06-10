@@ -29,19 +29,28 @@ class DashboardController extends Controller {
 		//$this->middleware('auth');
 	}
 
+	public function init(){
+		$to_date=date("Ym");
+		$fro_date=$this->_dateNMonthsBack();
+		return view("vdash",compact("fro_date","to_date"));
+	}
+
 	private function _setConditions(){
 		extract(\Request::all());
 		if(empty($fro_date) && empty($to_date)){
-			$n_months=$this->_latestNMonths(12);
-			$fro_date=$n_months[0];
-			$to_date=end($n_months);
+			$to_date=date("Ym");
+			$fro_date=$this->_dateNMonthsBack();
 		}
 		$conds=[];
 		$conds['$and'][]=['year_month'=>  ['$gte'=> (int)$fro_date] ];
 		$conds['$and'][]=[ 'year_month'=>  ['$lte'=> (int)$to_date] ];
-		if(!empty($districts)) $conds['$and'][]=[ 'district_id'=>  ['$in'=> json_decode($districts)] ];
-		if(!empty($hubs)) $conds['$and'][]=[ 'hub_id'=>  ['$in'=> json_decode($hubs)] ];
-		if(!empty($age_ids)) $conds['$and'][]=[ 'age_group_id'=>  ['$in'=> json_decode($age_ids)] ];
+		if(!empty($districts)&&$districts!='[]') $conds['$and'][]=[ 'district_id'=>  ['$in'=> json_decode($districts)] ];
+		if(!empty($hubs)&&$hubs!='[]') $conds['$and'][]=[ 'hub_id'=>  ['$in'=> json_decode($hubs)] ];
+		if(!empty($age_ids)&&$age_ids!='[]') $conds['$and'][]=[ 'age_group_id'=>  ['$in'=> json_decode($age_ids)] ];
+		if(!empty($genders)&&$genders!='[]') $conds['$and'][]=[ 'gender'=>  ['$in'=> json_decode($genders)] ];
+		if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen_group_id'=>  ['$in'=> json_decode($regimens)] ];
+		if(!empty($lines)&&$lines!='[]') $conds['$and'][]=[ 'regimen_line'=>  ['$in'=> json_decode($lines)] ];
+
 		return $conds;
 	}
 
@@ -75,6 +84,23 @@ class DashboardController extends Controller {
                 $y--;
             }
             array_unshift($ret, $y.str_pad($m, 2,0, STR_PAD_LEFT));
+            $m--;
+        }
+        return $ret;
+    }
+
+    private function _dateNMonthsBack(){
+    	$ret;
+    	$n=env('INIT_MONTHS');
+        $m=date('m');
+        $y=date('Y');
+        for($i=1;$i<=$n;$i++){
+        	if($i==$n) $ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
+
+            if($m==0){
+                $m=12;
+                $y--;
+            }
             $m--;
         }
         return $ret;

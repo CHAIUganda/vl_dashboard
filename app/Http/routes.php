@@ -15,6 +15,8 @@
 
 //Route::get('/{time?}',"DashboardController@show");
 
+Route::get("/","DashboardController@init");
+
 Route::get('/vdash/{fro_date?}/{to_date?}',"DashboardController@dash");
 
 Route::get('/poll/',function(){ return view('vdash'); });

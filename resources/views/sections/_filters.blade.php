@@ -8,9 +8,10 @@
      
     <div class="filter-section col-md-9">        
         <span ng-model='filter_duration' ng-init='filter_duration={!! json_encode($init_duration) !!};init_duration={!! json_encode($init_duration) !!};'>
-          <span class="filter-val ng-cloak">
-            <% filter_duration[0] |d_format %> - <% filter_duration[filter_duration.length-1] | d_format %> 
-        </span>
+          <span ng-init="fro_date_label='{!! $fro_date !!}';to_date_label='{!! $to_date !!}'" class="filter-val ng-cloak">
+            <% fro_date_label |d_format %> - <% to_date_label |d_format %>
+
+         </span>
         </span>
         &nbsp;
 
@@ -44,6 +45,12 @@
             </span>
         </span>
 
+        <span ng-model='filter_line' ng-init='filter_line={}'>
+            <span ng-repeat="(l_nr,l_name) in filter_line">
+                <span class="filter-val ng-cloak"> <% l_name %> (l) <x ng-click='removeTag("line",l_nr)'>&#120;</x></span> 
+            </span>
+        </span>
+
         <span ng-show="filtered" class="filter_clear" ng-click="clearAllFilters()">reset all</span>
 
     </div>
@@ -64,7 +71,7 @@
         </td>
         <td width='10%' >
             <span ng-model='to_date_slct' ng-init='to_date_slct={!! json_encode($months_by_years) !!}'></span>
-            <select ng-model="to_date" ng-init="to_date='all'" ng-change="dateFilter()">
+            <select ng-model="to_date" ng-init="to_date='all'" ng-change="dateFilter(   )">
                 <option value='all'>TO DATE</option>
                 <optgroup class="ng-cloak" ng-repeat="(yr,mths) in to_date_slct" label="<% yr %>">
                     <option class="ng-cloak" ng-repeat="mth in mths" value="<% yr %><% mth %>"> 
@@ -110,6 +117,14 @@
                 <option value='all'>REGIMEN</option>
                 <option class="ng-cloak" ng-repeat="(r_nr,rg) in labels.reg_grps" value="<% r_nr %>">
                     <% rg %>
+                </option>
+            </select>
+        </td>   
+        <td width='10%' id='dist_elmt'>
+            <select ng-model="line" ng-init="line='all'" ng-change="filter('line')">
+                <option value='all'>LINE</option>
+                <option class="ng-cloak" ng-repeat="(l_nr,l) in labels.lines" value="<% l_nr %>">
+                    <% l %>
                 </option>
             </select>
         </td>        
