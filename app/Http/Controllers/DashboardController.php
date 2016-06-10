@@ -37,7 +37,7 @@ class DashboardController extends Controller {
 
 	private function _setConditions(){
 		extract(\Request::all());
-		if(empty($fro_date) && empty($to_date)){
+		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){
 			$to_date=date("Ym");
 			$fro_date=$this->_dateNMonthsBack();
 		}
@@ -50,6 +50,8 @@ class DashboardController extends Controller {
 		if(!empty($genders)&&$genders!='[]') $conds['$and'][]=[ 'gender'=>  ['$in'=> json_decode($genders)] ];
 		if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen_group_id'=>  ['$in'=> json_decode($regimens)] ];
 		if(!empty($lines)&&$lines!='[]') $conds['$and'][]=[ 'regimen_line'=>  ['$in'=> json_decode($lines)] ];
+
+		//print_r($conds);
 
 		return $conds;
 	}

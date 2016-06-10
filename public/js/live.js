@@ -94,6 +94,7 @@ ctrllers.DashController=function($scope,$http){
     $scope.labels.districts=districts_json;
 
     var getData=function(){
+            $scope.loading=true;
             var prms={};
             prms.districts=JSON.stringify($scope.params.districts);
             prms.hubs=JSON.stringify($scope.params.hubs);
@@ -104,7 +105,7 @@ ctrllers.DashController=function($scope,$http){
             prms.fro_date=$scope.fro_date;
             prms.to_date=$scope.to_date;
             $http({method:'GET',url:"/live/",params:prms}).success(function(data) {
-                $scope.loading=true;
+                
                 console.log("we rrrr"+JSON.stringify($scope.params));
 
                 $scope.samples_received=data.whole_numbers.samples_received||0;
@@ -257,8 +258,9 @@ ctrllers.DashController=function($scope,$http){
 
         for(var i in $scope.duration_numbers){
             var obj=$scope.duration_numbers[i];
+            var plasma_samples=obj.samples_received-obj.dbs_samples;
             data[0].values.push({"x":dateFormat(obj._id),"y":Math.round(obj.dbs_samples||0)});
-            data[1].values.push({"x":dateFormat(obj._id),"y":Math.round(obj.plasma_samples||0)});            
+            data[1].values.push({"x":dateFormat(obj._id),"y":Math.round(plasma_samples||0)});            
         }
 
         nv.addGraph( function(){
