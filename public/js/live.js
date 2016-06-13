@@ -121,8 +121,11 @@ ctrllers.DashController=function($scope,$http){
                 $scope.regimen_group_numbers=data.reg_groups||{};
                 $scope.regimen_time_numbers=data.reg_times||{};
 
+                console.log("lajejdieorer: "+JSON.stringify($scope.regimen_group_numbers));
+
                 $scope.displaySamplesRecieved(); //to display the samples graph - for the first time
-    
+
+                $scope.filtered=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
                 $scope.loading=false;
                 //console.log("lalallalal:: samples_received:: "+data.samples_received+" suppressed:: "+data.suppressed+" "+data.valid_results);
             });
@@ -202,32 +205,32 @@ ctrllers.DashController=function($scope,$http){
         switch(mode){
             case "district": 
             delete $scope.filter_districts[nr];
-            delete $scope.params.districts[nr];
+            $scope.params.districts=rmveFrmArr(nr,$scope.params.districts);
             break;
 
             case "hub": 
             delete $scope.filter_hubs[nr];
-            delete $scope.params.hubs[nr];
+            $scope.params.hubs=rmveFrmArr(nr,$scope.params.hubs);
             break;
 
             case "age_group": 
             delete $scope.filter_age_group[nr];
-            delete $scope.params.age_ids[nr];
+            $scope.params.age_ids=rmveFrmArr(nr,$scope.params.age_ids);
             break;
 
             case "gender": 
             delete $scope.filter_gender[nr];
-            delete $scope.params.genders[nr];
+            $scope.params.genders=rmveFrmArr(nr,$scope.params.genders);
             break;
 
             case "regimen": 
             delete $scope.filter_regimen[nr];
-            delete $scope.params.regimens[nr];
+            $scope.params.regimens=rmveFrmArr(nr,$scope.params.regimens);
             break;
 
             case "line": 
             delete $scope.filter_line[nr];
-            delete $scope.params.lines[nr];
+            $scope.params.lines=rmveFrmArr(nr,$scope.params.lines);
             break;
         }
         //$scope.filter(mode);
@@ -315,13 +318,15 @@ ctrllers.DashController=function($scope,$http){
 
         for(var i in $scope.duration_numbers){
             var obj=$scope.duration_numbers[i];
-            var ttl=obj.sample_quality+obj.incomplete_form+obj.eligibility;
-            var sq_rate=((obj.sample_quality/ttl)||0)*100;
-            var inc_rate=((obj.incomplete_form/ttl)||0)*100;
-            var el_rate=((obj.eligibility/ttl)||0)*100;
-            data[0].values.push({"x":dateFormat(obj._id),"y":Math.round(sq_rate) });
-            data[1].values.push({"x":dateFormat(obj._id),"y":Math.round(inc_rate)});
-            data[2].values.push({"x":dateFormat(obj._id),"y":Math.round(el_rate)});
+
+            var ttl=obj.sample_quality_rejections+obj.incomplete_form_rejections+obj.eligibility_rejections;
+            var sq_rate=Math.round(((obj.sample_quality_rejections/ttl)||0)*100);
+            var inc_rate=Math.round(((obj.incomplete_form_rejections/ttl)||0)*100);
+            //var el_rate=((obj.eligibility_rejections/ttl)||0)*100;
+            var el_rate=100-(sq_rate+inc_rate);
+            data[0].values.push({"x":dateFormat(obj._id),"y": sq_rate });
+            data[1].values.push({"x":dateFormat(obj._id),"y": inc_rate });
+            data[2].values.push({"x":dateFormat(obj._id),"y": el_rate });
         }
         nv.addGraph( function(){
             var chart = nv.models.multiBarChart().stacked(true).color(["#607D8B","#FFCDD2","#F44336"]);
@@ -490,6 +495,16 @@ ctrllers.DashController=function($scope,$http){
 
     var count=function(json_obj){
         return Object.keys(json_obj).length;
+    };
+
+    var rmveFrmArr=function(val,arr){
+        for(var i in arr){
+            if(val==arr[i]){
+                arr.splice(i,1); 
+                return arr;
+            } 
+        }
+        return arr;
     };
 
 };

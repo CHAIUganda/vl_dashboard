@@ -22,8 +22,9 @@ class DashboardController extends Controller {
 
 	public function __construct(){
 		$this->months=\MyHTML::initMonths();
-		$connect = new \MongoClient();
-		$this->mongo=$connect->vldash;
+		$connect = new \MongoClient(env("MONGO_HOST"));
+		$db=env('MONGO_DB');
+		$this->mongo=$connect->$db;
 		$this->conditions=$this->_setConditions();
 
 		//$this->middleware('auth');
@@ -56,18 +57,6 @@ class DashboardController extends Controller {
 		return $conds;
 	}
 
-	public function dash($fro_date="",$to_date=""){
-		if(empty($fro_date) && empty($to_date)){
-			$n_months=$this->_latestNMonths(6);
-			$fro_date=$n_months[0];
-			$to_date=end($n_months);
-		}
-		//return Dashboard::getSampleData($fro_date,$to_date);	
-		$res=$this->mongo->samples_data->find([ '$and'=> [  ['year_month'=>  ['$gte'=> $fro_date] ] , [ 'year_month'=>  ['$lte'=> $to_date] ]  ] ]);
-		//return $res->count();
-		return json_encode(iterator_to_array($res));
-		//foreach ($res as $item)   echo $item['facility_id']."<br>";
-	}
 
 	public function other_data(){
 		$hubs=iterator_to_array($this->mongo->hubs->find());
@@ -108,11 +97,6 @@ class DashboardController extends Controller {
         return $ret;
     }
 
-	public function show($time=""){
-		if(empty($time)) $time=date("Y");
-
-		return view('d');
-	}
 
 	/*public function live(){
 		extract(\Request::all());
@@ -170,7 +154,7 @@ class DashboardController extends Controller {
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['valid_results']=['$sum'=>'$valid_results'];
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
-		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		$ret=isset($res['result'][0])?$res['result'][0]:[];
 		return $ret;
 	}
@@ -187,7 +171,7 @@ class DashboardController extends Controller {
 		$grp=[];
 		$grp['_id']='$treatment_indication_id';
 		$grp['samples_received']=['$sum'=>'$samples_received'];
-		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
 		$ret=[];
 
 		if(isset($res['result'])) foreach ($res['result'] as $row) $ret[$row['_id']]=$row['samples_received'];
@@ -215,7 +199,7 @@ class DashboardController extends Controller {
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
 		$grp['total_results']=['$sum'=>'$total_results'];
-		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -240,7 +224,7 @@ class DashboardController extends Controller {
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
 		$grp['total_results']=['$sum'=>'$total_results'];
-		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -268,7 +252,7 @@ class DashboardController extends Controller {
 		$grp['eligibility_rejections']=['$sum'=>'$eligibility_rejections'];
 		$grp['incomplete_form_rejections']=['$sum'=>'$incomplete_form_rejections'];
 
-		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -278,8 +262,9 @@ class DashboardController extends Controller {
 		$grp['samples_received']=['$sum'=>'$samples_received'];
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['total_results']=['$sum'=>'$total_results'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
 
-		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -290,7 +275,7 @@ class DashboardController extends Controller {
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['total_results']=['$sum'=>'$total_results'];
 		
-		$res=$this->mongo->samples_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -366,65 +351,6 @@ class DashboardController extends Controller {
 		foreach ($up_res as $m => $v) {			
 			$ret_val=$down_res[$m]>0?($up_res[$m]/$down_res[$m])*100:0;
 			$ret[$m]=round($ret_val,1);
-		}
-		return $ret;
-	}
-
-	private function facilityNumbers($counts,$positive_counts,$init_counts){
-		$ret=[];
-		foreach ($counts as $k => $v) {
-			extract($v);			
-			$abs_positives=array_key_exists($k, $positive_counts)?$positive_counts[$k]["value"]:0;
-			$positivity_rate=$value>0?($abs_positives/$value)*100:0;
-			$positivity_rate=round($positivity_rate,1);
-
-			$initiated=array_key_exists($k, $init_counts)?$init_counts[$k]["value"]:0;
-			$initiation_rate=$abs_positives>0?($initiated/$abs_positives)*100:0;
-			$initiation_rate=round($initiation_rate);
-
-
-			$ret[]=[
-				"facility_id"=>$facility_id,
-				"facility_name"=>$facility_name,
-				"district_id"=>$district_id,
-				"region_id"=>$region_id,
-				"level_id"=>$level_id,
-				"abs_positives"=>$abs_positives,
-				"total_results"=>$value,
-				"positivity_rate"=>$positivity_rate,
-				"initiation_rate"=>$initiation_rate
-				];
-				
-		}
-		return $ret;
-	}
-
-	private function numberMaps($counts,$positive_counts,$init_counts){
-		$ret=[];
-		foreach ($counts as $k => $v) {
-			extract($v);
-			$abs_positives=array_key_exists($k, $positive_counts)?$positive_counts[$k]["value"]:0;
-			$positivity_rate=$value>0?($abs_positives/$value)*100:0;
-			$positivity_rate=round($positivity_rate,1);
-
-			$initiated=array_key_exists($k, $init_counts)?$init_counts[$k]["value"]:0;
-			$initiation_rate=$abs_positives>0?($initiated/$abs_positives)*100:0;
-			$initiation_rate=round($initiation_rate);
-
-
-			$ret[]=[
-				"facility_id"=>$facility_id,
-				"month"=>$month,				
-				"facility_name"=>$facility_name,
-				"district_id"=>$district_id,
-				"region_id"=>$region_id,
-				"level_id"=>$level_id,
-				"abs_positives"=>$abs_positives,
-				"total_results"=>$value,
-				"positivity_rate"=>$positivity_rate,
-				"initiation_rate"=>$initiation_rate
-				];
-				
 		}
 		return $ret;
 	}

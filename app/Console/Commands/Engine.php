@@ -39,6 +39,9 @@ class Engine extends Command
     public function __construct()
     {
         parent::__construct();
+        $connect = new \MongoClient(env("MONGO_HOST"));
+        $db=env('MONGO_DB');
+        $this->mongo=$connect->$db;
     }
 
     /**
@@ -65,6 +68,7 @@ class Engine extends Command
     private function _loadData(){
         $year=2013;
         $current_year=date('Y');
+        $facilities_arr=LiveData::getFacilities2();
         while($year<=$current_year){
             $samples=LiveData::getSamples($year);
             $dbs_samples=LiveData::getSamples($year," sampleTypeID=1 ");
@@ -80,30 +84,41 @@ class Engine extends Command
                 $key=$s->mth.$s->age_group.$s->facilityID.$s->sex;
                 $key.=$s->reg_type.$s->reg_line.$s->reg_time.$s->trt;
 
-                $sample_data = new SamplesData;
+                $data=[];
                 //filter params
-                $sample_data->year_month = $year.str_pad($s->mth,2,0,STR_PAD_LEFT);
-                $sample_data->age_group_id = isset($s->age_group)?$s->age_group:0;
-                $sample_data->facility_id = isset($s->facilityID)?$s->facilityID:0;
-                $sample_data->gender = isset($s->sex)?$s->sex:0; 
-                $sample_data->treatment_indication_id = isset($s->trt)?$s->trt:0;
-                $sample_data->regimen_group_id = isset($s->reg_type)?$s->reg_type:0;
-                $sample_data->regimen_line = isset($s->reg_line)?$s->reg_line:0;
-                $sample_data->regimen_time_id = isset($s->reg_time)?$s->reg_time:0;
+                $y_m = $year.str_pad($s->mth,2,0,STR_PAD_LEFT);
+                $data["year_month"] = (int)$y_m;
+                $data["age_group_id"] = isset($s->age_group)?(int)$s->age_group:0;
+                $data["facility_id"] = isset($s->facilityID)?(int)$s->facilityID:0;
+                if(isset($s->facilityID)){
+                    $f_obj=isset($facilities_arr[$s->facilityID])?$facilities_arr[$s->facilityID]:new \stdClass;
+                    $data['district_id']=isset($f_obj->districtID)?(int)$f_obj->districtID:0;
+                    $data['hub_id']=isset($f_obj->hubID)?(int)$f_obj->hubID:0;
+                    $data['ip_id']=isset($f_obj->ipID)?(int)$f_obj->ipID:0;
+                }else{ 
+                    $data['district_id']=0;
+                    $data['hub_id']=0;
+                    $data['ip_id']=0;
+                }
+                $data["gender"] = isset($s->sex)?$s->sex:0; 
+                $data["treatment_indication_id"] = isset($s->trt)?(int)$s->trt:0;
+                $data["regimen_group_id"] = isset($s->reg_type)?(int)$s->reg_type:0;
+                $data["regimen_line"] = isset($s->reg_line)?(int)$s->reg_line:0;
+                $data["regimen_time_id"] = isset($s->reg_time)?(int)$s->reg_time:0;
 
                 //numbers
-                $sample_data->samples_received = isset($s->num)?$s->num:0;
-                $sample_data->dbs_samples = isset($dbs_samples[$key])?$dbs_samples[$key]:0;
-                $sample_data->rejected_samples = isset($rjctn_rsns[$key])?$rjctn_rsns[$key]:0;
+                $data["samples_received"] = isset($s->num)?(int)$s->num:0;
+                $data["dbs_samples"] = isset($dbs_samples[$key])?(int)$dbs_samples[$key]:0;
+                $data["rejected_samples"] = isset($rjctn_rsns[$key])?(int)$rjctn_rsns[$key]:0;
 
-                $sample_data->sample_quality_rejections=isset($rjctn_rsns2[$key.'quality_of_sample'])?$rjctn_rsns2[$key.'quality_of_sample']:0;
-                $sample_data->incomplete_form_rejections=isset($rjctn_rsns2[$key.'incomplete_form'])?$rjctn_rsns2[$key.'incomplete_form']:0;
-                $sample_data->eligibility_rejections=isset($rjctn_rsns2[$key.'eligibility'])?$rjctn_rsns2[$key.'eligibility']:0;
+                $data["sample_quality_rejections"]=isset($rjctn_rsns2[$key.'quality_of_sample'])?(int)$rjctn_rsns2[$key.'quality_of_sample']:0;
+                $data["incomplete_form_rejections"]=isset($rjctn_rsns2[$key.'incomplete_form'])?(int)$rjctn_rsns2[$key.'incomplete_form']:0;
+                $data["eligibility_rejections"]=isset($rjctn_rsns2[$key.'eligibility'])?(int)$rjctn_rsns2[$key.'eligibility']:0;
 
-                $sample_data->total_results = isset($t_rslts[$key])?$t_rslts[$key]:0;
-                $sample_data->valid_results = isset($v_rslts[$key])?$v_rslts[$key]:0;
-                $sample_data->suppressed = isset($sprsd[$key])?$sprsd[$key]:0;
-                $sample_data->save();
+                $data["total_results"] = isset($t_rslts[$key])?(int)$t_rslts[$key]:0;
+                $data["valid_results"] = isset($v_rslts[$key])?(int)$v_rslts[$key]:0;
+                $data["suppressed"]= isset($sprsd[$key])?(int)$sprsd[$key]:0;
+                $this->mongo->dashboard_data->insert($data);
                 $i++;
                 //echo "$i\n";                
             }

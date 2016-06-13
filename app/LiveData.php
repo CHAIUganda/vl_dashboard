@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LiveData extends Model
 {
     //
-    protected $connection = 'mysql2';
+    protected $connection = 'live_db';
 
     const SEX_CASE = "CASE WHEN `gender`='Female' THEN 'f' WHEN `gender`='Male' THEN 'm' ELSE 'x' END";
 
@@ -23,6 +23,13 @@ class LiveData extends Model
 
     public static function getFacilities(){
       return LiveData::select('id','facility','ipID','hubID','districtID')->from('vl_facilities')->get();
+    }
+
+    public static function getFacilities2(){
+      $res=LiveData::select('id','facility','ipID','hubID','districtID')->from('vl_facilities')->get();
+      $ret=[];
+      foreach ($res as $row)  $ret[$row->id]=$row;
+      return $ret;
     }
 
     public static function getIPs(){
@@ -46,7 +53,7 @@ class LiveData extends Model
 		        WHERE YEAR(s.created)='$year' AND $cond		  
 		        GROUP BY mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt";
 
-		  $res=\DB::connection('mysql2')->select($sql);
+		  $res=\DB::connection('live_db')->select($sql);
       if($cond==1) return $res;
       $ret=[];
       foreach ($res as $r) {
@@ -74,8 +81,7 @@ class LiveData extends Model
           WHERE YEAR(s.created)='$year' AND outcome='Rejected'
           GROUP BY mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt
           ";
-        //return \DB::connection('mysql2')->select($sql);
-        $res=\DB::connection('mysql2')->select($sql);
+        $res=\DB::connection('live_db')->select($sql);
         $ret=[];
         foreach ($res as $r) {
           $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
@@ -104,8 +110,7 @@ class LiveData extends Model
               WHERE YEAR(s.created)='$year' AND outcome='Rejected'
               GROUP BY rjctn_rsn,mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt
               ";
-        //return \DB::connection('mysql2')->select($sql);
-        $res=\DB::connection('mysql2')->select($sql);
+        $res=\DB::connection('live_db')->select($sql);
         $ret=[];
         foreach ($res as $r) {
           $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
@@ -133,8 +138,8 @@ class LiveData extends Model
               WHERE YEAR(s.created)='$year' AND $cond
               GROUP BY mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt
               ";
-        //return \DB::connection('mysql2')->select($sql);
-        $res=\DB::connection('mysql2')->select($sql);
+        
+        $res=\DB::connection('live_db')->select($sql);
         $ret=[];
         foreach ($res as $r) {
           $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
