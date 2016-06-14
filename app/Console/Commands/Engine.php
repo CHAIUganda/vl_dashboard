@@ -55,10 +55,10 @@ class Engine extends Command
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
 
-        /*$this->_loadHubs();
+        $this->_loadHubs();
         $this->_loadDistricts();
         $this->_loadFacilities();
-        $this->_loadIPs();*/
+        $this->_loadIPs();
         $this->_loadData();
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
