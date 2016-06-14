@@ -1,5 +1,5 @@
-## Pre-requisites
-# PHP
+# Pre-requisites
+## PHP
 1. PHP >= 5.5.9
 2. penSSL PHP Extension
 3. PDO PHP Extension
@@ -8,13 +8,13 @@
 6. MongoDB extension see here [Installing MongoDB ext](https://docs.mongodb.com/manual/installation/)
 7. Composer - dependency manager for php  see here [Installing Composer](https://getcomposer.org/doc/00-intro.md) 
 
-#MongoDB 
+##MongoDB 
 1. Install MongoDB from here [MongoDB](https://docs.mongodb.com/manual/installation/)
 
-#Web Server
+##Web Server
 1. Install a web server - Apache or Nginx
 
-#Application
+#Application Installation
 1. $cd /home/user/
 2. $git clone https://github.com/CHAIUganda/vl_dashboard.git
 3. $cd vl_dashboard
