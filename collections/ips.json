@@ -1,0 +1,28 @@
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c63"},"id":{"$numberLong":"19"},"name":"AIC"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c64"},"id":{"$numberLong":"7"},"name":"ASSIST"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c65"},"id":{"$numberLong":"1"},"name":"Baylor"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c66"},"id":{"$numberLong":"23"},"name":"CAFU"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c67"},"id":{"$numberLong":"16"},"name":"CUAMM"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c68"},"id":{"$numberLong":"28"},"name":"Facility Left Blank"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c69"},"id":{"$numberLong":"5"},"name":"IDI"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c6a"},"id":{"$numberLong":"21"},"name":"IRCU"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c6b"},"id":{"$numberLong":"27"},"name":"KCBHC"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c6c"},"id":{"$numberLong":"3"},"name":"Mildmay"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c6d"},"id":{"$numberLong":"20"},"name":"MJAP"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c6e"},"id":{"$numberLong":"26"},"name":"MRC"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c6f"},"id":{"$numberLong":"25"},"name":"No Facility Not Trained"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c70"},"id":{"$numberLong":"14"},"name":"REACHOUT"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c71"},"id":{"$numberLong":"8"},"name":"RHSP"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c72"},"id":{"$numberLong":"6"},"name":"RTI"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c73"},"id":{"$numberLong":"24"},"name":"SPEAR"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c74"},"id":{"$numberLong":"9"},"name":"Star E"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c75"},"id":{"$numberLong":"2"},"name":"Star EC"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c76"},"id":{"$numberLong":"13"},"name":"Star SW"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c77"},"id":{"$numberLong":"22"},"name":"SUSTAIN"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c78"},"id":{"$numberLong":"12"},"name":"TASO"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c79"},"id":{"$numberLong":"10"},"name":"UCMB"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c7a"},"id":{"$numberLong":"18"},"name":"Uganda Cares"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c7b"},"id":{"$numberLong":"11"},"name":"UHMG"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c7c"},"id":{"$numberLong":"4"},"name":"UPHSP"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c7d"},"id":{"$numberLong":"17"},"name":"UPMB"}
+{"_id":{"$oid":"5761e75e773dfd7f3a8b4c7e"},"id":{"$numberLong":"15"},"name":"Walter Reed"}
