@@ -152,28 +152,29 @@
                 <li id='tb_hd4'>
                     <a href="#tab4" id='tb_lnk4' ng-click="displayRegimenGroups()">
                         <span class="num ng-cloak" >
-                           CR                            
+                           <% ((line_numbers[1]/samples_received)*100)|number:1 %>% <span style="font-size:10px">on 1st line</span>                           
                         </span>
                         <span class="desc">current regimen</span>
                     </a>
                 </li>
 
-                <li id='tb_hd5'>
+               <!--  <li id='tb_hd5'>
                     <a href="#tab5" id='tb_lnk5' ng-click="displayRegimenTime()">
                         <span class="num ng-cloak">
                             RD                          
                         </span>
                         <span class="desc">regimen durations</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </nav>
         <div class="content-wrap">
             <section id="tab1"> @include('sections._samples_received') </section>
             <section id="tab2"> @include('sections._suppression_rate') </section>
             <section id="tab3"> @include('sections._rejections')</section>
-            <section id="tab4"> @include('sections._regimen_groups')</section>
-            <section id="tab5"> @include('sections._regimen_time')</section>
+            <section id="tab4"> @include('sections._current_regimen')</section>
+            <!-- <section id="tab4"> @include('sections._regimen_groups')</section>
+            <section id="tab5"> @include('sections._regimen_time')</section> -->
         </div><!-- /content -->
     </div><!-- /tabs -->
     

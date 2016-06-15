@@ -135,7 +135,8 @@ class DashboardController extends Controller {
 		$drn_numbers=$this->_durationNumbers();
 		$reg_groups=$this->_regimenGroupNumbers();
 		$reg_times=$this->_regimenTimeNumbers();
-		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers","reg_groups","reg_times");
+		$line_numbers=$this->_lineNumbers();
+		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers","reg_groups","reg_times","line_numbers");
 	}
 
 	/*private function _wholeNumbers($conds){
@@ -170,6 +171,17 @@ class DashboardController extends Controller {
 	private function _treatmentIndicationNumbers(){
 		$grp=[];
 		$grp['_id']='$treatment_indication_id';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
+		$ret=[];
+
+		if(isset($res['result'])) foreach ($res['result'] as $row) $ret[$row['_id']]=$row['samples_received'];
+		return $ret;
+	}
+
+	private function _lineNumbers(){
+		$grp=[];
+		$grp['_id']='$regimen_line';
 		$grp['samples_received']=['$sum'=>'$samples_received'];
 		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
 		$ret=[];
@@ -274,6 +286,7 @@ class DashboardController extends Controller {
 		$grp['samples_received']=['$sum'=>'$samples_received'];
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['total_results']=['$sum'=>'$total_results'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
 		
 		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];

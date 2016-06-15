@@ -46,12 +46,10 @@ ctrllers.DashController=function($scope,$http){
     $scope.identity = angular.identity;
     $scope.params = {'districts':[],'hubs':[],'age_ids':[],'genders':[],'regimens':[],'lines':[]};
 
-    var districts_json={};
     var hubs_json={};
     var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};  
     var regimen_groups_json={1:'AZT' ,2:'TDF/XTC/EFV' ,3:'TDF/XTC/NVP', 4:'ABC',5:'TDF/XTC/LPV/r' , 6:'TDF/XTC/ATV/r', 7:'Other'};
-    var regimen_times_json={1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};   
-    var facilities_json={};   
+    var regimen_times_json={1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json={'m':'Male','f':'Female','x':'Unknown'};
     var lines_json={1:'1st Line',2:'2nd Line',4:'4',5:'5'};
@@ -64,6 +62,8 @@ ctrllers.DashController=function($scope,$http){
     $scope.labels.age_grps=age_group_json;
     $scope.labels.genders=genders_json;
     $scope.labels.lines=lines_json;
+    $scope.labels.districts=[];
+    $scope.labels.facilities=[];
 
     var vvvrrr=0;
 
@@ -72,9 +72,11 @@ ctrllers.DashController=function($scope,$http){
     $scope.age_group_slct=age_group_json;
 
     $http.get("/other_data/").success(function(data){
+        //console.log("Ehealth at chai rocks 1 "+JSON.stringify(data.facilities));
         for(var i in data.districts){
             var obj=data.districts[i];
-            districts_json[obj.id]=obj.name;
+            $scope.labels.districts[obj.id]=obj.name||"no district";
+
             $scope.districts2.push({"id":obj.id,"name":obj.name});
         }
 
@@ -85,13 +87,11 @@ ctrllers.DashController=function($scope,$http){
         }
 
         for(var i in data.facilities){
-            var f=data.facilities[i];
-            facilities_json[f.id]={'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
+            var obj=data.facilities[i];
+            //facilities_json[f.id]={'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
+            $scope.labels.facilities[obj.id]=obj.name||"no facility";
         }
     });
-
-    $scope.labels.facilities=facilities_json;
-    $scope.labels.districts=districts_json;
 
     var getData=function(){
             $scope.loading=true;
@@ -106,7 +106,7 @@ ctrllers.DashController=function($scope,$http){
             prms.to_date=$scope.to_date;
             $http({method:'GET',url:"/live/",params:prms}).success(function(data) {
                 
-                console.log("we rrrr"+JSON.stringify($scope.params));
+                //console.log("we rrrr"+JSON.stringify($scope.params));
 
                 $scope.samples_received=data.whole_numbers.samples_received||0;
                 $scope.suppressed=data.whole_numbers.suppressed||0;
@@ -120,8 +120,9 @@ ctrllers.DashController=function($scope,$http){
                 $scope.district_numbers=data.dist_numbers||{};
                 $scope.regimen_group_numbers=data.reg_groups||{};
                 $scope.regimen_time_numbers=data.reg_times||{};
+                $scope.line_numbers=data.line_numbers||{};
 
-                console.log("lajejdieorer: "+JSON.stringify($scope.regimen_group_numbers));
+               //console.log("lajejdieorer: "+JSON.stringify($scope.regimen_group_numbers));
 
                 $scope.displaySamplesRecieved(); //to display the samples graph - for the first time
 
@@ -153,7 +154,7 @@ ctrllers.DashController=function($scope,$http){
     $scope.filter=function(mode){
         switch(mode){
             case "district":
-            $scope.filter_districts[$scope.district]=districts_json[$scope.district];
+            $scope.filter_districts[$scope.district]=$scope.labels.districts[$scope.district];
             $scope.params.districts.push(Number($scope.district));
             $scope.district='all';            
             break;
@@ -256,7 +257,9 @@ ctrllers.DashController=function($scope,$http){
     };
 
 
-    $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;       
+    $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;  
+        //console.log("districts -- "+JSON.stringify($scope.labels.districts));
+        //console.log("facilities -- "+JSON.stringify($scope.labels.facilities));     
         var data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
 
         for(var i in $scope.duration_numbers){
@@ -472,6 +475,19 @@ ctrllers.DashController=function($scope,$http){
             $("#d_shw"+i).attr("class","");
         }
     };
+
+    $scope.showReg=function(){
+        $scope.show_reg=!$scope.show_reg;
+        if($scope.show_reg==true){
+            $scope.displayRegimenGroups();
+            $("#reg_shw").attr("class","active");
+            $("#dur_shw").attr("class","");
+        }else{
+            $scope.displayRegimenTime();
+            $("#reg_shw").attr("class","");
+            $("#dur_shw").attr("class","active");
+        }
+    }
 
     var inArray=function(val,arr){
         var ret=false;

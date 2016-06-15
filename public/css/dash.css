@@ -433,7 +433,7 @@ div.addition-metrics{
 	color: #9F82D1;
 }
 
-.dist_faclty_toggle{
+.dist_faclty_toggle,.reg_toggle{
 	cursor: pointer;
 	margin-left: 30%;
 	padding-top: 4px;
@@ -441,13 +441,16 @@ div.addition-metrics{
 	border: 1px solid #F44336 
 }
 
-.dist_faclty_toggle>.active{
+.dist_faclty_toggle>.active,.reg_toggle>.active{
 	background-color:#F44336; 
 	color:#FFF;
 	padding-top: inherit;
 	padding-bottom: inherit;
 }
 
+.reg_toggle>.active{
+	margin-right: -5px;
+}
 
 .filter-section{
 	overflow: auto;

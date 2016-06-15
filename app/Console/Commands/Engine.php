@@ -126,7 +126,7 @@ class Engine extends Command
             $year++;
         }
     }
-
+/*
     private function _loadHubs(){
         $hubs=LiveData::getHubs();
         $sql="";
@@ -177,7 +177,39 @@ class Engine extends Command
         }
         \DB::unprepared($sql);
     }
+*/
+    private function _loadHubs(){
+        $res=LiveData::getHubs();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->hub];
+            $this->mongo->hubs->insert($data);
+        }
+    }
 
+
+    private function _loadFacilities(){
+        $res=LiveData::getFacilities();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->facility,'hub_id'=>$row->hubID,'ip_id'=>$row->ipID,'district_id'=>$row->districtID];
+            $this->mongo->facilities->insert($data);
+        }
+    }
+
+    private function _loadIPs(){
+        $res=LiveData::getIPs();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->ip];
+            $this->mongo->ips->insert($data);
+        }
+    }
+
+    private function _loadDistricts(){
+        $res=LiveData::getDistricts();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->district];
+            $this->mongo->districts->insert($data);
+        }
+    }
 
     private function _validCases(){
         $ret="";

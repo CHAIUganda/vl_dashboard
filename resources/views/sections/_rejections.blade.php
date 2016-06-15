@@ -41,7 +41,7 @@
                 </thead>
                 <tbody>                                
                     <tr ng-repeat="f in facility_numbers" >
-                        <td class="ng-cloak"><% labels.facilities[f._id].name %></td>
+                        <td class="ng-cloak"><% labels.facilities[f._id] %></td>
                         <td class="ng-cloak"><% f.samples_received %></td>
                         <td class="ng-cloak"><% ((f.rejected_samples/f.samples_received)*100)|number:1 %> %</td>
                     </tr>                        
