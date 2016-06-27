@@ -44,7 +44,10 @@ class Engine extends Command
         $db=env('MONGO_DB');
         $user=env('MONGO_USER');
         $pass=env('MONGO_PWD');
-        $this->mongo=new \MongoClient($host,['username'=>$user,'password'=>$pass,'db'=>$db]);
+        $client = new \MongoClient("mongodb://$user:$pass@$host/$db");
+
+        $this->mongo=$client->$db;
+        //$this->mongo=new \MongoClient($host,['username'=>$user,'password'=>$pass,'db'=>$db]);
     }
 
     /**
