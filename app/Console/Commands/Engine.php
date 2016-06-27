@@ -39,9 +39,12 @@ class Engine extends Command
     public function __construct()
     {
         parent::__construct();
-        $connect = new \MongoClient(env("MONGO_HOST"));
+
+        $host=env('MONGO_HOST');
         $db=env('MONGO_DB');
-        $this->mongo=$connect->$db;
+        $user=env('MONGO_USER');
+        $pass=env('MONGO_PWD');
+        $this->mongo=new \MongoClient($host,['username'=>$user,'password'=>$pass,'db'=>$db]);
     }
 
     /**

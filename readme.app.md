@@ -5,7 +5,7 @@
 3. PDO PHP Extension
 4. Mbstring PHP Extension
 5. Tokenizer PHP Extension
-6. MongoDB extension see here [Installing MongoDB ext](https://docs.mongodb.com/manual/installation/)
+6. MongoDB extension see here [Installing MongoDB ext](http://php.net/manual/en/mongodb.setup.php)
 7. Composer - dependency manager for php  see here [Installing Composer](https://getcomposer.org/doc/00-intro.md) 
 
 ##MongoDB 
