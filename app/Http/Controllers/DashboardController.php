@@ -11,6 +11,8 @@ use EID\Hub;
 use EID\District;
 use EID\Facility;
 
+use EID\Mongo;
+
 use Validator;
 use Lang;
 use Redirect;
@@ -22,9 +24,7 @@ class DashboardController extends Controller {
 
 	public function __construct(){
 		$this->months=\MyHTML::initMonths();
-		$connect = new \MongoClient(env("MONGO_HOST"));
-		$db=env('MONGO_DB');
-		$this->mongo=$connect->$db;
+		$this->mongo=Mongo::connect();
 		$this->conditions=$this->_setConditions();
 
 		//$this->middleware('auth');

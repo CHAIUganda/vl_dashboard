@@ -13,6 +13,7 @@ use EID\Dashboard;
 use EID\TreatmentIndication;
 use EID\SamplesData;
 use EID\RegimenData;
+use EID\Mongo;
 
 
 class Engine extends Command
@@ -39,15 +40,7 @@ class Engine extends Command
     public function __construct()
     {
         parent::__construct();
-
-        $host=env('MONGO_HOST');
-        $db=env('MONGO_DB');
-        $user=env('MONGO_USER');
-        $pass=env('MONGO_PWD');
-        $client = new \MongoClient("mongodb://$user:$pass@$host/$db");
-
-        $this->mongo=$client->$db;
-        //$this->mongo=new \MongoClient($host,['username'=>$user,'password'=>$pass,'db'=>$db]);
+        $this->mongo=Mongo::connect();
     }
 
     /**
