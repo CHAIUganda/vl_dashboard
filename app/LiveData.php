@@ -46,7 +46,8 @@ class LiveData extends Model
                    $reg_type_case AS reg_type,
                    reg_t.treatmentStatusID AS reg_line,
                    $reg_time_case AS reg_time,
-                   treatmentInitiationID AS trt   
+                   treatmentInitiationID AS trt,
+                   count(distinct patientUniqueID) as numberOfPatientsTested   
 		        FROM vl_samples AS s
 		        LEFT JOIN vl_patients AS p ON s.patientID=p.id
             LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
@@ -61,6 +62,38 @@ class LiveData extends Model
         $k.=$r->reg_type.$r->reg_line.$r->reg_time.$r->trt;
         $ret[$k]=$r->num;
       }
+      return $ret; 
+    }
+
+    public static function getNumberOfPatientsTested($year,$cond=1){
+      $age_grp_case=self::ageGroupCase();
+      $reg_type_case=self::regimenTypeCase();
+      $reg_time_case=self::regimenTimeCase();
+      $sql="SELECT facilityID,month(s.created) AS mth,count(s.id) AS num,
+                   $age_grp_case AS age_group,".self::SEX_CASE." AS sex,
+                   $reg_type_case AS reg_type,
+                   reg_t.treatmentStatusID AS reg_line,
+                   $reg_time_case AS reg_time,
+                   treatmentInitiationID AS trt,
+                   count(distinct patientUniqueID) as numberOfPatientsTested    
+            FROM vl_samples AS s
+            LEFT JOIN vl_patients AS p ON s.patientID=p.id
+            LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
+            WHERE YEAR(s.created)='$year' AND $cond     
+            GROUP BY mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt";
+
+      $res=\DB::connection('live_db')->select($sql);
+      if($cond==1){
+        return $res;
+      } 
+        
+      $ret=[];
+      foreach ($res as $r) {
+        $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
+        $k.=$r->reg_type.$r->reg_line.$r->reg_time.$r->trt;
+        $ret[$k]=$r->numberOfPatientsTested;
+      }
+       
       return $ret; 
     }
 

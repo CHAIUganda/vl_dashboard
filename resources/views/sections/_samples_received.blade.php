@@ -18,8 +18,8 @@
                         <th >Samples Received</th>
                         <th >DBS (%)&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <th >Samples Tested</th>
-                        <th >Samples Rejected</th>
-                        <th >Samples Pending</th>
+                        <th >Patients Tested</th>
+                        
                     </tr>
                 </thead>
                 <tbody>                                
@@ -28,8 +28,7 @@
                         <td class="ng-cloak"><% d.samples_received|number %></td>
                         <td class="ng-cloak"><% ((d.dbs_samples/d.samples_received)*100 )| number:1 %> %</td>
                         <td class="ng-cloak"><% d.total_results|number %></td>
-                        <td class="ng-cloak"><% d.rejected_samples|number %></td>
-                        <td class="ng-cloak"><% (d.samples_received-(d.rejected_samples+d.total_results))|number %></td>
+                        <td class="ng-cloak"><% d.patients_tested|number %></td>
                     </tr>                        
                  </tbody>
              </table>
