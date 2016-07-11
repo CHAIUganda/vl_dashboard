@@ -47,7 +47,8 @@ ctrllers.DashController=function($scope,$http){
     $scope.params = {'districts':[],'hubs':[],'age_ids':[],'genders':[],'regimens':[],'lines':[]};
 
     var hubs_json={};
-    var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};  
+    //var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};  
+    var age_group_json={1:"0<5",2:"5-9",3:"10-14",4:"15-18",5:"19-25",6:"26+"}
     var regimen_groups_json={1:'AZT' ,2:'TDF/XTC/EFV' ,3:'TDF/XTC/NVP', 4:'ABC',5:'TDF/XTC/LPV/r' , 6:'TDF/XTC/ATV/r', 7:'Other'};
     var regimen_times_json={1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
