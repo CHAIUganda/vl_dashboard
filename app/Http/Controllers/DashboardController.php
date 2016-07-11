@@ -136,7 +136,9 @@ class DashboardController extends Controller {
 		$reg_groups=$this->_regimenGroupNumbers();
 		$reg_times=$this->_regimenTimeNumbers();
 		$line_numbers=$this->_lineNumbers();
-		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers","reg_groups","reg_times","line_numbers");
+		$age_grp_numbers=$this->_ageGroupNumbers();
+		$age_grps_by_facilities=$this->_ageGroupNumbersByFacilities();
+		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers","reg_groups","reg_times","line_numbers","age_grp_numbers","age_grps_by_facilities");
 	}
 
 	/*private function _wholeNumbers($conds){
@@ -292,6 +294,83 @@ class DashboardController extends Controller {
 		return isset($res['result'])?$res['result']:[];
 	}
 
+	//get numbers by age groups
+	private function _ageGroupNumbers(){
+		$grp=[];
+		$grp['_id']=['a'=>'$age_group_id','g'=>'$gender'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
+		
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+
+		$ret=[];
+		if(isset($res['result'])){
+			foreach ($res['result'] as $row) {
+				extract($row);
+				$suppressed_f=$suppressed_m=$valid_results_f=$valid_results_m=0;
+
+				if($_id['g']=='f'){
+					$suppressed_f=$suppressed;
+					$valid_results_f=$valid_results;
+				}else if ($_id['g']=='m'){
+					$suppressed_m=$suppressed;
+					$valid_results_m=$valid_results;
+				}
+
+				$a=$_id['a'];
+
+				if(isset($ret[$a])){
+					$suppressed_f+=$ret[$a]['suppressed_f'];
+					$suppressed_m+=$ret[$a]['suppressed_m'];
+					$valid_results_f+=$ret[$a]['valid_results_f'];
+					$valid_results_m+=$ret[$a]['valid_results_m'];					
+				}
+
+				$ret[$a]=compact("suppressed_f", "suppressed_m", "valid_results_f", "valid_results_m");
+			}
+		}
+		return $ret;
+		//return isset($res['result'])?$res['result']:[];
+	}
+
+	private function _ageGroupNumbersByFacilities(){
+		$grp=[];
+		$grp['_id']=['a'=>'$age_group_id','g'=>'$gender','f'=>'$facility_id'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
+		
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$ret=[];
+		if(isset($res['result'])){
+			foreach ($res['result'] as $row) {
+				extract($row);
+				$suppressed_f=$suppressed_m=$valid_results_f=$valid_results_m=0;
+
+				if($_id['g']=='f'){
+					$suppressed_f=$suppressed;
+					$valid_results_f=$valid_results;
+				}else if ($_id['g']=='m'){
+					$suppressed_m=$suppressed;
+					$valid_results_m=$valid_results;
+				}
+
+				$a=$_id['a'];
+				$f=$_id['f'];
+
+				if(isset($ret[$f][$a])){
+					$suppressed_f+=$ret[$f][$a]['suppressed_f'];
+					$suppressed_m+=$ret[$f][$a]['suppressed_m'];
+					$valid_results_f+=$ret[$f][$a]['valid_results_f'];
+					$valid_results_m+=$ret[$f][$a]['valid_results_m'];					
+				}
+
+				$ret[$f][$a]=compact("suppressed_f", "suppressed_m", "valid_results_f", "valid_results_m");
+			}
+		}
+		return $ret;
+		//return isset($res['result'])?$res['result']:[];
+	}
+
 	private function median($arr){
 		sort($arr);
 		$quantity=count($arr);
@@ -372,7 +451,11 @@ class DashboardController extends Controller {
 
 	/*
 
-	I would say that he is a ‘master’, if it were not for my belief that no one ‘masters’ anything, that each finds or makes his candle, then tries to see by the guttering light. Mum has made a good candle. And Mum has good eyes.
+	Array ( [0] => Array ( [_id] => Array ( [a] => 5 [g] => gender ) [suppressed] => 22919 [valid_results] => 25631 ) [1] => Array ( [_id] => Array ( [a] => 6 [g] => gender ) [suppressed] => 290917 [valid_results] => 310944 ) [2] => Array ( [_id] => Array ( [a] => 3 [g] => gender ) [suppressed] => 8462 [valid_results] => 11127 ) [3] => Array ( [_id] => Array ( [a] => 4 [g] => gender ) [suppressed] => 4797 [valid_results] => 6434 ) [4] => Array ( [_id] => Array ( [a] => 2 [g] => gender ) [suppressed] => 8948 [valid_results] => 11524 ) [5] => Array ( [_id] => Array ( [a] => 1 [g] => gender ) [suppressed] => 4185 [valid_results] => 6015 ) )
+
+	I would say that he is a ‘master’, if it were not for my belief that no one ‘masters’ anything, 
+	that each finds or makes his candle, then tries to see by the guttering light. Mum has made a good candle. 
+	And Mum has good eyes.
 
 	Gwendolyn Brooks
 

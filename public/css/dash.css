@@ -406,16 +406,22 @@ div.addition-metrics{
 	color: #fff;
 }
 
+.summary-sect{
+	font-size: 11px;
+	text-align: center;
+}
+
 .facilties-sect{
 	font-size: 11px;
 	padding-left: 50px;
 }
 
-.facilties-sect table tr th,
-.facilties-sect table thead tr,
-.facilties-sect table tbody tr{
+.facilties-sect table tr th,.summary-sect table tr th,
+.facilties-sect table thead tr,.summary-sect table thead tr,
+.facilties-sect table tbody tr,.summary-sect table tbody tr{
 	height: 12px;
 }
+
 
 .facilities-sect-hiv-pstv table tbody tr{
 	color: #357BB8;

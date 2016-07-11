@@ -3,11 +3,11 @@
 
 /*
 Authors
-Name                        @       Period      Role       
-Logan Smith                 CHAI    2015(v1)    Interface Design, Q/A
-Lena Derisavifard           CHAI    2015(v1)    Req Specification, Q/A, UAT
-Kitutu Paul                 CHAI    2015(v1)    System development
-Sam Otim                    CHAI    2015(v1)    System development
+Name                        @       Period                  Role       
+Logan Smith                 CHAI    2015(v1)                Interface Design, Q/A
+Lena Derisavifard           CHAI    2015(v1)                Req Specification, Q/A, UAT
+Kitutu Paul                 CHAI    2015(v1),2016(v2)       System development
+Sam Otim                    CHAI    2015(v1)                System development
 
 Credit to CHAI Uganda, CPHL and stakholders
 */
@@ -70,6 +70,7 @@ ctrllers.DashController=function($scope,$http){
 
     $scope.districts2=[];
     $scope.hubs2=[];
+    $scope.facilities2=[];
     $scope.age_group_slct=age_group_json;
 
     $http.get("/other_data/").success(function(data){
@@ -91,6 +92,7 @@ ctrllers.DashController=function($scope,$http){
             var obj=data.facilities[i];
             //facilities_json[f.id]={'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
             $scope.labels.facilities[obj.id]=obj.name||"no facility";
+            $scope.facilities2.push({id:obj.id,name:obj.name});
         }
     });
 
@@ -123,6 +125,9 @@ ctrllers.DashController=function($scope,$http){
                 $scope.regimen_time_numbers=data.reg_times||{};
                 $scope.line_numbers=data.line_numbers||{};
 
+                $scope.age_grp_numbers=data.age_grp_numbers||{};
+                $scope.tt=data.age_grps_by_facilities||{};
+
                //console.log("lajejdieorer: "+JSON.stringify($scope.regimen_group_numbers));
 
                 $scope.displaySamplesRecieved(); //to display the samples graph - for the first time
@@ -133,7 +138,11 @@ ctrllers.DashController=function($scope,$http){
             });
     };
 
-    getData();    
+    getData();  
+
+    $scope.b=function(x){
+        return x+1;
+    }  
 
 
     $scope.dateFilter=function(){

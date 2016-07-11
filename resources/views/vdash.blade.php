@@ -124,6 +124,13 @@
      <div class="tabss tabs-style-flip">
         <nav>
             <ul>
+                 <li id='tb_hd0'>
+                    <a href="#tab1" id='tb_lnk1'>
+                        <span class='num'>SD</span>
+                       
+                        <span class="desc">summarized data</span>
+                    </a>
+                </li>
                 <li id='tb_hd1'>
                     <a href="#tab1" id='tb_lnk1' ng-click="displaySamplesRecieved()">
                         <span class="num ng-cloak" ng-model="samples_received" ng-init="samples_received=0">
@@ -169,6 +176,7 @@
             </ul>
         </nav>
         <div class="content-wrap">
+            <section id="tab0"> @include('sections._summarized_data') </section>
             <section id="tab1"> @include('sections._samples_received') </section>
             <section id="tab2"> @include('sections._suppression_rate') </section>
             <section id="tab3"> @include('sections._rejections')</section>

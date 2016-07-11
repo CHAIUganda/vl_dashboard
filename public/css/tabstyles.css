@@ -115,7 +115,7 @@ body{
 .tabs-style-flip .content-wrap .content-current{
 	background: #fff;
 	border: 1px solid;
-	min-height: 400px;
+	min-height: 500px;
 	text-align: left;
 	padding: 30px;
 }
@@ -137,7 +137,7 @@ body{
 	border-color: #9F82D1;
 }*/
 
-#tab1,#tab2,#tab3,#tab4,#tab5{
+#tab0,#tab1,#tab2,#tab3,#tab4,#tab5{
 	border-color: #F44336;
 }
 
