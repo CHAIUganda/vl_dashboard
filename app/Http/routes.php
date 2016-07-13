@@ -21,6 +21,8 @@ Route::get("/live","DashboardController@live");
 
 Route::get("/other_data/","DashboardController@other_data");
 
+//Route::post('/downloadCsv', 'DashboardController@downloadCsv');
+
 /*Route::get('/w',function(){
 	return view("welcome");
 });*/

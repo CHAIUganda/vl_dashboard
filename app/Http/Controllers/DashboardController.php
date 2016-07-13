@@ -36,6 +36,21 @@ class DashboardController extends Controller {
 		return view("vdash",compact("fro_date","to_date"));
 	}
 
+	public function downloadCsv($type)
+	{
+		if(Request::ajax()) {
+      		$data = Input::all();
+      		print_r($data);die;
+        }
+
+		//$data = Item::get()->toArray();
+		//return Excel::create('itsolutionstuff_example', function($excel) use ($data) {
+		//	$excel->sheet('mySheet', function($sheet) use ($data)
+	    //    {
+		//		$sheet->fromArray($data);
+	    //    });
+		//})->download($type);
+	}
 	private function _setConditions(){
 		extract(\Request::all());
 		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){

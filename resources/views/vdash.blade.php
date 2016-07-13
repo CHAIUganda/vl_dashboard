@@ -31,14 +31,30 @@
     <script src="{{ asset('/js/angular-route.js')}}" type="text/javascript"></script>
 
     <script src="{{ asset('/js/angular-datatables.min.js') }}" type="text/javascript"></script>
-
+   
 
    
     <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
     
-    <script src="{{ asset('/js/stream_layers.js') }}"></script>
-
+    <script src="{{ asset('/js/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/js/jquery.tabletoCSV.js')}}" type="text/javascript"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#exportBmutton").click(function(){
+                     window.alert("Hey!!!");
+                    $("DataTables_Table_0").tableToCSV();
+               });
+            });
+                
+    </script>
+    <script>
+        $(function(){
+            $("#exportButton").click(function(){
+                $("#DataTables_Table_0").tableToCSV();
+            });
+        });
+    </script>
     <style type="text/css">
     .nv-point {
         stroke-opacity: 1!important;
@@ -46,7 +62,6 @@
         fill-opacity: 1!important;
     }
     </style>
-
     
 </head>
 
@@ -194,6 +209,8 @@
 
 
 </body>
-
+<script src="//code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
+<script type="text/javascript" src=" {{ asset('js/ng-csv.js') }} "></script>
+<script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
 <script type="text/javascript" src=" {{ asset('js/live.js') }} "></script>
 </html>

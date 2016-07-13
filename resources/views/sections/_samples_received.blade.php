@@ -11,28 +11,39 @@
             <span id='f_shw1'>&nbsp;&nbsp;FACILITIES &nbsp;&nbsp;</span>
         </span>
         <div ng-hide="show_fclties1">
-            <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
-                <thead>
-                    <tr>
-                        <th >District</th>
-                        <th >Samples Received</th>
-                        <th >DBS (%)&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                        <th >Samples Tested</th>
-                        <th >Patients Tested</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>                                
-                    <tr ng-repeat="d in district_numbers | orderBy:'-samples_received'" >
-                        <td class="ng-cloak"><% labels.districts[d._id] %></td>
-                        <td class="ng-cloak"><% d.samples_received|number %></td>
-                        <td class="ng-cloak"><% ((d.dbs_samples/d.samples_received)*100 )| number:1 %> %</td>
-                        <td class="ng-cloak"><% d.total_results|number %></td>
-                        <td class="ng-cloak"><% d.patients_tested|number %></td>
-                    </tr>                        
-                 </tbody>
-             </table>
+
+               <div>
+                    <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th >District</th>
+                            <th >Samples Received</th>
+                            <th >DBS (%)&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                            <th >Samples Tested</th>
+                            <th >Patients Tested</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>                                
+                        <tr ng-repeat="d in district_numbers | orderBy:'-samples_received'" >
+                            <td class="ng-cloak"><% labels.districts[d._id] %></td>
+                            <td class="ng-cloak"><% d.samples_received|number %></td>
+                            <td class="ng-cloak"><% ((d.dbs_samples/d.samples_received)*100 )| number:1 %> %</td>
+                            <td class="ng-cloak"><% d.total_results|number %></td>
+                            <td class="ng-cloak"><% d.patients_tested|number %></td>
+                        </tr>                        
+                     </tbody>
+                     
+                 </table>
+               </div>
+               <div class="clearfix">
+                    <button id="exportButton" class="btn btn-success">Download CSV</button>
+
+         
+               </div>
+
          </div>
+
          <div ng-show="show_fclties1">
              <table datatable="ng" ng-hide="checked" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
@@ -56,7 +67,9 @@
                     </tr>                        
                  </tbody>
              </table>
+
          </div>
 
     </div>
 </div>
+
