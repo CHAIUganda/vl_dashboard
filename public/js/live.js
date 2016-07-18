@@ -325,6 +325,107 @@ ctrllers.DashController=function($scope,$http){
     }
 
     $scope.displayRejectionRate=function(){
+            //this will hold of our main data consists of multiple chart data
+        var data = [];
+        
+        //variables to hold monthly month
+        var monthList = [];
+       
+        var sampleQualityRejectionRateList = [];
+        var incompleteFormRejectionRateList = [];
+        var eligibilityRejectionRateList = [];
+        var rejectionRateList = [];
+
+           
+        for(var i in $scope.duration_numbers){
+            var duration_numbers_instance = $scope.duration_numbers[i];
+           
+            
+            monthList.push(dateFormat(duration_numbers_instance._id));
+
+            var totalRegections = duration_numbers_instance.sample_quality_rejections+duration_numbers_instance.incomplete_form_rejections
+            +duration_numbers_instance.eligibility_rejections;
+            
+            var sampleQualityRejectionRate = Math.round(((duration_numbers_instance.sample_quality_rejections/totalRegections)||0)*100);
+            sampleQualityRejectionRateList.push(sampleQualityRejectionRate);
+
+
+            var incompleteFormRejectionRate = Math.round(((duration_numbers_instance.incomplete_form_rejections/totalRegections)||0)*100);
+            incompleteFormRejectionRateList.push(incompleteFormRejectionRate);
+
+            var eligibilityRejectionRate =100-(sampleQualityRejectionRate+incompleteFormRejectionRate);
+            eligibilityRejectionRateList.push(eligibilityRejectionRate);
+
+            var rejected = totalRegections;
+            var received = duration_numbers_instance.samples_received;
+            rejectionRate = Math.round(((rejected/received)||0)*100);
+            rejectionRateList.push(rejectionRate);
+
+        }
+
+
+        //Array to hold each individual coordinate x and y values in json format
+        var sampleQualityRejectionRateValues = [];
+        var incompleteFormRejectionRateValues = [];
+        var eligibilityRejectionRateValues = [];
+        var rejectionRateValues = [];
+
+        
+        
+        //Looping the data and fetch into array
+        for(var i = 0; i < monthList.length; i++){
+          
+            
+            var xySampleQualityRejectionRate = {x:i,y:sampleQualityRejectionRateList[i]};
+            sampleQualityRejectionRateValues.push(xySampleQualityRejectionRate);
+
+            var xynIcompleteFormRejectionRate = {x:i, y:incompleteFormRejectionRateList[i]};
+            incompleteFormRejectionRateValues.push(xynIcompleteFormRejectionRate);
+
+            var xyEligibilityRejectionRate = {x:i,y:eligibilityRejectionRateList[i]};
+            eligibilityRejectionRateValues.push(xyEligibilityRejectionRate);
+
+            var xyRejectionRate = {x:i, y:rejectionRateList[i]};
+            rejectionRateValues.push(xyRejectionRate);
+
+        }
+        
+        //These will be the two bar charts 
+        var sampleQualityRejection = {key: "SAMPLE QUALITY", values: sampleQualityRejectionRateValues, type: "bar", yAxis: 1, color: '#F44336'};
+        var incompleteFormRejection = {key: "INCOMPLETE FORM", values: incompleteFormRejectionRateValues, type: "bar", yAxis: 1, color: '#607D8B'};
+        var eligibilityRejection = {key: "ELIGIBILITY", values: incompleteFormRejectionRateValues, type: "bar", yAxis: 1, color: '#FFCDD2'};
+
+        //These will be the three line charts
+        var rejectionRate = { key: "Rejection Rate", values: rejectionRateValues, type: "line", yAxis: 2, color: 'blue' }
+        
+        //Insert the values array into data variable
+        data.push(sampleQualityRejection);
+        data.push(incompleteFormRejection);
+        data.push(eligibilityRejection);
+        data.push(rejectionRate);
+        
+        //build the graph
+        nv.addGraph(function () {
+            //build as multichart graphs and set the margin right and left to 100px.
+            var chart = nv.models.multiChart()
+                        .margin({left: 100, right: 100})
+            
+            //customize the tool tip
+            chart.tooltip.contentGenerator(function (key, x, y, e, graph) {
+                return "<div class='tooltip'><span>Month:</span> " + monthList[key.index] + "</div>" + "<div class='tooltip'><span>Value:</span> " + key.series[0].value + "</div><div class='tooltip'><span>Legend:</span> <div style='background:" + key.series[0].color + ";display:inline-block;height:15px;width:15px;'>&#160;</div></div>";
+            });
+        
+            //Overwrite the x axis label and replace it with the month name
+            chart.xAxis.tickFormat(function (d) { return monthList[d] });
+            
+            //get the chart svg object and fecth the data to build the chart
+            //$('#rejection_rate svg').html(" ");
+            d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
+            return chart;
+        });
+    };
+
+    $scope.displayRejectionRateTest=function(){
         var data=[{"key":"SAMPLE QUALITY","values":[]},
                   {"key":"INCOMPLETE FORM","values":[] },
                   {"key":"ELIGIBILITY","values":[] }];
@@ -332,6 +433,7 @@ ctrllers.DashController=function($scope,$http){
         for(var i in $scope.duration_numbers){
             var obj=$scope.duration_numbers[i];
 
+            
             var ttl=obj.sample_quality_rejections+obj.incomplete_form_rejections+obj.eligibility_rejections;
             var sq_rate=Math.round(((obj.sample_quality_rejections/ttl)||0)*100);
             var inc_rate=Math.round(((obj.incomplete_form_rejections/ttl)||0)*100);
@@ -350,7 +452,6 @@ ctrllers.DashController=function($scope,$http){
             return chart;
         });
     };
-
      $scope.displayRegimenGroups=function(){
 
         var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
