@@ -63,6 +63,10 @@ ctrllers.DashController=function($scope,$http){
     $scope.districts2=[];
     $scope.hubs2=[];
 
+    $scope.testClick = function(){
+        alert("I have been clicked");
+    }
+
 
 
 

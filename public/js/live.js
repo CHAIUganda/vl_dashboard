@@ -11,7 +11,8 @@ Sam Otim                    CHAI    2015(v1)    System development
 
 Credit to CHAI Uganda, CPHL and stakholders
 */
-var app=angular.module('dashboard', ['datatables'], function($interpolateProvider) {
+
+var app=angular.module('dashboard', ['datatables','ngSanitize', 'ngCsv'], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
     });
@@ -128,12 +129,19 @@ ctrllers.DashController=function($scope,$http){
 
                 $scope.filtered=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
                 $scope.loading=false;
+
+                
                 //console.log("lalallalal:: samples_received:: "+data.samples_received+" suppressed:: "+data.suppressed+" "+data.valid_results);
             });
     };
 
     getData();    
 
+
+    $scope.testClick = function(){
+        $scope.getArray = [{a: 1, b:2}, {a:3, b:4}];
+    }
+    
 
     $scope.dateFilter=function(){
         if($scope.fro_date!="all" && $scope.to_date!="all"){
@@ -280,7 +288,9 @@ ctrllers.DashController=function($scope,$http){
         });
     };
 
-
+    $scope.downloadCSV=function(){
+        alert("Our God is awesome!!!");
+    };
     $scope.displaySupressionRate=function(){
         var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
                   {"key":"VALID RESULTS","bar":true,"color": "#F44336","values":[]}];
