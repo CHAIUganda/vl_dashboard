@@ -66,16 +66,16 @@
 5. $ cp .env.example .env
 6. $ vi .env
 7.   => Change the LIVE* attributes to correct values so that you pick data from the source
-	 LIVE_HOST2=localhost
-	 LIVE_DATABASE2=vb
-	 LIVE_USERNAME2=user
-	 LIVE_PASSWORD2=secret
+	 +LIVE_HOST2=localhost
+	 +LIVE_DATABASE2=vb
+	 +LIVE_USERNAME2=user
+	 +LIVE_PASSWORD2=secret
 8.   Create the appropriate Mongo database via the mongo db client
 9.   => Change the MONGO* attributes to correct values. ..For now, ignore the MONGO_USER and MONGO_PWD
-	 MONGO_HOST=localhost
-	 MONGO_DB=vldash
-	 MONGO_USER=xxxx
-	 MONGO_PWD=xxxx 
+	 +MONGO_HOST=localhost
+	 +MONGO_DB=vldash
+	 +MONGO_USER=xxxx
+	 +MONGO_PWD=xxxx 
 
 10. $ php artisan engine:run #This  command runs the api so that data is loaded into mongo db
 11. $ php artisan serve --port=nnnn #This command runs the application in development mode, default port is 8000
