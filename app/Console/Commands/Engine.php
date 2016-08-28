@@ -53,7 +53,7 @@ class Engine extends Command
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
-
+        //$this->mongo->drop(); 
         $this->_loadHubs();
         $this->_loadDistricts();
         $this->_loadFacilities();
@@ -65,6 +65,7 @@ class Engine extends Command
     }
 
     private function _loadData(){
+        $this->mongo->dashboard_data->drop();
         $year=2013;
         $current_year=date('Y');
         $facilities_arr=LiveData::getFacilities2();
@@ -184,6 +185,7 @@ class Engine extends Command
     }
 */
     private function _loadHubs(){
+        $this->mongo->hubs->drop();
         $res=LiveData::getHubs();
         foreach($res AS $row){
             $data=['id'=>$row->id,'name'=>$row->hub];
@@ -193,6 +195,7 @@ class Engine extends Command
 
 
     private function _loadFacilities(){
+        $this->mongo->facilities->drop();
         $res=LiveData::getFacilities();
         foreach($res AS $row){
             $data=['id'=>$row->id,'name'=>$row->facility,'hub_id'=>$row->hubID,'ip_id'=>$row->ipID,'district_id'=>$row->districtID];
@@ -201,6 +204,7 @@ class Engine extends Command
     }
 
     private function _loadIPs(){
+        $this->mongo->ips->drop();
         $res=LiveData::getIPs();
         foreach($res AS $row){
             $data=['id'=>$row->id,'name'=>$row->ip];
@@ -209,6 +213,7 @@ class Engine extends Command
     }
 
     private function _loadDistricts(){
+        $this->mongo->districts->drop();
         $res=LiveData::getDistricts();
         foreach($res AS $row){
             $data=['id'=>$row->id,'name'=>$row->district];

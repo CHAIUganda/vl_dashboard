@@ -281,7 +281,7 @@ class DashboardController extends Controller {
 		$grp['eligibility_rejections']=['$sum'=>'$eligibility_rejections'];
 		$grp['incomplete_form_rejections']=['$sum'=>'$incomplete_form_rejections'];
 
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp], ['$sort'=>["_id"=>1]]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
