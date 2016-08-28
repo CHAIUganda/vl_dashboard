@@ -22,38 +22,39 @@
 
 #Mongo DB Setup
 1. $ mongo
-	> use admin
-	> db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
+	+ use admin
+	+ db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
 
 	// Change the authSchema to 3 so that you use MONGODB-CR 
-	> var schema = db.system.version.findOne({"_id" : "authSchema"})
-	> schema.currentVersion = 3
-	> db.system.version.save(schema)
+	+ var schema = db.system.version.findOne({"_id" : "authSchema"})
+	+ schema.currentVersion = 3
+	+ db.system.version.save(schema)
 
 	// drop users and create again (WIERD HACK)
-	> db.system.users.remove({})
-	> db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
-	> exit
+	+ db.system.users.remove({})
+	+ db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
+	+ exit
 
 2. $ sudo vi /etc/mongod.conf // to edit this to enable security authorization by adding:
 
-	security:
-	  authorization: enabled
-
+	>
+	>security:
+	>  authorization: enabled
+	>
 
 3. $ sudo service mongod restart // restarting mongo so that it starts with auth enabled
 
 4. $ mongo
 
-	> use admin
-	> db.auth("admin", "admin")
-	> use vdb
-	> db.createUser({user: "vuser", pwd: "vpass", roles: [{role: "readWrite", db: "vdb"}]})
-	> exit
+	+ use admin
+	+ db.auth("admin", "admin")
+	+ use vdb
+	+ db.createUser({user: "vuser", pwd: "vpass", roles: [{role: "readWrite", db: "vdb"}]})
+	+ exit
 
 5. $ mongo
-	> use vdb
-	> db.auth("vuser","vpass")
+	+ use vdb
+	+ db.auth("vuser","vpass")
 	1
 	if 1 then all is well
 
