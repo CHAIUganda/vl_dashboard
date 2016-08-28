@@ -23,7 +23,7 @@
 #Mongo DB Setup
 1. $ mongo  
 	>use admin  
-	>db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})  
+	>db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase","readWriteAnyDatabase"]})  
 
 	// Change the authSchema to 3 so that you use MONGODB-CR  
 	>var schema = db.system.version.findOne({"_id" : "authSchema"})  
@@ -32,13 +32,13 @@
 
 	// drop users and create again (WIERD HACK)  
 	>db.system.users.remove({})  
-	>db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})  
+	>db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase","readWriteAnyDatabase"]})  
 	>exit  
 
 2. $ sudo vi /etc/mongod.conf // to edit this to enable security authorization by adding:
 
->security:  
->    authorization: enabled  
+	>security:  
+		>authorization: enabled  
 
 3. $ sudo service mongod restart // restarting mongo so that it starts with auth enabled  
 
