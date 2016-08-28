@@ -38,7 +38,7 @@
 2. $ sudo vi /etc/mongod.conf // to edit this to enable security authorization by adding:
 
 	>security:  
-	>	authorization: enabled  
+	>    authorization: enabled  
 
 3. $ sudo service mongod restart // restarting mongo so that it starts with auth enabled  
 
