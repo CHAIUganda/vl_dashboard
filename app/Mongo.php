@@ -16,3 +16,5 @@ class Mongo{
 
 
 }
+
+//$client = new MongoClient("mongodb://user:pass@localhost/db");
