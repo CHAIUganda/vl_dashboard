@@ -22,39 +22,36 @@
 
 #Mongo DB Setup
 1. $ mongo
-	+ use admin
-	+ db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
+	>use admin
+	>db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
 
 	// Change the authSchema to 3 so that you use MONGODB-CR 
-	+ var schema = db.system.version.findOne({"_id" : "authSchema"})
-	+ schema.currentVersion = 3
-	+ db.system.version.save(schema)
+	>var schema = db.system.version.findOne({"_id" : "authSchema"})
+	>schema.currentVersion = 3
+	>db.system.version.save(schema)
 
 	// drop users and create again (WIERD HACK)
-	+ db.system.users.remove({})
-	+ db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
-	+ exit
+	>db.system.users.remove({})
+	>db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
+	>exit
 
 2. $ sudo vi /etc/mongod.conf // to edit this to enable security authorization by adding:
-
-	>
-	>security:
-	>  authorization: enabled
-	>
+     security:  \n
+           authorization: enabled
 
 3. $ sudo service mongod restart // restarting mongo so that it starts with auth enabled
 
 4. $ mongo
 
-	+ use admin
-	+ db.auth("admin", "admin")
-	+ use vdb
-	+ db.createUser({user: "vuser", pwd: "vpass", roles: [{role: "readWrite", db: "vdb"}]})
-	+ exit
+	>use admin
+	>db.auth("admin", "admin")
+	>use vdb
+	>db.createUser({user: "vuser", pwd: "vpass", roles: [{role: "readWrite", db: "vdb"}]})
+	>exit
 
 5. $ mongo
-	+ use vdb
-	+ db.auth("vuser","vpass")
+	>use vdb
+	>db.auth("vuser","vpass")
 	1
 	if 1 then all is well
 
@@ -65,17 +62,17 @@
 4. $ composer install
 5. $ cp .env.example .env
 6. $ vi .env
-7.   => Change the LIVE* attributes to correct values so that you pick data from the source
-	 +LIVE_HOST2=localhost
-	 +LIVE_DATABASE2=vb
-	 +LIVE_USERNAME2=user
-	 +LIVE_PASSWORD2=secret
+7.   => Change the LIVE* attributes to correct values so that you pick data from the source  \n
+	 LIVE_HOST2=localhost  \n
+	 LIVE_DATABASE2=vb  \n
+	 LIVE_USERNAME2=user  \n
+	 LIVE_PASSWORD2=secret  \n
 8.   Create the appropriate Mongo database via the mongo db client
 9.   => Change the MONGO* attributes to correct values. ..For now, ignore the MONGO_USER and MONGO_PWD
-	 +MONGO_HOST=localhost
-	 +MONGO_DB=vldash
-	 +MONGO_USER=xxxx
-	 +MONGO_PWD=xxxx 
+	 MONGO_HOST=localhost  \n
+	 MONGO_DB=vldash  \n
+	 MONGO_USER=xxxx  \n
+	 MONGO_PWD=xxxx  \n
 
 10. $ php artisan engine:run #This  command runs the api so that data is loaded into mongo db
 11. $ php artisan serve --port=nnnn #This command runs the application in development mode, default port is 8000
