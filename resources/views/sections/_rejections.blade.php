@@ -15,8 +15,9 @@
             <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
-                        <th width='80%'>District</th>
+                        <th width='70%'>District</th>
                         <th width='10%'>Samples Received</th>
+                        <th width='10%'>Samples Rejected</th>
                         <th width='10%'>Rejection Rate (%)</th>
                     </tr>
                 </thead>
@@ -24,6 +25,7 @@
                     <tr ng-repeat="d in district_numbers" >
                         <td class="ng-cloak"><% labels.districts[d._id] %></td>
                         <td class="ng-cloak"><% d.samples_received|number %></td>
+                        <td class="ng-cloak"><% d.rejected_samples|number %></td>
                         <td class="ng-cloak"><% ((d.rejected_samples/d.samples_received)*100)|number:1 %> %</td>
                     </tr>                        
                  </tbody>
