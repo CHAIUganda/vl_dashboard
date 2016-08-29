@@ -48,9 +48,9 @@ ctrllers.DashController=function($scope,$http){
     $scope.params = {'districts':[],'hubs':[],'age_ids':[],'genders':[],'regimens':[],'lines':[]};
 
     var hubs_json={};
-    var age_group_json={1:"0<5",2:"5-9",3:"10-18",4:"19-25",5:"26+"};  
+    var age_group_json={1:"0<5",2:"5-9",3:"10-14",4:"15-18",5:"19-25",6:"26+"};  
     var regimen_groups_json={1:'AZT' ,2:'TDF/XTC/EFV' ,3:'TDF/XTC/NVP', 4:'ABC',5:'TDF/XTC/LPV/r' , 6:'TDF/XTC/ATV/r', 7:'Other'};
-    var regimen_times_json={1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
+    var regimen_times_json={0:'No Date Given',1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json={'m':'Male','f':'Female','x':'Unknown'};
     var lines_json={1:'1st Line',2:'2nd Line',4:'4',5:'5'};
@@ -71,6 +71,26 @@ ctrllers.DashController=function($scope,$http){
     $scope.districts2=[];
     $scope.hubs2=[];
     $scope.age_group_slct=age_group_json;
+
+    $scope.orderByCurrentRegimen = function(regimen){
+        if($scope.labels.reg_grps[regimen._id] == 'ABC')
+            return 1;
+        else if($scope.labels.reg_grps[regimen._id] == 'AZT')
+            return 2;
+        else if($scope.labels.reg_grps[regimen._id] == 'TDF/XTC/ATV/r')
+            return 3;
+        else if($scope.labels.reg_grps[regimen._id] == 'TDF/XTC/EFV')
+            return 4;
+         else if($scope.labels.reg_grps[regimen._id] == 'TDF/XTC/LPV/r')
+            return 5;
+         else if($scope.labels.reg_grps[regimen._id] == 'TDF/XTC/NVP')
+            return 6;
+        else if($scope.labels.reg_grps[regimen._id] == 'Other')
+            return 7;
+
+    };
+
+    
 
     $http.get("/other_data/").success(function(data){
         //console.log("Ehealth at chai rocks 1 "+JSON.stringify(data.facilities));
@@ -129,15 +149,41 @@ ctrllers.DashController=function($scope,$http){
 
                 $scope.filtered=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
                 $scope.loading=false;
-
                 
+                transposeDurationNumbers();
                 //console.log("lalallalal:: samples_received:: "+data.samples_received+" suppressed:: "+data.suppressed+" "+data.valid_results);
             });
     };
 
     getData();    
 
+    function transposeDurationNumbers(){
+       
+        var duration_numbers_for_month_list = [];
+        var duration_numbers_for_samples_received = [];
+        var duration_numbers_for_samples_tested = [];
+        var duration_numbers_for_patients_tested = [];
+        
 
+        if($scope.duration_numbers){
+            for (var index in $scope.duration_numbers) {
+                var duration_numbers_instance = $scope.duration_numbers[index];
+
+
+                duration_numbers_for_month_list.push(dateFormat(duration_numbers_instance['_id']));
+                duration_numbers_for_samples_received.push(duration_numbers_instance['samples_received']);
+                duration_numbers_for_samples_tested.push(duration_numbers_instance['valid_results']);
+                duration_numbers_for_patients_tested.push(duration_numbers_instance['patients_tested']);
+            }
+
+            $scope.duration_numbers_for_month_list = duration_numbers_for_month_list;
+            $scope.duration_numbers_for_samples_received = duration_numbers_for_samples_received;
+            $scope.duration_numbers_for_samples_tested = duration_numbers_for_samples_tested;
+            $scope.duration_numbers_for_patients_tested = duration_numbers_for_patients_tested;
+        }
+        
+        
+    }
     $scope.testClick = function(){
         $scope.getArray = [{a: 1, b:2}, {a:3, b:4}];
     }
@@ -335,6 +381,7 @@ ctrllers.DashController=function($scope,$http){
         var incompleteFormRejectionRateList = [];
         var eligibilityRejectionRateList = [];
         var rejectionRateList = [];
+        var samplesRejectedList = [];
 
            
         for(var i in $scope.duration_numbers){
@@ -360,6 +407,7 @@ ctrllers.DashController=function($scope,$http){
             var received = duration_numbers_instance.samples_received;
             rejectionRate = Math.round(((rejected/received)||0)*100);
             rejectionRateList.push(rejectionRate);
+            samplesRejectedList.push(rejected);
 
         }
 
@@ -369,7 +417,7 @@ ctrllers.DashController=function($scope,$http){
         var incompleteFormRejectionRateValues = [];
         var eligibilityRejectionRateValues = [];
         var rejectionRateValues = [];
-
+        var samplesRejectedValues = [];
         
         
         //Looping the data and fetch into array
@@ -388,33 +436,42 @@ ctrllers.DashController=function($scope,$http){
             var xyRejectionRate = {x:i, y:rejectionRateList[i]};
             rejectionRateValues.push(xyRejectionRate);
 
+            var xySamplesRejected = {x:i, y:samplesRejectedList[i]};
+            samplesRejectedValues.push(xySamplesRejected);
+
         }
         
-        //These will be the two bar charts 
+        //These will be for the bar charts 
         var sampleQualityRejection = {key: "SAMPLE QUALITY", values: sampleQualityRejectionRateValues, type: "bar", yAxis: 1, color: '#F44336'};
         var incompleteFormRejection = {key: "INCOMPLETE FORM", values: incompleteFormRejectionRateValues, type: "bar", yAxis: 1, color: '#607D8B'};
         var eligibilityRejection = {key: "ELIGIBILITY", values: incompleteFormRejectionRateValues, type: "bar", yAxis: 1, color: '#FFCDD2'};
+        var samplesRejected = {key: "SAMPLES REJECTED", values: samplesRejectedValues, type: "bar", yAxis: 1, color: '#C62828'};
 
-        //These will be the three line charts
-        var rejectionRate = { key: "Rejection Rate", values: rejectionRateValues, type: "line", yAxis: 2, color: 'blue' }
+        //These will be for line charts
+        var rejectionRate = { key: "Rejection Rate", values: rejectionRateValues, type: "line", yAxis: 2, color: '#D32F2F' }
         
         //Insert the values array into data variable
         data.push(sampleQualityRejection);
         data.push(incompleteFormRejection);
         data.push(eligibilityRejection);
+        data.push(samplesRejected);
+        
         data.push(rejectionRate);
         
         //build the graph
         nv.addGraph(function () {
             //build as multichart graphs and set the margin right and left to 100px.
             var chart = nv.models.multiChart()
-                        .margin({left: 100, right: 100})
-            
+                        .margin({left: 100, right: 100});
+                        
+            chart.bars1.stacked(true);
+
             //customize the tool tip
+            /**
             chart.tooltip.contentGenerator(function (key, x, y, e, graph) {
                 return "<div class='tooltip'><span>Month:</span> " + monthList[key.index] + "</div>" + "<div class='tooltip'><span>Value:</span> " + key.series[0].value + "</div><div class='tooltip'><span>Legend:</span> <div style='background:" + key.series[0].color + ";display:inline-block;height:15px;width:15px;'>&#160;</div></div>";
             });
-        
+             */
             //Overwrite the x axis label and replace it with the month name
             chart.xAxis.tickFormat(function (d) { return monthList[d] });
             
@@ -452,6 +509,8 @@ ctrllers.DashController=function($scope,$http){
             return chart;
         });
     };
+     
+
      $scope.displayRegimenGroups=function(){
 
         var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
@@ -492,17 +551,22 @@ ctrllers.DashController=function($scope,$http){
 
     $scope.displayRegimenTime=function(){
         var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
-                  {"key":"SAMPLES RECEIVED","bar":true,"color": "#F44336","values":[]}];
+                  {"key":"SAMPLES RECEIVED","bar":true,"color": "#F44336","values":[]},
+                  {"key":"NON SUPRESSION RATE","color": "#FF851B","values":[]}];
 
         for(var i in $scope.regimen_time_numbers){
             var obj=$scope.regimen_time_numbers[i];
             var sprsd=obj.suppressed||0;
             var vld=obj.valid_results||0;
             var s_rate=((sprsd/vld)||0)*100;
+            var non_suppression_rates = 100 - s_rate;
             //s_rate.toPrecision(3);
-            var label=regimen_times_json[obj._id];
+            var label=regimen_times_json[obj._id];//non_suppression
+
             data[0].values.push([label,Math.round(s_rate)]);
             data[1].values.push([label,obj.samples_received]);
+
+            data[2].values.push([label,Math.round(non_suppression_rates)]);//non_suppression
         } 
         nv.addGraph( function() {
             var chart = nv.models.linePlusBarChart()
