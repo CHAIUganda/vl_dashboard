@@ -280,6 +280,7 @@ class DashboardController extends Controller {
 		$grp['sample_quality_rejections']=['$sum'=>'$sample_quality_rejections'];
 		$grp['eligibility_rejections']=['$sum'=>'$eligibility_rejections'];
 		$grp['incomplete_form_rejections']=['$sum'=>'$incomplete_form_rejections'];
+		$grp['patients_tested']=['$sum'=>'$patients_tested'];
 
 		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp], ['$sort'=>["_id"=>1]]);
 		return isset($res['result'])?$res['result']:[];

@@ -188,9 +188,10 @@ class LiveData extends Model
        $age=" ROUND((UNIX_TIMESTAMP(s.created)-UNIX_TIMESTAMP(dateOfBirth))/31536000) ";
        $arr=[1=>"$age <5",
             2=>"$age >=5 && $age <=9",
-            3=>"$age >=10 && $age<=18",
-            4=>"$age >=19 && $age <=25",
-            5=>"$age >=26"];
+            3=>"$age >=10 && $age<=14",
+            4=>"$age >=15 && $age<=18",
+            5=>"$age >=19 && $age <=25",
+            6=>"$age >=26"];
     
        $ret="CASE ";
        foreach ($arr as $k => $v) {

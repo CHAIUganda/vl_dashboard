@@ -27,6 +27,7 @@
 					<%patients_tested%>
 				</td>
 			</tr>
+			
 		</tbody>
 	</table>                         
 </div>

@@ -14,16 +14,14 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/demo.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabs.css') }} " />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabstyles.css') }}" />
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/angular-datatables.css') }}" />
     <link href="{{ asset('/css/dash.css') }}" rel="stylesheet">
     <link rel="Shortcut Icon" href="{{ asset('/images/icon.png') }}" />
 
-    <script src="{{ asset('/js/modernizr.custom.js') }}"></script>
+    
+    <script src="{{ asset('/js/jquery-2.1.3.min.js') }}" type="text/javascript" ></script>
 
     
-    <script src="{{ asset('/js/general.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/js/jquery-2.1.3.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/jquery-ui.min.js')}}" type="text/javascript"></script>
     <script src="{{ asset('/twitter-bootstrap-3.3/js/bootstrap.min.js') }}" type="text/javascript" ></script>
 
@@ -31,38 +29,51 @@
     <script src="{{ asset('/js/angular-route.js')}}" type="text/javascript"></script>
 
     <script src="{{ asset('/js/angular-datatables.min.js') }}" type="text/javascript"></script>
-   
 
+   <script src="{{ asset('/js/modernizr.custom.js') }}"></script>
+
+    
+    <script src="{{ asset('/js/general.js') }}" type="text/javascript"></script>
    
     <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
     
-    <script src="{{ asset('/js/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
+    <!--script src="{{ asset('/js/jquery-1.11.1.min.js') }}" type="text/javascript"></script -->
     <script src="{{ asset('/js/jquery.tabletoCSV.js')}}" type="text/javascript"></script>
-    <script type="text/javascript">
-            $(document).ready(function () {
-                $("#exportBmutton").click(function(){
-                     window.alert("Hey!!!");
-                    $("DataTables_Table_0").tableToCSV();
-               });
-            });
-                
-    </script>
-    <script>
-        $(function(){
-            $("#exportButton").click(function(){
-                $("#DataTables_Table_0").tableToCSV();
-            });
-        });
-    </script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <!-- data-->
+    
+    
     <style type="text/css">
     .nv-point {
         stroke-opacity: 1!important;
         stroke-width: 5px!important;
         fill-opacity: 1!important;
     }
-    </style>
+    /** hides the search button on the current_regimen tab*/
+    #current_regimen_table_filter{
+        visibility: hidden;
+    }
+
+    /** hides text on table*/
     
+    #time_on_treatment_column::first-letter{
+        color: white;
+    }
+    </style>
+    <script>
+        
+        $(document).ready(function() {
+            $("#exportButton").click(function(){
+                $("#samples_received_table").tableToCSV();
+            });
+        } );
+
+        
+    </script>
 </head>
 
 <body ng-app="dashboard" ng-controller="DashController">
@@ -197,6 +208,11 @@
     <label class='hdr hdr-grey'> TREATMENT INDICATION (as indicated on the form)</label>
     <div class='addition-metrics'> @include('sections._treatment_indication') </div>
     <br>
+
+    <br>
+        <label class='hdr hdr-grey'> Summary of Viral Load Indicators</label>
+        <div class='addition-metrics'> @include('sections._viral_load_indicators') </div>
+    <br>
 </div>
 <script src=" {{ asset('js/cbpFWTabs.js') }} "></script>
 <script>
@@ -213,4 +229,5 @@
 <script type="text/javascript" src=" {{ asset('js/ng-csv.js') }} "></script>
 <script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
 <script type="text/javascript" src=" {{ asset('js/live.js') }} "></script>
+
 </html>
