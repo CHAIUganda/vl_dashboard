@@ -73,7 +73,8 @@ class Engine extends Command
             $samples=LiveData::getSamples($year);
             $dbs_samples=LiveData::getSamples($year," sampleTypeID=1 ");
 
-            $dbs_number_of_patients_tested = LiveData::getNumberOfPatientsTested($year, " sampleTypeID=1 ");
+            $dbs_number_of_patients_tested = LiveData::getNumberOfPatients($year, " sampleTypeID=1 AND verified=1 ");
+            $number_of_patients_tested = LiveData::getNumberOfPatients($year, " verified=1");
 
             $rjctn_rsns=LiveData::getRejects($year);
             $rjctn_rsns2=LiveData::getRejects2($year);
@@ -116,6 +117,7 @@ class Engine extends Command
 
                 $data["patients_tested"] = isset($s->numberOfPatientsTested)?(int)$s->numberOfPatientsTested:0;
                 $data["dbs_patients_tested"] = isset($dbs_number_of_patients_tested[$key])?(int)$dbs_number_of_patients_tested[$key]:0;
+                $data["patients_tested"] = isset($number_of_patients_tested[$key])?(int)$number_of_patients_tested[$key]:0;
 
                 $data["sample_quality_rejections"]=isset($rjctn_rsns2[$key.'quality_of_sample'])?(int)$rjctn_rsns2[$key.'quality_of_sample']:0;
                 $data["incomplete_form_rejections"]=isset($rjctn_rsns2[$key.'incomplete_form'])?(int)$rjctn_rsns2[$key.'incomplete_form']:0;
