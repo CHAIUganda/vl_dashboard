@@ -65,7 +65,7 @@ class LiveData extends Model
       return $ret; 
     }
 
-    public static function getNumberOfPatientsTested($year,$cond=1){
+    public static function getNumberOfPatients($year,$cond=1){
       $age_grp_case=self::ageGroupCase();
       $reg_type_case=self::regimenTypeCase();
       $reg_time_case=self::regimenTimeCase();
