@@ -115,7 +115,7 @@ class Engine extends Command
                 $data["dbs_samples"] = isset($dbs_samples[$key])?(int)$dbs_samples[$key]:0;
                 $data["rejected_samples"] = isset($rjctn_rsns[$key])?(int)$rjctn_rsns[$key]:0;
 
-                $data["patients_tested"] = isset($s->numberOfPatientsTested)?(int)$s->numberOfPatientsTested:0;
+                #$data["patients_tested"] = isset($s->numberOfPatientsTested)?(int)$s->numberOfPatientsTested:0;
                 $data["dbs_patients_tested"] = isset($dbs_number_of_patients_tested[$key])?(int)$dbs_number_of_patients_tested[$key]:0;
                 $data["patients_tested"] = isset($number_of_patients_tested[$key])?(int)$number_of_patients_tested[$key]:0;
 

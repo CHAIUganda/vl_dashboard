@@ -334,9 +334,7 @@ ctrllers.DashController=function($scope,$http){
         });
     };
 
-    $scope.downloadCSV=function(){
-        alert("Our God is awesome!!!");
-    };
+    
     $scope.displaySupressionRate=function(){
         var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
                   {"key":"VALID RESULTS","bar":true,"color": "#F44336","values":[]}];
