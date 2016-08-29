@@ -203,16 +203,16 @@
             <section id="tab5"> @include('sections._regimen_time')</section> -->
         </div><!-- /content -->
     </div><!-- /tabs -->
-    
     <br>
+        <label class='hdr hdr-grey'> SUMMARY OF KEY INDICATORS</label>
+        <div class='addition-metrics'> @include('sections._viral_load_indicators') </div>
+    <br>
+    
     <label class='hdr hdr-grey'> TREATMENT INDICATION (as indicated on the form)</label>
     <div class='addition-metrics'> @include('sections._treatment_indication') </div>
     <br>
 
-    <br>
-        <label class='hdr hdr-grey'> Summary of Viral Load Indicators</label>
-        <div class='addition-metrics'> @include('sections._viral_load_indicators') </div>
-    <br>
+    
 </div>
 <script src=" {{ asset('js/cbpFWTabs.js') }} "></script>
 <script>
