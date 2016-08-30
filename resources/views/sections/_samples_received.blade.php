@@ -20,13 +20,18 @@
                                 <tr>
                                     <th >District</th>
                                     <th >Samples Received</th>
+                                    <th >Patients Tested</th>
+                                    <th >Samples Tested</th>
+
+                                    <th >Samples Pending</th>
+                                    <th >Samples Rejected</th>
                                     <th >DBS (%)&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                    <th >Samples Tested</th>
-                                    <th >Patients Tested</th>
-                                    <th >Samples Tested</th>
-                                    <th >Patients Tested</th>
-                                    <th >Samples Tested</th>
-                                    <th >Patients Tested</th>
+                                    
+                                    
+                                    
+
+                                    <th >Plasma</th>
+                                    <th >DBS</th>
 
                                 </tr>
                             </thead>
@@ -34,13 +39,15 @@
                                 <tr ng-repeat="d in district_numbers | orderBy:'-samples_received'" >
                                     <td class="ng-cloak"><% labels.districts[d._id] %></td>
                                     <td class="ng-cloak"><% d.samples_received|number %></td>
+                                    <td class="ng-cloak"><% d.patients_tested|number %></td>
+                                    <td class="ng-cloak"><% d.total_results|number %></td>
+
+                                    <td class="ng-cloak"><% (d.samples_received - d.total_results) |number %></td>
+                                    <td class="ng-cloak"><% d.rejected_samples|number %></td>
+
+                                    
+                                    <td class="ng-cloak"><% (((d.samples_received-d.dbs_samples)/d.samples_received)*100 )| number:1 %> %</td>
                                     <td class="ng-cloak"><% ((d.dbs_samples/d.samples_received)*100 )| number:1 %> %</td>
-                                    <td class="ng-cloak"><% d.total_results|number %></td>
-                                    <td class="ng-cloak"><% d.patients_tested|number %></td>
-                                    <td class="ng-cloak"><% d.total_results|number %></td>
-                                    <td class="ng-cloak"><% d.patients_tested|number %></td>
-                                    <td class="ng-cloak"><% d.total_results|number %></td>
-                                    <td class="ng-cloak"><% d.patients_tested|number %></td>
                                 </tr>                        
                              </tbody>
                              
