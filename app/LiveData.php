@@ -224,7 +224,7 @@ class LiveData extends Model
 
     private static function regimenTypeCase(){
       //{1:'AZT' ,2:'TDF/XTC/EFV' ,3:'TDF/XTC/NVP', 4:'ABC',5:'TDF/XTC/LPV/r' , 6:'TDF/XTC/ATV/r', 7:'Other'}
-       $arr=[
+      /* $arr=[
               1=>"currentRegimenID in (1,2,13,16,21,22,27,28)",
               2=>"currentRegimenID in (4,6)",
               3=>"currentRegimenID in (3,5)",
@@ -232,6 +232,14 @@ class LiveData extends Model
               5=>"currentRegimenID in (11,12,25,26)",
               6=>"currentRegimenID in (14,15)",
               7=>"currentRegimenID in (19,20,31,71)"
+            ];*/
+      //{1: 'AZT based', 2: 'ABC based', 3: 'TDF based', 4: 'Other'}
+
+       $arr=[
+              1=>"currentRegimenID in (1,2,13,16,21,22,27,28)",
+              2=>"currentRegimenID in (7,8,17,18,23,24,29,30)",
+              3=>"currentRegimenID in (4,6,3,5,11,12,25,26,14,15)",
+              4=>"currentRegimenID in (19,20,31,71)"
             ];
     
        $ret="CASE ";

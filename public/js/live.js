@@ -49,7 +49,7 @@ ctrllers.DashController=function($scope,$http){
 
     var hubs_json={};
     var age_group_json={1:"0<5",2:"5-9",3:"10-14",4:"15-18",5:"19-25",6:"26+"};  
-    var regimen_groups_json={1:'AZT' ,2:'TDF/XTC/EFV' ,3:'TDF/XTC/NVP', 4:'ABC',5:'TDF/XTC/LPV/r' , 6:'TDF/XTC/ATV/r', 7:'Other'};
+    var regimen_groups_json={1: 'AZT based', 2: 'ABC based', 3: 'TDF based', 4: 'Other'};
     var regimen_times_json={0:'No Date Given',1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json={'m':'Male','f':'Female','x':'Unknown'};
@@ -72,7 +72,7 @@ ctrllers.DashController=function($scope,$http){
     $scope.hubs2=[];
     $scope.age_group_slct=age_group_json;
 
-    $scope.orderByCurrentRegimen = function(regimen){
+   /* $scope.orderByCurrentRegimen = function(regimen){
         if($scope.labels.reg_grps[regimen._id] == 'ABC')
             return 1;
         else if($scope.labels.reg_grps[regimen._id] == 'AZT')
@@ -88,8 +88,18 @@ ctrllers.DashController=function($scope,$http){
         else if($scope.labels.reg_grps[regimen._id] == 'Other')
             return 7;
 
-    };
+    };*/
 
+    $scope.orderByCurrentRegimen = function(regimen){
+        if($scope.labels.reg_grps[regimen._id] == 'ABC based')
+            return 1;
+        else if($scope.labels.reg_grps[regimen._id] == 'AZT based')
+            return 2;
+        else if($scope.labels.reg_grps[regimen._id] == 'TDF based')
+            return 3;
+        else if($scope.labels.reg_grps[regimen._id] == 'Other')
+            return 4;
+    };
     
 
     $http.get("/other_data/").success(function(data){
