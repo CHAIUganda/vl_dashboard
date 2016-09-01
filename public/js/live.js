@@ -53,7 +53,7 @@ ctrllers.DashController=function($scope,$http){
     var regimen_times_json={0:'No Date Given',1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
     var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json={'m':'Male','f':'Female','x':'Unknown'};
-    var lines_json={1:'1st Line',2:'2nd Line',4:'4',5:'5'};
+    var lines_json={1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
 
     $scope.month_labels={'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
 
