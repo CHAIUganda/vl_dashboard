@@ -31,7 +31,6 @@
                                     
 
                                     <th >Plasma</th>
-                                    <th >DBS</th>
 
                                 </tr>
                             </thead>
