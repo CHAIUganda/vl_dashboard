@@ -47,7 +47,7 @@ class LiveData extends Model
                    reg_t.treatmentStatusID AS reg_line,
                    $reg_time_case AS reg_time,
                    treatmentInitiationID AS trt,
-                   count(distinct patientUniqueID) as numberOfPatientsTested   
+                   count(distinct patientUniqueID) as number_patients_received   
 		        FROM vl_samples AS s
 		        LEFT JOIN vl_patients AS p ON s.patientID=p.id
             LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id

@@ -409,7 +409,6 @@ div.addition-metrics{
 .facilties-sect{
 	font-size: 11px;
 	padding-left: 50px;
-
 }
 
 .facilties-sect table tr th,
@@ -484,6 +483,10 @@ div.addition-metrics{
 	padding-right: 30px;
 	padding-top: 100px;
 	font-size: 50px;
+}
+
+.summary-tab{
+	text-align: left;
 }
 
 

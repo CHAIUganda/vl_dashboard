@@ -41,7 +41,7 @@
 
         <span ng-model='filter_regimen' ng-init='filter_regimen={}'>
             <span ng-repeat="(r_nr,r_name) in filter_regimen">
-                <span class="filter-val ng-cloak"> <% r_name %> (g) <x ng-click='removeTag("regimen",r_nr)'>&#120;</x></span> 
+                <span class="filter-val ng-cloak"> <% r_name %> (r) <x ng-click='removeTag("regimen",r_nr)'>&#120;</x></span> 
             </span>
         </span>
 

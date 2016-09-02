@@ -221,6 +221,7 @@ class DashboardController extends Controller {
 		$grp=[];
 		$grp['_id']='$facility_id';
 		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['patients_received']=['$sum'=>'$patients_received'];
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['valid_results']=['$sum'=>'$valid_results'];
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
@@ -246,12 +247,12 @@ class DashboardController extends Controller {
 		$grp=[];
 		$grp['_id']='$district_id';
 		$grp['samples_received']=['$sum'=>'$samples_received'];
-		$grp['patients_tested']=['$sum'=>'$patients_tested'];
+		$grp['patients_received']=['$sum'=>'$patients_received'];
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['valid_results']=['$sum'=>'$valid_results'];
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
-		$grp['dbs_patients']=['$sum'=>'$dbs_patients_tested'];
+		$grp['dbs_patients']=['$sum'=>'$dbs_patients_received'];
 		$grp['total_results']=['$sum'=>'$total_results'];
 		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
@@ -280,8 +281,9 @@ class DashboardController extends Controller {
 		$grp['sample_quality_rejections']=['$sum'=>'$sample_quality_rejections'];
 		$grp['eligibility_rejections']=['$sum'=>'$eligibility_rejections'];
 		$grp['incomplete_form_rejections']=['$sum'=>'$incomplete_form_rejections'];
-		$grp['patients_tested']=['$sum'=>'$patients_tested'];
+		$grp['patients_received']=['$sum'=>'$patients_received'];
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
+		$grp['total_results']=['$sum'=>'$total_results'];
 
 		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp], ['$sort'=>["_id"=>1]]);
 		return isset($res['result'])?$res['result']:[];

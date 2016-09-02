@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabs.css') }} " />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabstyles.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/angular-datatables.css') }}" />
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css"> -->
     <link href="{{ asset('/css/dash.css') }}" rel="stylesheet">
     <link rel="Shortcut Icon" href="{{ asset('/images/icon.png') }}" />
 
@@ -30,6 +31,7 @@
 
     <script src="{{ asset('/js/angular-datatables.min.js') }}" type="text/javascript"></script>
 
+
    <script src="{{ asset('/js/modernizr.custom.js') }}"></script>
 
     
@@ -44,6 +46,16 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
  
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-sanitize.min.js"></script>
+<script src="{{ asset('/js/ng-csv.min.js') }}"></script>
+
+<!-- <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+<script src="{{ asset('/js/angular-datatables.buttons.min.js') }}"></script> -->
     <!-- data-->
     
     
@@ -205,7 +217,7 @@
     </div><!-- /tabs -->
     <br>
         <label class='hdr hdr-grey'> SUMMARY OF KEY INDICATORS</label>
-        <div class='addition-metrics'> @include('sections._viral_load_indicators') </div>
+        @include('sections._viral_load_indicators')
     <br>
     
     <label class='hdr hdr-grey'> TREATMENT INDICATION (as indicated on the form)</label>
@@ -225,7 +237,7 @@
 
 
 </body>
-<script src="//code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
+<!-- <script src="//code.angularjs.org/1.2.20/angular-sanitize.min.js"></script> -->
 <script type="text/javascript" src=" {{ asset('js/ng-csv.js') }} "></script>
 <script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
 <script type="text/javascript" src=" {{ asset('js/live.js') }} "></script>

@@ -11,6 +11,7 @@ Sam Otim                    CHAI    2015(v1)    System development
 
 Credit to CHAI Uganda, CPHL and stakholders
 */
+var $injector = angular.injector();
 
 var app=angular.module('dashboard', ['datatables','ngSanitize', 'ngCsv'], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
@@ -33,17 +34,22 @@ app.filter('slice', function() {
 
 app.filter('d_format', function() {
         return function(y_m) {
+            var y_m=isNaN(y_m)?y_m:y_m.toString();
             var month_labels={'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
             return month_labels[y_m.slice(-2)]+" '"+y_m.slice(2,4);
         }
     });
 
 
-
-
 var ctrllers={};
 
-ctrllers.DashController=function($scope,$http){
+ctrllers.DashController = function($scope,$http){
+   /* $scope.dtOptions = DTOptionsBuilder.newOptions()
+            .withPaginationType('full_numbers')
+            .withBootstrap()
+            .withButtons([
+                'csv',  'excel']);*/
+
     $scope.identity = angular.identity;
     $scope.params = {'districts':[],'hubs':[],'age_ids':[],'genders':[],'regimens':[],'lines':[]};
 
@@ -160,14 +166,14 @@ ctrllers.DashController=function($scope,$http){
                 $scope.filtered=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
                 $scope.loading=false;
                 
-                transposeDurationNumbers();
+                //transposeDurationNumbers();
                 //console.log("lalallalal:: samples_received:: "+data.samples_received+" suppressed:: "+data.suppressed+" "+data.valid_results);
             });
     };
 
     getData();    
 
-    function transposeDurationNumbers(){
+    /*function transposeDurationNumbers(){
        
         var duration_numbers_for_month_list = [];
         var duration_numbers_for_samples_received = [];
@@ -193,7 +199,7 @@ ctrllers.DashController=function($scope,$http){
         }
         
         
-    }
+    }*/
     $scope.testClick = function(){
         $scope.getArray = [{a: 1, b:2}, {a:3, b:4}];
     }
@@ -378,7 +384,7 @@ ctrllers.DashController=function($scope,$http){
         });
     }
 
-    $scope.displayRejectionRate=function(){
+    $scope.displayRejectionRatexxxx=function(){
             //this will hold of our main data consists of multiple chart data
         var data = [];
         
@@ -490,9 +496,9 @@ ctrllers.DashController=function($scope,$http){
         });
     };
 
-    $scope.displayRejectionRateTest=function(){
-        var data=[{"key":"SAMPLE QUALITY","values":[]},
-                  {"key":"INCOMPLETE FORM","values":[] },
+    $scope.displayRejectionRate=function(){
+        var data=[{"key":"SAMPLE QUALITY","values":[], "bar": true},
+                  {"key":"INCOMPLETE FORM","values":[], "bar": false },
                   {"key":"ELIGIBILITY","values":[] }];
 
         for(var i in $scope.duration_numbers){

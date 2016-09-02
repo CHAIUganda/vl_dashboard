@@ -21,9 +21,7 @@
                         <th>Samples Received</th>
                         <th>Samples Tested</th>
                         <th>Number Suppressed</th>
-                        <th>Percentage of Samples (%)</th>
-
-                        
+                        <th>Percentage of Samples (%)</th>                        
                     </tr>
                 </thead>
                 <tbody>                                
