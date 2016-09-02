@@ -162,6 +162,10 @@ ctrllers.DashController = function($scope,$http){
                //console.log("lajejdieorer: "+JSON.stringify($scope.regimen_group_numbers));
 
                 $scope.displaySamplesRecieved(); //to display the samples graph - for the first time
+                $scope.displaySupressionRate();
+                $scope.displayRejectionRate();
+                $scope.displayRegimenGroups();
+                $scope.displayRegimenTime();
 
                 $scope.filtered=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
                 $scope.loading=false;
