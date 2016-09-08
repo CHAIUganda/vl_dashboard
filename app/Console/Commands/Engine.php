@@ -58,6 +58,7 @@ class Engine extends Command
         $this->_loadDistricts();
         $this->_loadFacilities();
         $this->_loadIPs();
+        $this->_loadRegimens();
         $this->_loadData();
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
@@ -86,7 +87,7 @@ class Engine extends Command
             $i=0;
             foreach($samples AS $s){
                 $key=$s->mth.$s->age_group.$s->facilityID.$s->sex;
-                $key.=$s->reg_type.$s->reg_line.$s->reg_time.$s->trt;
+                $key.=$s->regimen.$s->reg_line.$s->reg_time.$s->trt;
 
                 $data=[];
                 //filter params
@@ -106,7 +107,8 @@ class Engine extends Command
                 }
                 $data["gender"] = isset($s->sex)?$s->sex:0; 
                 $data["treatment_indication_id"] = isset($s->trt)?(int)$s->trt:0;
-                $data["regimen_group_id"] = isset($s->reg_type)?(int)$s->reg_type:0;
+                //$data["regimen_group_id"] = isset($s->reg_type)?(int)$s->reg_type:0;
+                $data["regimen"] = isset($s->regimen)?(int)$s->regimen:0;
                 $data["regimen_line"] = isset($s->reg_line)?(int)$s->reg_line:0;
                 $data["regimen_time_id"] = isset($s->reg_time)?(int)$s->reg_time:0;
 
@@ -220,6 +222,15 @@ class Engine extends Command
         foreach($res AS $row){
             $data=['id'=>$row->id,'name'=>$row->district];
             $this->mongo->districts->insert($data);
+        }
+    }
+
+    private function _loadRegimens(){
+        $this->mongo->regimens->drop();
+        $res = LiveData::getRegimens();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->appendix];
+            $this->mongo->regimens->insert($data);
         }
     }
 

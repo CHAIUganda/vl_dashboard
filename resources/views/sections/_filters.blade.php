@@ -115,8 +115,8 @@
         <td width='10%' id='dist_elmt'>
             <select ng-model="regimen" ng-init="regimen='all'" ng-change="filter('regimen')">
                 <option value='all'>REGIMEN</option>
-                <option class="ng-cloak" ng-repeat="(r_nr,rg) in labels.reg_grps" value="<% r_nr %>">
-                    <% rg %>
+                <option class="ng-cloak" ng-repeat="reg in labels.regimens" value="<% reg.id %>">
+                    <% reg.name %>
                 </option>
             </select>
         </td>   

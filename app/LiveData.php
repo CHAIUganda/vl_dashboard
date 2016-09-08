@@ -36,14 +36,18 @@ class LiveData extends Model
       return LiveData::select('id','ip')->from('vl_ips')->get();
     }
 
+    public static function getRegimens(){
+      return self::select('id', 'appendix')->from('vl_appendix_regimen')->get();
+    }
+
 
     public static function getSamples($year,$cond=1){
     	$age_grp_case=self::ageGroupCase();
-      $reg_type_case=self::regimenTypeCase();
+      #$reg_type_case=self::regimenTypeCase();
       $reg_time_case=self::regimenTimeCase();
     	$sql="SELECT facilityID,month(s.created) AS mth,count(s.id) AS num,
                    $age_grp_case AS age_group,".self::SEX_CASE." AS sex,
-                   $reg_type_case AS reg_type,
+                   currentRegimenID AS regimen,
                    reg_t.treatmentStatusID AS reg_line,
                    $reg_time_case AS reg_time,
                    treatmentInitiationID AS trt,
@@ -52,14 +56,14 @@ class LiveData extends Model
 		        LEFT JOIN vl_patients AS p ON s.patientID=p.id
             LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
 		        WHERE YEAR(s.created)='$year' AND $cond		  
-		        GROUP BY mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt";
+		        GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt";
 
 		  $res=\DB::connection('live_db')->select($sql);
       if($cond==1) return $res;
       $ret=[];
       foreach ($res as $r) {
         $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
-        $k.=$r->reg_type.$r->reg_line.$r->reg_time.$r->trt;
+        $k.=$r->regimen.$r->reg_line.$r->reg_time.$r->trt;
         $ret[$k]=$r->num;
       }
       return $ret; 
@@ -67,11 +71,11 @@ class LiveData extends Model
 
     public static function getNumberOfPatients($year,$cond=1){
       $age_grp_case=self::ageGroupCase();
-      $reg_type_case=self::regimenTypeCase();
+      #$reg_type_case=self::regimenTypeCase();
       $reg_time_case=self::regimenTimeCase();
       $sql="SELECT facilityID,month(s.created) AS mth,count(s.id) AS num,
                    $age_grp_case AS age_group,".self::SEX_CASE." AS sex,
-                   $reg_type_case AS reg_type,
+                   currentRegimenID AS regimen,
                    reg_t.treatmentStatusID AS reg_line,
                    $reg_time_case AS reg_time,
                    treatmentInitiationID AS trt,
@@ -80,7 +84,7 @@ class LiveData extends Model
             LEFT JOIN vl_patients AS p ON s.patientID=p.id
             LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
             WHERE YEAR(s.created)='$year' AND $cond     
-            GROUP BY mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt";
+            GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt";
 
       $res=\DB::connection('live_db')->select($sql);
       if($cond==1){
@@ -90,7 +94,7 @@ class LiveData extends Model
       $ret=[];
       foreach ($res as $r) {
         $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
-        $k.=$r->reg_type.$r->reg_line.$r->reg_time.$r->trt;
+        $k.=$r->regimen.$r->reg_line.$r->reg_time.$r->trt;
         $ret[$k]=$r->numberOfPatientsTested;
       }
        
@@ -99,11 +103,11 @@ class LiveData extends Model
 
     public static function getRejects($year){
         $age_grp_case=self::ageGroupCase();
-        $reg_type_case=self::regimenTypeCase();
+        //$reg_type_case=self::regimenTypeCase();
         $reg_time_case=self::regimenTimeCase();
         $sql="SELECT facilityID,month(s.created) AS mth,count(v.id) AS num,$age_grp_case AS age_group,
                      ".self::SEX_CASE." AS sex,
-                     $reg_type_case AS reg_type,
+                     currentRegimenID AS regimen,
                      reg_t.treatmentStatusID AS reg_line,
                      $reg_time_case AS reg_time,
                      treatmentInitiationID AS trt 
@@ -112,13 +116,13 @@ class LiveData extends Model
           LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
           LEFT JOIN vl_patients AS p ON s.patientID=p.id
           WHERE YEAR(s.created)='$year' AND outcome='Rejected'
-          GROUP BY mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt
+          GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt
           ";
         $res=\DB::connection('live_db')->select($sql);
         $ret=[];
         foreach ($res as $r) {
           $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
-          $k.=$r->reg_type.$r->reg_line.$r->reg_time.$r->trt;
+          $k.=$r->regimen.$r->reg_line.$r->reg_time.$r->trt;
           $ret[$k]=$r->num;
         }
         return $ret;
@@ -127,12 +131,12 @@ class LiveData extends Model
     public static function getRejects2($year){
         $rjctn_rsn_case=self::rjctnRsnCase();
         $age_grp_case=self::ageGroupCase();
-        $reg_type_case=self::regimenTypeCase();
+        //$reg_type_case=self::regimenTypeCase();
         $reg_time_case=self::regimenTimeCase();
         $sql="SELECT facilityID,month(s.created) AS mth,count(v.id) AS num,
                      $age_grp_case AS age_group ,$rjctn_rsn_case AS rjctn_rsn,
                      ".self::SEX_CASE." AS sex,                     
-                     $reg_type_case AS reg_type,
+                     currentRegimenID AS regimen,
                      reg_t.treatmentStatusID AS reg_line,
                      $reg_time_case AS reg_time,
                      treatmentInitiationID AS trt 
@@ -141,13 +145,13 @@ class LiveData extends Model
               LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
               LEFT JOIN vl_patients AS p ON s.patientID=p.id
               WHERE YEAR(s.created)='$year' AND outcome='Rejected'
-              GROUP BY rjctn_rsn,mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt
+              GROUP BY rjctn_rsn,mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt
               ";
         $res=\DB::connection('live_db')->select($sql);
         $ret=[];
         foreach ($res as $r) {
           $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
-          $k.=$r->reg_type.$r->reg_line.$r->reg_time.$r->trt.$r->rjctn_rsn;
+          $k.=$r->regimen.$r->reg_line.$r->reg_time.$r->trt.$r->rjctn_rsn;
           $ret[$k]=$r->num;
         }
         return $ret;
@@ -156,11 +160,11 @@ class LiveData extends Model
 
     public static function getResults($year,$cond="1"){
         $age_grp_case=self::ageGroupCase();
-        $reg_type_case=self::regimenTypeCase();
+        //$reg_type_case=self::regimenTypeCase();
         $reg_time_case=self::regimenTimeCase();
         $sql="SELECT facilityID,month(s.created) AS mth,count(DISTINCT r.vlSampleID) AS num,$age_grp_case AS age_group,
                       ".self::SEX_CASE." AS sex,
-                      $reg_type_case AS reg_type,
+                      currentRegimenID AS regimen,
                       reg_t.treatmentStatusID AS reg_line,
                       $reg_time_case AS reg_time,
                       treatmentInitiationID AS trt 
@@ -169,14 +173,14 @@ class LiveData extends Model
               LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
               LEFT JOIN vl_patients AS p ON s.patientID=p.id
               WHERE YEAR(s.created)='$year' AND $cond
-              GROUP BY mth,age_group,facilityID,sex,reg_type,reg_line,reg_time,trt
+              GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt
               ";
         
         $res=\DB::connection('live_db')->select($sql);
         $ret=[];
         foreach ($res as $r) {
           $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
-          $k.=$r->reg_type.$r->reg_line.$r->reg_time.$r->trt;
+          $k.=$r->regimen.$r->reg_line.$r->reg_time.$r->trt;
           $ret[$k]=$r->num;
         }
         return $ret;

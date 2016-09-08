@@ -11,14 +11,14 @@
                 <tr>
                     <th>Regimen</th>
                     <th>Samples Received</th>
-                    <th>Samples Tested</th>
+                    <th>Samples&nbsp;Tested</th>
                     <th>Number Suppressed</th>
-                    <th>Percentage of Samples (%)</th>
+                    <th>Percentage of Samples&nbsp;(%)</th>
                 </tr>
             </thead>
             <tbody>                                
-                <tr ng-repeat="r in regimen_group_numbers | orderBy:'-samples_received'" >
-                    <td class="ng-cloak"><% labels.reg_grps[r._id] %></td>
+                <tr ng-repeat="r in regimen_numbers | orderBy:'-samples_received'" >
+                    <td class="ng-cloak"><% 1 %></td>
                     <td class="ng-cloak"><% r.samples_received|number %></td>
                     <td class="ng-cloak"><% r.total_results|number %></td>
                     <td class="ng-cloak"><% r.suppressed|number %></td>

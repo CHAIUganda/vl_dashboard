@@ -64,7 +64,8 @@ class DashboardController extends Controller {
 		if(!empty($hubs)&&$hubs!='[]') $conds['$and'][]=[ 'hub_id'=>  ['$in'=> json_decode($hubs)] ];
 		if(!empty($age_ids)&&$age_ids!='[]') $conds['$and'][]=[ 'age_group_id'=>  ['$in'=> json_decode($age_ids)] ];
 		if(!empty($genders)&&$genders!='[]') $conds['$and'][]=[ 'gender'=>  ['$in'=> json_decode($genders)] ];
-		if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen_group_id'=>  ['$in'=> json_decode($regimens)] ];
+		//if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen_group_id'=>  ['$in'=> json_decode($regimens)] ];
+		if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen'=>  ['$in'=> json_decode($regimens)] ];
 		if(!empty($lines)&&$lines!='[]') $conds['$and'][]=[ 'regimen_line'=>  ['$in'=> json_decode($lines)] ];
 
 		//print_r($conds);
@@ -77,7 +78,8 @@ class DashboardController extends Controller {
 		$hubs=iterator_to_array($this->mongo->hubs->find());
 		$districts=iterator_to_array($this->mongo->districts->find());
 		$facilities=iterator_to_array($this->mongo->facilities->find());
-		return compact("hubs","districts","facilities");
+		$regimens=iterator_to_array($this->mongo->regimens->find());
+		return compact("hubs","districts","facilities","regimens");
 	}
 
 	private function _latestNMonths($n=12){
@@ -148,10 +150,11 @@ class DashboardController extends Controller {
 		$f_numbers=$this->_facilityNumbers();
 		$dist_numbers=$this->_districtNumbers();
 		$drn_numbers=$this->_durationNumbers();
-		$reg_groups=$this->_regimenGroupNumbers();
+		//$reg_groups=$this->_regimenGroupNumbers();
+		$regimen_numbers = $this->_regimenNumbers();
 		$reg_times=$this->_regimenTimeNumbers();
 		$line_numbers=$this->_lineNumbers();
-		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers","reg_groups","reg_times","line_numbers");
+		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers","regimen_numbers","reg_times","line_numbers");
 	}
 
 	/*private function _wholeNumbers($conds){
@@ -289,9 +292,21 @@ class DashboardController extends Controller {
 		return isset($res['result'])?$res['result']:[];
 	}
 
-	private function _regimenGroupNumbers(){
+	/*private function _regimenGroupNumbers(){
 		$grp=[];
 		$grp['_id']='$regimen_group_id';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['total_results']=['$sum'=>'$total_results'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
+
+		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		return isset($res['result'])?$res['result']:[];
+	}*/
+
+	private function _regimenNumbers(){
+		$grp=[];
+		$grp['_id']='$regimen';
 		$grp['samples_received']=['$sum'=>'$samples_received'];
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['total_results']=['$sum'=>'$total_results'];

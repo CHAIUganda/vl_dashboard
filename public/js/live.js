@@ -71,6 +71,8 @@ ctrllers.DashController = function($scope,$http){
     $scope.labels.lines=lines_json;
     $scope.labels.districts=[];
     $scope.labels.facilities=[];
+    $scope.labels.regimens=[];
+    $scope.labels.regimens2=[];
 
     var vvvrrr=0;
 
@@ -96,7 +98,7 @@ ctrllers.DashController = function($scope,$http){
 
     };*/
 
-    $scope.orderByCurrentRegimen = function(regimen){
+   /* $scope.orderByCurrentRegimen = function(regimen){
         if($scope.labels.reg_grps[regimen._id] == 'ABC based')
             return 1;
         else if($scope.labels.reg_grps[regimen._id] == 'AZT based')
@@ -105,7 +107,7 @@ ctrllers.DashController = function($scope,$http){
             return 3;
         else if($scope.labels.reg_grps[regimen._id] == 'Other')
             return 4;
-    };
+    };*/
     
 
     $http.get("/other_data/").success(function(data){
@@ -127,6 +129,12 @@ ctrllers.DashController = function($scope,$http){
             var obj=data.facilities[i];
             //facilities_json[f.id]={'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
             $scope.labels.facilities[obj.id]=obj.name||"no facility";
+        }
+
+        for(var i in data.regimens){
+            var obj = data.regimens[i];
+            $scope.labels.regimens.push({"id":obj.id,"name":obj.name});
+            $scope.labels.regimens2[obj.id] = obj.name;
         }
     });
 
@@ -155,7 +163,10 @@ ctrllers.DashController = function($scope,$http){
                 $scope.duration_numbers=data.drn_numbers||{};
                 $scope.facility_numbers=data.f_numbers||{};
                 $scope.district_numbers=data.dist_numbers||{};
-                $scope.regimen_group_numbers=data.reg_groups||{};
+                //$scope.regimen_group_numbers=data.reg_groups||{};
+                $scope.regimen_numbers = data.regimen_numbers||{};
+
+                 console.log("reg"+JSON.stringify($scope.regimen_numbers))
                 $scope.regimen_time_numbers=data.reg_times||{};
                 $scope.line_numbers=data.line_numbers||{};
 
@@ -534,13 +545,13 @@ ctrllers.DashController = function($scope,$http){
         var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
                   {"key":"VALID RESULTS","bar":true,"color": "#F44336","values":[]}];
 
-        for(var i in $scope.regimen_group_numbers){
-            var obj=$scope.regimen_group_numbers[i];
+        for(var i in $scope.regimen_numbers){
+            var obj=$scope.regimen_numbers[i];
             var sprsd=obj.suppressed||0;
             var vld=obj.valid_results||0;
             var s_rate=((sprsd/vld)||0)*100;
             //s_rate.toPrecision(3);
-            var label=regimen_groups_json[obj._id];
+            var label=$scope.labels.regimens2[obj._id];
             data[0].values.push([label,Math.round(s_rate)]);
             data[1].values.push([label,vld]);
         } 
@@ -553,8 +564,9 @@ ctrllers.DashController = function($scope,$http){
             chart.xAxis.tickFormat(function(d) {
                 return data[0].values[d] && data[0].values[d][0] || " ";
             });
+            chart.xAxis.rotateLabels(90);
             //chart.reduceXTicks(false);
-            //chart.bars.forceY([0]);
+
             chart.lines.forceY([0,100]);
             chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
 

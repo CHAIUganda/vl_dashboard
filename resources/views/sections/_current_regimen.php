@@ -14,22 +14,26 @@
         </div>
 
         <div class="col-lg-6 facilties-sect " >
-            <table datatable id="current_regimen_table" class="row-border hover table table-bordered table-condensed table-striped">
+            <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
-                        <th>Regimen</th>
+                        <th>Regimen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.</th>
                         <th>Samples Received</th>
                         <th>Samples Tested</th>
+                        <th>Valid Results</th>
                         <th>Number Suppressed</th>
-                        <th>Percentage of Samples (%)</th>                        
+                        <th>Suppression Rate</th>
+                        <th>Percentage&nbsp;of Samples&nbsp;(%)</th>                        
                     </tr>
                 </thead>
                 <tbody>                                
-                    <tr ng-repeat="regimen in regimen_group_numbers | orderBy:orderByCurrentRegimen" >
-                        <td class="ng-cloak"><% labels.reg_grps[regimen._id] %></td>
+                    <tr ng-repeat="regimen in regimen_numbers" >
+                        <td class="ng-cloak"><% labels.regimens2[regimen._id] %></td>
                         <td class="ng-cloak"><% regimen.samples_received|number %></td>
                         <td class="ng-cloak"><% regimen.total_results|number %></td>
+                        <td class="ng-cloak"><% regimen.valid_results|number %></td>
                         <td class="ng-cloak"><% regimen.suppressed|number %></td>
+                        <td class="ng-cloak"><% ((regimen.suppressed/regimen.valid_results)*100)|number:1 %>%</td>
                         <td class="ng-cloak"><% ((regimen.samples_received/samples_received)*100 )| number:1 %> %</td>
                     </tr>                        
                  </tbody>
@@ -45,7 +49,7 @@
         </div>
 
         <div class="col-lg-6 facilties-sect " >
-            <table datatable="ng" id="current_regimen_table" class="row-border hover table table-bordered table-condensed table-striped">
+            <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
                         <th>Time on Treatment</th>
