@@ -51,6 +51,12 @@
             </span>
         </span>
 
+        <span ng-model='filter_indication' ng-init='filter_indication={}'>
+            <span ng-repeat="(i_nr,i_name) in filter_indication">
+                <span class="filter-val ng-cloak"> <% i_name %> (p) <x ng-click='removeTag("indication",i_nr)'>&#120;</x></span> 
+            </span>
+        </span>
+
         <span ng-show="filtered" class="filter_clear" ng-click="clearAllFilters()">reset all</span>
 
     </div>
@@ -125,6 +131,14 @@
                 <option value='all'>LINE</option>
                 <option class="ng-cloak" ng-repeat="(l_nr,l) in labels.lines" value="<% l_nr %>">
                     <% l %>
+                </option>
+            </select>
+        </td>   
+        <td width='10%' id='dist_elmt'>
+            <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
+                <option value='all'>PMTCT/TB</option>
+                <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.indications" value="<% i_nr %>">
+                    <% i %>
                 </option>
             </select>
         </td>        

@@ -67,6 +67,7 @@ class DashboardController extends Controller {
 		//if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen_group_id'=>  ['$in'=> json_decode($regimens)] ];
 		if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen'=>  ['$in'=> json_decode($regimens)] ];
 		if(!empty($lines)&&$lines!='[]') $conds['$and'][]=[ 'regimen_line'=>  ['$in'=> json_decode($lines)] ];
+		if(!empty($indications)&&$indications!='[]') $conds['$and'][]=[ 'treatment_indication_id'=>  ['$in'=> json_decode($indications)] ];
 
 		//print_r($conds);
 

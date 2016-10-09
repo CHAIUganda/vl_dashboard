@@ -51,34 +51,38 @@ ctrllers.DashController = function($scope,$http){
                 'csv',  'excel']);*/
 
     $scope.identity = angular.identity;
-    $scope.params = {'districts':[],'hubs':[],'age_ids':[],'genders':[],'regimens':[],'lines':[]};
+    $scope.params = {
+        'districts':[],'hubs':[],'age_ids':[],'genders':[],
+        'regimens':[],'lines':[], 'indications': []};
 
-    var hubs_json={};
-    var age_group_json={1:"0<2",2:"2-<5",3:"5-<10",4:"10-<15",5:"15-<20",6:"20-<25",7:"25+"};  
-    var regimen_groups_json={1: 'AZT based', 2: 'ABC based', 3: 'TDF based', 4: 'Other'};
-    var regimen_times_json={0:'No Date Given',1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
-    var results_json={}; //to hold a big map will all processed data to later on be used in the generalFilter
-    var genders_json={'m':'Male','f':'Female','x':'Unknown'};
-    var lines_json={1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
+    var hubs_json = {};
+    var age_group_json = {1:"0<2",2:"2-<5",3:"5-<10",4:"10-<15",5:"15-<20",6:"20-<25",7:"25+"};  
+    var regimen_groups_json = {1: 'AZT based', 2: 'ABC based', 3: 'TDF based', 4: 'Other'};
+    var regimen_times_json = {0:'No Date Given',1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
+    var results_json = {}; //to hold a big map will all processed data to later on be used in the generalFilter
+    var genders_json = {'m':'Male','f':'Female','x':'Unknown'};
+    var lines_json = {1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
+    var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
 
-    $scope.month_labels={'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
+    $scope.month_labels = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
 
-    $scope.labels={};
-    $scope.labels.reg_grps=regimen_groups_json;
-    $scope.labels.reg_times=regimen_times_json;
-    $scope.labels.age_grps=age_group_json;
-    $scope.labels.genders=genders_json;
-    $scope.labels.lines=lines_json;
-    $scope.labels.districts=[];
-    $scope.labels.facilities=[];
-    $scope.labels.regimens=[];
-    $scope.labels.regimens2=[];
+    $scope.labels = {};
+    $scope.labels.reg_grps = regimen_groups_json;
+    $scope.labels.reg_times = regimen_times_json;
+    $scope.labels.age_grps = age_group_json;
+    $scope.labels.genders = genders_json;
+    $scope.labels.lines = lines_json;
+    $scope.labels.districts = [];
+    $scope.labels.facilities = [];
+    $scope.labels.regimens = [];
+    $scope.labels.regimens2 = [];
+    $scope.labels.indications = t_indication_json;
 
-    var vvvrrr=0;
+    var vvvrrr = 0;
 
-    $scope.districts2=[];
-    $scope.hubs2=[];
-    $scope.age_group_slct=age_group_json;
+    $scope.districts2 = [];
+    $scope.hubs2 = [];
+    $scope.age_group_slct = age_group_json;
 
    /* $scope.orderByCurrentRegimen = function(regimen){
         if($scope.labels.reg_grps[regimen._id] == 'ABC')
@@ -113,22 +117,22 @@ ctrllers.DashController = function($scope,$http){
     $http.get("/other_data/").success(function(data){
         //console.log("Ehealth at chai rocks 1 "+JSON.stringify(data.facilities));
         for(var i in data.districts){
-            var obj=data.districts[i];
-            $scope.labels.districts[obj.id]=obj.name||"no district";
+            var obj = data.districts[i];
+            $scope.labels.districts[obj.id] = obj.name||"no district";
 
             $scope.districts2.push({"id":obj.id,"name":obj.name});
         }
 
         for(var i in data.hubs){
-            var obj=data.hubs[i];
-            hubs_json[obj.id]=obj.name;
+            var obj = data.hubs[i];
+            hubs_json[obj.id] = obj.name;
             $scope.hubs2.push({"id":obj.id,"name":obj.name});
         }
 
         for(var i in data.facilities){
-            var obj=data.facilities[i];
+            var obj = data.facilities[i];
             //facilities_json[f.id]={'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
-            $scope.labels.facilities[obj.id]=obj.name||"no facility";
+            $scope.labels.facilities[obj.id] = obj.name||"no facility";
         }
 
         for(var i in data.regimens){
@@ -139,36 +143,37 @@ ctrllers.DashController = function($scope,$http){
     });
 
     var getData=function(){
-            $scope.loading=true;
-            var prms={};
-            prms.districts=JSON.stringify($scope.params.districts);
-            prms.hubs=JSON.stringify($scope.params.hubs);
-            prms.age_ids=JSON.stringify($scope.params.age_ids);
-            prms.genders=JSON.stringify($scope.params.genders);
-            prms.regimens=JSON.stringify($scope.params.regimens);
-            prms.lines=JSON.stringify($scope.params.lines);
-            prms.fro_date=$scope.fro_date;
-            prms.to_date=$scope.to_date;
+            $scope.loading = true;
+            var prms = {};
+            prms.districts = JSON.stringify($scope.params.districts);
+            prms.hubs = JSON.stringify($scope.params.hubs);
+            prms.age_ids = JSON.stringify($scope.params.age_ids);
+            prms.genders = JSON.stringify($scope.params.genders);
+            prms.regimens = JSON.stringify($scope.params.regimens);
+            prms.lines = JSON.stringify($scope.params.lines);
+            prms.indications = JSON.stringify($scope.params.indications);
+            prms.fro_date = $scope.fro_date;
+            prms.to_date = $scope.to_date;
             $http({method:'GET',url:"/live/",params:prms}).success(function(data) {
                 
                 //console.log("we rrrr"+JSON.stringify($scope.params));
 
-                $scope.samples_received=data.whole_numbers.samples_received||0;
-                $scope.suppressed=data.whole_numbers.suppressed||0;
-                $scope.valid_results=data.whole_numbers.valid_results||0;
-                $scope.rejected_samples=data.whole_numbers.rejected_samples||0;  
+                $scope.samples_received = data.whole_numbers.samples_received||0;
+                $scope.suppressed = data.whole_numbers.suppressed||0;
+                $scope.valid_results = data.whole_numbers.valid_results||0;
+                $scope.rejected_samples = data.whole_numbers.rejected_samples||0;  
 
-                $scope.t_indications=data.t_indication; 
+                $scope.t_indications = data.t_indication; 
 
-                $scope.duration_numbers=data.drn_numbers||{};
-                $scope.facility_numbers=data.f_numbers||{};
-                $scope.district_numbers=data.dist_numbers||{};
+                $scope.duration_numbers = data.drn_numbers||{};
+                $scope.facility_numbers = data.f_numbers||{};
+                $scope.district_numbers = data.dist_numbers||{};
                 //$scope.regimen_group_numbers=data.reg_groups||{};
                 $scope.regimen_numbers = data.regimen_numbers||{};
 
-                 console.log("reg"+JSON.stringify($scope.regimen_numbers))
-                $scope.regimen_time_numbers=data.reg_times||{};
-                $scope.line_numbers=data.line_numbers||{};
+                //console.log("reg"+JSON.stringify($scope.regimen_numbers))
+                $scope.regimen_time_numbers = data.reg_times||{};
+                $scope.line_numbers = data.line_numbers||{};
 
                //console.log("lajejdieorer: "+JSON.stringify($scope.regimen_group_numbers));
 
@@ -178,8 +183,8 @@ ctrllers.DashController = function($scope,$http){
                 $scope.displayRegimenGroups();
                 $scope.displayRegimenTime();
 
-                $scope.filtered=count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
-                $scope.loading=false;
+                $scope.filtered = count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
+                $scope.loading = false;
                 
                 //transposeDurationNumbers();
                 //console.log("lalallalal:: samples_received:: "+data.samples_received+" suppressed:: "+data.suppressed+" "+data.valid_results);
@@ -273,6 +278,12 @@ ctrllers.DashController = function($scope,$http){
             $scope.params.lines.push(Number($scope.line));
             $scope.line='all';
             break;
+
+            case "indication":
+            $scope.filter_indication[$scope.indication] = t_indication_json[$scope.indication];
+            $scope.params.indications.push(Number($scope.indication));
+            $scope.indication='all';
+            break;
         }
 
         delete $scope.filter_districts["all"];
@@ -281,6 +292,7 @@ ctrllers.DashController = function($scope,$http){
         delete $scope.filter_gender["all"];
         delete $scope.filter_regimen["all"];
         delete $scope.filter_line["all"];
+        delete $scope.filter_indication["all"];
 
         getData();
 
@@ -318,6 +330,11 @@ ctrllers.DashController = function($scope,$http){
             delete $scope.filter_line[nr];
             $scope.params.lines=rmveFrmArr(nr,$scope.params.lines);
             break;
+
+            case "indication": 
+            delete $scope.filter_indication[nr];
+            $scope.params.indications=rmveFrmArr(nr,$scope.params.indications);
+            break;
         }
         //$scope.filter(mode);
         getData();
@@ -331,12 +348,16 @@ ctrllers.DashController = function($scope,$http){
         $scope.filter_gender={};
         $scope.filter_regimen={};
         $scope.filter_line={};
+        $scope.filter_indication={};
         $scope.filter_duration=$scope.init_duration;
         $scope.filtered=false;
         $scope.date_filtered=false;
         $scope.fro_date="all";
         $scope.to_date="all";
-        $scope.params = {'districts':[],'hubs':[],'age_ids':[],'genders':[],'regimens':[],'lines':[]};
+        $scope.params = {
+                'districts':[],'hubs':[],'age_ids':[],'genders':[],
+                'regimens':[],'lines':[],'indications':[]
+            };
         getData();
         //generalFilter();
     };
