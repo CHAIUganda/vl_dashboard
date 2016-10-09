@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>                                
-                    <tr ng-repeat="d in district_numbers | orderBy:'-samples_received'" >
+                    <tr ng-repeat="d in district_numbers" >
                         <td class="ng-cloak"><% labels.districts[d._id] %></td>
                         <td class="ng-cloak"><% d.samples_received|number %></td>
                         <td class="ng-cloak"><% d.patients_received|number %></td>
