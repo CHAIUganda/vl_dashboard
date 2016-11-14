@@ -134,13 +134,13 @@
                 </option>
             </select>
         </td>   
-        <!-- <td width='10%' id='dist_elmt'>
+        <td width='10%' id='dist_elmt'>
             <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
                 <option value='all'>PMTCT/TB</option>
                 <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.indications" value="<% i_nr %>">
                     <% i %>
                 </option>
             </select>
-        </td>   -->      
+        </td>        
     </tr>
 </table>
