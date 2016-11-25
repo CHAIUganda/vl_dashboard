@@ -41,9 +41,11 @@
             </table>
             <br>
             <br>
-            <button id="exportButton" class="btn btn-success">Download CSV</button>
-         </div>
+            <button id="exportButton" class="btn btn-success">Download CSV</button> <br>
+            <button type="button" ng-csv="district_numbers" filename="test.csv">Export</button>
 
+         </div>
+         
          <div ng-show="show_fclties1">
             <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
@@ -73,6 +75,9 @@
                  </tbody>
                  
             </table>
+            <br>
+            <br>
+            <button type="button" ng-csv="facility_numbers" filename="facilities.csv" class="btn btn-success">Export facilities</button>
          </div>
 
     </div>
