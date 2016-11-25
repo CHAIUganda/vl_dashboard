@@ -41,8 +41,9 @@
     <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
     
     <!--script src="{{ asset('/js/jquery-1.11.1.min.js') }}" type="text/javascript"></script -->
-    <script src="{{ asset('/js/jquery.tabletoCSV.js')}}" type="text/javascript"></script>
 
+    <script src="{{ asset('/js/jquery.tabletoCSV.js')}}" type="text/javascript"></script>
+    
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
  
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
@@ -82,6 +83,8 @@
             $("#exportButton").click(function(){
                 $("#samples_received_table").tableToCSV();
             });
+
+            
         } );
 
         
@@ -98,6 +101,9 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                     <li id='l1' class='active'>{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>            
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <a class="navbar-brand" href="http://localhost:8000" style="font-weight:400px;color:#FFF"> Facility Module login</a>
             </ul>
         </div>
     </div>
@@ -237,8 +243,8 @@
 
 
 </body>
-<!-- <script src="//code.angularjs.org/1.2.20/angular-sanitize.min.js"></script> -->
-<script type="text/javascript" src=" {{ asset('js/ng-csv.js') }} "></script>
+<!-- <script src="//code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
+<script type="text/javascript" src=" {{ asset('js/ng-csv.js') }} "></script-->
 <script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
 <script type="text/javascript" src=" {{ asset('js/live.js') }} "></script>
 
