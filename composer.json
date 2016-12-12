@@ -10,7 +10,8 @@
         "laravelcollective/html": "5.1.*",
         "laracasts/validation": "dev-master",
         "maatwebsite/excel": "~2.1.0",
-        "yajra/laravel-datatables-oracle": "~6.0"
+        "yajra/laravel-datatables-oracle": "~6.0",
+        "zizaco/entrust": "5.2.x-dev"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

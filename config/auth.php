@@ -64,4 +64,12 @@ return [
         'expire' => 60,
     ],
 
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => EID\User::class,
+            'table' => 'users',
+        ],
+    ],
+
 ];

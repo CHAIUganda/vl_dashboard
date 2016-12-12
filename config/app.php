@@ -139,6 +139,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
+        Zizaco\Confide\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -147,6 +149,7 @@ return [
         EID\Providers\AuthServiceProvider::class,
         EID\Providers\EventServiceProvider::class,
         EID\Providers\RouteServiceProvider::class,
+
 
     ],
 
@@ -203,6 +206,8 @@ return [
         'MyHTML' => 'EID\Closet\MyHTML',
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Datatables' => Yajra\Datatables\DatatablesServiceProvider::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Confide'   => Zizaco\Confide\Facade::class,
 
     ],
 

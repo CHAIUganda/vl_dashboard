@@ -25,10 +25,12 @@ $printed_url="/results?printed=YES";
     <li {{ $printed_actv }} title='Already printed'><a href="{{ $printed_url }}" >Printed</a></li>
 </ul>
 {!! Form::open(array('url'=>'/result','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
-<div style='text-align:center; padding-top:10px; margin-bottom:-40px'><a href="#" class='btn btn-sm btn-danger'>Print all selected results</a></div>
+
+
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print">  
+        <input type="button" id="download" name="download" class='btn btn-sm btn-danger' value="Print selected" onclick="viewSelected();"   /> 
         <table id="results-table" class="table table-condensed table-bordered">
             <thead>
             <tr>
@@ -47,7 +49,7 @@ $printed_url="/results?printed=YES";
         </table>
     </div>
 </div>
-  <input type="button" id="download" name="download" value="View report" onclick="view_my_report();"   /> 
+  
 
 {!! Form::close() !!}
 <script type="text/javascript">
@@ -72,7 +74,7 @@ $(function() {
     });
 });
 
-function view_my_report() {     
+function viewSelected() {     
    var mapForm = document.getElementById("view_form");
    map=window.open("","Map","status=0,title=0,height=600,width=800,scrollbars=1");
 

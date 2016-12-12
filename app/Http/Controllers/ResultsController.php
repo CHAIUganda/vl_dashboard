@@ -56,6 +56,7 @@ class ResultsController extends Controller {
 				LEFT JOIN vl_results_multiplicationfactor AS fctr ON wk.id=fctr.worksheetID
 				WHERE
 				";
+		if($id=='x' and count($slctd_samples)==0) return "Please select atleast one result to print";
 		$sql .= $id!='x'?" s.id=$id LIMIT 1": " s.id IN $slctd_samples_str GROUP BY s.id";
 
 		$vldbresult =  \DB::connection('live_db')->select($sql);

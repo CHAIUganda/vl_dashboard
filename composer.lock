@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7eca64d60c13db076f26396e418fa863",
+    "hash": "6ba335e4cf9e497994d5bfa4c01dcfef",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ClassPreloader/ClassPreloader.git",
-                "reference": "9b10b913c2bdf90c3d2e0d726b454fb7f77c552a"
+                "reference": "bc7206aa892b5a33f4680421b69b191efd32b096"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ClassPreloader/ClassPreloader/zipball/9b10b913c2bdf90c3d2e0d726b454fb7f77c552a",
-                "reference": "9b10b913c2bdf90c3d2e0d726b454fb7f77c552a",
+                "url": "https://api.github.com/repos/ClassPreloader/ClassPreloader/zipball/bc7206aa892b5a33f4680421b69b191efd32b096",
+                "reference": "bc7206aa892b5a33f4680421b69b191efd32b096",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^1.0|^2.0",
+                "nikic/php-parser": "^1.0|^2.0|^3.0",
                 "php": ">=5.5.9"
             },
             "require-dev": {
@@ -30,7 +30,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -58,7 +58,7 @@
                 "class",
                 "preload"
             ],
-            "time": "2015-11-09 22:51:51"
+            "time": "2016-09-16 12:50:15"
         },
         {
             "name": "danielstjules/stringy",
@@ -366,20 +366,20 @@
         },
         {
             "name": "jeremeamia/SuperClosure",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeremeamia/super_closure.git",
-                "reference": "29a88be2a4846d27c1613aed0c9071dfad7b5938"
+                "reference": "443c3df3207f176a1b41576ee2a66968a507b3db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/29a88be2a4846d27c1613aed0c9071dfad7b5938",
-                "reference": "29a88be2a4846d27c1613aed0c9071dfad7b5938",
+                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/443c3df3207f176a1b41576ee2a66968a507b3db",
+                "reference": "443c3df3207f176a1b41576ee2a66968a507b3db",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^1.2|^2.0",
+                "nikic/php-parser": "^1.2|^2.0|^3.0",
                 "php": ">=5.4",
                 "symfony/polyfill-php56": "^1.0"
             },
@@ -389,7 +389,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -420,7 +420,7 @@
                 "serialize",
                 "tokenizer"
             ],
-            "time": "2015-12-05 17:17:57"
+            "time": "2016-12-07 09:37:55"
         },
         {
             "name": "laracasts/validation",
@@ -789,16 +789,16 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "2.1.7",
+            "version": "2.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "55d18b6a99b30b9003c2f174cc3ecd9ca79f1bf5"
+                "reference": "d9c398f7eba0ac9caf9c104dd0d55bd6a5ff231e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/55d18b6a99b30b9003c2f174cc3ecd9ca79f1bf5",
-                "reference": "55d18b6a99b30b9003c2f174cc3ecd9ca79f1bf5",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/d9c398f7eba0ac9caf9c104dd0d55bd6a5ff231e",
+                "reference": "d9c398f7eba0ac9caf9c104dd0d55bd6a5ff231e",
                 "shasum": ""
             },
             "require": {
@@ -852,7 +852,7 @@
                 "import",
                 "laravel"
             ],
-            "time": "2016-10-18 16:43:26"
+            "time": "2016-12-09 19:11:09"
         },
         {
             "name": "monolog/monolog",
@@ -2398,16 +2398,16 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v6.22.0",
+            "version": "v6.22.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "067994638d831872ca7a6ec9d016e07765723cf9"
+                "reference": "3f3f353f010542e5360d1412bb846189ebc6d342"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/067994638d831872ca7a6ec9d016e07765723cf9",
-                "reference": "067994638d831872ca7a6ec9d016e07765723cf9",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/3f3f353f010542e5360d1412bb846189ebc6d342",
+                "reference": "3f3f353f010542e5360d1412bb846189ebc6d342",
                 "shasum": ""
             },
             "require": {
@@ -2454,7 +2454,143 @@
                 "laravel4",
                 "laravel5"
             ],
-            "time": "2016-11-19 07:57:18"
+            "time": "2016-12-07 08:59:09"
+        },
+        {
+            "name": "zizaco/confide",
+            "version": "5.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Zizaco/confide.git",
+                "reference": "de93c46c335be51929805688da8a5ecb3fd04e52"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Zizaco/confide/zipball/de93c46c335be51929805688da8a5ecb3fd04e52",
+                "reference": "de93c46c335be51929805688da8a5ecb3fd04e52",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "illuminate/console": "~5.0",
+                "illuminate/database": "~5.0",
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "~0.6"
+            },
+            "suggest": {
+                "zizaco/entrust": "add Role-based Permissions to Laravel 4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.3-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/migrations",
+                    "src/commands"
+                ],
+                "files": [
+                    "src/Confide/helpers.php"
+                ],
+                "psr-4": {
+                    "Zizaco\\Confide\\": "src/Confide/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Elkins",
+                    "homepage": "http://www.andrewelkins.com"
+                },
+                {
+                    "name": "Zizaco Zizuini",
+                    "homepage": "http://www.zizaco.net"
+                }
+            ],
+            "description": "Confide is an authentication solution for Laravel 4",
+            "keywords": [
+                "auth",
+                "illuminate",
+                "laravel"
+            ],
+            "time": "2015-08-07 18:06:05"
+        },
+        {
+            "name": "zizaco/entrust",
+            "version": "5.2.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Zizaco/entrust.git",
+                "reference": "7455ed41fe448c37c6a5bcd41a584c1f92d428a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Zizaco/entrust/zipball/7455ed41fe448c37c6a5bcd41a584c1f92d428a3",
+                "reference": "7455ed41fe448c37c6a5bcd41a584c1f92d428a3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "~5.0",
+                "illuminate/console": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "illuminate/database": "~5.0",
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "~4.1",
+                "sami/sami": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/commands"
+                ],
+                "psr-4": {
+                    "Zizaco\\Entrust\\": "src/Entrust/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Elkins",
+                    "homepage": "http://andrewelkins.com"
+                },
+                {
+                    "name": "Zizaco Zizuini",
+                    "email": "zizaco@gmail.com"
+                },
+                {
+                    "name": "Ben Batschelet",
+                    "homepage": "http://github.com/bbatsche"
+                },
+                {
+                    "name": "Michele Angioni",
+                    "email": "michele.angioni@gmail.com"
+                }
+            ],
+            "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+            "keywords": [
+                "acl",
+                "auth",
+                "illuminate",
+                "laravel",
+                "permission",
+                "roles"
+            ],
+            "time": "2016-11-04 16:23:22"
         }
     ],
     "packages-dev": [
@@ -2852,16 +2988,16 @@
         },
         {
             "name": "phpspec/phpspec",
-            "version": "2.5.3",
+            "version": "2.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/phpspec.git",
-                "reference": "153ebd99d9b842e0c99a024c41f970d79db46475"
+                "reference": "db395f435eb8e820448e8690de1a8db86d5dd8af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/153ebd99d9b842e0c99a024c41f970d79db46475",
-                "reference": "153ebd99d9b842e0c99a024c41f970d79db46475",
+                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/db395f435eb8e820448e8690de1a8db86d5dd8af",
+                "reference": "db395f435eb8e820448e8690de1a8db86d5dd8af",
                 "shasum": ""
             },
             "require": {
@@ -2926,7 +3062,7 @@
                 "testing",
                 "tests"
             ],
-            "time": "2016-09-26 20:28:11"
+            "time": "2016-12-04 21:03:31"
         },
         {
             "name": "phpspec/prophecy",
@@ -3236,16 +3372,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.29",
+            "version": "4.8.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "f19d481b468b76a7fb55eb2b772ed487e484891e"
+                "reference": "98b2b39a520766bec663ff5b7ff1b729db9dbfe3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f19d481b468b76a7fb55eb2b772ed487e484891e",
-                "reference": "f19d481b468b76a7fb55eb2b772ed487e484891e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/98b2b39a520766bec663ff5b7ff1b729db9dbfe3",
+                "reference": "98b2b39a520766bec663ff5b7ff1b729db9dbfe3",
                 "shasum": ""
             },
             "require": {
@@ -3304,7 +3440,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-11-20 10:35:28"
+            "time": "2016-12-09 02:45:31"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3843,7 +3979,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "laracasts/validation": 20
+        "laracasts/validation": 20,
+        "zizaco/entrust": 20,
+        "zizaco/confide": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
