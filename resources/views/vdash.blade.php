@@ -97,7 +97,8 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                    <li id='l1' class='active'>{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>            
+                    <li id='l1' class='active'>{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>         
+                    <li id='l2' >{!! link_to("/results","RESULTS",['class'=>'hdr']) !!}</li>    
             </ul>
         </div>
     </div>

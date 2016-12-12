@@ -167,6 +167,128 @@ class MyHTML{
 		} 
 		return Form::select($name,$yrs_arr,$default,$options);
 	}
+
+	public static function boolean_draw($arr,$val){
+		$ret="";
+		$checked="<span class='glyphicon glyphicon-check print-check'></span>";
+		$unchecked="<span class='glyphicon glyphicon-unchecked print-uncheck'></span>";
+		foreach ($arr as $x => $label) {
+			$prefix = $x==$val?$checked:$unchecked;
+			$ret .= "$prefix $label &nbsp;&nbsp; ";		
+		}
+		return $ret;
+	}
+
+
+	public static function getVLNumericResult($result,$machineType,$factor) {
+	//check machine types
+		if($machineType=="roche" || $machineType=="abbott") {
+			//check conditions
+			if($result=="Not detected" || $result=="Target Not Detected" || $result=="Failed" || $result=="Invalid") {
+				return $result;
+			} elseif(substr(trim($result),0,1)=="<") {
+				//clean the result remove "Copies / mL" and "," from $result
+				$result=preg_replace("/Copies \/ mL/s","",$result);
+				$result=preg_replace("/,/s","",$result);
+				$result=preg_replace("/\</s","",$result);
+				$result=trim($result);
+				/*
+				* do not multiply by factor, based on a 17/Sept/14 discussion 
+				* with Christine at the CPHL Viral Load Lab
+				* $result*=$factor;
+				*/
+			
+				//return
+				return "&lt; ".number_format((float)$result,2)." Copies / mL";
+			} elseif(substr(trim($result),0,1)==">") {
+				//clean the result remove "Copies / mL" and "," from $result
+				$result=preg_replace("/Copies \/ mL/s","",$result);
+				$result=preg_replace("/,/s","",$result);
+				$result=preg_replace("/\>/s","",$result);
+				$result=trim($result);
+				//factor
+				$result*=$factor;
+			
+				//return
+				return "&gt; ".number_format((float)$result,2)." Copies / mL";
+			} else {
+				//clean the result remove "Copies / mL" and "," from $result
+				$result=preg_replace("/Copies \/ mL/s","",$result);
+				$result=preg_replace("/,/s","",$result);
+				$result=preg_replace("/\</s","",$result);
+				$result=preg_replace("/\>/s","",$result);
+				$result=trim($result);
+				//factor
+				$result*=$factor;
+			
+				//return
+				return number_format((float)$result)." Copies / mL";
+			}
+		}
+	}
+
+	public static function getNumericalResult($result=""){
+		$numericVLResult = 0;
+		$numericVLResult = preg_replace("/Copies \/ mL/s","",$result);
+		$numericVLResult = preg_replace("/,/s","",$numericVLResult);
+		$numericVLResult = preg_replace("/\</s","",$numericVLResult);
+		$numericVLResult = preg_replace("/\&lt;/s","",$numericVLResult);
+		$numericVLResult = preg_replace("/\&gt;/s","",$numericVLResult);
+		$numericVLResult = trim($numericVLResult);
+		return $numericVLResult;
+	}
+
+	public static function isSuppressed2($result,$sample_type,$test_date){
+		$ret="";
+		$valid = self::isResultValid($result);
+		$test_date_str=strtotime($test_date);	
+		if($valid=='YES'){
+			if($test_date_str<1459458000){//use previous suppression criteria if before 2016-04-01 00:00:00
+				if($sample_type=="DBS"){
+					$ret=$result>5000?"NO":"YES";
+				}else{
+					$ret=$result>1000?"NO":"YES";
+				}
+			}else{
+				$ret=$result<=1000?"YES":"NO";
+			}		
+		}else{
+			$ret="UNKNOWN";
+		}
+		return $ret;
+	}
+
+	private static function isResultValid($result){
+		$ret="";
+		$invalid_cases=array(
+			"Failed","Failed.","Invalid",
+			"Invalid test result. There is insufficient sample to repeat the assay.",
+			"There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.",
+			"There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.");
+
+		if(in_array($result, $invalid_cases)) $ret="NO";
+		else $ret="YES";
+		return $ret;
+	}
+
+	public static function getRecommendation($suppressed,$test_date,$sample_type){
+		$ret="";
+		$rec1="Below 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 12 months.";
+		$rec2="Above 1,000 copies/mL: Patient has elevated viral load. <br>Please initiate intensive adherence counseling and conduct a repeat viral load test after six months.";
+		$rec3="Below 5,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 12 months.";
+		$rec4="Above 5,000 copies/mL: Patient has elevated viral load. <br>Please initiate intensive adherence counseling and conduct a repeat viral load test after six months.";
+		if(strtotime($test_date)>=1459458000){ //after 2016-04-01 00:00:00
+			$ret=$suppressed=='YES'?$rec1:$rec2;
+		}else{ // before 2016-03-31 23:23:59
+			if($sample_type=='DBS'){
+				$ret=$suppressed=='YES'?$rec3:$rec4;
+			}else{
+				$ret=$suppressed=='YES'?$rec1:$rec2;
+			}
+		}
+		return $ret;
+	}
+
 }
 //{1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sept',10:'Oct',11:'Nov',12:'Dec'};
 

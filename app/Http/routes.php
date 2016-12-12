@@ -15,6 +15,12 @@
 
 //Route::get('/{time?}',"DashboardController@show");
 
+Route::controllers([
+    'results'       => 'ResultsController',
+]);
+
+Route::match(array('GET', 'POST'), '/result/{id?}/', ['as' => 'result', 'uses' => 'ResultsController@getResult']);
+
 Route::get("/","DashboardController@init");
 
 Route::get("/live","DashboardController@live");
@@ -26,4 +32,3 @@ Route::get("/other_data/","DashboardController@other_data");
 /*Route::get('/w',function(){
 	return view("welcome");
 });*/
-

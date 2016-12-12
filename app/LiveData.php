@@ -13,6 +13,17 @@ class LiveData extends Model
 
     //const TRTMT_IDCTN_CASE = "CASE WHEN `treatmentInitiationID`=1 THEN 'b_plus' WHEN `treatmentInitiationID`=4 THEN 'tb' ELSE 'x' END";
 
+    public static function getResultsList($printed=''){
+      $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'sample_id')
+                      ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
+                      ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
+                      ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
+                      ->select('sample_id','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 'artNumber', 'otherID', 'qc_at')
+                      ->from('vl_facility_printing');
+      $ret = !empty($printed)?$ret->where('printed', '=', $printed):$ret;
+      return $ret->orderby('sample_id', 'DESC');          
+    }
+
     public static function getHubs(){
     	return LiveData::select('id','hub')->from('vl_hubs')->get();
     }
