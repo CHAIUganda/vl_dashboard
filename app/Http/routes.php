@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth'], function()
 	    'results'       => 'ResultsController',
 	]);
 
+	Route::get('/facilities', ['as' => 'facilities', 'uses' => 'ResultsController@facilities']);
+
 	Route::match(array('GET', 'POST'), '/result/{id?}/', ['as' => 'result', 'uses' => 'ResultsController@getResult']);
 	Route::get('/qc', ['as' => 'qc', 'uses' => 'QCController@index']);
 	Route::match(array('GET', 'POST'), '/qc/{id}', ['as' => 'qc', 'uses' => 'QCController@qc']);

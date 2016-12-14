@@ -71,7 +71,7 @@
                         <li id='dashboard' >{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>
                         @if(Auth::check())   
                         <li id='qc' >{!! link_to("/qc","QC",['class'=>'hdr']) !!}</li>       
-                        <li id='results' >{!! link_to("/results","RESULTS",['class'=>'hdr']) !!}</li> 
+                        <li id='results' >{!! link_to("/facilities","RESULTS",['class'=>'hdr']) !!}</li> 
                         @else
                         <li id='login'>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li> 
                         @endif 

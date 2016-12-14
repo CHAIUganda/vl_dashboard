@@ -2,6 +2,7 @@
 
 @section('content')
 <?php 
+$facility_id = \Request::has('f')?'&f='.\Request::get('f'):"";
 if($printed=='YES'){
     $printed_actv="class=active";
     $print_actv="";
@@ -10,13 +11,13 @@ if($printed=='YES'){
     $printed_actv="";
 }
 
-$print_url="/results?printed=NO";
-$printed_url="/results?printed=YES";
+$print_url="/results?printed=NO$facility_id";
+$printed_url="/results?printed=YES$facility_id";
 ?>
 
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-    <li {{ $print_actv }} title='Print'><a href="{{ $print_url }}" >Print</a></li>
-    <li {{ $printed_actv }} title='Already printed'><a href="{{ $printed_url }}" >Printed</a></li>
+    <li {{ $print_actv }} title='Print'><a href="{!! $print_url !!}" >Print</a></li>
+    <li {{ $printed_actv }} title='Already printed'><a href="{!! $printed_url !!}" >Printed</a></li>
 </ul>
 {!! Form::open(array('url'=>'/result','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
 
@@ -31,14 +32,17 @@ $printed_url="/results?printed=YES";
             <thead>
             <tr>
                 <th>Select</th>               
-                <th>Hub</th>
-                <th>Facility</th>
             	<th>Form Number</th>
                 <th>Art Number</th>
                 <th>Other ID</th>
                 <th>Date of collection</th>
                 <th>Date received at CHPL</th>
                 <th>Released on</th>
+                @if($printed=='YES')
+                 <th>Print date/time</th>
+                 <th>Printed by</th>
+                @endif
+
                 <th>Action</th>
             </tr>
             </thead>
@@ -56,17 +60,19 @@ $(function() {
     $('#results-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ url("/results/data?printed=$printed") }}',
+        ajax: '{!! url("/results/data?printed=$printed$facility_id") !!}',
         columns: [
             {data: 'sample_checkbox', name: 'sample_checkbox', orderable: false, searchable: false},
-            {data: 'hub', name: 'hub'},
-            {data: 'facility', name: 'facility'},
             {data: 'formNumber', name: 'formNumber'},
             {data: 'artNumber', name: 'artNumber'},
             {data: 'otherID', name: 'otherID'},
             {data: 'collectionDate', name: 'collectionDate'},
             {data: 'receiptDate', name: 'receiptDate'},
-            {data: 'qc_at', name: 'qc_at'},            
+            {data: 'qc_at', name: 'qc_at'},     
+            @if($printed=='YES')
+                {data: 'printed_at', name: 'printed_at'},
+                {data: 'printed_by', name: 'printed_by'},                 
+            @endif       
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ]
     });

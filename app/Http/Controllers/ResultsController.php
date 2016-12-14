@@ -89,4 +89,9 @@ class ResultsController extends Controller {
 
 	}
 
+	public function facilities(){
+		$facilities = LiveData::getFacilitiesPrinting();
+		return view('results.facilities', compact('facilities'));
+	}
+
 }
