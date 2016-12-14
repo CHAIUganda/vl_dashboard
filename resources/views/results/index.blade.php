@@ -56,7 +56,7 @@ $(function() {
     $('#results-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ url("/results/data") }}',
+        ajax: '{{ url("/results/data?printed=$printed") }}',
         columns: [
             {data: 'sample_checkbox', name: 'sample_checkbox', orderable: false, searchable: false},
             {data: 'hub', name: 'hub'},
