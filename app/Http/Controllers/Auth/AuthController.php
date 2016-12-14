@@ -2,11 +2,14 @@
 
 namespace EID\Http\Controllers\Auth;
 
+use Auth;
 use EID\User;
 use Validator;
 use EID\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+
+
 
 class AuthController extends Controller
 {
@@ -30,6 +33,8 @@ class AuthController extends Controller
      */
 
     protected $redirectPath = '/results';
+    protected $username = 'username';
+    
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
@@ -59,9 +64,22 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         return User::create([
+            'username' => $data['username'],
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'hub_id' => $data['hub_id'],
+            'hub_name' => $data['hub_name'],
+            'facility_id' => $data['facility_id'],
+            'facility_name' => $data['facility_name'],
         ]);
+    }
+
+    public function authenticate()
+    {
+        if (Auth::attempt(['username' => $username, 'password' => $password, 'deactivated' => 0])) {
+            // Authentication passed...
+            return redirect()->intended('dashboard');
+        }
     }
 }

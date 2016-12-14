@@ -83,7 +83,7 @@ body{
 }
 
 .live_drpdwn{
-	min-width: 20%;
+	min-width: 350px;
 	max-height: 300px;
 	border: 1px solid  #D2B9D3;
 	background-color: #DDE1EC;

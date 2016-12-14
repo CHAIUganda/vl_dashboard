@@ -154,6 +154,7 @@
     <script type="text/javascript" src=" {{ asset('js/live.js') }} "></script>
     
     <script>
+    $('#dashboard').addClass('active');
     (function() {
         [].slice.call( document.querySelectorAll( '.tabss' ) ).forEach( function( el ) {
             new CBPFWTabs( el );

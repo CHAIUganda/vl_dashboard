@@ -28,7 +28,7 @@ class ResultsController extends Controller {
 	}
 
 	public function getResult($id='x'){
-		$slctd_samples =\Request::get("samples")? \Request::get("samples"): [];
+		$slctd_samples =\Request::has("samples")? \Request::get("samples"): [];
 		$slctd_samples_str = "(".implode(',', $slctd_samples).")";
 
 		$sql = "SELECT  s.*, p.artNumber,p.otherID, p.gender, p.dateOfBirth,

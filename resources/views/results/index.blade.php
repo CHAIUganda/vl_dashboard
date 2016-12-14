@@ -15,10 +15,6 @@ if($printed=='YES'){
 $print_url="/results?printed=NO";
 $printed_url="/results?printed=YES";
 ?>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li {{ $print_actv }} title='Print'><a href="{{ $print_url }}" >Print</a></li>
@@ -53,6 +49,8 @@ $printed_url="/results?printed=YES";
 
 {!! Form::close() !!}
 <script type="text/javascript">
+
+$('#results').addClass('active');
 
 $(function() {
     $('#results-table').DataTable({

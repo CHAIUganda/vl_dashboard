@@ -11,7 +11,7 @@
            Login Please
            {!! Form::open(['url' => '/auth/login','class'=>'form-signin']) !!}
                <span class='error'>{!! Session::get('flash_message') !!}</span>
-               <input name='email' type="email" id="inputUsername" class="form-control glyphicon gyphicon-asterisk" placeholder="Email" value="{{ old('email') }}" required autofocus>
+               <input name='username' type="text" id="inputUsername" class="form-control glyphicon gyphicon-asterisk" placeholder="Username" value="{{ old('username') }}" required autofocus>
               
                <input name='password' type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                

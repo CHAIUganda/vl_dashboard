@@ -20,8 +20,42 @@ class LiveData extends Model
                       ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
                       ->select('sample_id','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 'artNumber', 'otherID', 'qc_at')
                       ->from('vl_facility_printing');
+
       $ret = !empty($printed)?$ret->where('printed', '=', $printed):$ret;
+
+      $hub_id = \Auth::user()->hub_id;
+      $facility_id = \Auth::user()->facility_id;
+      if(!empty($hub_id)){
+        $ret = $ret->where('f.hubID', \Auth::user()->hub_id);
+      }elseif(!empty($facility_id)){
+         $ret = $ret->where('f.hubID', \Auth::user()->hub_id);
+      }else{
+         $ret = $ret->where('s.id', 0);
+      }  
       return $ret->orderby('sample_id', 'DESC');          
+    }
+
+    public static function searchWorksheet($q){
+      return  LiveData::select('id', 'worksheetReferenceNumber')
+                      ->from('vl_samples_worksheetcredentials')
+                      ->where('worksheetReferenceNumber','like',"%$q%")
+                      ->limit(10)
+                      ->get();
+    }
+
+    public static function worksheetSamples($id){
+      $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'sampleID')
+                      ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
+                      ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
+                      ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
+                      ->leftjoin('vl_facility_printing AS fp', 'fp.sample_id', '=', 's.id')
+                      ->select('lrCategory', 'lrEnvelopeNumber','lrNumericID','sampleID','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 'artNumber', 'otherID','fp.id As fp_id')
+                      ->from('vl_samples_worksheet')
+                      ->where('worksheetID','=',$id)
+                      ->orderby('lrEnvelopeNumber', 'ASC')
+                      ->orderby('lrNumericID', 'ASC')
+                      ->get();
+      return $ret;
     }
 
     public static function getHubs(){

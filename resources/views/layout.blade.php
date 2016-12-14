@@ -49,6 +49,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-sanitize.min.js"></script>
 <script src="{{ asset('/js/ng-csv.min.js') }}"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 </head>
 
 
@@ -63,11 +68,12 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                        <li id='l1' >{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>
-                        @if(Auth::check())         
-                        <li id='l2' >{!! link_to("/results","RESULTS",['class'=>'hdr']) !!}</li> 
+                        <li id='dashboard' >{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>
+                        @if(Auth::check())   
+                        <li id='qc' >{!! link_to("/qc","QC",['class'=>'hdr']) !!}</li>       
+                        <li id='results' >{!! link_to("/results","RESULTS",['class'=>'hdr']) !!}</li> 
                         @else
-                        <li>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li> 
+                        <li id='login'>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li> 
                         @endif 
                 </ul>
 
