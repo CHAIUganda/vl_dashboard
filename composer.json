@@ -12,8 +12,7 @@
         "maatwebsite/excel": "~2.1.0",
         "yajra/laravel-datatables-oracle": "~6.0",
         "zizaco/entrust": "5.2.x-dev",
-        "zizaco/confide": "5.0.x-dev",
-        "doctrine/dbal": "^2.5"
+        "zizaco/confide": "5.0.x-dev"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

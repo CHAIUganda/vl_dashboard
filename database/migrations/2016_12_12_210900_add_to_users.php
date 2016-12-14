@@ -14,13 +14,14 @@ class AddToUsers extends Migration
     {
         //
         Schema::table('users', function ($table) {
-            $table->string('username');
-            $table->string('telephone');
-            $table->integer('facility_id');
-            $table->string('facility_name');
-            $table->integer('hub_id');
-            $table->string('hub_name');
-            $table->boolean('deactivated');
+
+            $table->string('username', 64)->unique();
+            $table->string('telephone',64)->nullable();
+            $table->integer('facility_id')->nullable();
+            $table->string('facility_name')->nullable();
+            $table->integer('hub_id')->nullable();
+            $table->string('hub_name')->nullable();
+            $table->boolean('deactivated')->default(0);
 
         });
 
