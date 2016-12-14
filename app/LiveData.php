@@ -18,7 +18,7 @@ class LiveData extends Model
                       ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
                       ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
                       ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
-                      ->select('sample_id','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 'artNumber', 'otherID', 'qc_at')
+                      ->select('sample_id','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 'artNumber', 'otherID', 'qc_at','printed')
                       ->from('vl_facility_printing');
 
       $ret = !empty($printed)?$ret->where('printed', '=', $printed):$ret;

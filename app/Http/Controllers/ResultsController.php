@@ -8,7 +8,9 @@ use EID\LiveData;
 class ResultsController extends Controller {
 
 	public function getIndex(){
-		return view('results.index');
+		$printed=\Request::get("printed");
+		$printed=empty($printed)?'NO':$printed;
+		return view('results.index', compact('printed'));
 	}
 
 	public function getData(){
@@ -21,13 +23,14 @@ class ResultsController extends Controller {
 					return "<input type='checkbox' name='samples[]' value=$result->sample_id>";
 				})
 				->addColumn('action', function ($result) {
-					$link = "href=\"javascript:windPop('/result/$result->sample_id')\"";
-			        return "<a $link class='btn btn-sm btn-danger'>Print preview</a>";
+					$link = "href=\"javascript:windPop('/result/$result->sample_id?printed=$result->printed')\"";
+			        return "<a $link class='btn btn-sm btn-danger'>PRINT PREVIEW</a>";
 			    })
 				->make(true);
 	}
 
 	public function getResult($id='x'){
+		$printed = \Request::get('printed');
 		$slctd_samples =\Request::has("samples")? \Request::get("samples"): [];
 		$slctd_samples_str = "(".implode(',', $slctd_samples).")";
 
@@ -60,7 +63,30 @@ class ResultsController extends Controller {
 		$sql .= $id!='x'?" s.id=$id LIMIT 1": " s.id IN $slctd_samples_str GROUP BY s.id";
 
 		$vldbresult =  \DB::connection('live_db')->select($sql);
-		return view('results.result', compact("vldbresult"));
+		return view('results.result', compact("vldbresult", "printed"));
+	}
+
+	public function log_printing(){
+		$printed = \Request::get('printed');
+		$samples = \Request::get('s');
+		$by = \Auth::user()->email;
+		$on = date('Y-m-d H:i:s');
+		if($printed=='NO'){
+			$sql = "UPDATE vl_facility_printing SET printed='YES', 
+					printed_at='$on', 
+					printed_by='$by' 
+					WHERE sample_id IN ($samples)";
+		}else{			
+			$samples_arr = explode(",", $samples);
+			$sql = "INSERT INTO vl_facility_reprinting (sample_id, printed_by, printed_on) VALUES";
+			foreach ($samples_arr as $smpl) {
+				$sql .= "($smpl, '$by', '$on'),";				
+			}
+			$sql = trim($sql, ',');
+		}
+		
+		\DB::connection('live_db')->unprepared($sql);
+
 	}
 
 }

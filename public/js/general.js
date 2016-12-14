@@ -106,26 +106,3 @@ function arraySum(arr){
 function windPop(link) {
   window.open(link,"zzz","width=1100,height=1000,menubar=no,resizable=yes,scrollbars=yes");
 }
-
-function windPopPost(link){
-      var mapForm = document.createElement("form");
-    mapForm.target = "Map";
-    mapForm.method = "POST"; // or "post" if appropriate
-    mapForm.action = link;
-
-    var mapInput = document.createElement("input");
-    mapInput.type = "text";
-    mapInput.name = "addrs";
-    mapInput.value = data;
-    mapForm.appendChild(mapInput);
-
-    document.body.appendChild(mapForm);
-
-    map = window.open("", "Map", "status=0,title=0,height=600,width=800,scrollbars=1");
-
-if (map) {
-    mapForm.submit();
-} else {
-    alert('You must allow popups for this map to work.');
-}
-}

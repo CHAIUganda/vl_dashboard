@@ -21,13 +21,12 @@
 
 <body>
     <div id="print-btn-div" style='text-align:center; padding:20px;'><button id="print-btn" class='btn btn-danger' >PRINT</button></div>
-
+    <?php $samples_str="" ?>
     @foreach ($vldbresult AS $result_obj) 
+    <?php $samples_str .= $result_obj->id."," ?>
      @include('results._result_slip')      
     @endforeach
-
-  
-
+    {!! Form::hidden('samples',trim($samples_str, ','),['id'=>'ss']) !!}
 
     <script type="text/javascript">
         jQuery(function(){
@@ -43,6 +42,7 @@
 
         $('#print-btn').click(function(){
             $('#print-btn-div').hide();
+            $.get("/log_printing?printed={{$printed}}&s="+$('#ss').val(), function(data){     });
             window.print();
             window.close();
         });

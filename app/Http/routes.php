@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/qc', ['as' => 'qc', 'uses' => 'QCController@index']);
 	Route::match(array('GET', 'POST'), '/qc/{id}', ['as' => 'qc', 'uses' => 'QCController@qc']);
 	Route::get('/qc/wk_search/{q}/', ['as' => 'qc_worksheet_search', 'uses' => 'QCController@worksheet_search']);
+	Route::get('/log_printing/',['as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
 });
 Route::get("/","DashboardController@init");
 

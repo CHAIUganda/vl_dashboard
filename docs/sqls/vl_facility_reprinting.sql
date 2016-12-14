@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 06, 2016 at 08:15 PM
+-- Generation Time: Dec 14, 2016 at 05:44 PM
 -- Server version: 5.5.53-0ubuntu0.14.04.1
 -- PHP Version: 5.6.23-1+deprecated+dontuse+deb.sury.org~trusty+1
 
@@ -23,19 +23,16 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vl_facility_printing`
+-- Table structure for table `vl_facility_reprinting`
 --
 
-CREATE TABLE IF NOT EXISTS `vl_facility_printing` (
+CREATE TABLE IF NOT EXISTS `vl_facility_reprinting` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `sample_id` bigint(20) unsigned NOT NULL,
-  `printed` enum('YES','NO') NOT NULL DEFAULT 'NO',
-  `qc_at` datetime NOT NULL,
-  `qc_by` varchar(250) NOT NULL,
-  `printed_at` datetime DEFAULT NULL,
-  `printed_by` varchar(250) DEFAULT NULL,
+  `printed_by` varchar(256) NOT NULL,
+  `printed_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

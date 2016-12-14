@@ -2,8 +2,6 @@
 
 @section('content')
 <?php 
-$printed=\Request::get("printed");
-
 if($printed=='YES'){
     $printed_actv="class=active";
     $print_actv="";
@@ -22,11 +20,13 @@ $printed_url="/results?printed=YES";
 </ul>
 {!! Form::open(array('url'=>'/result','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
 
+{!! Form::hidden('printed', $printed) !!}
+
 
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print">  
-        <input type="button" id="download" name="download" class='btn btn-sm btn-danger' value="Print selected" onclick="viewSelected();"   /> 
+        <input type="button" id="download" name="download" class='btn btn-sm btn-danger' value="PRINT PREVIEW SELECTED" onclick="viewSelected();"   /> 
         <table id="results-table" class="table table-condensed table-bordered">
             <thead>
             <tr>
@@ -74,7 +74,8 @@ $(function() {
 
 function viewSelected() {     
    var mapForm = document.getElementById("view_form");
-   map=window.open("","Map","status=0,title=0,height=600,width=800,scrollbars=1");
+   map = window.open("","Map","width=1100,height=1000,menubar=no,resizable=yes,scrollbars=yes");
+   //map=window.open("","Map","status=0,title=0,height=600,width=800,scrollbars=1");
 
    if (map) {
       mapForm.submit();
