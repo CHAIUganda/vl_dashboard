@@ -18,15 +18,15 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($facilities AS $k => $facility)
+                @foreach($facilities AS $facility)
                  <tr>
-                    <td>{{ $facility['facility'] }}</td>               
-                    <td>{{ $facility['contactPerson'] }}</td>
-                    <td>{{ $facility['phone'] }}</td>
-                    <td>{{ $facility['email'] }}</td>
-                    <td><?= isset($facility['pending'])?$facility['pending']:0; ?></td>
-                    <td><?= isset($facility['printed'])?$facility['printed']:0; ?></td>
-                    <td><?= isset($facility['pending'])?"<a href='/results_list?f=$k'>view pending</a>":""; ?></td>
+                    <td>{{ $facility->facility }}</td>               
+                    <td>{{ $facility->contactPerson }}</td>
+                    <td>{{ $facility->phone }}</td>
+                    <td>{{ $facility->email }}</td>
+                    <td>{{ $facility->printed_no }}</td>
+                    <td>{{ $facility->printed_yes }}</td>
+                    <td><?= $facility->printed_no>0?"<a href='/results_list?f=$facility->fid'>view pending</a>":""; ?></td>
                 </tr>
                 @endforeach
 

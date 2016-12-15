@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('/results', ['middleware' => ['permission:print_results'], 'as' => 'facilities', 'uses' => 'ResultsController@facilities']);
 
-	Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'middleware' => ['permission:qc'], 'as' => 'result', 'uses' => 'ResultsController@getResult']);
+	Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'middleware' => ['permission:print_results'], 'as' => 'result', 'uses' => 'ResultsController@getResult']);
 	Route::get('/qc', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@index']);
 	Route::match(array('GET', 'POST'), '/qc/{id}', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@qc']);
 	Route::get('/qc/wk_search/{q}/', [ 'middleware' => ['permission:qc'], 'as' => 'qc_worksheet_search', 'uses' => 'QCController@worksheet_search']);

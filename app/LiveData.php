@@ -23,33 +23,16 @@ class LiveData extends Model
         $conds = "f.id = $f_limit";
       }
 
-      $sql = "SELECT f.id AS fid,facility, contactPerson, phone, email, COUNT( fp.id ) AS numbers,printed
+      $sql = "SELECT f.id AS fid,facility, contactPerson, phone, email, 
+              COUNT(CASE WHEN printed='YES' THEN 1 END) AS printed_yes,
+              COUNT(CASE WHEN printed='NO' THEN 1 END) AS printed_no
               FROM vl_facility_printing AS fp
               LEFT JOIN vl_samples AS s ON s.id = fp.sample_id
               RIGHT JOIN vl_facilities AS f ON s.facilityID = f.id
               WHERE $conds
-              GROUP BY f.facility, fp.printed";
+              GROUP BY f.facility";
 
-      $res=\DB::connection('live_db')->select($sql);
-
-      $ret=[];
-      foreach ($res as $r) { 
-        $f_arr = [];
-       if(array_key_exists($r->fid, $ret)){
-         $f_arr = $ret[$r->fid];
-       }else{
-        $f_arr=["facility"=>$r->facility, 
-                       "contactPerson"=>$r->contactPerson, 
-                       "phone"=>$r->phone,
-                       "email"=>$r->email];
-       }      
-        
-        
-        if($r->printed == 'NO') $f_arr['pending'] = $r->numbers;
-        if($r->printed == 'YES') $f_arr['printed'] = $r->numbers;
-        $ret[$r->fid]=$f_arr;
-      }
-      return $ret;
+      return \DB::connection('live_db')->select($sql);
     }
 
     public static function getResultsList($printed=''){
@@ -65,17 +48,15 @@ class LiveData extends Model
 
       $hub_id = \Auth::user()->hub_id;
       $facility_id = \Auth::user()->facility_id;
-      if(!empty($hub_id)){
+       if(\Request::has('f')){
+         $ret = $ret->where('f.id','=', \Request::get('f'));
+      }elseif(!empty($hub_id)){
         $ret = $ret->where('f.hubID', $hub_id);
       }elseif(!empty($facility_id)){
          $ret = $ret->where('f.id', $facility_id);
       }else{
          $ret = $ret->where('s.id', 0);
-      }
-
-      if(\Request::has('f')){
-         $ret = $ret->where('f.id', \Request::get('f'));
-      }  
+      } 
 
       $ret = $printed=='YES'?$ret->orderby('printed_at', 'DESC'):$ret->orderby('qc_at', 'DESC');
       return $ret;    
