@@ -3,7 +3,7 @@
 @section('content')  
 
 <div class="panel panel-default">
-    <div class="panel-heading"> <h3 class="panel-title">Facilities :: {!! \Auth::user()->hub_id !!}</h3> </div>
+    <div class="panel-heading"> <h3 class="panel-title">Facilities :: {!! \Auth::user()->hub_name !!}</h3> </div>
     <div class="panel-body">
         <table id="results-table" class="table table-condensed table-bordered">
             <thead>

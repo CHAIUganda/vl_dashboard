@@ -15,13 +15,19 @@ class LiveData extends Model
 
     public static function getFacilitiesPrinting(){
       $hub_limit = \Auth::user()->hub_id;
-      $hub_limit = !empty($hub_limit)?"f.hubID = $hub_limit":1;
+      $f_limit = \Auth::user()->facility_id;
+      $conds = "1";
+      if(!empty($hub_limit)){
+        $conds = "f.hubID = $hub_limit";
+      }elseif(!empty($f_limit)){
+        $conds = "f.id = $f_limit";
+      }
 
       $sql = "SELECT f.id AS fid,facility, contactPerson, phone, email, COUNT( fp.id ) AS numbers,printed
               FROM vl_facility_printing AS fp
               LEFT JOIN vl_samples AS s ON s.id = fp.sample_id
               RIGHT JOIN vl_facilities AS f ON s.facilityID = f.id
-              WHERE $hub_limit
+              WHERE $conds
               GROUP BY f.facility, fp.printed";
 
       $res=\DB::connection('live_db')->select($sql);
