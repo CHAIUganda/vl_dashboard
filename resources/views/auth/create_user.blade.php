@@ -45,8 +45,8 @@
                     {!! Form::radio('limit_by','1','',['onchange'=>'showLimit(1)']) !!} Facility
                     {!! Form::radio('limit_by','2','',['onchange'=>'showLimit(2)']) !!} Hub
                     <br>
-                    <div class='limitby' id='limit1'>{!! Form::select('facility',[""=>""]+$facilities,"",['id'=>'fclty']) !!}</div>
-                    <div class='limitby' id='limit2'>{!! Form::select('hub',[""=>""]+$hubs,"",['id'=>'hb']) !!}</div>
+                    <div class='limitby' id='limit1'>{!! Form::select('facility_id',[""=>""]+$facilities,"",['id'=>'fclty']) !!}</div>
+                    <div class='limitby' id='limit2'>{!! Form::select('hub_id',[""=>""]+$hubs,"",['id'=>'hb']) !!}</div>
                 </td>
             </tr>
             <tr><td/><td>{!! MyHTML::submit('Save','btn btn-danger','create_new') !!} </td></tr>

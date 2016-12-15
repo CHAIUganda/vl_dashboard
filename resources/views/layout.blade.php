@@ -72,7 +72,7 @@
 
                         @if(Auth::check())   
                         @permission('qc')<li id='qc' >{!! link_to("/qc","QC",['class'=>'hdr']) !!}</li>@endpermission       
-                        @permission('print_results')<li id='results' >{!! link_to("/facilities","RESULTS",['class'=>'hdr']) !!}</li> @endpermission
+                        @permission('print_results')<li id='results' >{!! link_to("/results","RESULTS",['class'=>'hdr']) !!}</li> @endpermission
                         @role('admin')<li id='admin' >{!! link_to("/admin/list_users","ADMIN",['class'=>'hdr']) !!}</li> @endrole
                         @else
                         <li id='login'>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li> 

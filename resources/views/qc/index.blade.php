@@ -11,7 +11,6 @@
 </div>
 
 
-
 <script type="text/javascript">
 $('#qc').addClass('active');
 

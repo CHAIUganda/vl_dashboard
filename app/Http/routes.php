@@ -30,13 +30,13 @@ Route::group(['middleware' => 'auth'], function()
 	});
 
 	Route::controllers([
-	    'results'       => 'ResultsController',
+	    'results_list'       => 'ResultsController',
 	]);
 
 	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);
 
 
-	Route::get('/facilities', ['middleware' => ['permission:print_results'], 'as' => 'facilities', 'uses' => 'ResultsController@facilities']);
+	Route::get('/results', ['middleware' => ['permission:print_results'], 'as' => 'facilities', 'uses' => 'ResultsController@facilities']);
 
 	Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'middleware' => ['permission:qc'], 'as' => 'result', 'uses' => 'ResultsController@getResult']);
 	Route::get('/qc', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@index']);

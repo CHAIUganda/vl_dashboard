@@ -3,7 +3,7 @@
 @section('content')  
 
 <div class="panel panel-default">
-    <div class="panel-heading"> <h3 class="panel-title">Facilities</h3> </div>
+    <div class="panel-heading"> <h3 class="panel-title">Facilities :: {!! \Auth::user()->hub_id !!}</h3> </div>
     <div class="panel-body">
         <table id="results-table" class="table table-condensed table-bordered">
             <thead>
@@ -26,7 +26,7 @@
                     <td>{{ $facility['email'] }}</td>
                     <td><?= isset($facility['pending'])?$facility['pending']:0; ?></td>
                     <td><?= isset($facility['printed'])?$facility['printed']:0; ?></td>
-                    <td><?= isset($facility['pending'])?"<a href='/results?f=$k'>view pending</a>":""; ?></td>
+                    <td><?= isset($facility['pending'])?"<a href='/results_list?f=$k'>view pending</a>":""; ?></td>
                 </tr>
                 @endforeach
 

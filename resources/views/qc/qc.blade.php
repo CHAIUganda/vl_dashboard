@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-{!! Form::open(array('url'=>"/qc/$id",'id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
+{!! Form::open(array('url'=>"/qc/$id",'id'=>'view_form', 'name'=>'view_form' )) !!}
 
 <!-- <div id="my-tab-content" class="tab-content"> -->
     <div class="tab-pane active" id="print">  
@@ -36,8 +36,8 @@
                     <td>{{$sample->collectionDate}}</td>
                     <td>{{$sample->receiptDate}}</td>
                     <td class='<?= (!empty($sample->fp_id))?"alert alert-success":"alert alert-info" ?>'>
-                        <?= (!empty($sample->fp_id))?"Approved":"Pending" ?></td>
-
+                        <?= (!empty($sample->fp_id))?"Approved":"Pending" ?>
+                    </td>
                 </tr>
                 @endforeach
 

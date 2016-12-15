@@ -11,8 +11,8 @@ if($printed=='YES'){
     $printed_actv="";
 }
 
-$print_url="/results?printed=NO$facility_id";
-$printed_url="/results?printed=YES$facility_id";
+$print_url="/results_list?printed=NO$facility_id";
+$printed_url="/results_list?printed=YES$facility_id";
 ?>
 
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
@@ -60,7 +60,7 @@ $(function() {
     $('#results-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{!! url("/results/data?printed=$printed$facility_id") !!}',
+        ajax: '{!! url("/results_list/data?printed=$printed$facility_id") !!}',
         columns: [
             {data: 'sample_checkbox', name: 'sample_checkbox', orderable: false, searchable: false},
             {data: 'formNumber', name: 'formNumber'},
