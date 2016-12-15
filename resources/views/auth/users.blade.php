@@ -38,7 +38,7 @@
 
 <script type="text/javascript">
 
-$('#results').addClass('active');
+$('#admin').addClass('active');
 
 $(function() {
     $('#results-table').DataTable();
