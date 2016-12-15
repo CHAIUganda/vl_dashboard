@@ -69,9 +69,11 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                         <li id='dashboard' >{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>
+
                         @if(Auth::check())   
-                        <li id='qc' >{!! link_to("/qc","QC",['class'=>'hdr']) !!}</li>       
-                        <li id='results' >{!! link_to("/facilities","RESULTS",['class'=>'hdr']) !!}</li> 
+                        @permission('qc')<li id='qc' >{!! link_to("/qc","QC",['class'=>'hdr']) !!}</li>@endpermission       
+                        @permission('print_results')<li id='results' >{!! link_to("/facilities","RESULTS",['class'=>'hdr']) !!}</li> @endpermission
+                        @role('admin')<li id='admin' >{!! link_to("/admin/list_users","ADMIN",['class'=>'hdr']) !!}</li> @endrole
                         @else
                         <li id='login'>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li> 
                         @endif 
@@ -82,7 +84,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ Auth::user()->name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <!-- <li><a href="/user_pwd_change">Change Password</a></li> -->
+                           <li><a href="/change_password">Change Password</a></li>
                            <li>{!! link_to("auth/logout","logout",['class'=>'hdr']) !!}</li> 
                         </ul>
                     </li>

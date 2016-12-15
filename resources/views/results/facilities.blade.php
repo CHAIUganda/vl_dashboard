@@ -1,8 +1,10 @@
 @extends('layout')
 
-@section('content')
-    <div class="tab-pane active" id="print">  
-        <input type="button" id="download" name="download" class='btn btn-sm btn-danger' value="PRINT PREVIEW SELECTED" onclick="viewSelected();"   /> 
+@section('content')  
+
+<div class="panel panel-default">
+    <div class="panel-heading"> <h3 class="panel-title">Facilities</h3> </div>
+    <div class="panel-body">
         <table id="results-table" class="table table-condensed table-bordered">
             <thead>
                 <tr>
@@ -30,7 +32,8 @@
 
             </tbody>
         </table>
-    </div>
+ </div>
+</div>
 
 <script type="text/javascript">
 

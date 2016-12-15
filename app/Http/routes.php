@@ -16,27 +16,33 @@ Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
-// Registration routes...
-Route::get('auth/register', 'Auth\AuthController@getRegister');
-Route::post('auth/register', 'Auth\AuthController@postRegister');
-
+Route::get('/home', function(){ return "Access denied"; });
 
 //Route::get('/',function(){ return view('db/show'); });
 
 //Route::get('/{time?}',"DashboardController@show");
 Route::group(['middleware' => 'auth'], function()
 {	
+	Route::group(['middleware' => ['role:admin']], function() {
+		// Registration routes...
+		Route::match(array('GET', 'POST'), 'admin/create_user', [ 'uses' => 'AdminController@create_user']);
+		Route::get('admin/list_users', 'AdminController@list_users');	   
+	});
+
 	Route::controllers([
 	    'results'       => 'ResultsController',
 	]);
 
-	Route::get('/facilities', ['as' => 'facilities', 'uses' => 'ResultsController@facilities']);
+	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);
 
-	Route::match(array('GET', 'POST'), '/result/{id?}/', ['as' => 'result', 'uses' => 'ResultsController@getResult']);
-	Route::get('/qc', ['as' => 'qc', 'uses' => 'QCController@index']);
-	Route::match(array('GET', 'POST'), '/qc/{id}', ['as' => 'qc', 'uses' => 'QCController@qc']);
-	Route::get('/qc/wk_search/{q}/', ['as' => 'qc_worksheet_search', 'uses' => 'QCController@worksheet_search']);
-	Route::get('/log_printing/',['as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
+
+	Route::get('/facilities', ['middleware' => ['permission:print_results'], 'as' => 'facilities', 'uses' => 'ResultsController@facilities']);
+
+	Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'middleware' => ['permission:qc'], 'as' => 'result', 'uses' => 'ResultsController@getResult']);
+	Route::get('/qc', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@index']);
+	Route::match(array('GET', 'POST'), '/qc/{id}', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@qc']);
+	Route::get('/qc/wk_search/{q}/', [ 'middleware' => ['permission:qc'], 'as' => 'qc_worksheet_search', 'uses' => 'QCController@worksheet_search']);
+	Route::get('/log_printing/',['middleware' => ['permission:print_results'], 'as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
 });
 Route::get("/","DashboardController@init");
 
