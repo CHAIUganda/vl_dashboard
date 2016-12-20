@@ -23,8 +23,12 @@ class ResultsController extends Controller {
 					return "<input type='checkbox' name='samples[]' value=$result->sample_id>";
 				})
 				->addColumn('action', function ($result) {
-					$link = "href=\"javascript:windPop('/result/$result->sample_id?printed=$result->printed')\"";
-			        return "<a $link class='btn btn-sm btn-danger'>PRINT PREVIEW</a>";
+					$url = "/result/$result->sample_id?printed=$result->printed";
+					$links = [
+						'Print preview' => "javascript:windPop('$url')",
+						'Download' => "$url&pdf=1"
+						];
+			        return  \MyHTML::dropdownLinks($links);
 			    })
 				->make(true);
 	}
@@ -32,7 +36,7 @@ class ResultsController extends Controller {
 	public function getResult($id='x'){
 		$printed = \Request::get('printed');
 		$slctd_samples =\Request::has("samples")? \Request::get("samples"): [];
-		$slctd_samples_str = "(".implode(',', $slctd_samples).")";
+		$slctd_samples_str = is_array($slctd_samples)? "(".implode(',', $slctd_samples).")":"($slctd_samples)";
 
 		$sql = "SELECT  s.*, p.artNumber,p.otherID, p.gender, p.dateOfBirth,
 				GROUP_CONCAT(ph.phone SEPARATOR ',') AS phone, f.facility, d.district, h.hub AS hub_name, 
@@ -63,6 +67,14 @@ class ResultsController extends Controller {
 		$sql .= $id!='x'?" s.id=$id LIMIT 1": " s.id IN $slctd_samples_str GROUP BY s.id";
 
 		$vldbresult =  \DB::connection('live_db')->select($sql);
+		
+		if(\Request::has('pdf')){
+			$pdf = \PDF::loadView('results.pdfresults', compact("vldbresult"));
+			return $pdf->download('invoice.pdf');
+			//return \PDF::loadFile('http://www.github.com')->inline('github.pdf');
+		}
+
+		
 		return view('results.result', compact("vldbresult", "printed"));
 	}
 

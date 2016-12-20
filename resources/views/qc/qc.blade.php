@@ -6,8 +6,8 @@
 <!-- <div id="my-tab-content" class="tab-content"> -->
     <div class="tab-pane active" id="print">  
         Worksheet Ref Number: <u>{{ $wk->worksheetReferenceNumber }}</u><br><br>
-        <a href="#" class='btn btn-sm btn-danger' id="select_all">SELECT ALL</a>
-        <input type="submit" id="download" name="download" class='btn btn-sm btn-danger' value="APPROVE SELECTED"   /> 
+        <a href="#" class='btn btn-sm btn-danger' id="select_all">Select all</a>
+        <input type="submit" id="download" name="download" class='btn btn-sm btn-danger' value="Approve selected"   /> 
         <table id="results-table" class="table table-condensed table-bordered">
             <thead>
             <tr>
@@ -57,14 +57,13 @@ $(function() {
 
 $('#select_all').click(function(){
     var status = $(this).html();
-    if(status == 'SELECT ALL'){
+    if(status == 'Select all'){
         $(".samples").attr("checked", true);
-        $(this).html('UNSELECT ALL');
+        $(this).html('Unselect all');
     }else{
         $(".samples").attr("checked", false);
-        $(this).html('SELECT ALL');
-    }
-    
+        $(this).html('Select all');
+    }    
 })
 </script>
 @endsection()

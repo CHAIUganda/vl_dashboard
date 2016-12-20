@@ -170,8 +170,10 @@ class MyHTML{
 
 	public static function boolean_draw($arr,$val){
 		$ret="";
-		$checked="<span class='glyphicon glyphicon-check print-check'></span>";
-		$unchecked="<span class='glyphicon glyphicon-unchecked print-uncheck'></span>";
+		// $checked="<span class='glyphicon glyphicon-check print-check'></span>";
+		// $unchecked="<span class='glyphicon glyphicon-unchecked print-uncheck'></span>";
+		$checked="<input type='checkbox' checked disabled readonly>";
+		$unchecked="<input type='checkbox' disabled readonly>";
 		foreach ($arr as $x => $label) {
 			$prefix = $x==$val?$checked:$unchecked;
 			$ret .= "$prefix $label &nbsp;&nbsp; ";		
@@ -297,9 +299,30 @@ class MyHTML{
 		return $ret;
 	}
 
+	public static function getImageData($file){
+		$ret = "";
+		$path = base_path('public/'.$file);
+		if(file_exists($path)){
+			$type = pathinfo($path, PATHINFO_EXTENSION);
+			$data = file_get_contents($path);
+			$ret = 'data:image/' . $type . ';base64,' . base64_encode($data);
+		}	
+		return $ret;		
+	}
+
+	public static function dropdownLinks($links=[]){
+		$ret = "<div class='dropdown'><button class='btn btn-sm btn-danger dropdown-toggle' type='button' id='menu1' data-toggle='dropdown'>";
+		$ret .= "Options <span class='caret'></span></button>";
+		$ret .= "<ul class='dropdown-menu' role='menu' aria-labelledby='menu1'>";
+		foreach ($links as $k => $v) {
+			$ret .= "<li role='presentation'><a role='menuitem' href=\"$v\">$k</a></li>";			
+		}
+		$ret .= "</ul></div>";
+		return $ret;
+	}
+
+
+
+
 }
 //{1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sept',10:'Oct',11:'Nov',12:'Dec'};
-
-
-
-

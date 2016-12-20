@@ -50,6 +50,12 @@ Route::get("/live","DashboardController@live");
 
 Route::get("/other_data/","DashboardController@other_data");
 
+Route::get('/pdf_test', function(){
+	$data = "testing pdf stuff";
+	$pdf = PDF::loadView('pdf.test', compact("data"));
+	return $pdf->download('pdf_test.pdf');
+});
+
 //Route::post('/downloadCsv', 'DashboardController@downloadCsv');
 
 /*Route::get('/w',function(){

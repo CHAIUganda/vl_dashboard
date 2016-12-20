@@ -14,7 +14,6 @@ if($printed=='YES'){
 $print_url="/results_list?printed=NO$facility_id";
 $printed_url="/results_list?printed=YES$facility_id";
 ?>
-
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li {{ $print_actv }} title='Print'><a href="{!! $print_url !!}" >Print</a></li>
     <li {{ $printed_actv }} title='Already printed'><a href="{!! $printed_url !!}" >Printed</a></li>
@@ -27,8 +26,10 @@ $printed_url="/results_list?printed=YES$facility_id";
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print">  
-        <input type="button" id="download" name="download" class='btn btn-sm btn-danger' value="PRINT PREVIEW SELECTED" onclick="viewSelected();"   /> 
-        <table id="results-table" class="table table-condensed table-bordered">
+        {!! MyHTML::submit('Download selected','btn  btn-sm btn-danger','pdf') !!}
+        <input type="button" class='btn btn-sm btn-danger' value="Print preview selected" onclick="viewSelected();"   /> 
+        
+        <table id="results-table" class="table table-condensed table-bordered" style="max-width:1100px">
             <thead>
             <tr>
                 <th>Select</th>               
@@ -36,14 +37,14 @@ $printed_url="/results_list?printed=YES$facility_id";
                 <th>Art Number</th>
                 <th>Other ID</th>
                 <th>Date of collection</th>
-                <th>Date received at CHPL</th>
+                <th>Date received</th>
                 <th>Released on</th>
                 @if($printed=='YES')
                  <th>Print date/time</th>
                  <th>Printed by</th>
                 @endif
 
-                <th>Action</th>
+                <th>Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
             </tr>
             </thead>
         </table>

@@ -91,7 +91,7 @@ $phones = implode(", ", $phones_arr);
 	<div style="height:95%">
 <!-- <div class="print-container"> -->
 	<div class="print-header">
-		<img src="/images/uganda.emblem.gif">
+		<img src="{{ MyHTML::getImageData('images/uganda.emblem.gif') }}">
 		<div class="print-header-moh">
 			ministry of health uganda<br>
 			national aids control program<br>
@@ -102,7 +102,7 @@ $phones = implode(", ", $phones_arr);
 	<u>viral load test results</u><br>
 	</div>
 	<div class="row">
-		<div class="col-xs-6" >
+		<div style="width:49%;float:left">
 			<div class="print-ttl">facility details</div>
 			<div class="print-sect">
 				<table>
@@ -118,7 +118,7 @@ $phones = implode(", ", $phones_arr);
 			</div>
 			
 		</div>
-		<div class="col-xs-6">
+		<div style="width:49%;float:right">
 			<div class="print-ttl">sample details</div>
 			<div class="print-sect">
 				<table>
@@ -135,11 +135,10 @@ $phones = implode(", ", $phones_arr);
 		</div>
 
 	</div>
-
 	<div class="print-ttl">patient information</div>
 	<div class="print-sect">
 		<div class="row">
-			<div class="col-xs-6" >				
+			<div style="width:49%;float:left" >				
 				<table>
 					<tr>
 						<td>ART Number: &nbsp;</td>
@@ -156,7 +155,7 @@ $phones = implode(", ", $phones_arr);
 				</table>
 				
 			</div>
-			<div class="col-xs-6">
+			<div style="width:49%;float:right">
 				
 				<table>
 					<tr>
@@ -176,7 +175,7 @@ $phones = implode(", ", $phones_arr);
 	<div class="print-ttl">sample test information</div>
 	<div class="print-sect">
 		<div class="row">
-			<div class="col-xs-6">
+			<div style="width:49%;float:left">
 				
 				<table>
 					<tr>
@@ -196,7 +195,7 @@ $phones = implode(", ", $phones_arr);
 				
 			</div>
 
-			<div class="col-xs-6">
+			<div style="width:49%;float:right">
 				
 				<table>
 					<tr>
@@ -216,9 +215,9 @@ $phones = implode(", ", $phones_arr);
 	</div>
 	<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
 	<div class="print-ttl">viral load results</div>
-	<div class="print-sect">
+	<div class="print-sect" style="height:150px;">
 		<div class="row">
-			<div class="col-xs-9">
+			<div style="width:79%;float:left">
 				<table colspan="2">
 					<tr>
 						<td width="40%">Method Used: </td>
@@ -242,8 +241,9 @@ $phones = implode(", ", $phones_arr);
 				</table>		
 				
 			</div>
-			<div class="col-xs-3">
-				<img src="/images/<?=$smiley ?>" height="150" width="150">
+			<div style="width:20%;float:right">
+
+				<img src= "{{ MyHTML::getImageData('images/'.$smiley) }}" height="150" width="150">
 			</div>
 
 		</div>		 				
@@ -261,23 +261,23 @@ $phones = implode(", ", $phones_arr);
 	<br>
 	<div class="row">
 		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
-		<div class="col-xs-2">
+		<div style="width:20%;float:left">
 			Lab Technologist: 
 		</div>
-		<div class="col-xs-3">
-			<img src="/images/signatures/<?=$signature ?>" height="50" width="100">
+		<div style="width:20%;float:left">
+			<img src= "{{ MyHTML::getImageData('images/signatures/'.$signature ) }}" height="50" width="100">
 			<hr>
 		</div>
 		<?php } ?>
-		<div class="col-xs-2">
+		<div style="width:20%;float:left">
 			Lab Manager: 
 		</div>
-		<div class="col-xs-3">
-			<img src="/images/signatures/signature.14.gif" height="50" width="100">
+		<div style="width:20%;float:left">
+			<img src="{{ MyHTML::getImageData('images/signatures/signature.14.gif') }}" height="50" width="100">
 			<hr>
 		</div>
 		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
-		<div class="col-xs-2">
+		<div style="width:20%;float:right">
 			{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,$suppressed,$now_s") !!}
 			<!-- <div class="qrcode-output" value="<?="VL,$location_id,$suppressed,$now_s" ?>"></div> -->
 		</div>
