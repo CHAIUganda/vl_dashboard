@@ -32,6 +32,47 @@ class AdminController extends Controller {
 		}
 	}
 
+	public function edit_user($id){
+		$user = User::findOrFail($id);
+		if(\Request::has('edit')){
+			$data=\Request::all();			
+			$user->update($data);
+			return redirect('admin/list_users')->with('msge',"saving successful");	
+
+		}else{
+			$hubs = LiveData::getHubs();
+			$facilities = LiveData::getFacilities();
+
+			$hubs = \MyHTML::get_arr_pair($hubs, 'hub');
+			$facilities = \MyHTML::get_arr_pair($facilities, 'facility');
+
+			return view('auth.edit_user', compact('hubs', 'facilities', 'user', 'id'));
+		}
+	}
+
+	public function getIndex(){
+		return view('auth.users');
+	}
+
+	public function getData(){
+		$users = User::orderby('name')->get();
+
+		return \Datatables::of($users)
+				->addColumn('roles', function($user){
+					$roles_str = "";
+					foreach ($user->roles AS $role) $roles_str .= $role->display_name.",";
+					return trim($roles_str, ",");
+				})
+				->addColumn('action', function ($user) {
+					$links = [
+						'Edit' => "/admin/user_edit/$user->id",
+						'Reset Password' => "/admin/user_pass_reset/$user->id"
+						];
+			        return  \MyHTML::dropdownLinks($links);
+			    })
+				->make(true);
+	}
+
 	public function list_users(){
 		$users = User::orderby('name')->get();
 		return view('auth.users', compact('users'));
@@ -64,6 +105,16 @@ class AdminController extends Controller {
 		}
 		
 	}
+
+	public function pass_reset($id){
+		$user = User::findOrFail($id);
+		$user->password = $user->username."8910";
+		$user->save();
+		return redirect('admin/list_users')->with('msge',"password reset saving successfully");
+
+	}
+
+
 
 		
 

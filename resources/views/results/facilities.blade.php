@@ -12,8 +12,8 @@
                 	<th>Contact Person</th>
                     <th>Phone</th>
                     <th>Email</th>
-                    <th># Pending printing</th>
-                    <th># Printed</th>
+                    <!-- <th># Pending printing</th>
+                    <th># Printed</th> -->
                     <th></th>
                 </tr>
             </thead>
@@ -24,9 +24,8 @@
                     <td>{{ $facility->contactPerson }}</td>
                     <td>{{ $facility->phone }}</td>
                     <td>{{ $facility->email }}</td>
-                    <td>{{ $facility->printed_no }}</td>
-                    <td>{{ $facility->printed_yes }}</td>
-                    <td><?= $facility->printed_no>0?"<a href='/results_list?f=$facility->fid'>view pending</a>":""; ?></td>
+                    
+                    <td><?= "<a href='/results_list?f=$facility->id'>view pending</a>" ?></td>
                 </tr>
                 @endforeach
 

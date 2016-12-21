@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+<link href="{{ asset('/css/vl2.css') }}" rel="stylesheet">
 <?php 
 $facility_id = \Request::has('f')?'&f='.\Request::get('f'):"";
 if($printed=='YES'){
@@ -14,6 +15,8 @@ if($printed=='YES'){
 $print_url="/results_list?printed=NO$facility_id";
 $printed_url="/results_list?printed=YES$facility_id";
 ?>
+
+<div style="text-align:center;text-decoration: underline;" class='print-ttl'>{{session('facility')}}</div>
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li {{ $print_actv }} title='Print'><a href="{!! $print_url !!}" >Print</a></li>
     <li {{ $printed_actv }} title='Already printed'><a href="{!! $printed_url !!}" >Printed</a></li>
@@ -21,8 +24,6 @@ $printed_url="/results_list?printed=YES$facility_id";
 {!! Form::open(array('url'=>'/result','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
 
 {!! Form::hidden('printed', $printed) !!}
-
-
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print">  
@@ -91,27 +92,4 @@ function viewSelected() {
    }
 }
 </script>
-
-<style type="text/css">
-.tab-content {
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-}
-.nav-tabs {
-    margin-bottom: 0;
-}
-
-.printed_row:hover{
-    color: #468847;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-}
-.not_printed:hover{
-    color: #b94a48;
-    background-color: #f2dede;
-    border-color: #eed3d7;
-}
-</style>
 @endsection()

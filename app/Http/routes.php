@@ -25,12 +25,23 @@ Route::group(['middleware' => 'auth'], function()
 {	
 	Route::group(['middleware' => ['role:admin']], function() {
 		// Registration routes...
-		Route::match(array('GET', 'POST'), 'admin/create_user', [ 'uses' => 'AdminController@create_user']);
-		Route::get('admin/list_users', 'AdminController@list_users');	   
+		Route::match(array('GET', 'POST'), '/admin/create_user', [ 'uses' => 'AdminController@create_user']);
+		Route::match(array('GET', 'POST'), '/admin/user_edit/{id}', [ 'uses' => 'AdminController@edit_user']);
+		Route::get('/admin/user_pass_reset/{id}', [ 'uses' => 'AdminController@pass_reset']);
+		
+		#Route::get('admin/list_users', 'AdminController@list_users');	
+
+		Route::controllers([
+			'admin/list_users' => 'AdminController',
+		]); 
+
+		Route::controllers([
+			'logs' => 'LogsController',
+		]);  
 	});
 
 	Route::controllers([
-	    'results_list'       => 'ResultsController',
+	    'results_list' => 'ResultsController',
 	]);
 
 	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);

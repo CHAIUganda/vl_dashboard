@@ -311,7 +311,7 @@ class MyHTML{
 	}
 
 	public static function dropdownLinks($links=[]){
-		$ret = "<div class='dropdown'><button class='btn btn-sm btn-danger dropdown-toggle' type='button' id='menu1' data-toggle='dropdown'>";
+		$ret = "<div class='dropdown'><button class='btn btn-xs btn-danger dropdown-toggle' type='button' id='menu1' data-toggle='dropdown'>";
 		$ret .= "Options <span class='caret'></span></button>";
 		$ret .= "<ul class='dropdown-menu' role='menu' aria-labelledby='menu1'>";
 		foreach ($links as $k => $v) {
@@ -320,9 +320,6 @@ class MyHTML{
 		$ret .= "</ul></div>";
 		return $ret;
 	}
-
-
-
 
 }
 //{1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sept',10:'Oct',11:'Nov',12:'Dec'};

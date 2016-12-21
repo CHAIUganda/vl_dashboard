@@ -35,6 +35,25 @@ class LiveData extends Model
       return \DB::connection('live_db')->select($sql);
     }
 
+     public static function getLogsStats(){
+      $sql = "SELECT h.hub, 
+              COUNT(CASE WHEN printed='YES' THEN 1 END) AS num_printed,
+              COUNT(CASE WHEN printed='NO' THEN 1 END) AS num_pending,
+              COUNT(frp.id) AS num_reprinted,
+              COUNT(fd.id) AS num_downloaded
+
+              FROM vl_samples AS s
+              LEFT JOIN vl_facility_printing AS fp ON s.id = fp.sample_id
+              LEFT JOIN vl_facility_reprinting AS frp ON s.id = frp.sample_id
+              LEFT JOIN vl_facility_downloads AS fd ON s.id = fd.sample_id
+              RIGHT JOIN vl_facilities AS f ON s.facilityID = f.id
+              RIGHT JOIN vl_hubs AS h ON f.hubID = h.id
+              WHERE 1
+              GROUP BY h.hub";
+      return \DB::connection('live_db')->select($sql);
+
+    }
+
     public static function getResultsList($printed=''){
       $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'sample_id')
                       ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
