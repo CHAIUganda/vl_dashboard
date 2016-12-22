@@ -151,6 +151,7 @@ class DashboardController extends Controller {
 		$f_numbers=$this->_facilityNumbers();
 		$dist_numbers=$this->_districtNumbers();
 		$drn_numbers=$this->_durationNumbers();
+		
 		//$reg_groups=$this->_regimenGroupNumbers();
 		$regimen_numbers = $this->_regimenNumbers();
 		$reg_times=$this->_regimenTimeNumbers();

@@ -168,6 +168,9 @@ ctrllers.DashController = function($scope,$http){
                 $scope.duration_numbers = data.drn_numbers||{};
                 $scope.facility_numbers = data.f_numbers||{};
                 $scope.district_numbers = data.dist_numbers||{};
+                $scope.export_district_numbers = exportDistrictNumbers($scope);
+                $scope.current_timestamp = getCurrentTimeStamp();
+
                 //$scope.regimen_group_numbers=data.reg_groups||{};
                 $scope.regimen_numbers = data.regimen_numbers||{};
 
@@ -749,6 +752,62 @@ ctrllers.DashController = function($scope,$http){
         return arr;
     };
 
+    //rounding off numbers to the nearest decimal place
+    var round = Math.round;
+    Math.round = function (value, decimals) {
+        decimals = decimals || 0;
+        return Number(round(value + 'e' + decimals) + 'e-' + decimals);
+    }
+    function exportDistrictNumbers(scopeInstance){
+       
+        var export_district_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
+        var district_numbers_from_scope = scopeInstance.district_numbers;
+
+        for( var index = 0; index < district_numbers_from_scope.length; index++){
+            var districtRecord = district_numbers_from_scope[index];
+
+            var district_instance = {
+                district_name : district_labels[districtRecord._id],
+                samples_received : districtRecord.samples_received,
+                patients_received : districtRecord.patients_received,
+                samples_tested : districtRecord.total_results,
+                samples_pending : (districtRecord.samples_received - districtRecord.total_results),
+                rejected_samples : districtRecord.rejected_samples,
+                dbs : Math.round(((districtRecord.dbs_samples/districtRecord.samples_received)*100),1),
+                plasma : Math.round((((districtRecord.samples_received-districtRecord.dbs_samples)/districtRecord.samples_received)*100 ),1)
+            }
+
+            export_district_numbers.push(district_instance);
+        }
+
+        return export_district_numbers;
+    }
+
+    function getCurrentTimeStamp(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        var hr = today.getHours();
+        var min = today.getMinutes();
+
+
+        if(dd<10) {
+            dd='0'+dd
+        } 
+
+        if(mm<10) {
+            mm='0'+mm
+        } 
+
+        if (min < 10) {
+            min = "0" + min;
+        }
+
+        today = yyyy+''+mm+''+dd+''+hr+''+min;
+        return today;
+    }
 };
 
 app.controller(ctrllers);
