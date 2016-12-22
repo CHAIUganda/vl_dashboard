@@ -167,6 +167,7 @@ ctrllers.DashController = function($scope,$http){
 
                 $scope.duration_numbers = data.drn_numbers||{};
                 $scope.facility_numbers = data.f_numbers||{};
+                $scope.export_facility_numbers = exportFacilityNumbers($scope);
                 $scope.district_numbers = data.dist_numbers||{};
                 $scope.export_district_numbers = exportDistrictNumbers($scope);
                 $scope.current_timestamp = getCurrentTimeStamp();
@@ -784,6 +785,31 @@ ctrllers.DashController = function($scope,$http){
         return export_district_numbers;
     }
 
+    function exportFacilityNumbers(scopeInstance){
+       
+        var export_facility_numbers = [];
+        var facility_labels = scopeInstance.labels.facilities;
+        var facility_numbers_from_scope = scopeInstance.facility_numbers;
+
+        for( var index = 0; index < facility_numbers_from_scope.length; index++){
+            var facilityRecord = facility_numbers_from_scope[index];
+
+            var facility_instance = {
+                facility_name : facility_labels[facilityRecord._id],
+                samples_received : facilityRecord.samples_received,
+                patients_received : facilityRecord.patients_received,
+                samples_tested : facilityRecord.total_results,
+                samples_pending : (facilityRecord.samples_received - facilityRecord.total_results),
+                rejected_samples : facilityRecord.rejected_samples,
+                dbs : Math.round(((facilityRecord.dbs_samples/facilityRecord.samples_received)*100),1),
+                plasma : Math.round((((facilityRecord.samples_received-facilityRecord.dbs_samples)/facilityRecord.samples_received)*100 ),1)
+            }
+
+            export_facility_numbers.push(facility_instance);
+        }
+
+        return export_facility_numbers;
+    }
     function getCurrentTimeStamp(){
         var today = new Date();
         var dd = today.getDate();

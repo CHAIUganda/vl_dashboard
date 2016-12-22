@@ -81,7 +81,7 @@
 
             <br>
             <br>
-            <button ng-show="show_fclties1" id="exportFacilities" type="button" ng-csv="facility_numbers" filename="facilities.csv" class="btn btn-success">Export facilities</button>
+            <button ng-show="show_fclties1" id="exportFacilities" type="button" ng-csv="export_facility_numbers" filename="facilities_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['Facility', 'Samples Received', 'Patients for Samples Received','Samples Tested','Samples Pending','Samples Rejected','DBS %','Plasma %']">Download CSV</button>
 
 
     </div>
