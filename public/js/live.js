@@ -161,6 +161,7 @@ ctrllers.DashController = function($scope,$http){
                 $scope.samples_received = data.whole_numbers.samples_received||0;
                 $scope.suppressed = data.whole_numbers.suppressed||0;
                 $scope.valid_results = data.whole_numbers.valid_results||0;
+
                 $scope.rejected_samples = data.whole_numbers.rejected_samples||0;  
 
                 $scope.t_indications = data.t_indication; 
@@ -169,7 +170,11 @@ ctrllers.DashController = function($scope,$http){
                 $scope.facility_numbers = data.f_numbers||{};
                 $scope.export_facility_numbers = exportFacilityNumbers($scope);
                 $scope.district_numbers = data.dist_numbers||{};
+
                 $scope.export_district_numbers = exportDistrictNumbers($scope);
+                $scope.export_district_suppression_numbers = exportDistrictSuppressionNumbers($scope);
+                $scope.export_facility_suppression_numbers = exportFacilitySuppressionNumbers($scope);
+
                 $scope.current_timestamp = getCurrentTimeStamp();
 
                 //$scope.regimen_group_numbers=data.reg_groups||{};
@@ -810,6 +815,48 @@ ctrllers.DashController = function($scope,$http){
 
         return export_facility_numbers;
     }
+
+    function exportDistrictSuppressionNumbers(scopeInstance){
+        var export_district_suppression_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
+        var district_numbers_from_scope = scopeInstance.district_numbers;
+
+        for( var index = 0; index < district_numbers_from_scope.length; index++){
+            var districtRecord = district_numbers_from_scope[index];
+
+            var district_instance = {
+                district_name : district_labels[districtRecord._id],
+                valid_results : districtRecord.valid_results,
+                
+                suppression_rate : Math.round(((districtRecord.suppressed/districtRecord.valid_results)*100),1)
+            }
+
+            export_district_suppression_numbers.push(district_instance);
+        }
+
+        return export_district_suppression_numbers;
+    }
+
+    function exportFacilitySuppressionNumbers(scopeInstance){
+        var export_facility_numbers = [];
+        var facility_labels = scopeInstance.labels.facilities;
+        var facility_numbers_from_scope = scopeInstance.facility_numbers;
+
+        for( var index = 0; index < facility_numbers_from_scope.length; index++){
+            var facilityRecord = facility_numbers_from_scope[index];
+
+            var facility_instance = {
+                facility_name : facility_labels[facilityRecord._id],
+                valid_results : facilityRecord.valid_results,
+                suppression_rate : Math.round(((facilityRecord.suppressed/facilityRecord.valid_results)*100),1)
+            }
+
+            export_facility_numbers.push(facility_instance);
+        }
+
+        return export_facility_numbers;
+    }
+
     function getCurrentTimeStamp(){
         var today = new Date();
         var dd = today.getDate();
