@@ -149,7 +149,6 @@
     <div class='addition-metrics'> @include('sections._treatment_indication') </div>
     <br>
     <script src=" {{ asset('js/cbpFWTabs.js') }} "></script>
-    <script type="text/javascript" src=" {{ asset('js/ng-csv.js') }} "></script>
     <script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
     <script type="text/javascript" src=" {{ asset('js/live.js') }} "></script>
     

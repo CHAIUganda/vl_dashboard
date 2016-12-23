@@ -50,5 +50,14 @@
                  </tbody>
             </table>
          </div>
+
+         <br>
+         <br>
+         <button ng-hide="show_fclties3" id="exportDistrictsRejectionRate" type="button" ng-csv="export_district_rejection_numbers"  class="btn btn-success" filename="district_rejection_<%current_timestamp%>.csv" csv-header="['District', 'Received Samples','Rejected Samples','Rejection Rate (%)']">Download CSV</button>
+
+         <br>
+         <br>
+         <button ng-show="show_fclties3" id="exportFacilitiesRejectionRate" type="button" ng-csv="export_facility_rejection_numbers" filename="facilities_rejection_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['Facility', 'Received Samples','Rejected Samples', 'Rejection Rate (%)']">Download CSV</button>
+
     </div>
 </div>                

@@ -39,12 +39,11 @@
                  </tbody>
                  
             </table>
-            <br>
-            <br>
-            <button id="exportButton" class="btn btn-success">Download CSV</button>
+            
          </div>
 
          <div ng-show="show_fclties1">
+
             <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
@@ -73,7 +72,17 @@
                  </tbody>
                  
             </table>
+
          </div>
+            
+            <br>
+            <br>
+            <button ng-hide="show_fclties1" id="exportDistricts" type="button" ng-csv="export_district_numbers"  class="btn btn-success" filename="samples_<%current_timestamp%>.csv" csv-header="['District', 'Samples Received', 'Patients for Samples Received','Samples Tested','Samples Pending','Samples Rejected','DBS %','Plasma %']">Download CSV</button>
+
+            <br>
+            <br>
+            <button ng-show="show_fclties1" id="exportFacilities" type="button" ng-csv="export_facility_numbers" filename="facilities_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['Facility', 'Samples Received', 'Patients for Samples Received','Samples Tested','Samples Pending','Samples Rejected','DBS %','Plasma %']">Download CSV</button>
+
 
     </div>
 </div>

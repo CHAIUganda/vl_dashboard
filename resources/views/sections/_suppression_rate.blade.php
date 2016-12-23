@@ -48,5 +48,13 @@
                  </tbody>
              </table>
          </div>
+         <br>
+         <br>
+         <button ng-hide="show_fclties2" id="exportDistrictsSuppressionRate" type="button" ng-csv="export_district_suppression_numbers"  class="btn btn-success" filename="district_suppression_<%current_timestamp%>.csv" csv-header="['District', 'Valid Results', 'Suppression Rate (%)']">Download CSV</button>
+
+         <br>
+         <br>
+         <button ng-show="show_fclties2" id="exportFacilitiesSuppressionRate" type="button" ng-csv="export_facility_suppression_numbers" filename="facilities_suppression_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['Facility', 'Valid Results', 'Suppression Rate (%)']">Download CSV</button>
+
     </div>
 </div> 
