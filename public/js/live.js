@@ -174,14 +174,19 @@ ctrllers.DashController = function($scope,$http){
                 $scope.export_district_numbers = exportDistrictNumbers($scope);
                 $scope.export_district_suppression_numbers = exportDistrictSuppressionNumbers($scope);
                 $scope.export_facility_suppression_numbers = exportFacilitySuppressionNumbers($scope);
-
+                $scope.export_district_rejection_numbers = exportDistrictRejectionNumbers($scope);
+                $scope.export_facility_rejection_numbers = exportFacilityRejectionNumbers($scope);
+                
                 $scope.current_timestamp = getCurrentTimeStamp();
 
                 //$scope.regimen_group_numbers=data.reg_groups||{};
                 $scope.regimen_numbers = data.regimen_numbers||{};
+                $scope.export_regimen_numbers = exportRegimenNumbers($scope);
 
                 //console.log("reg"+JSON.stringify($scope.regimen_numbers))
                 $scope.regimen_time_numbers = data.reg_times||{};
+                $scope.export_duration_on_art = exportDurationOnArt($scope);
+
                 $scope.line_numbers = data.line_numbers||{};
 
                //console.log("lajejdieorer: "+JSON.stringify($scope.regimen_group_numbers));
@@ -857,6 +862,100 @@ ctrllers.DashController = function($scope,$http){
         return export_facility_numbers;
     }
 
+    function exportDistrictRejectionNumbers(scopeInstance){
+        var export_district_rejection_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
+        var district_numbers_from_scope = scopeInstance.district_numbers;
+
+        for( var index = 0; index < district_numbers_from_scope.length; index++){
+            var districtRecord = district_numbers_from_scope[index];
+
+            var district_instance = {
+                district_name : district_labels[districtRecord._id],
+                samples_received : districtRecord.samples_received,
+                rejected_samples : districtRecord.rejected_samples,
+                
+                rejection_rate : Math.round(((districtRecord.rejected_samples/districtRecord.samples_received)*100),1)
+            }
+
+            export_district_rejection_numbers.push(district_instance);
+        }
+
+        return export_district_rejection_numbers;
+    }
+
+    function exportFacilityRejectionNumbers(scopeInstance){
+        var export_facility_rejection_numbers = [];
+        var facility_labels = scopeInstance.labels.facilities;
+        var facility_numbers_from_scope = scopeInstance.facility_numbers;
+
+        for( var index = 0; index < facility_numbers_from_scope.length; index++){
+            var facilityRecord = facility_numbers_from_scope[index];
+
+            var facility_instance = {
+                facility_name : facility_labels[facilityRecord._id],
+                samples_received : facilityRecord.samples_received,
+                rejected_samples:facilityRecord.rejected_samples,
+                rejection_rate : Math.round(((facilityRecord.rejected_samples/facilityRecord.samples_received)*100),1)
+            }
+
+            export_facility_rejection_numbers.push(facility_instance);
+        }
+
+        return export_facility_rejection_numbers;
+    }
+
+    function exportRegimenNumbers(scopeInstance){
+        //
+        var export_regimen_numbers = [];
+        var regimen_labels = scopeInstance.labels.regimens2;
+        var regimen_numbers_from_scope = scopeInstance.regimen_numbers;
+        var samples_received = scopeInstance.samples_received;
+
+        for( var index = 0; index < regimen_numbers_from_scope.length; index++){
+            var regimenRecord = regimen_numbers_from_scope[index];
+
+            var regimen_instance = {
+                regimen : regimen_labels[regimenRecord._id],
+                samples_received : regimenRecord.samples_received,
+                total_results:regimenRecord.total_results,
+                valid_results : regimenRecord.valid_results,
+                suppressed:regimenRecord.suppressed,
+                suppression_rate : Math.round(((regimenRecord.suppressed/regimenRecord.valid_results)*100),1),
+                percentage_of_samples : Math.round(((regimenRecord.samples_received/samples_received)*100),1),
+            }
+
+            export_regimen_numbers.push(regimen_instance);
+        }
+
+        return export_regimen_numbers;
+    }
+
+    function exportDurationOnArt(scopeInstance){
+        //
+        var export_duration_on_art= [];
+        var regimen_time_labels = scopeInstance.labels.reg_times;
+        var regimen_time_numbers_from_scope = scopeInstance.regimen_time_numbers;
+        var samples_received = scopeInstance.samples_received;
+
+        for( var index = 0; index < regimen_time_numbers_from_scope.length; index++){
+            var regimenTimeRecord = regimen_time_numbers_from_scope[index];
+
+            var regimen_time_instance = {
+                time_on_treatment: regimen_time_labels[regimenTimeRecord._id],
+                samples_received : regimenTimeRecord.samples_received,
+
+                
+                percentage_of_samples : Math.round(((regimenTimeRecord.samples_received/samples_received)*100),1),
+                samples_tested : regimenTimeRecord.total_results,
+                suppressed : regimenTimeRecord.suppressed
+                             }
+
+            export_duration_on_art.push(regimen_time_instance);
+        }
+
+        return export_duration_on_art;
+    }
     function getCurrentTimeStamp(){
         var today = new Date();
         var dd = today.getDate();
