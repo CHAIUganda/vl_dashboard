@@ -114,7 +114,7 @@ class ResultsController extends Controller {
 		if(!empty(\Auth::user()->hub_id)){
 			$facilities = $facilities->where('hubID', \Auth::user()->hub_id)->get();
 		}elseif(!empty(\Auth::user()->facility_id)){
-			$facilities = $facilities->where('id', \Auth::user()->facility_id);
+			$facilities = $facilities->where('id', \Auth::user()->facility_id)->get();
 		}
 		return view('results.facilities', compact('facilities'));
 	}
