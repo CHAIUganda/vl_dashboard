@@ -21,7 +21,7 @@ class ResultsController extends Controller {
 		return \Datatables::of($results)
 				->addColumn('sample_checkbox', function($result){
 					session(['facility'=>$result->facility]);
-					return "<input type='checkbox' name='samples[]' value=$result->sample_id>";
+					return "<input type='checkbox' class='samples' name='samples[]' value=$result->sample_id>";
 				})
 				->addColumn('action', function ($result) {
 					$url = "/result/$result->sample_id?printed=$result->printed";

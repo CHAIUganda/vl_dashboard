@@ -20,7 +20,7 @@
             <tbody>
                 @foreach($facilities AS $facility)
                  <tr>
-                    <td>{{ $facility->facility }}</td>               
+                    <td><a href='/results_list?f={{$facility->id}}'>{{ $facility->facility }}</a></td>               
                     <td>{{ $facility->contactPerson }}</td>
                     <td>{{ $facility->phone }}</td>
                     <td>{{ $facility->email }}</td>
