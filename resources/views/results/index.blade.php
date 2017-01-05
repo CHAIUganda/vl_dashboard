@@ -18,17 +18,18 @@ $printed_url="/results_list?printed=YES$facility_id";
 
 <div style="text-align:center;text-decoration: underline;" class='print-ttl'>{{session('facility')}}</div>
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-    <li {{ $print_actv }} title='Print'><a href="{!! $print_url !!}" >Print</a></li>
-    <li {{ $printed_actv }} title='Already printed'><a href="{!! $printed_url !!}" >Printed</a></li>
+    <li {{ $print_actv }} title='Print'><a href="{!! $print_url !!}" >Pending</a></li>
+    <li {{ $printed_actv }} title='Already printed'><a href="{!! $printed_url !!}" >Printed/Downloaded</a></li>
 </ul>
 {!! Form::open(array('url'=>'/result','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
 
 {!! Form::hidden('printed', $printed) !!}
 
 <div id="my-tab-content" class="tab-content">
-    <div class="tab-pane active" id="print">  
-        {!! MyHTML::submit('Download selected','btn  btn-sm btn-danger','pdf') !!}
-        <input type="button" class='btn btn-sm btn-danger' value="Print preview selected" onclick="viewSelected();"   /> 
+    <div class="tab-pane active" id="print"> 
+        <a href="#" class='btn btn-xs btn-danger' id="select_all">Select all visible</a>
+        {!! MyHTML::submit('Download selected','btn  btn-xs btn-danger','pdf') !!}
+        <input type="button" class='btn btn-xs btn-danger' value="Print preview selected" onclick="viewSelected();"   /> 
         
         <table id="results-table" class="table table-condensed table-bordered" style="max-width:1100px">
             <thead>
@@ -79,6 +80,17 @@ $(function() {
         ]
     });
 });
+
+$('#select_all').click(function(){
+    var status = $(this).html();
+    if(status == 'Select all visible'){
+        $(".samples").attr("checked", true);
+        $(this).html('Unselect all visible');
+    }else{
+        $(".samples").attr("checked", false);
+        $(this).html('Select all visible');
+    }    
+})
 
 function viewSelected() {     
    var mapForm = document.getElementById("view_form");
