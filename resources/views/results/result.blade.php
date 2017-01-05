@@ -21,7 +21,7 @@
 
 <body>
     <div id="print-btn-div" style='text-align:center; padding:20px;'>
-        <button id="pdf-btn" class='btn btn-danger' >Download</button>
+        <!-- <button id="pdf-btn" class='btn btn-danger' >Download</button> -->
         <button id="print-btn" class='btn btn-danger' >Print</button>
     </div>
     <?php $samples_str="" ?>
@@ -50,10 +50,10 @@
             window.close();           
         });
 
-        $('#pdf-btn').click(function(){
+        /*$('#pdf-btn').click(function(){
             window.location.assign("/result?pdf=1&samples="+$('#ss').val());
             //$.get("/result?samples="+$('#ss').val(), function(data){     });
-        });
+        });*/
 
         </script>
 

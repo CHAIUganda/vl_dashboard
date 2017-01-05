@@ -1,0 +1,1 @@
+ALTER TABLE `vl_facility_printing` ADD `downloaded` ENUM( 'YES', 'NO' ) NOT NULL DEFAULT 'NO' AFTER `printed` ;

@@ -69,22 +69,37 @@ class ResultsController extends Controller {
 
 		$vldbresult =  \DB::connection('live_db')->select($sql);
 		
-		if(\Request::has('pdf')){
-			$s_arr = $id!='x'?[$id]:explode(",", $slctd_samples_str);
+		if(\Request::has('pdf')) $this->log_downloads($id,$slctd_samples_str);
+
+		return view('results.result', compact("vldbresult", "printed"));
+	}
+
+	private function log_downloads($id,$slctd_samples_str){
+		$printed = \Request::get('printed');
+		$by = \Auth::user()->email;
+		$on = date('Y-m-d H:i:s');
+		$s_arr = $id!='x'?[$id]:explode(",", $slctd_samples_str);
+
+		if($printed=='NO'){
+			$sql = "UPDATE vl_facility_printing SET downloaded='YES', 
+					printed_at='$on', 
+					printed_by='$by' 
+					WHERE sample_id IN ($slctd_samples_str) OR id=$id";
+
+		}else{
 			$sql = "INSERT INTO vl_facility_downloads (sample_id, downloaded_by, downloaded_on) VALUES";
 			foreach ($s_arr as $smpl) {
 				$sql .= "($smpl, '".\Auth::user()->email."', '".date('Y-m-d H:i:s')."'),";				
 			}
+			$sql = trim($sql, ',');		
 
-			$sql = trim($sql, ',');
-			\DB::connection('live_db')->unprepared($sql);
-			$pdf = \PDF::loadView('results.pdfresults', compact("vldbresult"));
-			return $pdf->download('vl_results_'.session('facility').'.pdf');
-			//return \PDF::loadFile('http://www.github.com')->inline('github.pdf');
-		}
+		}			
 
+		\DB::connection('live_db')->unprepared($sql);
+		$pdf = \PDF::loadView('results.pdfresults', compact("vldbresult"));
+		return $pdf->download('vl_results_'.session('facility').'.pdf');
+		//return \PDF::loadFile('http://www.github.com')->inline('github.pdf');
 		
-		return view('results.result', compact("vldbresult", "printed"));
 	}
 
 	public function log_printing(){

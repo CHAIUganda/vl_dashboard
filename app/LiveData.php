@@ -62,6 +62,13 @@ class LiveData extends Model
                       ->select('sample_id','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 
                                'artNumber', 'otherID', 'qc_at','printed','printed_at','printed_by')
                       ->from('vl_facility_printing');
+      if($printed=='NO'){
+        //this to be interpreted as pending
+        $ret = $ret->where('printed','=','NO')->where('downloaded','=','NO');
+      }elseif($printed=='YES'){
+        //this to be interpreted as printed or downloaded
+        $ret = $ret->where('printed','=','YES')->orWhere('downloaded','=','YES');
+      }
 
       $ret = !empty($printed)?$ret->where('printed', '=', $printed):$ret;
 
