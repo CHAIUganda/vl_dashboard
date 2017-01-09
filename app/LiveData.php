@@ -13,6 +13,10 @@ class LiveData extends Model
 
     //const TRTMT_IDCTN_CASE = "CASE WHEN `treatmentInitiationID`=1 THEN 'b_plus' WHEN `treatmentInitiationID`=4 THEN 'tb' ELSE 'x' END";
 
+    public static function getSample($id){
+      return 'x';
+    }
+    
     public static function getFacilitiesPrinting(){
       $hub_limit = \Auth::user()->hub_id;
       $f_limit = \Auth::user()->facility_id;
@@ -102,7 +106,7 @@ class LiveData extends Model
                       ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
                       ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
                       ->leftjoin('vl_facility_printing AS fp', 'fp.sample_id', '=', 's.id')
-                      ->select('lrCategory', 'lrEnvelopeNumber','lrNumericID','sampleID','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 'artNumber', 'otherID','fp.id As fp_id')
+                      ->select('s.*','sampleID', 'hub', 'facility', 'p.*', 'fp.id As fp_id')
                       ->from('vl_samples_worksheet')
                       ->where('worksheetID','=',$id)
                       ->orderby('lrEnvelopeNumber', 'ASC')

@@ -20,9 +20,10 @@
 </head>
 
 <body>
+    <?php $view = \Request::get('view'); ?>
     <div id="print-btn-div" style='text-align:center; padding:20px;'>
         <!-- <button id="pdf-btn" class='btn btn-danger' >Download</button> -->
-        <button id="print-btn" class='btn btn-danger' >Print</button>
+        @if($view!='yes')<button id="print-btn" class='btn btn-danger' >Print</button>@endif
     </div>
     <?php $samples_str="" ?>
     @foreach ($vldbresult AS $result_obj) 

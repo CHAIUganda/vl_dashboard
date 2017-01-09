@@ -27,11 +27,11 @@ $printed_url="/results_list?printed=YES$facility_id";
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print"> 
-        <a href="#" class='btn btn-xs btn-danger' id="select_all">Select all visible</a>
+        <a href="#" class='btn btn-xs btn-danger' id="select_all" >Select all visible</a>
         {!! MyHTML::submit('Download selected','btn  btn-xs btn-danger','pdf') !!}
         <input type="button" class='btn btn-xs btn-danger' value="Print preview selected" onclick="viewSelected();"   /> 
-        
-        <table id="results-table" class="table table-condensed table-bordered" style="max-width:1100px">
+
+        <table id="results-table" class="table table-condensed table-bordered" style="max-width:1100px;margin-top:10px">
             <thead>
             <tr>
                 <th>Select</th>               

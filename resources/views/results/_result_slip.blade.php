@@ -86,6 +86,8 @@ $rejected = $result_obj->verify_outcome=="Rejected"?1:2;
 
 $phones_arr = array_unique(explode(",", $result_obj->phone));
 $phones = implode(", ", $phones_arr);
+
+$view = \Request::get('view');
  ?>
 <page size="A4">
 	<div style="height:95%">
@@ -250,15 +252,17 @@ $phones = implode(", ", $phones_arr);
 
 	</div>
 
-
+    <?php if($view!='yes'){ ?>
 	<div class="print-ttl">recommendations</div>
 	<div class="print-sect">
 		Suggested Clinical Action based on National Guidelines:<br>
 		<div style="margin-left:10px"><?=$recommendation ?></div>
 	</div>
 	<?php } ?>
+	<?php } ?>
 
 	<br>
+	<?php if($view!='yes'){ ?>
 	<div class="row">
 		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
 		<div class="col-xs-2">
@@ -285,5 +289,6 @@ $phones = implode(", ", $phones_arr);
 	</div>
 	</div>
 	<footer style='float:right'>1 of 1</footer>
+	<?php } ?>
 </page>
 <!-- </div> -->

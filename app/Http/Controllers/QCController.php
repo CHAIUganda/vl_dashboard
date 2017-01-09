@@ -40,5 +40,9 @@ class QCController extends Controller {
 		return view('qc.qc', compact('samples', 'id', 'wk'));
 	}
 
+	public function sample($id){
+		return LiveData::getSample($id);
+	}
+
 
 }

@@ -8,18 +8,19 @@
         Worksheet Ref Number: <u>{{ $wk->worksheetReferenceNumber }}</u><br><br>
         <a href="#" class='btn btn-sm btn-danger' id="select_all">Select all</a>
         <input type="submit" id="download" name="download" class='btn btn-sm btn-danger' value="Approve selected"   /> 
-        <table id="results-table" class="table table-condensed table-bordered">
+        <table id="results-table" class="table table-condensed table-bordered" style="font-size:12px">
             <thead>
             <tr>
-                <th></th>               
-                <th>Hub</th>
+                <th></th>
                 <th>Facility</th>
                 <th>Location&nbsp;ID&nbsp;&nbsp;&nbsp;</th>
-            	<th>Form Number</th>
+            	<th width="1%">Form Number</th>
                 <th>Art Number</th>
                 <th>Other ID</th>
-                <th>Date of collection</th>
-                <th>Date received at CHPL</th>
+                <th >DOB</th>
+                <th>Gender</th>
+                <th width="1%">Date of collection</th>
+                <th width="1%">Date received at CHPL</th>
                 <th>Approved</th>
             </tr>
             </thead>
@@ -27,14 +28,15 @@
                 @foreach($samples AS $sample)
                 <tr>
                     <td><?= (empty($sample->fp_id))? Form::checkbox('samples[]', $sample->sampleID,'', ['class'=>'samples']):"" ?></td>               
-                    <td>{{$sample->hub}}</td>
-                    <td>{{$sample->facility}}</td>
-                    <td>{{$sample->lrCategory}}{{$sample->lrEnvelopeNumber}}/{{$sample->lrNumericID}}</td>
-                    <td>{{$sample->formNumber}}</td>
-                    <td>{{$sample->artNumber}}</td>
-                    <td>{{$sample->otherID}}</td>
-                    <td>{{$sample->collectionDate}}</td>
-                    <td>{{$sample->receiptDate}}</td>
+                    <td>{{ $sample->facility }}</td>
+                    <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
+                    <td><a href="javascript:windPop('/result/{{ $sample->id }}?view=yes')">{{ $sample->formNumber }}</a></td>
+                    <td>{{ $sample->artNumber }}</td>
+                    <td>{{ $sample->otherID }}</td>
+                    <td>{{ $sample->dateOfBirth }}</td>
+                    <td>{{ $sample->gender }}</td>
+                    <td>{{ $sample->collectionDate }}</td>
+                    <td>{{ $sample->receiptDate }}</td>
                     <td class='<?= (!empty($sample->fp_id))?"alert alert-success":"alert alert-info" ?>'>
                         <?= (!empty($sample->fp_id))?"Approved":"Pending" ?>
                     </td>
