@@ -69,12 +69,12 @@ class ResultsController extends Controller {
 
 		$vldbresult =  \DB::connection('live_db')->select($sql);
 		
-		if(\Request::has('pdf')) $this->log_downloads($id,$slctd_samples_str);
+		if(\Request::has('pdf')) $this->log_downloads($id,$slctd_samples_str,$vldbresult);
 
 		return view('results.result', compact("vldbresult", "printed"));
 	}
 
-	private function log_downloads($id,$slctd_samples_str){
+	private function log_downloads($id,$slctd_samples_str,$vldbresult){
 		$printed = \Request::get('printed');
 		$by = \Auth::user()->email;
 		$on = date('Y-m-d H:i:s');
@@ -84,7 +84,8 @@ class ResultsController extends Controller {
 			$sql = "UPDATE vl_facility_printing SET downloaded='YES', 
 					printed_at='$on', 
 					printed_by='$by' 
-					WHERE sample_id IN ($slctd_samples_str) OR id=$id";
+					WHERE ";
+			$sql .= !empty($slctd_samples_str)?" sample_id IN ($slctd_samples_str) ":"id=$id";
 
 		}else{
 			$sql = "INSERT INTO vl_facility_downloads (sample_id, downloaded_by, downloaded_on) VALUES";
