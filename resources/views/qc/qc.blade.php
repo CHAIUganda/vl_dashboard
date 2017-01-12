@@ -21,6 +21,7 @@
                 <th>Gender</th>
                 <th width="1%">Date of collection</th>
                 <th width="1%">Date received at CHPL</th>
+                <th>Result</th>
                 <th>Approved</th>
             </tr>
             </thead>
@@ -37,6 +38,7 @@
                     <td>{{ $sample->gender }}</td>
                     <td>{{ $sample->collectionDate }}</td>
                     <td>{{ $sample->receiptDate }}</td>
+                    <td>{{ $sample->result }}</td>
                     <td class='<?= (!empty($sample->fp_id))?"alert alert-success":"alert alert-info" ?>'>
                         <?= (!empty($sample->fp_id))?"Approved":"Pending" ?>
                     </td>
