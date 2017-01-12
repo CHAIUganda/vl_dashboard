@@ -69,7 +69,7 @@ class ResultsController extends Controller {
 
 		$vldbresult =  \DB::connection('live_db')->select($sql);
 		
-		if(\Request::has('pdf')) $this->log_downloads($id,$slctd_samples_str,$vldbresult);
+		if(\Request::has('pdf')) return $this->log_downloads($id,$slctd_samples_str,$vldbresult);
 
 		return view('results.result', compact("vldbresult", "printed"));
 	}
