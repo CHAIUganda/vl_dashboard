@@ -284,7 +284,7 @@ $phones = implode(", ", $phones_arr);
 
 		<div style="width:35%;float:right">
 			<img src="{{ MyHTML::getImageData('images/stamp.vl.png') }}" class="stamp" >
-			<span class="stamp-date" style="position: absolute;margin-top: 55px;margin-left: -145px;font-size: 18px;font-weight: bold;color: #F01319;"><?=$local_today ?></span>
+			<span class="stamp-date"><?=$local_today ?></span>
 
 		</div>
 		

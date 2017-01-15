@@ -82,7 +82,14 @@ page[size="A4"][layout="portrait"] {
   position: relative;
 }
 
-
+.stamp-date{
+ position: absolute;
+ margin-top: 55px;
+ margin-left: -145px;
+ font-size: 18px;
+ font-weight: bold;
+ color: #F01319;
+}
 
      </style>
 
@@ -90,6 +97,7 @@ page[size="A4"][layout="portrait"] {
 
 <body>
   <?php 
+
  $local_today = date('d M Y');
  $local_today = strtoupper($local_today);
   ?>

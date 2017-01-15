@@ -66,15 +66,15 @@ $(function() {
         ajax: '{!! url("/results_list/data?printed=$printed$facility_id") !!}',
         columns: [
             {data: 'sample_checkbox', name: 'sample_checkbox', orderable: false, searchable: false},
-            {data: 'formNumber', name: 'formNumber'},
-            {data: 'artNumber', name: 'artNumber'},
-            {data: 'otherID', name: 'otherID'},
-            {data: 'collectionDate', name: 'collectionDate'},
-            {data: 'receiptDate', name: 'receiptDate'},
-            {data: 'qc_at', name: 'qc_at'},     
+            {data: 'formNumber', name: 's.formNumber'},
+            {data: 'artNumber', name: 'p.artNumber'},
+            {data: 'otherID', name: 'p.otherID'},
+            {data: 'collectionDate', name: 's.collectionDate'},
+            {data: 'receiptDate', name: 's.receiptDate'},
+            {data: 'qc_at', name: 'pr.qc_at'},     
             @if($printed=='YES')
-                {data: 'printed_at', name: 'printed_at'},
-                {data: 'printed_by', name: 'printed_by'},                 
+                {data: 'printed_at', name: 'pr.printed_at'},
+                {data: 'printed_by', name: 'pr.printed_by'},                 
             @endif       
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ]
