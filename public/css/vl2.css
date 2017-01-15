@@ -168,7 +168,6 @@ page[size="A4"][layout="portrait"] {
 
 .stamp{
 	position: relative;
-    transform: rotate(-10deg);
 }
 
 .stamp-date{
@@ -178,5 +177,4 @@ page[size="A4"][layout="portrait"] {
     font-size: 18px;
     font-weight: bold;
     color: #F01319;
-    transform: rotate(-10deg);
 }

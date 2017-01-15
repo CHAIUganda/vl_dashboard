@@ -292,8 +292,8 @@ $phones = implode(", ", $phones_arr);
 			<hr>
 		</div>
 		<div class="col-xs-3">
-			<img src="/images/stamp.vl.png" class="stamp"  style="position:relative">
-			<span class="stamp-date" style="position:absolute"><?=$local_today ?></span>
+			<img src="/images/stamp.vl.png" class="stamp" >
+			<span class="stamp-date"><?=$local_today ?></span>
 
 		</div>
 		

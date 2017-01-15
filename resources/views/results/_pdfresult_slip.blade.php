@@ -1,5 +1,4 @@
 <?php 
-
 $smpl_types = array(1=>'DBS', 2=>'Plasma');
 $sample_type = $result_obj->sampleTypeID == 1? 'DBS' : 'Plasma';
 $genders = array(
@@ -252,36 +251,43 @@ $phones = implode(", ", $phones_arr);
 
 
 	<div class="print-ttl">recommendations</div>
-	<div class="print-sect">
+	<div class="print-sect" style="width:75%;float:left">
 		Suggested Clinical Action based on National Guidelines:<br>
 		<div style="margin-left:10px"><?=$recommendation ?></div>
 	</div>
-	<?php } ?>
-
-	<br>
-	<div class="row">
-		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
-		<div style="width:20%;float:left">
-			Lab Technologist: 
-		</div>
-		<div style="width:20%;float:left">
-			<img src= "{{ MyHTML::getImageData('images/signatures/'.$signature ) }}" height="50" width="100">
-			<hr>
-		</div>
-		<?php } ?>
-		<div style="width:20%;float:left">
-			Lab Manager: 
-		</div>
-		<div style="width:20%;float:left">
-			<img src="{{ MyHTML::getImageData('images/signatures/signature.14.gif') }}" height="50" width="100">
-			<hr>
-		</div>
-		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
+	<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
 		<div style="width:20%;float:right">
 			{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,$suppressed,$now_s") !!}
 			<!-- <div class="qrcode-output" value="<?="VL,$location_id,$suppressed,$now_s" ?>"></div> -->
 		</div>
 		<?php } ?>
+	<?php } ?>
+
+	<br><br>
+	<div class="row">
+		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
+		<div style="width:15%;float:left">
+			Lab Technologist: 
+		</div>
+		<div style="width:15%;float:left">
+			<img src= "{{ MyHTML::getImageData('images/signatures/'.$signature ) }}" height="50" width="100">
+			<hr>
+		</div>
+		<?php } ?>
+		<div style="width:10%;float:left">
+			Lab Manager: 
+		</div>
+		<div style="width:15%;float:left">
+			<img src="{{ MyHTML::getImageData('images/signatures/signature.14.gif') }}" height="50" width="100">
+			<hr>
+		</div>
+
+		<div style="width:35%;float:right">
+			<img src="{{ MyHTML::getImageData('images/stamp.vl.png') }}" class="stamp" >
+			<span class="stamp-date" style="position: absolute;margin-top: 55px;margin-left: -145px;font-size: 18px;font-weight: bold;color: #F01319;"><?=$local_today ?></span>
+
+		</div>
+		
 	</div>
 	</div>
 	<footer style='float:right'>1 of 1</footer>

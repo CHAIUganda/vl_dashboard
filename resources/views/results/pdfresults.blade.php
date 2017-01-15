@@ -78,11 +78,21 @@ page[size="A4"][layout="portrait"] {
     width: 20cm;
 }
 
+.stamp{
+  position: relative;
+}
+
+
+
      </style>
 
 </head>
 
 <body>
+  <?php 
+ $local_today = date('d M Y');
+ $local_today = strtoupper($local_today);
+  ?>
       
     @foreach ($vldbresult AS $result_obj) 
      @include('results._pdfresult_slip') 
