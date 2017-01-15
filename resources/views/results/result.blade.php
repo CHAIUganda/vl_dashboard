@@ -20,6 +20,10 @@
 </head>
 
 <body>
+    <?php 
+    $local_today = date('d M Y');
+    $local_today = strtoupper($local_today);
+    ?>
     <?php $view = \Request::get('view'); ?>
     <div id="print-btn-div" style='text-align:center; padding:20px;'>
         <!-- <button id="pdf-btn" class='btn btn-danger' >Download</button> -->

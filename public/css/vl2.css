@@ -165,3 +165,18 @@ page[size="A4"][layout="portrait"] {
 .printmm-container{
 	width: 20cm;
 }
+
+.stamp{
+	position: relative;
+    transform: rotate(-10deg);
+}
+
+.stamp-date{
+	position: absolute;
+    top: 50px;
+    left: 70px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #F01319;
+    transform: rotate(-10deg);
+}

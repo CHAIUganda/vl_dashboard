@@ -87,7 +87,7 @@ $rejected = $result_obj->verify_outcome=="Rejected"?1:2;
 $phones_arr = array_unique(explode(",", $result_obj->phone));
 $phones = implode(", ", $phones_arr);
 
-$view = \Request::get('view');
+
  ?>
 <page size="A4">
 	<div style="height:95%">
@@ -254,10 +254,21 @@ $view = \Request::get('view');
 
     <?php if($view!='yes'){ ?>
 	<div class="print-ttl">recommendations</div>
-	<div class="print-sect">
-		Suggested Clinical Action based on National Guidelines:<br>
-		<div style="margin-left:10px"><?=$recommendation ?></div>
+	<div class="row">
+		<div class="col-xs-10">
+			<div class="print-sect">
+				Suggested Clinical Action based on National Guidelines:<br>
+				<div style="margin-left:10px"><?=$recommendation ?></div>
+			</div>
+		</div>
+		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
+			<div class="col-xs-2">
+				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,$suppressed,$now_s") !!}
+				<!-- <div class="qrcode-output" value="<?="VL,$location_id,$suppressed,$now_s" ?>"></div> -->
+			</div>
+		<?php } ?>
 	</div>
+	
 	<?php } ?>
 	<?php } ?>
 
@@ -273,19 +284,19 @@ $view = \Request::get('view');
 			<hr>
 		</div>
 		<?php } ?>
-		<div class="col-xs-2">
+		<div class="col-xs-1">
 			Lab Manager: 
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-2">
 			<img src="/images/signatures/signature.14.gif" height="50" width="100">
 			<hr>
 		</div>
-		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
-		<div class="col-xs-2">
-			{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,$suppressed,$now_s") !!}
-			<!-- <div class="qrcode-output" value="<?="VL,$location_id,$suppressed,$now_s" ?>"></div> -->
+		<div class="col-xs-3">
+			<img src="/images/stamp.vl.png" class="stamp"  style="position:relative">
+			<span class="stamp-date" style="position:absolute"><?=$local_today ?></span>
+
 		</div>
-		<?php } ?>
+		
 	</div>
 	</div>
 	<footer style='float:right'>1 of 1</footer>
