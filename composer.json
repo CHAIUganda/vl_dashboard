@@ -10,6 +10,7 @@
         "laravelcollective/html": "5.1.*",
         "laracasts/validation": "dev-master",
         "maatwebsite/excel": "~2.1.0",
+        "dinesh/barcode": "5.0.*@dev",
         "yajra/laravel-datatables-oracle": "~6.0",
         "zizaco/entrust": "5.2.x-dev",
         "zizaco/confide": "5.0.x-dev",

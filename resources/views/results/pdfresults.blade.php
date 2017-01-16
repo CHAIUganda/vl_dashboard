@@ -97,7 +97,6 @@ page[size="A4"][layout="portrait"] {
 
 <body>
   <?php 
-
  $local_today = date('d M Y');
  $local_today = strtoupper($local_today);
   ?>

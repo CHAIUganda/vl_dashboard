@@ -25,7 +25,10 @@
                     <td>{{ $facility->phone }}</td>
                     <td>{{ $facility->email }}</td>
                     
-                    <td><?= "<a href='/results_list?f=$facility->id'>view pending</a>" ?></td>
+                    <td>
+                        <?= "<a class='btn btn-danger btn-xs' href='/results_list?f=$facility->id'>view pending</a>" ?>
+                        <?= "<a class='btn btn-danger btn-xs' href='/results_list?f=$facility->id&printed=YES'>printed/downloaded</a>" ?>
+                    </td>
                 </tr>
                 @endforeach
 
