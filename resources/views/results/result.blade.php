@@ -51,8 +51,8 @@
         $('#print-btn').click(function(){
             $('#print-btn-div').hide();
             $.get("/log_printing?printed={{$printed}}&s="+$('#ss').val(), function(data){     });
-            window.print();
-            window.close();           
+             window.print(); 
+             setTimeout(window.close, 0);          
         });
 
         /*$('#pdf-btn').click(function(){

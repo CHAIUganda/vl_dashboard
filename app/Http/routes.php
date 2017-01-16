@@ -55,6 +55,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/qc/wk_search/{q}/', [ 'middleware' => ['permission:qc'], 'as' => 'qc_worksheet_search', 'uses' => 'QCController@worksheet_search']);
 	Route::get('/log_printing/',['middleware' => ['permission:print_results'], 'as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
 	Route::get('/sample/{id}', ['middleware' => ['permission:qc'], 'as' => 'sample', 'uses' => 'QCController@sample']);
+
+	Route::get('/print_envelope/{id}', ['middleware' => ['permission:print_results'], 'as' => 'print_envelope', 'uses' => 'ResultsController@print_envelope']);
+	
 });
 Route::get("/","DashboardController@init");
 

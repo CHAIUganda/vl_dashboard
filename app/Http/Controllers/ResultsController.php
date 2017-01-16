@@ -135,4 +135,13 @@ class ResultsController extends Controller {
 		return view('results.facilities', compact('facilities'));
 	}
 
+	public function print_envelope($id){
+		$facility = LiveData::leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')
+		                ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
+						->select('hub','district','facility', 'f.contactPerson', 'f.phone', 'f.email')->from('vl_facilities AS f')
+						->where('f.id', '=', $id)->limit(1)->get();
+		$facility = $facility[0];
+		return view('results.print_envelope', compact('facility'));
+	}
+
 }

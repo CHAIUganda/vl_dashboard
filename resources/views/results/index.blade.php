@@ -16,7 +16,10 @@ $print_url="/results_list?printed=NO$facility_id";
 $printed_url="/results_list?printed=YES$facility_id";
 ?>
 
-<div style="text-align:center;text-decoration: underline;" class='print-ttl'>{{session('facility')}}</div>
+<div style="text-align:center;text-decoration: underline;" class='print-ttl'>
+    {{session('facility')}}
+    <a href="javascript:windPop('/print_envelope/{{ \Request::get('f') }}')" style="float:right" class="btn btn-danger btn-xs">Print Envelope</a>
+</div>
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li {{ $print_actv }} title='Print'><a href="{!! $print_url !!}" >Pending</a></li>
     <li {{ $printed_actv }} title='Already printed'><a href="{!! $printed_url !!}" >Printed/Downloaded</a></li>
