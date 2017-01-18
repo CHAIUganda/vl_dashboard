@@ -85,7 +85,7 @@ class ResultsController extends Controller {
 					printed_at='$on', 
 					printed_by='$by' 
 					WHERE ";
-			$sql .= !empty($slctd_samples_str)?" sample_id IN ($slctd_samples_str) ":"id=$id";
+			$sql .= !empty($slctd_samples_str)?" sample_id IN ($slctd_samples_str) ":"sample_id=$id";
 
 		}else{
 			$sql = "INSERT INTO vl_facility_downloads (sample_id, downloaded_by, downloaded_on) VALUES";
@@ -94,7 +94,8 @@ class ResultsController extends Controller {
 			}
 			$sql = trim($sql, ',');		
 
-		}			
+		}	
+		//return $sql;		
 
 		\DB::connection('live_db')->unprepared($sql);
 		$pdf = \PDF::loadView('results.pdfresults', compact("vldbresult"));
