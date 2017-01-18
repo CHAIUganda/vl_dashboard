@@ -76,8 +76,6 @@ class LiveData extends Model
               }); 
       }
 
-      $ret = !empty($printed)?$ret->where('printed', '=', $printed):$ret;
-
       $hub_id = \Auth::user()->hub_id;
       $facility_id = \Auth::user()->facility_id;
        if(\Request::has('f')){
