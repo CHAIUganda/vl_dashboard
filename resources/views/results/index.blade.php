@@ -64,8 +64,10 @@ $('#results').addClass('active');
 
 $(function() {
     $('#results-table').DataTable({
+
         processing: true,
         serverSide: true,
+        pageLength: 50,
         ajax: '{!! url("/results_list/data?printed=$printed$facility_id") !!}',
         columns: [
             {data: 'sample_checkbox', name: 'sample_checkbox', orderable: false, searchable: false},
