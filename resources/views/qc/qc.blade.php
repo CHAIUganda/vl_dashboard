@@ -12,6 +12,7 @@
             <thead>
             <tr>
                 <th></th>
+                <th>Hub</th>
                 <th>Facility</th>
                 <th>Location&nbsp;ID&nbsp;&nbsp;&nbsp;</th>
             	<th width="1%">Form Number</th>
@@ -29,6 +30,7 @@
                 @foreach($samples AS $sample)
                 <tr>
                     <td><?= (empty($sample->fp_id))? Form::checkbox('samples[]', $sample->sampleID,'', ['class'=>'samples']):"" ?></td>               
+                    <td>{{ $sample->hub }}</td>
                     <td>{{ $sample->facility }}</td>
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
                     <td><a href="javascript:windPop('/result/{{ $sample->id }}?view=yes')">{{ $sample->formNumber }}</a></td>
