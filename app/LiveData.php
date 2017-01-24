@@ -16,6 +16,17 @@ class LiveData extends Model
     public static function getSample($id){
       return 'x';
     }
+
+    public static function wkshtby($cond=1){
+      $sql = "SELECT w.id, w.worksheetReferenceNumber FROM vl_samples_worksheet AS ws 
+              LEFT JOIN vl_samples_worksheetcredentials AS w ON ws.worksheetID=w.id
+              LEFT JOIN vl_samples AS s ON ws.sampleID = s.id
+              LEFT JOIN vl_facilities AS f ON s.facilityID=f.id
+              WHERE $cond
+              GROUP BY w.id ORDER BY w.id DESC LIMIT 1000
+              ";
+      return \DB::connection('live_db')->select($sql); 
+    }
     
     public static function getFacilitiesPrinting(){
       $hub_limit = \Auth::user()->hub_id;

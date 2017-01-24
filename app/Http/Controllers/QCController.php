@@ -8,7 +8,12 @@ use EID\LiveData;
 class QCController extends Controller {
 
 	public function index(){
-		return view('qc.index');
+		$hubs = LiveData::getHubs();
+		$facilities = LiveData::getFacilities();
+		$hubs = \MyHTML::get_arr_pair($hubs, 'hub');
+		$facilities = \MyHTML::get_arr_pair($facilities, 'facility');
+
+		return view('qc.index', compact('hubs', 'facilities'));
 	}
 
 	public function worksheet_search($q){
@@ -37,11 +42,30 @@ class QCController extends Controller {
 		$samples = LiveData::worksheetSamples($id);
 		$wk = LiveData::select("*")->from("vl_samples_worksheetcredentials")->where('id','=',$id)->limit(1)->get();
 		$wk = $wk[0];
+
 		return view('qc.qc', compact('samples', 'id', 'wk'));
 	}
 
 	public function sample($id){
 		return LiveData::getSample($id);
+	}
+
+	public function byhub($id){
+		$worksheets = LiveData::wkshtby(" f.hubID = $id");
+		$ret = "";
+		foreach ($worksheets as $wk) {
+			$ret .= "<a href='/qc/$wk->id/'>$wk->worksheetReferenceNumber</a><br>";			
+		}
+		return $ret;
+	}
+
+	public function byfacility($id){
+		$worksheets = LiveData::wkshtby(" f.id = $id");
+		$ret = "";
+		foreach ($worksheets as $wk) {
+			$ret .= "<a href='/qc/$wk->id/'>$wk->worksheetReferenceNumber</a><br>";			
+		}
+		return $ret;
 	}
 
 
