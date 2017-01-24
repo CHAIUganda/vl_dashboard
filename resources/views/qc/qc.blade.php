@@ -5,7 +5,10 @@
 
 <!-- <div id="my-tab-content" class="tab-content"> -->
     <div class="tab-pane active" id="print">  
-        Worksheet Ref Number: <u>{{ $wk->worksheetReferenceNumber }}</u><br><br>
+        Worksheet Ref Number: <u>{{ $wk->worksheetReferenceNumber }}</u>
+        &nbsp;&nbsp;&nbsp;
+        Machine Type: <u>{{ $wk->machineType }}</u><br><br>
+
         <a href="#" class='btn btn-sm btn-danger' id="select_all">Select all</a>
         <input type="submit" id="download" name="download" class='btn btn-sm btn-danger' value="Approve selected"   /> 
         <table id="results-table" class="table table-condensed table-bordered" style="font-size:12px">
@@ -28,19 +31,21 @@
             </thead>
             <tbody>
                 @foreach($samples AS $sample)
+                <?php $resultxxx = !empty($wk->machineType == 'abbott' )?$sample->abbott_result:$sample->roche_result ?>
+
                 <tr>
                     <td><?= (empty($sample->fp_id))? Form::checkbox('samples[]', $sample->sampleID,'', ['class'=>'samples']):"" ?></td>               
                     <td>{{ $sample->hub }}</td>
                     <td>{{ $sample->facility }}</td>
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
-                    <td><a href="javascript:windPop('/result/{{ $sample->id }}?view=yes')">{{ $sample->formNumber }}</a></td>
+                    <td><a href="javascript:windPop('/result/{{ $sample->sampleID }}?view=yes')">{{ $sample->formNumber }}</a></td>
                     <td>{{ $sample->artNumber }}</td>
                     <td>{{ $sample->otherID }}</td>
                     <td>{{ $sample->dateOfBirth }}</td>
                     <td>{{ $sample->gender }}</td>
                     <td>{{ $sample->collectionDate }}</td>
                     <td>{{ $sample->receiptDate }}</td>
-                    <td>{{ $sample->result }}</td>
+                    <td>{{ MyHTML::getVLNumericResult($resultxxx, $wk->machineType, $sample->factor) }}</td>
                     <td class='<?= (!empty($sample->fp_id))?"alert alert-success":"alert alert-info" ?>'>
                         <?= (!empty($sample->fp_id))?"Approved":"Pending" ?>
                     </td>
