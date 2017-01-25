@@ -54,6 +54,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::match(array('GET', 'POST'), '/qc/{id}', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@qc']);
 	Route::get('/qc/wk_search/{q}/', [ 'middleware' => ['permission:qc'], 'as' => 'qc_worksheet_search', 'uses' => 'QCController@worksheet_search']);
 	Route::get('/log_printing/',['middleware' => ['permission:print_results'], 'as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
+
+	Route::get('/results/suppression-trend', ['middleware' => ['permission:print_results'], 'as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
+
 });
 Route::get("/","DashboardController@init");
 
