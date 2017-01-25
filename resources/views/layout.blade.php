@@ -54,6 +54,7 @@
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="{{ asset('/css/hub.css') }}" rel="stylesheet">
 </head>
 
 
