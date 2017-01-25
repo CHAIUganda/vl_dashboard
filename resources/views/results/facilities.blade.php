@@ -5,6 +5,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"> <h3 class="panel-title">Facilities :: {!! \Auth::user()->hub_name !!}</h3> </div>
     <div class="panel-body">
+
      <?php
 
     function latestNMonths($n=12){
@@ -200,9 +201,7 @@
               <!--div class="tab-pane" id="messages">..mrss.</div>
               <div class="tab-pane" id="settings">..sett.</div -->
             </div>
-        
-        
-
+      
  </div>
 </div>
 

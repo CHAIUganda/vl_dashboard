@@ -62,7 +62,6 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/print_envelope/{id}', ['middleware' => ['permission:print_results'], 'as' => 'print_envelope', 'uses' => 'ResultsController@print_envelope']);
 	
 
-
 	Route::get('/results/suppression-trend', ['middleware' => ['permission:print_results'], 'as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
 
 });
