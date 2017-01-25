@@ -5,44 +5,6 @@
 <div class="panel panel-default">
     <div class="panel-heading"> <h3 class="panel-title">Facilities :: {!! \Auth::user()->hub_name !!}</h3> </div>
     <div class="panel-body">
-
-        <table id="results-table" class="table table-condensed table-bordered">
-            <thead>
-                <tr>
-                    <th>Facility</th>               
-                	<th>Contact Person</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <!-- <th># Pending printing</th>
-                    <th># Printed</th> -->
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($facilities AS $facility)
-                 <tr>
-                    <td><a href='/results_list?f={{$facility->id}}'>{{ $facility->facility }}</a></td>               
-                    <td>{{ $facility->contactPerson }}</td>
-                    <td>{{ $facility->phone }}</td>
-                    <td>{{ $facility->email }}</td>
-                    
-                    <td>
-                        <?= "<a class='btn btn-danger btn-xs' href='/results_list?f=$facility->id'>view pending</a>" ?>
-                        <?= "<a class='btn btn-danger btn-xs' href='/results_list?f=$facility->id&printed=YES'>printed/downloaded</a>" ?>
-                    </td>
-                </tr>
-                @endforeach
-
-            </tbody>
-        </table>
-
-        
-        <!-- filters-->
-         <?php //if(!isset($filter_val)) $filter_val="National Metrics, ".$time." thus far" ?>
-<!--       
-      <span style="font-size:20px">eid</span>
-      <span style="font-size:20px">scd</span>
-      <span style="font-size:20px">vl</span> -->
      <?php
 
     function latestNMonths($n=12){
@@ -100,32 +62,35 @@
             <!-- Tab panes -->
             <div class="tab-content">
               <div class="tab-pane active" id="facilities">
-                  <table id="results-table" class="table table-condensed table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Facility</th>               
-                            <th>Contact Person</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <!-- <th># Pending printing</th>
-                            <th># Printed</th> -->
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($facilities AS $facility)
-                         <tr>
-                            <td>{{ $facility->facility }}</td>               
-                            <td>{{ $facility->contactPerson }}</td>
-                            <td>{{ $facility->phone }}</td>
-                            <td>{{ $facility->email }}</td>
-                            
-                            <td><?= "<a href='/results_list?f=$facility->id'>view pending</a>" ?></td>
-                        </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
+                        <table id="results-table" class="table table-condensed table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Facility</th>               
+                              <th>Contact Person</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <!-- <th># Pending printing</th>
+                                <th># Printed</th> -->
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($facilities AS $facility)
+                             <tr>
+                                <td><a href='/results_list?f={{$facility->id}}'>{{ $facility->facility }}</a></td>               
+                                <td>{{ $facility->contactPerson }}</td>
+                                <td>{{ $facility->phone }}</td>
+                                <td>{{ $facility->email }}</td>
+                                
+                                <td>
+                                    <?= "<a class='btn btn-danger btn-xs' href='/results_list?f=$facility->id'>view pending</a>" ?>
+                                    <?= "<a class='btn btn-danger btn-xs' href='/results_list?f=$facility->id&printed=YES'>printed/downloaded</a>" ?>
+                                </td>
+                            </tr>
+                            @endforeach
+        
+                        </tbody>
+                    </table>
               </div>
               <div class="tab-pane" id="suppression-trend">
                 <div class="facilties-sect" style="width:50%">
@@ -237,7 +202,7 @@
             </div>
         
         
->>>>>>> Suppression Trend
+
  </div>
 </div>
 
