@@ -1,0 +1,33 @@
+/** hub module*/
+.hide-cell-border{
+	border-left: #000000;
+	border-top: #000000;
+}
+
+.letterP3 {    
+  -webkit-transform: rotate(90deg); 
+     -moz-transform: rotate(90deg); 
+      -ms-transform: rotate(90deg); 
+       -o-transform: rotate(90deg); 
+          transform: rotate(90deg);
+            color: #000;
+            font-size: 22px;                
+            height: 200px;
+            width: 200px;
+float: left;        
+    vertical-align:top;    
+}
+
+.letterP4 {    
+  -webkit-transform: rotate(-90deg); 
+     -moz-transform: rotate(-90deg); 
+      -ms-transform: rotate(-90deg); 
+       -o-transform: rotate(-90deg); 
+          transform: rotate(-90deg);
+            color: #000;
+            height: 50%;
+            width: 50%;
+          
+    float: left;
+    vertical-align:top;
+}

@@ -133,9 +133,93 @@ class ResultsController extends Controller {
 		}elseif(!empty(\Auth::user()->facility_id)){
 			$facilities = $facilities->where('id', \Auth::user()->facility_id)->get();
 		}
-		return view('results.facilities', compact('facilities'));
+
+		$to_date=date("Ym");
+		$fro_date=$this->_dateNMonthsBack();
+
+		return view('results.facilities', compact('facilities','fro_date','to_date'));
+
 	}
 
+	public function getPatientResults(){
+		
+		$sql = "select sr.patientID,sr.vlSampleID,sr.created,sr.patientUniqueID, sr.result,
+						h.hub, f.facility,sr.collectionDate,sr.receiptDate,p.artNumber,p.phone
+						
+					from 
+						(select s.patientID,s.vlSampleID,s.created,s.patientUniqueID, r.result,
+						 s.hubID, s.facilityID,s.collectionDate,s.receiptDate
+						   from 
+					           ( select * from vl_samples where hubID=21 and  str_to_date(created,'%Y-%m') 
+						between str_to_date('2015-01','%Y-%m') and str_to_date('2016-02','%Y-%m')) s left join 
+								(select sampleID, result as result, created 
+									from vl_results_abbott order by sampleID,created) r
+						on s.vlSampleID = r.sampleID 
+					    ) sr,
+
+						(SELECT p.uniqueID,p.artNumber,pp.phone FROM vl_patients p left join vl_patients_phone pp  on pp.patientID = p.id) p,
+					vl_hubs h,vl_facilities f
+
+					where 
+						sr.patientUniqueID = p.uniqueID and
+						sr.hubID = h.id and sr.facilityID = f.id
+
+					order by sr.patientID
+					";
+
+
+
+		$patient_results =  \DB::connection('live_db')->select($sql);
+		
+		//$patient_results = 100;
+		//echo ".......patients retrieved.............";
+		return compact("patient_results");
+
+	}
+
+/*
+	public function getPatientResults(){
+		
+		$sql = "select sr.patientID,sr.vlSampleID,sr.created,sr.patientUniqueID, sr.result,
+						h.hub, f.facility,sr.collectionDate,sr.receiptDate,p.artNumber,p.phone
+						
+					from 
+						(select s.patientID,s.vlSampleID,s.created,s.patientUniqueID, r.result,
+						 s.hubID, s.facilityID,s.collectionDate,s.receiptDate
+						   from 
+					           ( select * from vl_samples where hubID=21 and  str_to_date(created,'%Y-%m') 
+						between str_to_date('2015-01','%Y-%m') and str_to_date('2016-02','%Y-%m')) s left join 
+								(select sampleID, result as result, created 
+									from vl_results_abbott order by sampleID,created) r
+						on s.vlSampleID = r.sampleID 
+					    ) sr,
+
+						(SELECT p.uniqueID,p.artNumber,pp.phone FROM vl_patients p left join vl_patients_phone pp  on pp.patientID = p.id) p,
+					vl_hubs h,vl_facilities f
+
+					where 
+						sr.patientUniqueID = p.uniqueID and
+						sr.hubID = h.id and sr.facilityID = f.id
+
+					order by sr.patientID
+					";
+
+
+
+		$patient_results =  \DB::connection('live_db')->select($sql);
+		
+		
+		return compact("patient_results");
+	}
+	
+	private function _dateNMonthsBack(){
+    	$ret;
+    	$n=env('INIT_MONTHS');
+        $m=date('m');
+        $y=date('Y');
+        for($i=1;$i<=$n;$i++){
+        	if($i==$n) $ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
+	*/
 	public function print_envelope($id){
 		$facility = LiveData::leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')
 		                ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
@@ -144,5 +228,20 @@ class ResultsController extends Controller {
 		$facility = $facility[0];
 		return view('results.print_envelope', compact('facility'));
 	}
-
+	private function _dateNMonthsBack(){
+    	$ret;
+    	$n=env('INIT_MONTHS');
+        $m=date('m');
+        $y=date('Y');
+        for($i=1;$i<=$n;$i++){
+        	if($i==$n) 
+        		$ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
+            if($m==0){
+                $m=12;
+                $y--;
+            }
+            $m--;
+        }
+        return $ret;
+    }
 }
