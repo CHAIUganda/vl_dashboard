@@ -189,10 +189,12 @@ $phones = implode(", ", $phones_arr);
 						<td>Reception Date: &nbsp; </td>
 						<td class="print-val"><?=MyHTML::localiseDate($result_obj->receiptDate, 'd-M-Y') ?></td>
 					</tr>
+					<?php if($rejected!=1){ ?>
 					<tr>
 						<td>Test Date: &nbsp; </td>
 						<td class="print-val"><?=MyHTML::localiseDate($test_date, 'd-M-Y') ?></td>
 					</tr>
+					<?php } ?>
 
 				</table>
 				

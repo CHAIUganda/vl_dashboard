@@ -265,7 +265,7 @@ class MyHTML{
 		$invalid_cases=array(
 			"Failed","Failed.","Invalid",
 			"Invalid test result. There is insufficient sample to repeat the assay.",
-			"There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.",
+			"There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.",
 			"There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.");
 
 		if(in_array($result, $invalid_cases)) $ret="NO";
@@ -320,6 +320,23 @@ class MyHTML{
 		$ret .= "</ul></div>";
 		return $ret;
 	}
+
+	public static function dateNMonthsBack(){
+    	$ret;
+    	$n=env('INIT_MONTHS');
+        $m=date('m');
+        $y=date('Y');
+        for($i=1;$i<=$n;$i++){
+        	if($i==$n) 
+        		$ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
+            if($m==0){
+                $m=12;
+                $y--;
+            }
+            $m--;
+        }
+        return $ret;
+    }
 
 }
 //{1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sept',10:'Oct',11:'Nov',12:'Dec'};

@@ -134,11 +134,7 @@ class ResultsController extends Controller {
 			$facilities = $facilities->where('id', \Auth::user()->facility_id)->get();
 		}
 
-		$to_date=date("Ym");
-		$fro_date=$this->_dateNMonthsBack();
-
-		return view('results.facilities', compact('facilities','fro_date','to_date'));
-
+		return view('results.facilities', compact('facilities'));
 	}
 
 	public function getPatientResults(){
@@ -228,20 +224,5 @@ class ResultsController extends Controller {
 		$facility = $facility[0];
 		return view('results.print_envelope', compact('facility'));
 	}
-	private function _dateNMonthsBack(){
-    	$ret;
-    	$n=env('INIT_MONTHS');
-        $m=date('m');
-        $y=date('Y');
-        for($i=1;$i<=$n;$i++){
-        	if($i==$n) 
-        		$ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
-            if($m==0){
-                $m=12;
-                $y--;
-            }
-            $m--;
-        }
-        return $ret;
-    }
+	
 }

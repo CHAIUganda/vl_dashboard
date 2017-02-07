@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('/results/suppression-trend', ['middleware' => ['permission:print_results'], 'as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
 
+	Route::get('/suppression_trends/index', ['middleware' => ['permission:print_results'], 'as' => 'patient_results', 'uses' => function(){ return view('suppression_trends.index'); }]);
+	
 });
 Route::get("/","DashboardController@init");
 
