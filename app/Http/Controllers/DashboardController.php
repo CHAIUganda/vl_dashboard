@@ -224,7 +224,8 @@ class DashboardController extends Controller {
 
 	private function _facilityNumbers(){
 		$grp=[];
-		$grp['_id']='$facility_id';
+		//$grp['_id']='$facility_id';
+		$grp['_id']= array('district_id'=>'$district_id','facility_id' => '$facility_id' );
 		$grp['samples_received']=['$sum'=>'$samples_received'];
 		$grp['patients_received']=['$sum'=>'$patients_received'];
 		$grp['suppressed']=['$sum'=>'$suppressed'];
