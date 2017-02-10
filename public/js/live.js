@@ -798,6 +798,7 @@ ctrllers.DashController = function($scope,$http){
     function exportFacilityNumbers(scopeInstance){
        
         var export_facility_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
@@ -805,7 +806,8 @@ ctrllers.DashController = function($scope,$http){
             var facilityRecord = facility_numbers_from_scope[index];
 
             var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
+                district_name : district_labels[facilityRecord._id.district_id],
+                facility_name : facility_labels[facilityRecord._id.facility_id],
                 samples_received : facilityRecord.samples_received,
                 patients_received : facilityRecord.patients_received,
                 samples_tested : facilityRecord.total_results,
@@ -844,6 +846,7 @@ ctrllers.DashController = function($scope,$http){
 
     function exportFacilitySuppressionNumbers(scopeInstance){
         var export_facility_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
@@ -851,7 +854,8 @@ ctrllers.DashController = function($scope,$http){
             var facilityRecord = facility_numbers_from_scope[index];
 
             var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
+                district_name : district_labels[facilityRecord._id.district_id],
+                facility_name : facility_labels[facilityRecord._id.facility_id],
                 valid_results : facilityRecord.valid_results,
                 suppression_rate : Math.round(((facilityRecord.suppressed/facilityRecord.valid_results)*100),1)
             }
@@ -886,6 +890,7 @@ ctrllers.DashController = function($scope,$http){
 
     function exportFacilityRejectionNumbers(scopeInstance){
         var export_facility_rejection_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
@@ -893,7 +898,8 @@ ctrllers.DashController = function($scope,$http){
             var facilityRecord = facility_numbers_from_scope[index];
 
             var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
+                district_name : district_labels[facilityRecord._id.district_id],
+                facility_name : facility_labels[facilityRecord._id.facility_id],
                 samples_received : facilityRecord.samples_received,
                 rejected_samples:facilityRecord.rejected_samples,
                 rejection_rate : Math.round(((facilityRecord.rejected_samples/facilityRecord.samples_received)*100),1)

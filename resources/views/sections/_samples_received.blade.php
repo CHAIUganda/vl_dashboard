@@ -47,6 +47,7 @@
             <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
+                        <th >District&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <th >Facility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <th >Samples Received</th>
                         <th >Patients&nbsp;for samples&nbsp;received</th>
@@ -60,7 +61,8 @@
                 </thead>
                 <tbody>                                
                     <tr ng-repeat="f in facility_numbers | orderBy:'-samples_received'" >
-                        <td class="ng-cloak"><% labels.facilities[f._id] %></td>
+                        <td class="ng-cloak"><% labels.districts[f._id.district_id] %></td>
+                        <td class="ng-cloak"><% labels.facilities[f._id.facility_id] %></td>
                         <td class="ng-cloak"><% f.samples_received|number %></td>
                         <td class="ng-cloak"><% f.patients_received|number %></td>
                         <td class="ng-cloak"><% f.total_results|number %></td>
@@ -81,7 +83,7 @@
 
             <br>
             <br>
-            <button ng-show="show_fclties1" id="exportFacilities" type="button" ng-csv="export_facility_numbers" filename="facilities_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['Facility', 'Samples Received', 'Patients for Samples Received','Samples Tested','Samples Pending','Samples Rejected','DBS %','Plasma %']">Download CSV</button>
+            <button ng-show="show_fclties1" id="exportFacilities" type="button" ng-csv="export_facility_numbers" filename="facilities_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Facility', 'Samples Received', 'Patients for Samples Received','Samples Tested','Samples Pending','Samples Rejected','DBS %','Plasma %']">Download CSV</button>
 
 
     </div>
