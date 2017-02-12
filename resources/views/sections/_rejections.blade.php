@@ -36,15 +36,19 @@
              <table datatable="ng" ng-hide="checked" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
+                        
                         <th width='20%'>District</th>
-                        <th width='70%'>Facility</th>
+                        <th width='20%'>Hub</th>
+                        <th width='60%'>Facility</th>
                         <th width='5%'>Samples Received</th>
                         <th width='5%'>Rejection rate (%)</th>
                     </tr>
                 </thead>
                 <tbody>                                
                     <tr ng-repeat="f in facility_numbers">
+
                         <td class="ng-cloak"><% labels.districts[f._id.district_id] %></td>
+                        <td class="ng-cloak"><% hubs2[f._id.hub_id].name %></td>
                         <td class="ng-cloak"><% labels.facilities[f._id.facility_id] %></td>
                         <td class="ng-cloak"><% f.samples_received %></td>
                         <td class="ng-cloak"><% ((f.rejected_samples/f.samples_received)*100)|number:1 %> %</td>
@@ -59,7 +63,7 @@
 
          <br>
          <br>
-         <button ng-show="show_fclties3" id="exportFacilitiesRejectionRate" type="button" ng-csv="export_facility_rejection_numbers" filename="facilities_rejection_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Facility', 'Received Samples','Rejected Samples', 'Rejection Rate (%)']">Download CSV</button>
+         <button ng-show="show_fclties3" id="exportFacilitiesRejectionRate" type="button" ng-csv="export_facility_rejection_numbers" filename="facilities_rejection_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Hub','Facility', 'Received Samples','Rejected Samples', 'Rejection Rate (%)']">Download CSV</button>
 
     </div>
 </div>                
