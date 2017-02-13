@@ -808,7 +808,7 @@ ctrllers.DashController = function($scope,$http){
 
             var facility_instance = {
                 district_name : district_labels[facilityRecord._id.district_id],
-                hub_name: hub_labels[facilityRecord._id.hub_id].name,
+                hub_name: hub_labels[facilityRecord._id.hub_id].name != null?hub_labels[facilityRecord._id.hub_id].name:null,
                 facility_name : facility_labels[facilityRecord._id.facility_id],
                 samples_received : facilityRecord.samples_received,
                 patients_received : facilityRecord.patients_received,
@@ -858,7 +858,7 @@ ctrllers.DashController = function($scope,$http){
 
             var facility_instance = {
                 district_name : district_labels[facilityRecord._id.district_id],
-                hub_name: hub_labels[facilityRecord._id.hub_id].name,
+                hub_name: hub_labels[facilityRecord._id.hub_id].name != null?hub_labels[facilityRecord._id.hub_id].name:null,
                 facility_name : facility_labels[facilityRecord._id.facility_id],
                 valid_results : facilityRecord.valid_results,
                 suppression_rate : Math.round(((facilityRecord.suppressed/facilityRecord.valid_results)*100),1)
@@ -904,7 +904,7 @@ ctrllers.DashController = function($scope,$http){
 
             var facility_instance = {
                 district_name : district_labels[facilityRecord._id.district_id],
-                hub_name: hub_labels[facilityRecord._id.hub_id].name,
+                hub_name: hub_labels[facilityRecord._id.hub_id].name != null ? hub_labels[facilityRecord._id.hub_id].name:null,
                 facility_name : facility_labels[facilityRecord._id.facility_id],
                 samples_received : facilityRecord.samples_received,
                 rejected_samples:facilityRecord.rejected_samples,
