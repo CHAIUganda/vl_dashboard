@@ -806,9 +806,15 @@ ctrllers.DashController = function($scope,$http){
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
             var facilityRecord = facility_numbers_from_scope[index];
 
+            var hub_name_value = null;
+            try{
+                hub_name_value = hub_labels[facilityRecord._id.hub_id].name;
+            }catch(err){
+
+            }
             var facility_instance = {
                 district_name : district_labels[facilityRecord._id.district_id],
-                hub_name: hub_labels[facilityRecord._id.hub_id].name != null?hub_labels[facilityRecord._id.hub_id].name:null,
+                hub_name: hub_name_value,
                 facility_name : facility_labels[facilityRecord._id.facility_id],
                 samples_received : facilityRecord.samples_received,
                 patients_received : facilityRecord.patients_received,
@@ -856,9 +862,16 @@ ctrllers.DashController = function($scope,$http){
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
             var facilityRecord = facility_numbers_from_scope[index];
 
+            var hub_name_value = null;
+            try{
+                hub_name_value = hub_labels[facilityRecord._id.hub_id].name;
+            }catch(err){
+
+            }
+
             var facility_instance = {
                 district_name : district_labels[facilityRecord._id.district_id],
-                hub_name: hub_labels[facilityRecord._id.hub_id].name != null?hub_labels[facilityRecord._id.hub_id].name:null,
+                hub_name: hub_name_value,
                 facility_name : facility_labels[facilityRecord._id.facility_id],
                 valid_results : facilityRecord.valid_results,
                 suppression_rate : Math.round(((facilityRecord.suppressed/facilityRecord.valid_results)*100),1)
@@ -902,9 +915,16 @@ ctrllers.DashController = function($scope,$http){
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
             var facilityRecord = facility_numbers_from_scope[index];
 
+            var hub_name_value = null;
+            try{
+                hub_name_value = hub_labels[facilityRecord._id.hub_id].name;
+            }catch(err){
+
+            }
+
             var facility_instance = {
                 district_name : district_labels[facilityRecord._id.district_id],
-                hub_name: hub_labels[facilityRecord._id.hub_id].name != null ? hub_labels[facilityRecord._id.hub_id].name:null,
+                hub_name: hub_name_value,
                 facility_name : facility_labels[facilityRecord._id.facility_id],
                 samples_received : facilityRecord.samples_received,
                 rejected_samples:facilityRecord.rejected_samples,
