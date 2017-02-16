@@ -82,6 +82,7 @@ ctrllers.DashController = function($scope,$http){
 
     $scope.districts2 = [];
     $scope.hubs2 = [];
+    $scope.hubs = [];
     $scope.age_group_slct = age_group_json;
 
    /* $scope.orderByCurrentRegimen = function(regimen){
@@ -127,6 +128,12 @@ ctrllers.DashController = function($scope,$http){
             var obj = data.hubs[i];
             hubs_json[obj.id] = obj.name;
             $scope.hubs2.push({"id":obj.id,"name":obj.name});
+        }
+
+        for(var i in data.new_hubs){
+            var obj = data.new_hubs[i];
+            
+            $scope.hubs.push({"id":obj.id,"name":obj.hub});
         }
 
         for(var i in data.facilities){
@@ -376,7 +383,17 @@ ctrllers.DashController = function($scope,$http){
         //generalFilter();
     };
 
-
+    $scope.getHubName=function(hub_id){
+        var hub_list = $scope.hubs;
+        var hub_name = null;
+        for (var i = 0; i<hub_list.length; i++) {
+            if(hub_id == hub_list[i].id){
+                hub_name = hub_list[i].name;
+                break;
+            }
+        };
+        return hub_name;
+    }
     $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;  
         //console.log("districts -- "+JSON.stringify($scope.labels.districts));
         //console.log("facilities -- "+JSON.stringify($scope.labels.facilities));     
@@ -799,7 +816,6 @@ ctrllers.DashController = function($scope,$http){
        
         var export_facility_numbers = [];
         var district_labels = scopeInstance.labels.districts;
-        var hub_labels = scopeInstance.hubs2;
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
@@ -808,7 +824,7 @@ ctrllers.DashController = function($scope,$http){
 
             var hub_name_value = null;
             try{
-                hub_name_value = hub_labels[facilityRecord._id.hub_id].name;
+                hub_name_value =scopeInstance.getHubName(facilityRecord._id.hub_id);
             }catch(err){
 
             }
@@ -855,7 +871,6 @@ ctrllers.DashController = function($scope,$http){
     function exportFacilitySuppressionNumbers(scopeInstance){
         var export_facility_numbers = [];
         var district_labels = scopeInstance.labels.districts;
-        var hub_labels = scopeInstance.hubs2;
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
@@ -864,7 +879,7 @@ ctrllers.DashController = function($scope,$http){
 
             var hub_name_value = null;
             try{
-                hub_name_value = hub_labels[facilityRecord._id.hub_id].name;
+                hub_name_value = scopeInstance.getHubName(facilityRecord._id.hub_id);
             }catch(err){
 
             }
@@ -908,7 +923,7 @@ ctrllers.DashController = function($scope,$http){
     function exportFacilityRejectionNumbers(scopeInstance){
         var export_facility_rejection_numbers = [];
         var district_labels = scopeInstance.labels.districts;
-        var hub_labels = scopeInstance.hubs2;
+        
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
@@ -917,7 +932,7 @@ ctrllers.DashController = function($scope,$http){
 
             var hub_name_value = null;
             try{
-                hub_name_value = hub_labels[facilityRecord._id.hub_id].name;
+                hub_name_value = scopeInstance.getHubName(facilityRecord._id.hub_id);
             }catch(err){
 
             }

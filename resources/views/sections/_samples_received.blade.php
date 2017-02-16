@@ -64,7 +64,7 @@
                     <tr ng-repeat="f in facility_numbers | orderBy:'-samples_received'" >
                         
                         <td class="ng-cloak"><% labels.districts[f._id.district_id] %></td>
-                        <td class="ng-cloak"><% hubs2[f._id.hub_id].name %></td>
+                        <td class="ng-cloak"><% getHubName(f._id.hub_id) %></td>
                         <td class="ng-cloak"><% labels.facilities[f._id.facility_id] %></td>
                         <td class="ng-cloak"><% f.samples_received|number %></td>
                         <td class="ng-cloak"><% f.patients_received|number %></td>
