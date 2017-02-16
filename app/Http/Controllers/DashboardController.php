@@ -80,9 +80,14 @@ class DashboardController extends Controller {
 		$districts=iterator_to_array($this->mongo->districts->find());
 		$facilities=iterator_to_array($this->mongo->facilities->find());
 		$regimens=iterator_to_array($this->mongo->regimens->find());
-		return compact("hubs","districts","facilities","regimens");
+		$new_hubs=$this->get_hubs();
+		return compact("hubs","districts","facilities","regimens","new_hubs");
 	}
-
+	 private function get_hubs(){
+        $sql = "SELECT * FROM vl_hubs";
+        $hubs =  \DB::connection('live_db')->select($sql);
+        return $hubs;
+    }
 	private function _latestNMonths($n=12){
         $ret=[];
         $m=date('m');
