@@ -46,7 +46,7 @@
                     <tr ng-repeat="f in facility_numbers" >
                         
                         <td class="ng-cloak"><% labels.districts[f._id.district_id] %></td>
-                        <td class="ng-cloak"><% hubs2[f._id.hub_id].name %></td>
+                        <td class="ng-cloak"><% getHubName(f._id.hub_id) %></td>
                         <td class="ng-cloak"><% labels.facilities[f._id.facility_id] %></td>
                         <td class="ng-cloak"><% f.valid_results|number %></td>
                         <td class="ng-cloak"><% ((f.suppressed/f.valid_results)*100)|number:1 %> %</td>
