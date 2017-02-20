@@ -27,9 +27,12 @@
             </span>
         </span>
 
-        <span ng-model='filter_age_group' ng-init='filter_age_group={}'>
-            <span ng-repeat="(ag_nr,ag_name) in filter_age_group">
-                <span class="filter-val ng-cloak"> <% ag_name %> (a) <x ng-click='removeTag("age_group",ag_nr)'>&#120;</x></span> 
+        <span ng-model='filtered_age_range' ng-init='filtered_age_range=[]'>
+            <span ng-repeat="filtered_age_range_instance in filtered_age_range">
+                <span class="filter-val ng-cloak"> <% filtered_age_range_instance.from_age %> 
+                    - <% filtered_age_range_instance.to_age %>
+                    (yrs) <x ng-click='removeTag("age_range",ag_nr)'>&#120;</x>
+                </span> 
             </span>
         </span>
 
@@ -103,12 +106,22 @@
             </select>
         </td>
         <td width='10%' id='dist_elmt'>
-            <select ng-model="age_group" ng-init="age_group='all'" ng-change="filter('age_group')">
-                <option value='all'>AGE GROUP</option>
-                <option class="ng-cloak" ng-repeat="(ag_nr,ag) in labels.age_grps" value="<% ag_nr %>">
-                    <% ag %>
+            <select ng-model="from_age" ng-init="from_age='all'">
+                <option value='all'>From Age</option>
+                <option class="ng-cloak" ng-repeat="fro_age in labels.from_age " value="<% fro_age %>">
+                    <% fro_age %>
                 </option>
             </select>
+
+        </td>
+        <td width='10%' id='dist_elmt'>
+            <select ng-model="to_age" ng-init="to_age='all'" ng-change="filter('age_range')">
+                <option value='all'>To Age</option>
+                <option class="ng-cloak" ng-repeat="to_age in labels.to_age " value="<% to_age %>">
+                    <% to_age %>
+                </option>
+            </select>
+
         </td>
         <td width='10%' id='dist_elmt'>
             <select ng-model="gender" ng-init="gender='all'" ng-change="filter('gender')">

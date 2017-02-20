@@ -57,6 +57,8 @@ ctrllers.DashController = function($scope,$http){
 
     var hubs_json = {};
     var age_group_json = {1:"0<2",2:"2-<5",3:"5-<10",4:"10-<15",5:"15-<20",6:"20-<25",7:"25+"};  
+    var from_age_json ={0:0,1:1,2:2,3:3,4:4};
+    var to_age_json ={1:1,2:2,3:3,4:4,5:5};
     var regimen_groups_json = {1: 'AZT based', 2: 'ABC based', 3: 'TDF based', 4: 'Other'};
     var regimen_times_json = {0:'No Date Given',1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
     var results_json = {}; //to hold a big map will all processed data to later on be used in the generalFilter
@@ -77,6 +79,14 @@ ctrllers.DashController = function($scope,$http){
     $scope.labels.regimens = [];
     $scope.labels.regimens2 = [];
     $scope.labels.indications = t_indication_json;
+
+    $scope.labels.from_age = from_age_json;
+    $scope.labels.to_age = to_age_json;
+    $scope.filter_from_age = from_age_json;
+    $scope.filter_to_age = to_age_json;
+    $scope.filtered_age_range = [];
+    $scope.to_age = null;
+    $scope.from_age = null;
 
     var vvvrrr = 0;
 
@@ -204,7 +214,7 @@ ctrllers.DashController = function($scope,$http){
                 $scope.displayRegimenGroups();
                 $scope.displayRegimenTime();
 
-                $scope.filtered = count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
+                $scope.filtered = count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filtered_age_range)||$scope.date_filtered;    
                 $scope.loading = false;
                 
                 //transposeDurationNumbers();
@@ -276,10 +286,13 @@ ctrllers.DashController = function($scope,$http){
             $scope.hub='all';
             break;
 
-            case "age_group":
-            $scope.filter_age_group[$scope.age_group]=age_group_json[$scope.age_group];
-            $scope.params.age_ids.push(Number($scope.age_group));
-            $scope.age_group='all';
+            case "age_range":
+            //--validate
+
+            //push
+            var age_range = {"from_age":$scope.from_age,"to_age":$scope.to_age};
+            $scope.filtered_age_range.push(age_range);
+            $scope.params.age_ranges.push(age_range);
             break;
 
             case "gender":
@@ -309,7 +322,7 @@ ctrllers.DashController = function($scope,$http){
 
         delete $scope.filter_districts["all"];
         delete $scope.filter_hubs["all"];
-        delete $scope.filter_age_group["all"];
+        delete $scope.filtered_age_range["all"];
         delete $scope.filter_gender["all"];
         delete $scope.filter_regimen["all"];
         delete $scope.filter_line["all"];
@@ -332,7 +345,7 @@ ctrllers.DashController = function($scope,$http){
             $scope.params.hubs=rmveFrmArr(nr,$scope.params.hubs);
             break;
 
-            case "age_group": 
+            case "age_range": 
             delete $scope.filter_age_group[nr];
             $scope.params.age_ids=rmveFrmArr(nr,$scope.params.age_ids);
             break;
