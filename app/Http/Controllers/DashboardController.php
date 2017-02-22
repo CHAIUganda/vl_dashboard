@@ -80,9 +80,14 @@ class DashboardController extends Controller {
 		$districts=iterator_to_array($this->mongo->districts->find());
 		$facilities=iterator_to_array($this->mongo->facilities->find());
 		$regimens=iterator_to_array($this->mongo->regimens->find());
-		return compact("hubs","districts","facilities","regimens");
+		$new_hubs=$this->get_hubs();
+		return compact("hubs","districts","facilities","regimens","new_hubs");
 	}
-
+	 private function get_hubs(){
+        $sql = "SELECT * FROM vl_hubs";
+        $hubs =  \DB::connection('live_db')->select($sql);
+        return $hubs;
+    }
 	private function _latestNMonths($n=12){
         $ret=[];
         $m=date('m');
@@ -224,7 +229,8 @@ class DashboardController extends Controller {
 
 	private function _facilityNumbers(){
 		$grp=[];
-		$grp['_id']='$facility_id';
+		//$grp['_id']='$facility_id';
+		$grp['_id']= array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id' => '$facility_id' );
 		$grp['samples_received']=['$sum'=>'$samples_received'];
 		$grp['patients_received']=['$sum'=>'$patients_received'];
 		$grp['suppressed']=['$sum'=>'$suppressed'];

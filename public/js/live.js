@@ -82,6 +82,7 @@ ctrllers.DashController = function($scope,$http){
 
     $scope.districts2 = [];
     $scope.hubs2 = [];
+    $scope.hubs = [];
     $scope.age_group_slct = age_group_json;
 
    /* $scope.orderByCurrentRegimen = function(regimen){
@@ -127,6 +128,12 @@ ctrllers.DashController = function($scope,$http){
             var obj = data.hubs[i];
             hubs_json[obj.id] = obj.name;
             $scope.hubs2.push({"id":obj.id,"name":obj.name});
+        }
+
+        for(var i in data.new_hubs){
+            var obj = data.new_hubs[i];
+            
+            $scope.hubs.push({"id":obj.id,"name":obj.hub});
         }
 
         for(var i in data.facilities){
@@ -376,7 +383,17 @@ ctrllers.DashController = function($scope,$http){
         //generalFilter();
     };
 
-
+    $scope.getHubName=function(hub_id){
+        var hub_list = $scope.hubs;
+        var hub_name = null;
+        for (var i = 0; i<hub_list.length; i++) {
+            if(hub_id == hub_list[i].id){
+                hub_name = hub_list[i].name;
+                break;
+            }
+        };
+        return hub_name;
+    }
     $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;  
         //console.log("districts -- "+JSON.stringify($scope.labels.districts));
         //console.log("facilities -- "+JSON.stringify($scope.labels.facilities));     
@@ -798,14 +815,23 @@ ctrllers.DashController = function($scope,$http){
     function exportFacilityNumbers(scopeInstance){
        
         var export_facility_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
             var facilityRecord = facility_numbers_from_scope[index];
 
+            var hub_name_value = null;
+            try{
+                hub_name_value =scopeInstance.getHubName(facilityRecord._id.hub_id);
+            }catch(err){
+
+            }
             var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
+                district_name : district_labels[facilityRecord._id.district_id],
+                hub_name: hub_name_value,
+                facility_name : facility_labels[facilityRecord._id.facility_id],
                 samples_received : facilityRecord.samples_received,
                 patients_received : facilityRecord.patients_received,
                 samples_tested : facilityRecord.total_results,
@@ -844,14 +870,24 @@ ctrllers.DashController = function($scope,$http){
 
     function exportFacilitySuppressionNumbers(scopeInstance){
         var export_facility_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
             var facilityRecord = facility_numbers_from_scope[index];
 
+            var hub_name_value = null;
+            try{
+                hub_name_value = scopeInstance.getHubName(facilityRecord._id.hub_id);
+            }catch(err){
+
+            }
+
             var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
+                district_name : district_labels[facilityRecord._id.district_id],
+                hub_name: hub_name_value,
+                facility_name : facility_labels[facilityRecord._id.facility_id],
                 valid_results : facilityRecord.valid_results,
                 suppression_rate : Math.round(((facilityRecord.suppressed/facilityRecord.valid_results)*100),1)
             }
@@ -886,14 +922,25 @@ ctrllers.DashController = function($scope,$http){
 
     function exportFacilityRejectionNumbers(scopeInstance){
         var export_facility_rejection_numbers = [];
+        var district_labels = scopeInstance.labels.districts;
+        
         var facility_labels = scopeInstance.labels.facilities;
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
             var facilityRecord = facility_numbers_from_scope[index];
 
+            var hub_name_value = null;
+            try{
+                hub_name_value = scopeInstance.getHubName(facilityRecord._id.hub_id);
+            }catch(err){
+
+            }
+
             var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
+                district_name : district_labels[facilityRecord._id.district_id],
+                hub_name: hub_name_value,
+                facility_name : facility_labels[facilityRecord._id.facility_id],
                 samples_received : facilityRecord.samples_received,
                 rejected_samples:facilityRecord.rejected_samples,
                 rejection_rate : Math.round(((facilityRecord.rejected_samples/facilityRecord.samples_received)*100),1)
