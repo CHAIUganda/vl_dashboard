@@ -28,10 +28,10 @@
         </span>
 
         <span ng-model='filtered_age_range' ng-init='filtered_age_range=[]'>
-            <span ng-repeat="filtered_age_range_instance in filtered_age_range">
+            <span ng-repeat="filtered_age_range_instance in filtered_age_range" ng-init="age_range_index = ageRangesCount()">
                 <span class="filter-val ng-cloak"> <% filtered_age_range_instance.from_age %> 
                     - <% filtered_age_range_instance.to_age %>
-                    (yrs) <x ng-click='removeTag("age_range",ag_nr)'>&#120;</x>
+                    (yrs) <x ng-click='filtered_age_range.splice($index, 1)'>&#120;</x>
                 </span> 
             </span>
         </span>

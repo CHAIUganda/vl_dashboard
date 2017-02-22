@@ -18,6 +18,7 @@ use Lang;
 use Redirect;
 use Request;
 use Session;
+use Log;
 
 class DashboardController extends Controller {
 	//private $mongo = \MongoClient::connect('vldash');
@@ -62,7 +63,8 @@ class DashboardController extends Controller {
 		$conds['$and'][]=[ 'year_month'=>  ['$lte'=> (int)$to_date] ];
 		if(!empty($districts)&&$districts!='[]') $conds['$and'][]=[ 'district_id'=>  ['$in'=> json_decode($districts)] ];
 		if(!empty($hubs)&&$hubs!='[]') $conds['$and'][]=[ 'hub_id'=>  ['$in'=> json_decode($hubs)] ];
-		if(!empty($age_ids)&&$age_ids!='[]') $conds['$and'][]=[ 'age_group_id'=>  ['$in'=> json_decode($age_ids)] ];
+		if(!empty($age_ids)&&$age_ids!='[]') 
+			$conds['$and'][]=[ 'age_group_id'=>  ['$in'=> json_decode($age_ids)] ];
 		if(!empty($genders)&&$genders!='[]') $conds['$and'][]=[ 'gender'=>  ['$in'=> json_decode($genders)] ];
 		//if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen_group_id'=>  ['$in'=> json_decode($regimens)] ];
 		if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen'=>  ['$in'=> json_decode($regimens)] ];
@@ -70,6 +72,8 @@ class DashboardController extends Controller {
 		if(!empty($indications)&&$indications!='[]') $conds['$and'][]=[ 'treatment_indication_id'=>  ['$in'=> json_decode($indications)] ];
 
 		//print_r($conds);
+		//$this->info("--------------conditions----------");
+
 
 		return $conds;
 	}
@@ -150,6 +154,10 @@ class DashboardController extends Controller {
 	}*/
 
 	public function live(){
+
+		$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
+		$output->writeln("-------------");
+		$output->writeln(print_r($this->conditions, true));
 		$whole_numbers=$this->_wholeNumbers();
 		//return ['y'=>8,'a'=>9,'c'=>13,'x'=>19];
 		$t_indication=$this->_treatmentIndicationNumbers();
