@@ -34,7 +34,7 @@ $printed_url="/results_list?printed=YES$facility_id";
         {!! MyHTML::submit('Download selected','btn  btn-xs btn-danger','pdf') !!}
         <input type="button" class='btn btn-xs btn-danger' value="Print preview selected" onclick="viewSelected();"   /> 
 
-        <table id="results-table" class="table table-condensed table-bordered" style="max-width:1100px;margin-top:10px">
+        <table id="results-table" class="table table-condensed table-bordered  table-striped" style="max-width:1100px;margin-top:10px">
             <thead>
             <tr>
                 <th>Select</th>               

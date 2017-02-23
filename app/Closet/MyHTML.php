@@ -229,6 +229,47 @@ class MyHTML{
 		}
 	}
 
+	public static function isResultFailed($machineType,$result,$flag){
+		$check = 0;
+
+		if($machineType=='abbott'){
+			$abbott_result_fails = array(
+				"-1.00",
+				"3153 There is insufficient volume in the vessel to perform an aspirate or dispense operation.",
+				"3109 A no liquid detected error was encountered by the Liquid Handler.",
+				"A no liquid detected error was encountered by the Liquid Handler.",
+				"Unable to process result, instrument response is invalid.",
+				"3118 A clot limit passed error was encountered by the Liquid Handler.",
+				"3119 A no clot exit detected error was encountered by the Liquid Handler.",
+				"3130 A less liquid than expected error was encountered by the Liquid Handler.",
+				"3131 A more liquid than expected error was encountered by the Liquid Handler.",
+				"3152 The specified submerge position for the requested liquid volume exceeds the calibrated Z bottom",
+				"4455 Unable to process result, instrument response is invalid.",
+				"A no liquid detected error was encountered by the Liquid Handler.",
+				"Failed          Internal control cycle number is too high. Valid range is [18.48, 22.48].",
+				"Failed          Failed            Internal control cycle number is too high. Valid range is [18.48,",
+				"Failed          Failed          Internal control cycle number is too high. Valid range is [18.48, 2",
+				"OPEN",
+				"There is insufficient volume in the vessel to perform an aspirate or dispense operation.",
+				"Unable to process result, instrument response is invalid.",
+				);
+			$abbott_flags = array(
+				"4442 Internal control cycle number is too high.",
+				"4450 Normalized fluorescence too low.",
+				"4447 Insufficient level of Assay reference dye.",
+				"4457 Internal control failed.",
+			);
+			if(in_array($result, $abbott_result_fails) || in_array($flag, $abbott_flags)){
+				$check = 1;
+			}
+		}elseif($machineType=='roche'){
+			if(trim($result) == 'Failed' || trim($result) == 'Invalid'){
+				$check = 1;
+			}
+		}
+		return $check;		
+	}
+
 	public static function getNumericalResult($result=""){
 		$numericVLResult = 0;
 		$numericVLResult = preg_replace("/Copies \/ mL/s","",$result);
@@ -240,11 +281,15 @@ class MyHTML{
 		return $numericVLResult;
 	}
 
-	public static function isSuppressed2($result,$sample_type,$test_date){
+	public static function isSuppressed2($result,$sample_type="",$test_date=""){
 		$ret="";
 		$valid = self::isResultValid($result);
 		$test_date_str=strtotime($test_date);	
 		if($valid=='YES'){
+			if(empty($sample_type) && empty($test_date)){
+				$ret = $result<=1000?"YES":"NO";
+				return $ret;
+			}
 			if($test_date_str<1459458000){//use previous suppression criteria if before 2016-04-01 00:00:00
 				if($sample_type=="DBS"){
 					$ret=$result>5000?"NO":"YES";

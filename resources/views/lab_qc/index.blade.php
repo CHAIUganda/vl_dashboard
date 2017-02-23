@@ -3,27 +3,29 @@
 @section('content')
 <link href="{{ asset('/css/vl2.css') }}" rel="stylesheet">
 <?php 
-// if($tab=='roche'){
-//     $roche_actv="class=active";
-//     $abbott_actv="";
-//     $released_actv="";
-// }elseif($tab=='abbott'){
-//     $abbott_actv="class=active";
-//     $roche_actv="";
-//     $released_actv="";
-// }else{
+if($tab=='roche'){
+    $roche_actv="class=active";
+    $abbott_actv="";
+    $released_actv="";
+}elseif($tab=='abbott'){
+    $abbott_actv="class=active";
+    $roche_actv="";
+    $released_actv="";
+}else{
     $abbott_actv="";
     $roche_actv="";
     $released_actv="class=active";
-//}
+}
 
-// $roche_url = "/lab_qc/index?tab=roche";
-// $abbott_url = "/lab_qc/index?tab=abbott";
-$released_url = "/qc?tab=released";
+$roche_url = "/lab_qc/index?tab=roche";
+$abbott_url = "/lab_qc/index?tab=abbott";
+$released_url = "/lab_qc/index?tab=released";
 ?>
 
 
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li {{ $roche_actv }} title='Roche'><a href="{!! $roche_url !!}" >Roche QC</a></li>
+    <li {{ $abbott_actv }} title='Abbott'><a href="{!! $abbott_url !!}" >Abbott QC</a></li>
     <li {{ $released_actv }} title='Released'><a href="{!! $released_url !!}" >Released Worksheets</a></li>
 </ul>
 {!! Form::open(array('url'=>'/result','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
@@ -46,7 +48,7 @@ $released_url = "/qc?tab=released";
 {!! Form::close() !!}
 <script type="text/javascript">
 
-$('#qc').addClass('active');
+$('#lab_qc').addClass('active');
 
 $(function() {
     $('#results-table').DataTable({
@@ -54,7 +56,7 @@ $(function() {
         processing: true,
         serverSide: true,
         pageLength: 50,
-        ajax: '{!! url("/qc/data?tab=released") !!}',
+        ajax: '{!! url("/lab_qc/index/data?tab=$tab") !!}',
         columns: [
             {data: 'worksheetReferenceNumber', name: 'worksheetReferenceNumber'},
             {data: 'created', name: 'w.created'},

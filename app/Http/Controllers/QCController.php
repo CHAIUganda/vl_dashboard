@@ -4,17 +4,36 @@ use EID\Http\Requests;
 use EID\Http\Controllers\Controller;
 
 use EID\LiveData;
+use EID\WorksheetResults;
 
 class QCController extends Controller {
 
-	public function index(){
+	public function getIndex(){
+		$tab=\Request::get("tab");
+		$tab=empty($tab)?'released':$tab;
+		return view('qc.index', compact('tab'));
+	}
+
+	public function getData(){
+		$tab=\Request::get("tab");
+		$tab=empty($tab)?'released':$tab;
+
+		$results = WorksheetResults::getWorksheetList($tab);
+		return \Datatables::of($results)
+				->addColumn('worksheetReferenceNumber', function($result){
+					return "<a href='/data_qc/$result->id'>$result->worksheetReferenceNumber</a>";
+				})
+				->make(true);
+	}
+
+	/*public function index(){
 		$hubs = LiveData::getHubs();
 		$facilities = LiveData::getFacilities();
 		$hubs = \MyHTML::get_arr_pair($hubs, 'hub');
 		$facilities = \MyHTML::get_arr_pair($facilities, 'facility');
 
 		return view('qc.index', compact('hubs', 'facilities'));
-	}
+	}*/
 
 	public function worksheet_search($q){
 		$worksheets = LiveData::searchWorksheet($q);
@@ -25,19 +44,19 @@ class QCController extends Controller {
 		return $ret;
 	}
 
-	public function qc($id){
+	public function data_qc($id){
 		$now = date("Y-m-d H:i:s");
 		$qc_by = \Auth::user()->email;
 		if(\Request::has('samples')){
-			$samples = \Request::get('samples');
+			$samples = \Request::get('choices');
 			$sql = "INSERT INTO vl_facility_printing (sample_id, qc_at, qc_by) VALUES ";
-			foreach ($samples as $sample_id) {
-				$sql .= "($sample_id, '$now', '$qc_by'),";				
+			foreach ($samples as $sample_id => $choice) {
+				if($choice == 'approved') $sql .= "($sample_id, '$now', '$qc_by'),";				
 			}
 
 			$sql = trim($sql, ",");
 			\DB::connection('live_db')->unprepared($sql);
-			redirect("/qc/$id/");
+			return redirect("/qc/$id/");
 		}
 		$samples = LiveData::worksheetSamples($id);
 		$wk = LiveData::select("*")->from("vl_samples_worksheetcredentials")->where('id','=',$id)->limit(1)->get();

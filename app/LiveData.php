@@ -112,17 +112,15 @@ class LiveData extends Model
     }
 
     public static function worksheetSamples($id){
-      $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'sampleID')
+      $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'rr.sample_id')
                       ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
                       ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
+                      ->leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')
                       ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
                       ->leftjoin('vl_facility_printing AS fp', 'fp.sample_id', '=', 's.id')
-                      ->leftjoin('vl_results_abbott AS res_a', 'res_a.SampleID', '=', 's.vlSampleID')
-                      ->leftjoin('vl_results_roche AS res_r', 'res_r.SampleID', '=', 's.vlSampleID')
-                      ->leftjoin('vl_results_multiplicationfactor AS fctr', 'fctr.worksheetID', '=', 'wk.worksheetID')
-                      ->select('s.*','wk.sampleID', 'hub', 'facility', 'p.*', 'fp.id As fp_id', 'res_a.result AS abbott_result', 'res_r.Result AS roche_result', 'factor')
-                      ->from('vl_samples_worksheet AS wk')
-                      ->where('wk.worksheetID','=',$id)
+                      ->select('s.*','rr.sample_id', 'hub', 'facility', 'p.*', 'fp.id As fp_id', 'result', 'd.district')
+                      ->from('vl_results_released AS rr')
+                      ->where('rr.worksheet_id','=',$id)
                       ->orderby('lrEnvelopeNumber', 'ASC')
                       ->orderby('lrNumericID', 'ASC')
                       ->get();

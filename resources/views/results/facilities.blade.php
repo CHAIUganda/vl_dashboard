@@ -6,7 +6,7 @@
     <div class="panel-heading"> <h3 class="panel-title">Facilities :: {!! \Auth::user()->hub_name !!}</h3> </div>
     <div class="panel-body">
 
-      <table id="results-table" class="table table-condensed table-bordered">
+      <table id="results-table" class="table table-condensed table-bordered  table-striped">
         <thead>
             <tr>
                 <th>Facility</th>               

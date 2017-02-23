@@ -72,7 +72,8 @@
                         <li id='dashboard' >{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>
 
                         @if(Auth::check())   
-                        @permission('qc')<li id='qc' >{!! link_to("/qc","QC",['class'=>'hdr']) !!}</li>@endpermission       
+                        @permission('qc')<li id='qc' >{!! link_to("/qc","DATA QC",['class'=>'hdr']) !!}</li>@endpermission
+                        @permission('qc')<li id='lab_qc' >{!! link_to("/lab_qc/index","LAB QC",['class'=>'hdr']) !!}</li>@endpermission       
                         @permission('print_results')
                         <li id='results' >{!! link_to("/results","RESULTS",['class'=>'hdr']) !!}</li>
                         <li id='suppression_trends' >{!! link_to("/suppression_trends/index","SUPPRESSION TRENDS",['class'=>'hdr']) !!}</li>

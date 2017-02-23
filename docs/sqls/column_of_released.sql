@@ -1,0 +1,1 @@
+ALTER TABLE `vl_samples_worksheetcredentials` ADD `released` ENUM( 'YES', 'NO' ) NOT NULL DEFAULT 'NO' AFTER `includeCalibrators` ;

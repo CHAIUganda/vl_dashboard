@@ -9,16 +9,13 @@
         &nbsp;&nbsp;&nbsp;
         Machine Type: <u>{{ $wk->machineType }}</u><br><br>
 
-        <a href="#" class='btn btn-sm btn-danger' id="select_all">Select all</a>
-        <input type="submit" id="download" name="download" class='btn btn-sm btn-danger' value="Approve selected"   /> 
-        <table id="results-table" class="table table-condensed table-bordered" style="font-size:12px">
+        <table id="results-table" class="table table-condensed table-bordered  table-striped" style="font-size:12px">
             <thead>
             <tr>
-                <th></th>
-                <th>Hub</th>
-                <th>Facility</th>
                 <th>Location&nbsp;ID&nbsp;&nbsp;&nbsp;</th>
-            	<th width="1%">Form Number</th>
+                <th width="1%">Form Number</th>
+                <th>Facility</th>
+                <th>District</th>                
                 <th>Art Number</th>
                 <th>Other ID</th>
                 <th >DOB</th>
@@ -26,7 +23,7 @@
                 <th width="1%">Date of collection</th>
                 <th width="1%">Date received at CHPL</th>
                 <th>Result</th>
-                <th>Approved</th>
+                <th style="width:120px;">Choose</th>
             </tr>
             </thead>
             <tbody>
@@ -34,27 +31,37 @@
                 <?php $resultxxx = !empty($wk->machineType == 'abbott' )?$sample->abbott_result:$sample->roche_result ?>
 
                 <tr>
-                    <td><?= (empty($sample->fp_id))? Form::checkbox('samples[]', $sample->sampleID,'', ['class'=>'samples']):"" ?></td>               
-                    <td>{{ $sample->hub }}</td>
-                    <td>{{ $sample->facility }}</td>
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
                     <td><a href="javascript:windPop('/result/{{ $sample->sampleID }}?view=yes')">{{ $sample->formNumber }}</a></td>
+                    <td>{{ $sample->facility }}</td>    
+                    <td>{{ $sample->district }}</td>   
+                    
                     <td>{{ $sample->artNumber }}</td>
                     <td>{{ $sample->otherID }}</td>
                     <td>{{ $sample->dateOfBirth }}</td>
                     <td>{{ $sample->gender }}</td>
                     <td>{{ $sample->collectionDate }}</td>
                     <td>{{ $sample->receiptDate }}</td>
-                    <td>{{ MyHTML::getVLNumericResult($resultxxx, $wk->machineType, $sample->factor) }}</td>
-                    <td class='<?= (!empty($sample->fp_id))?"alert alert-success":"alert alert-info" ?>'>
-                        <?= (!empty($sample->fp_id))?"Approved":"Pending" ?>
-                    </td>
+                    <td>{{ $sample->result }}</td>
+                    <td>
+                       <label>{!! Form::radio("choices[$sample->sample_id]", 'approved', 0, ["sample"=>"$sample->sample_id", "class"=>"approvals"]) !!} Approve</label>
+                       <label>{!! Form::radio("choices[$sample->sample_id]", 'reject', 0,["sample"=>"$sample->sample_id", "class"=>"rejects"]) !!} Reject</label><br>
+                       <textarea style="display:none" id="comment{{ $sample->sample_id }}"></textarea>
+                    </td> 
                 </tr>
                 @endforeach
 
             </tbody>
         </table>
-    </div>
+
+        {!! Form::hidden('len', count($samples), ['id'=>'len']) !!}
+        <br>
+        <div style="float:right">
+            <input type="submit" id="save" class='btn btn-sm btn-danger' value="Save Data QC" />
+        </div>
+        <br><br>
+
+        </div>
 <!-- </div> -->
   
 
@@ -63,18 +70,29 @@
 $('#qc').addClass('active');
 
 $(function() {
-    $('#results-table').DataTable({paging:false});
+    $('#results-table').DataTable({paging:false, sorting:false});
 });
 
-$('#select_all').click(function(){
-    var status = $(this).html();
-    if(status == 'Select all'){
-        $(".samples").attr("checked", true);
-        $(this).html('Unselect all');
+
+$("#save").click(function(){
+    var len_selected = $('input:radio:checked').length;
+    var len_samples = $('#len').val();
+    if(len_selected!=len_samples){
+        alert("Please Complete QC for all samples");
+        return false;
     }else{
-        $(".samples").attr("checked", false);
-        $(this).html('Select all');
-    }    
-})
+        return true;
+    }   
+});
+
+$(".rejects").click(function(){
+    var sample = $(this).attr('sample');
+    $("#comment"+sample).show();
+});
+
+$(".approvals").click(function(){
+    var sample = $(this).attr('sample');
+    $("#comment"+sample).hide();
+});
 </script>
 @endsection()
