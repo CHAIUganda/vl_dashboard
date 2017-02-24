@@ -155,9 +155,7 @@ class DashboardController extends Controller {
 
 	public function live(){
 
-		$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
-		$output->writeln("-------------");
-		$output->writeln(print_r($this->conditions, true));
+		
 		$whole_numbers=$this->_wholeNumbers();
 		//return ['y'=>8,'a'=>9,'c'=>13,'x'=>19];
 		$t_indication=$this->_treatmentIndicationNumbers();
