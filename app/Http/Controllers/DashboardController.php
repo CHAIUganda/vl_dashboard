@@ -188,7 +188,7 @@ class DashboardController extends Controller {
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['valid_results']=['$sum'=>'$valid_results'];
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		$ret=isset($res['result'][0])?$res['result'][0]:[];
 		return $ret;
 	}
@@ -205,7 +205,7 @@ class DashboardController extends Controller {
 		$grp=[];
 		$grp['_id']='$treatment_indication_id';
 		$grp['samples_received']=['$sum'=>'$samples_received'];
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
 		$ret=[];
 
 		if(isset($res['result'])) foreach ($res['result'] as $row) $ret[$row['_id']]=$row['samples_received'];
@@ -216,7 +216,7 @@ class DashboardController extends Controller {
 		$grp=[];
 		$grp['_id']='$regimen_line';
 		$grp['samples_received']=['$sum'=>'$samples_received'];
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);	
 		$ret=[];
 
 		if(isset($res['result'])) foreach ($res['result'] as $row) $ret[$row['_id']]=$row['samples_received'];
@@ -246,7 +246,7 @@ class DashboardController extends Controller {
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
 		$grp['total_results']=['$sum'=>'$total_results'];
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -273,7 +273,7 @@ class DashboardController extends Controller {
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
 		$grp['dbs_patients']=['$sum'=>'$dbs_patients_received'];
 		$grp['total_results']=['$sum'=>'$total_results'];
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -304,7 +304,7 @@ class DashboardController extends Controller {
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
 		$grp['total_results']=['$sum'=>'$total_results'];
 
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp], ['$sort'=>["_id"=>1]]);
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp], ['$sort'=>["_id"=>1]]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -328,7 +328,7 @@ class DashboardController extends Controller {
 		$grp['total_results']=['$sum'=>'$total_results'];
 		$grp['valid_results']=['$sum'=>'$valid_results'];
 
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 
@@ -340,7 +340,7 @@ class DashboardController extends Controller {
 		$grp['total_results']=['$sum'=>'$total_results'];
 		$grp['valid_results']=['$sum'=>'$valid_results'];
 		
-		$res=$this->mongo->dashboard_data->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
 

@@ -306,15 +306,13 @@ class LiveData extends Model
     private static function ageGroupCase(){
       //31536000 is the number of seconds in a year of 365 days
        $age=" ROUND((UNIX_TIMESTAMP(s.created)-UNIX_TIMESTAMP(dateOfBirth))/31536000) ";
-       $arr=[ 
-              1=>"$age <2",
-              2=>"$age >=2 && $age < 5",
-              3=>"$age >=5 && $age < 10",
-              4=>"$age >=10 && $age < 15",
-              5=>"$age >=15 && $age < 20",
-              6=>"$age >=20 && $age < 25",
-              7=>"$age >=25"
-            ];
+       $arr=[];
+        for ($index=1; $index < 100; $index ++) { 
+            $from_age = $index - 1;
+            $to_age = $index;
+            $arr[$index]="$age >=$from_age && $age < $to_age";
+
+        }
     
        $ret="CASE ";
        foreach ($arr as $k => $v) {

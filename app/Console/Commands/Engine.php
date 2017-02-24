@@ -54,11 +54,11 @@ class Engine extends Command
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
         //$this->mongo->drop(); 
-        $this->_loadHubs();
-        $this->_loadDistricts();
-        $this->_loadFacilities();
-        $this->_loadIPs();
-        $this->_loadRegimens();
+        //$this->_loadHubs();
+        //$this->_loadDistricts();
+        //$this->_loadFacilities();
+        //$this->_loadIPs();
+        //$this->_loadRegimens();
         $this->_loadData();
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
@@ -66,7 +66,7 @@ class Engine extends Command
     }
 
     private function _loadData(){
-        $this->mongo->dashboard_data->drop();
+        $this->mongo->dashboard_data_refined->drop();
         $year=2013;
         $current_year=date('Y');
         $facilities_arr=LiveData::getFacilities2();
@@ -128,7 +128,7 @@ class Engine extends Command
                 $data["total_results"] = isset($t_rslts[$key])?(int)$t_rslts[$key]:0;
                 $data["valid_results"] = isset($v_rslts[$key])?(int)$v_rslts[$key]:0;
                 $data["suppressed"]= isset($sprsd[$key])?(int)$sprsd[$key]:0;
-                $this->mongo->dashboard_data->insert($data);
+                $this->mongo->dashboard_data_refined->insert($data);
                 $i++;
                 //echo "$i\n";                
             }

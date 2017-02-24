@@ -57,14 +57,45 @@ ctrllers.DashController = function($scope,$http){
 
     var hubs_json = {};
     var age_group_json = {1:"0<2",2:"2-<5",3:"5-<10",4:"10-<15",5:"15-<20",6:"20-<25",7:"25+"};  
-    var from_age_json ={0:0,1:1,2:2,3:3,4:4};
-    var to_age_json ={1:1,2:2,3:3,4:4,5:5};
+
+    var generateFromAge = function(){
+        var json_array={};
+        for(var i=0; i<100; i++){
+            var key=i;
+            if(i < 10){
+                key="0"+i;
+            }
+            
+            json_array[key]=i;
+        }
+
+        return json_array;
+    };
+    var from_age_json =generateFromAge();
+
+    var generateToAge = function(){
+        var json_array={};
+        for(var i=1; i<100; i++){
+            var key=i;
+            if(i < 10){
+                key="0"+i;
+            }
+            
+            json_array[key]=i;
+        }
+
+        return json_array;
+    };
+    var to_age_json =generateToAge();
     var regimen_groups_json = {1: 'AZT based', 2: 'ABC based', 3: 'TDF based', 4: 'Other'};
     var regimen_times_json = {0:'No Date Given',1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
     var results_json = {}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json = {'m':'Male','f':'Female','x':'Unknown'};
     var lines_json = {1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
     var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
+
+    
+    
 
     $scope.month_labels = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
 
@@ -162,12 +193,38 @@ ctrllers.DashController = function($scope,$http){
         }
     });
     
+    var convertAgeRangesToAgeIds=function(scopeAgeRangesParam){
+        var age_ranges_array = scopeAgeRangesParam;
+        var age_ids_array=[];
+        for (var i = 0; i<age_ranges_array.length ; i++) {
+            var from_age_value = parseInt(age_ranges_array[i].from_age);
+            var to_age_value = parseInt(age_ranges_array[i].to_age);
+            var age_range = to_age_value - from_age_value;
+            
+            
+            //to_age becomes the id. This is what we put in the mongoDB.
+            if(age_range == 1){
+                
+                age_ids_array.push(to_age_value);
+
+            }else if(age_range > 1){
+                var age_range_id = from_age_value;
+                for(var age_index=1; age_index <= age_range; age_index++){
+                    age_range_id ++;
+                    age_ids_array.push(age_range_id);
+                }//end inner loop
+            }
+        }//end outer loop
+
+        return age_ids_array;
+    };
+
     var getData=function(){
             $scope.loading = true;
             var prms = {};
             prms.districts = JSON.stringify($scope.params.districts);
             prms.hubs = JSON.stringify($scope.params.hubs);
-            prms.age_ranges = JSON.stringify($scope.params.age_ranges);
+            prms.age_ids = JSON.stringify(convertAgeRangesToAgeIds($scope.params.age_ranges)); 
             prms.genders = JSON.stringify($scope.params.genders);
             prms.regimens = JSON.stringify($scope.params.regimens);
             prms.lines = JSON.stringify($scope.params.lines);
@@ -348,8 +405,8 @@ ctrllers.DashController = function($scope,$http){
 
      var isAgeRageValid=function(age_range_to_validate){
         var validated=true;
-        var validate_from_age=age_range_to_validate.from_age;
-        var validate_to_age=age_range_to_validate.to_age;
+        var validate_from_age=parseInt(age_range_to_validate.from_age);
+        var validate_to_age=parseInt(age_range_to_validate.to_age);
 
         if(validate_from_age > validate_to_age){
              validated=false;
