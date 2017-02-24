@@ -20,7 +20,7 @@
                 <th>Art Number</th>
                 <th>Machine Result</th>
                 <th>Result </th>
-                <th style="width:200px">Choose</th>
+                <th style="width:250px">Choose</th>
             </tr>
             </thead>
             <tbody>
@@ -55,7 +55,7 @@
                 $failed = MyHTML::isResultFailed($wk->machineType,$resultxxx,$flag);
                 $suppressed = "UNKNOWN";
                 if($failed == 1){
-                    $styl = "style=background:#D2F013;";
+                    $styl = "style=background:#F5A9A9;";
                     $pat_result = 'Failed';
                 }else{
                     $num_result = MyHTML::getNumericalResult($resultxxx);
@@ -75,7 +75,7 @@
                     <td>
                         {!! Form::hidden("suppressions[$sample->sampleID]",$suppressed) !!}
                         
-                       <label>{!! Form::radio("choices[$sample->sampleID]", 'release') !!} Release</label>
+                       <?php if($pat_result!='Failed'){ ?><label>{!! Form::radio("choices[$sample->sampleID]", 'release') !!} Release</label><?php } ?>
                        <label>{!! Form::radio("choices[$sample->sampleID]", 'reschedule') !!} Reschedule</label>
                        <label>{!! Form::radio("choices[$sample->sampleID]", 'invalid') !!} Invalid</label>
                     </td>                   

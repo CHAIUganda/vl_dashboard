@@ -22,7 +22,6 @@
     
     <script src="{{ asset('/js/jquery-2.1.3.min.js') }}" type="text/javascript" ></script>
 
-    
     <script src="{{ asset('/js/jquery-ui.min.js')}}" type="text/javascript"></script>
     <script src="{{ asset('/twitter-bootstrap-3.3/js/bootstrap.min.js') }}" type="text/javascript" ></script>
 
@@ -31,10 +30,8 @@
 
     <script src="{{ asset('/js/angular-datatables.min.js') }}" type="text/javascript"></script>
 
-
    <script src="{{ asset('/js/modernizr.custom.js') }}"></script>
 
-    
     <script src="{{ asset('/js/general.js') }}" type="text/javascript"></script>
    
     <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
