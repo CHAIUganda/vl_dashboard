@@ -53,12 +53,12 @@ class Engine extends Command
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
-        //$this->mongo->drop(); 
-        //$this->_loadHubs();
-        //$this->_loadDistricts();
-        //$this->_loadFacilities();
-        //$this->_loadIPs();
-        //$this->_loadRegimens();
+        $this->mongo->drop(); 
+        $this->_loadHubs();
+        $this->_loadDistricts();
+        $this->_loadFacilities();
+        $this->_loadIPs();
+        $this->_loadRegimens();
         $this->_loadData();
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
