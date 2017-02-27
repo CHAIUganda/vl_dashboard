@@ -127,7 +127,7 @@ class ResultsController extends Controller {
 	}
 
 	public function facilities(){
-		$facilities = LiveData::select('*')->from('vl_facilities');
+		$facilities = LiveData::leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')->select('*', 'hub')->from('vl_facilities AS f');
 		if(!empty(\Auth::user()->hub_id)){
 			$facilities = $facilities->where('hubID', \Auth::user()->hub_id)->get();
 		}elseif(!empty(\Auth::user()->facility_id)){

@@ -9,8 +9,9 @@
       <table id="results-table" class="table table-condensed table-bordered  table-striped">
         <thead>
             <tr>
-                <th>Facility</th>               
-              <th>Contact Person</th>
+                <th>Facility</th>
+                <th>Hub</th>               
+                <th>Contact Person</th>
                 <th>Phone</th>
                 <th>Email</th>
                 <!-- <th># Pending printing</th>
@@ -21,7 +22,8 @@
         <tbody>
             @foreach($facilities AS $facility)
             <tr>
-                <td><a href='/results_list?f={{$facility->id}}'>{{ $facility->facility }}</a></td>               
+                <td><a href='/results_list?f={{$facility->id}}'>{{ $facility->facility }}</a></td>
+                <td>{{ $facility->hub }}</td>               
                 <td>{{ $facility->contactPerson }}</td>
                 <td>{{ $facility->phone }}</td>
                 <td>{{ $facility->email }}</td>

@@ -37,16 +37,21 @@ class LabQCController extends Controller {
 			$sql = "INSERT INTO vl_results_released (
 					worksheet_id, sample_id, result, suppressed, created, createdby) 
 					VALUES ";
+			$sql1 = "INSERT INTO vl_logs_samplerepeats (sampleID, oldWorksheetID, created, createdby) VALUES ";
 			foreach ($choices as $sample_id => $choice ) {
 				$result = $choice=='invalid'?'Failed':$results[$sample_id];
 				$suppressed = $choice=='invalid'?'UNKNOWN':$suppressions[$sample_id];
 				if($choice == 'release' || $choice == 'invalid'){
 					 $sql .= "($worksheet_id, $sample_id, '$result', '$suppressed', '$now', '$createdby'),";
+				}else if($choice == 'reschedule'){
+					$sql1 .= "($sample_id, $worksheet_id, '$now', '$createdby'),";
 				}			
 			}
 
 			$sql = trim($sql, ",");
+			$sql1 = trim($sql1, ",");
 			\DB::connection('live_db')->unprepared($sql);
+			\DB::connection('live_db')->unprepared($sql2);
 			$sql2 = "UPDATE vl_samples_worksheetcredentials SET released = 'YES' WHERE id = $worksheet_id";
 			\DB::connection('live_db')->unprepared($sql2);
 			return redirect("/lab_qc/index/");

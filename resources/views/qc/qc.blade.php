@@ -18,7 +18,6 @@
                 <th>District</th>                
                 <th>Art Number</th>
                 <th>Other ID</th>
-                <th >DOB</th>
                 <th>Gender</th>
                 <th width="1%">Date of collection</th>
                 <th width="1%">Date received at CHPL</th>
@@ -38,7 +37,6 @@
                     
                     <td>{{ $sample->artNumber }}</td>
                     <td>{{ $sample->otherID }}</td>
-                    <td>{{ $sample->dateOfBirth }}</td>
                     <td>{{ $sample->gender }}</td>
                     <td>{{ $sample->collectionDate }}</td>
                     <td>{{ $sample->receiptDate }}</td>
