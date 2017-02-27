@@ -1,13 +1,14 @@
 @extends('layout')
 
 @section('content')
-{!! Form::open(array('url'=>"/qc/$id",'id'=>'view_form', 'name'=>'view_form' )) !!}
+{!! Form::open(array('url'=>"/data_qc/$id",'id'=>'view_form', 'name'=>'view_form' )) !!}
 
 <!-- <div id="my-tab-content" class="tab-content"> -->
     <div class="tab-pane active" id="print">  
         Worksheet Ref Number: <u>{{ $wk->worksheetReferenceNumber }}</u>
         &nbsp;&nbsp;&nbsp;
         Machine Type: <u>{{ $wk->machineType }}</u><br><br>
+        {!! Form::hidden('worksheet_id', $wk->id ) !!}
 
         <table id="results-table" class="table table-condensed table-bordered  table-striped" style="font-size:12px">
             <thead>

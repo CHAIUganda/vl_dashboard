@@ -10,15 +10,15 @@ class QCController extends Controller {
 
 	public function getIndex(){
 		$tab=\Request::get("tab");
-		$tab=empty($tab)?'released':$tab;
+		$tab=empty($tab)?'roche':$tab;
 		return view('qc.index', compact('tab'));
 	}
 
 	public function getData(){
 		$tab=\Request::get("tab");
-		$tab=empty($tab)?'released':$tab;
+		$tab=empty($tab)?'roche':$tab;
 
-		$results = WorksheetResults::getWorksheetList($tab);
+		$results = WorksheetResults::getWorksheetList($tab, 'yes');
 		return \Datatables::of($results)
 				->addColumn('worksheetReferenceNumber', function($result){
 					return "<a href='/data_qc/$result->id'>$result->worksheetReferenceNumber</a>";
@@ -47,16 +47,19 @@ class QCController extends Controller {
 	public function data_qc($id){
 		$now = date("Y-m-d H:i:s");
 		$qc_by = \Auth::user()->email;
-		if(\Request::has('samples')){
+		if(\Request::has('choices')){
 			$samples = \Request::get('choices');
-			$sql = "INSERT INTO vl_facility_printing (sample_id, qc_at, qc_by) VALUES ";
+			$sql = "INSERT INTO vl_facility_printing (sample_id, ready, qc_at, qc_by) VALUES ";
 			foreach ($samples as $sample_id => $choice) {
-				if($choice == 'approved') $sql .= "($sample_id, '$now', '$qc_by'),";				
+				$ready = $choice == 'approved'?'YES':'NO';
+				$sql .= "($sample_id,'$ready', '$now', '$qc_by'),";				
 			}
 
 			$sql = trim($sql, ",");
 			\DB::connection('live_db')->unprepared($sql);
-			return redirect("/qc/$id/");
+			$sql2 = "UPDATE vl_samples_worksheetcredentials SET `stage` = 'passed_data_qc' WHERE id = ".\Request::get('worksheet_id');
+			\DB::connection('live_db')->unprepared($sql2);
+			return redirect("/qc/");
 		}
 		$samples = LiveData::worksheetSamples($id);
 		$wk = LiveData::select("*")->from("vl_samples_worksheetcredentials")->where('id','=',$id)->limit(1)->get();

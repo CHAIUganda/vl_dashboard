@@ -9,20 +9,19 @@ class WorksheetResults extends Model
     //
     protected $connection = 'live_db';
 
-    public static function getWorksheetList($tab){
-      if($tab=='released'){
-        return self::select('w.id','worksheetReferenceNumber', 'w.created', 'w.createdby')
-                    ->from('vl_samples_worksheetcredentials AS w')->where('released','=','YES');
-      }
-      $ret = self::leftjoin('vl_samples_worksheetcredentials AS w', 'w.id', '=', 'r.worksheetID')
-                  ->select('w.id','worksheetID','worksheetReferenceNumber', 'w.created', 'w.createdby');
-      if($tab=='roche'){
-        $ret = $ret->from('vl_results_roche AS r');
-      }elseif($tab=='abbott'){
-         $ret = $ret->from('vl_results_abbott AS r');
+    public static function getWorksheetList($tab, $data_qc='no'){
+      $ret = self::select('w.id','worksheetReferenceNumber', 'w.created', 'w.createdby')
+            ->from('vl_samples_worksheetcredentials AS w');
+      if($tab == 'released'){
+        $ret = $ret->where('stage', '=', 'passed_lab_qc');
+      }elseif($tab == 'abbott' || $tab == 'roche'){
+        $stg = ($data_qc=='yes')?'passed_lab_qc':'has_results';
+        $ret = $ret->where('stage', '=', $stg)->where('machineType', '=', $tab);
+      }elseif($tab == 'passed_data_qc'){
+        $ret = $ret->where('stage', '=', 'passed_data_qc');
       }
 
-      return $ret->where('released','<>','YES')->groupby('w.id')->orderby('w.id', 'DESC');
+      return $ret->orderby('w.id', 'DESC');
     }   
 
     public static function worksheetSamples($id){
