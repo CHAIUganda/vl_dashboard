@@ -40,11 +40,18 @@ Route::group(['middleware' => 'auth'], function()
 		]);  
 	});
 
-	Route::controllers([
-	    'results_list' => 'ResultsController',
-	    '/qc' => 'QCController',
-	    '/lab_qc/index' => 'LabQCController',
-	]);
+	Route::group(['middleware'=>['permission:print_results']], function() { 
+		Route::controllers(['results_list' => 'ResultsController']);
+	});
+
+	Route::group(['middleware'=>['permission:qc']], function() { 
+		Route::controllers(['/qc' => 'QCController']);
+	});
+
+	Route::group(['middleware'=>['permission:lab_qc']], function() { 
+		Route::controllers(['/lab_qc/index' => 'LabQCController']);
+	});
+
 
 	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);
 
@@ -68,7 +75,7 @@ Route::group(['middleware' => 'auth'], function()
 	//Route::get('/lab_qc/worksheet_list', ['middleware' => ['permission:qc'], 'as' => 'labqc_worksheet_list', 'uses' => 'LabQCController@worksheet_list']);
 	
 	
-	Route::match(array('GET', 'POST'), '/lab_qc/qc/{id}/', ['middleware' => ['permission:qc'], 'as' => 'labqc_qc', 'uses' => 'LabQCController@qc']);
+	Route::match(array('GET', 'POST'), '/lab_qc/qc/{id}/', ['middleware' => ['permission:lab_qc'], 'as' => 'labqc_qc', 'uses' => 'LabQCController@qc']);
 
 	Route::get('/print_envelope/{id}', ['middleware' => ['permission:print_results'], 'as' => 'print_envelope', 'uses' => 'ResultsController@print_envelope']);
 
