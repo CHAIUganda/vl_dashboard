@@ -52,17 +52,50 @@ ctrllers.DashController = function($scope,$http){
 
     $scope.identity = angular.identity;
     $scope.params = {
-        'districts':[],'hubs':[],'age_ids':[],'genders':[],
+        'districts':[],'hubs':[],'age_ranges':[],'genders':[],
         'regimens':[],'lines':[], 'indications': []};
 
     var hubs_json = {};
     var age_group_json = {1:"0<2",2:"2-<5",3:"5-<10",4:"10-<15",5:"15-<20",6:"20-<25",7:"25+"};  
+
+    var generateFromAge = function(){
+        var json_array={};
+        for(var i=0; i<100; i++){
+            var key=i;
+            if(i < 10){
+                key="0"+i;
+            }
+            
+            json_array[key]=i;
+        }
+
+        return json_array;
+    };
+    var from_age_json =generateFromAge();
+
+    var generateToAge = function(){
+        var json_array={};
+        for(var i=1; i<100; i++){
+            var key=i;
+            if(i < 10){
+                key="0"+i;
+            }
+            
+            json_array[key]=i;
+        }
+
+        return json_array;
+    };
+    var to_age_json =generateToAge();
     var regimen_groups_json = {1: 'AZT based', 2: 'ABC based', 3: 'TDF based', 4: 'Other'};
     var regimen_times_json = {0:'No Date Given',1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'};    
     var results_json = {}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json = {'m':'Male','f':'Female','x':'Unknown'};
     var lines_json = {1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
     var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
+
+    
+    
 
     $scope.month_labels = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
 
@@ -78,12 +111,23 @@ ctrllers.DashController = function($scope,$http){
     $scope.labels.regimens2 = [];
     $scope.labels.indications = t_indication_json;
 
+    $scope.labels.from_age = from_age_json;
+    $scope.labels.to_age = to_age_json;
+    $scope.filter_from_age = from_age_json;
+    $scope.filter_to_age = to_age_json;
+    $scope.filtered_age_range = [];
+    $scope.to_age = null;
+    $scope.from_age = null;
+    $scope.ageRangesCounter=0;
+    
+
     var vvvrrr = 0;
 
     $scope.districts2 = [];
     $scope.hubs2 = [];
     $scope.hubs = [];
     $scope.age_group_slct = age_group_json;
+
 
    /* $scope.orderByCurrentRegimen = function(regimen){
         if($scope.labels.reg_grps[regimen._id] == 'ABC')
@@ -148,13 +192,39 @@ ctrllers.DashController = function($scope,$http){
             $scope.labels.regimens2[obj.id] = obj.name;
         }
     });
+    
+    var convertAgeRangesToAgeIds=function(scopeAgeRangesParam){
+        var age_ranges_array = scopeAgeRangesParam;
+        var age_ids_array=[];
+        for (var i = 0; i<age_ranges_array.length ; i++) {
+            var from_age_value = parseInt(age_ranges_array[i].from_age);
+            var to_age_value = parseInt(age_ranges_array[i].to_age);
+            var age_range = to_age_value - from_age_value;
+            
+            
+            //to_age becomes the id. This is what we put in the mongoDB.
+            if(age_range == 1){
+                
+                age_ids_array.push(to_age_value);
+
+            }else if(age_range > 1){
+                var age_range_id = from_age_value;
+                for(var age_index=1; age_index <= age_range; age_index++){
+                    age_range_id ++;
+                    age_ids_array.push(age_range_id);
+                }//end inner loop
+            }
+        }//end outer loop
+
+        return age_ids_array;
+    };
 
     var getData=function(){
             $scope.loading = true;
             var prms = {};
             prms.districts = JSON.stringify($scope.params.districts);
             prms.hubs = JSON.stringify($scope.params.hubs);
-            prms.age_ids = JSON.stringify($scope.params.age_ids);
+            prms.age_ids = JSON.stringify(convertAgeRangesToAgeIds($scope.params.age_ranges)); 
             prms.genders = JSON.stringify($scope.params.genders);
             prms.regimens = JSON.stringify($scope.params.regimens);
             prms.lines = JSON.stringify($scope.params.lines);
@@ -204,7 +274,7 @@ ctrllers.DashController = function($scope,$http){
                 $scope.displayRegimenGroups();
                 $scope.displayRegimenTime();
 
-                $scope.filtered = count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filter_age_group)||$scope.date_filtered;    
+                $scope.filtered = count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filtered_age_range)>0||$scope.date_filtered;    
                 $scope.loading = false;
                 
                 //transposeDurationNumbers();
@@ -213,6 +283,7 @@ ctrllers.DashController = function($scope,$http){
     };
 
     getData();    
+
 
     /*function transposeDurationNumbers(){
        
@@ -261,6 +332,8 @@ ctrllers.DashController = function($scope,$http){
             }
         }
     }
+    
+
 
     $scope.filter=function(mode){
         switch(mode){
@@ -276,10 +349,20 @@ ctrllers.DashController = function($scope,$http){
             $scope.hub='all';
             break;
 
-            case "age_group":
-            $scope.filter_age_group[$scope.age_group]=age_group_json[$scope.age_group];
-            $scope.params.age_ids.push(Number($scope.age_group));
-            $scope.age_group='all';
+            case "age_range":
+            //--validate
+
+            //push
+            var age_range = {"from_age":$scope.from_age,"to_age":$scope.to_age};
+            if(isAgeRageValid(age_range)){
+                $scope.filtered_age_range.push(age_range);
+                $scope.params.age_ranges.push(age_range);
+            }else{
+                alert("Please make sure your range selection is realistic");
+            }
+            
+            $scope.from_age="all";
+            $scope.to_age="all";
             break;
 
             case "gender":
@@ -309,7 +392,7 @@ ctrllers.DashController = function($scope,$http){
 
         delete $scope.filter_districts["all"];
         delete $scope.filter_hubs["all"];
-        delete $scope.filter_age_group["all"];
+        delete $scope.filtered_age_range["all"];
         delete $scope.filter_gender["all"];
         delete $scope.filter_regimen["all"];
         delete $scope.filter_line["all"];
@@ -320,6 +403,50 @@ ctrllers.DashController = function($scope,$http){
         //generalFilter(); //filter the results for each required event
     }
 
+     var isAgeRageValid=function(age_range_to_validate){
+        var validated=true;
+        var validate_from_age=parseInt(age_range_to_validate.from_age);
+        var validate_to_age=parseInt(age_range_to_validate.to_age);
+
+        if(validate_from_age > validate_to_age){
+             validated=false;
+             return validated;
+        }
+
+        for (var index = 0; index < $scope.filtered_age_range.length; index++) {
+            var dummy_from_age = $scope.filtered_age_range[index].from_age;
+            var dummy_to_age = $scope.filtered_age_range[index].to_age;
+            //remove repeating age-ranges
+            if(validate_from_age == dummy_from_age && validate_to_age == dummy_to_age){
+                validated=false;
+                return validated;
+            }
+
+            if(validate_from_age == dummy_from_age){
+                validated=false;
+                return validated;
+            }
+
+            if(validate_from_age > dummy_from_age && validate_from_age < dummy_to_age){
+                validated=false;
+                return validated;
+            }
+
+            if(validate_to_age > dummy_from_age && validate_to_age < dummy_to_age){
+                validated=false;
+                return validated;
+            }
+            if(validate_to_age == dummy_to_age){
+                validated=false;
+                return validated;
+            }
+        };
+        return validated;
+    };
+
+    $scope.ageRangesCount = function() {
+        return $scope.ageRangesCounter++;
+    }
     $scope.removeTag=function(mode,nr){
         switch(mode){
             case "district": 
@@ -332,9 +459,9 @@ ctrllers.DashController = function($scope,$http){
             $scope.params.hubs=rmveFrmArr(nr,$scope.params.hubs);
             break;
 
-            case "age_group": 
-            delete $scope.filter_age_group[nr];
-            $scope.params.age_ids=rmveFrmArr(nr,$scope.params.age_ids);
+            case "age_range": 
+            delete $scope.filtered_age_range[nr];
+            $scope.params.age_ranges=removeAgeGroup(nr,$scope.params.age_ranges);
             break;
 
             case "gender": 
@@ -365,7 +492,7 @@ ctrllers.DashController = function($scope,$http){
     $scope.clearAllFilters=function(){
         $scope.filter_districts={};
         $scope.filter_hubs={};
-        $scope.filter_age_group={};
+        $scope.filtered_age_range=[];
         $scope.filter_gender={};
         $scope.filter_regimen={};
         $scope.filter_line={};
@@ -376,13 +503,13 @@ ctrllers.DashController = function($scope,$http){
         $scope.fro_date="all";
         $scope.to_date="all";
         $scope.params = {
-                'districts':[],'hubs':[],'age_ids':[],'genders':[],
+                'districts':[],'hubs':[],'age_ranges':[],'genders':[],
                 'regimens':[],'lines':[],'indications':[]
             };
         getData();
         //generalFilter();
     };
-
+   
     $scope.getHubName=function(hub_id){
         var hub_list = $scope.hubs;
         var hub_name = null;
@@ -779,7 +906,18 @@ ctrllers.DashController = function($scope,$http){
         }
         return arr;
     };
+    var removeAgeGroup=function(index,age_range_array){
+        var age_range_array_cleaned = [];
+        for(var i =0; i< age_range_array.length;i++){
+            if(index != i)
+            {
 
+               age_range_array_cleaned.push(age_range_array[i]); 
+            }
+        }
+        
+        return age_range_array_cleaned;
+    };
     //rounding off numbers to the nearest decimal place
     var round = Math.round;
     Math.round = function (value, decimals) {
