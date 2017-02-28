@@ -67,7 +67,7 @@
                 ?>
 
                 <tr {{ $styl }}>
-                    <td>{{ $nr }} {!! Form::hidden('test_date[$sample->sampleID]', $test_date) !!} </td>
+                    <td>{{ $nr }}  </td>
                     <td>{{ $sample->vlSampleID }}</td>                    
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
                     <td>{{ $sample->formNumber }}</td>
@@ -89,6 +89,7 @@
 
             </tbody>
         </table>
+        {!! Form::hidden('test_date', $test_date) !!}
         {!! Form::hidden('len', count($samples), ['id'=>'len']) !!}
         
         
