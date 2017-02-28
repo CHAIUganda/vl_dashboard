@@ -10,61 +10,32 @@ $genders = array(
 $yes_no = array(1=>"Yes", 2=>"No");
 
 $method="";
-$machine_result = "";
-$test_date = "";
+
 $machine_type = $result_obj->machineType;
-$factor = $result_obj->factor;
 switch ($machine_type) {
 	case 'abbott':
-		$method = "Abbott Real time HIV-1 PCR";
-		$mmmm_arr = explode("::", $result_obj->abbott_result);
-		$mr = end($mmmm_arr);
-		$mr_arr = explode("|||", $mr);
-		$machine_result = isset($mr_arr[0])?$mr_arr[0]:"";
-		$test_date = isset($mr_arr[1])?$mr_arr[1]:"";
+		$method = "Abbott Real time HIV-1 PCR";		 
 		break;
 
 	case 'roche':
 		$method = "HIV-1 RNA PCR Roche";
-		$mmmm_arr = explode("::", $result_obj->roche_result);
-		$mr = end($mmmm_arr);
-		$mr_arr = explode("|||", $mr);
-		$machine_result = isset($mr_arr[0])?$mr_arr[0]:"";
-		$test_date = isset($mr_arr[1])?$mr_arr[1]:"";
 		break;
 	
 	default:
-		$method = "";
-		$machine_result = "";
-		$test_date = "";
+		$method = "";		 
 		break;
 }
 
-$result = "";
-if(!empty($result_obj->override_result)){
-	$or_arr = explode("::", $result_obj->override_result);
-	$or = end($or_arr);
-	$or = explode("|||", $or);
-	$result = $or[0];
-	$test_date = "";
-}else{
-	$result = $machine_result;
-}
 
-$result = MyHTML::getVLNumericResult($result, $machine_type, $factor);
-
-$numerical_result = MyHTML::getNumericalResult($result);
-
-$suppressed = MyHTML::isSuppressed2($numerical_result, $sample_type, $test_date);
-switch ($suppressed) {
+switch ($result_obj->suppressed) {
 	case 'YES': // patient suppressed, according to the guidlines at that time
 		$smiley="smiley.smile.gif";
-		$recommendation = MyHTML::getRecommendation($suppressed, $test_date, $sample_type);
+		$recommendation = MyHTML::getRecommendation('YES', $result_obj->test_date, $sample_type);
 		break;
 
 	case 'NO': // patient suppressed, according to the guidlines at that time
 		$smiley="smiley.sad.gif";
-		$recommendation = MyHTML::getRecommendation($suppressed, $test_date, $sample_type);					
+		$recommendation = MyHTML::getRecommendation('NO', $result_obj->test_date, $sample_type);					
 		break;
 	
 	default:
@@ -86,8 +57,6 @@ $rejected = $result_obj->verify_outcome=="Rejected"?1:2;
 
 $phones_arr = array_unique(explode(",", $result_obj->phone));
 $phones = implode(", ", $phones_arr);
-
-
  ?>
 <page size="A4">
 	<div style="height:95%">
@@ -192,7 +161,7 @@ $phones = implode(", ", $phones_arr);
 					<?php if($rejected!=1){ ?>
 					<tr>
 						<td>Test Date: &nbsp; </td>
-						<td class="print-val"><?=MyHTML::localiseDate($test_date, 'd-M-Y') ?></td>
+						<td class="print-val"><?=MyHTML::localiseDate($result_obj->test_date, 'd-M-Y') ?></td>
 					</tr>
 					<?php } ?>
 
@@ -241,7 +210,7 @@ $phones = implode(", ", $phones_arr);
 
 					<tr>
 						<td valign="top">Result of Viral Load: </td>
-						<td ><?=$result ?></td>
+						<td ><?=$result_obj->final_result ?></td>
 					</tr>
 				</table>		
 				
@@ -265,8 +234,8 @@ $phones = implode(", ", $phones_arr);
 		</div>
 		<?php if ($result_obj->verify_outcome!="Rejected"){ ?>
 			<div class="col-xs-2">
-				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,$suppressed,$now_s") !!}
-				<!-- <div class="qrcode-output" value="<?="VL,$location_id,$suppressed,$now_s" ?>"></div> -->
+				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,$result_obj->suppressed,$now_s") !!}
+				
 			</div>
 		<?php } ?>
 	</div>

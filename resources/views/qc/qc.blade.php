@@ -32,7 +32,7 @@
 
                 <tr>
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
-                    <td><a href="javascript:windPop('/result/{{ $sample->sampleID }}?view=yes')">{{ $sample->formNumber }}</a></td>
+                    <td><a href="javascript:windPop('/result/{{ $sample->sample_id }}?view=yes')">{{ $sample->formNumber }}</a></td>
                     <td>{{ $sample->facility }}</td>    
                     <td>{{ $sample->district }}</td>   
                     

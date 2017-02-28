@@ -26,7 +26,7 @@
     ?>
     <?php $view = \Request::get('view'); ?>
     <div id="print-btn-div" style='text-align:center; padding:20px;'>
-        <!-- <button id="pdf-btn" class='btn btn-danger' >Download</button> -->
+        <button id="pdf-btn" class='btn btn-danger' >Download</button>
         @if($view!='yes')<button id="print-btn" class='btn btn-danger' >Print</button>@endif
     </div>
     <?php $samples_str="" ?>
@@ -55,10 +55,10 @@
              setTimeout(window.close, 0);          
         });
 
-        /*$('#pdf-btn').click(function(){
+        $('#pdf-btn').click(function(){
             window.location.assign("/result?pdf=1&samples="+$('#ss').val());
             //$.get("/result?samples="+$('#ss').val(), function(data){     });
-        });*/
+        });
 
         </script>
 

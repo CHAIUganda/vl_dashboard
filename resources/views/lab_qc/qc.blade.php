@@ -47,8 +47,10 @@
                 if($wk->machineType == 'abbott'){
                     $resultxxx = $sample->abbott_result;
                     $flag = $sample->flags;
+                    $test_date = $sample->abbott_date;
                 }else{
                     $resultxxx = $sample->roche_result;
+                    $test_date = $sample->roche_date;
                 }
    
 
@@ -65,7 +67,7 @@
                 ?>
 
                 <tr {{ $styl }}>
-                    <td>{{ $nr }} </td>
+                    <td>{{ $nr }} {!! Form::hidden('test_date[$sample->sampleID]', $test_date) !!} </td>
                     <td>{{ $sample->vlSampleID }}</td>                    
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
                     <td>{{ $sample->formNumber }}</td>
@@ -82,11 +84,14 @@
                 </tr> 
                 <?php $nr++; ?>
                 @endforeach
+
                 
 
             </tbody>
         </table>
         {!! Form::hidden('len', count($samples), ['id'=>'len']) !!}
+        
+        
         <br>
         <div style="float:right">
             <input type="submit" id="save" class='btn btn-sm btn-danger' value="Save Lab QC" />

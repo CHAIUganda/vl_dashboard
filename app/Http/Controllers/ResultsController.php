@@ -34,7 +34,7 @@ class ResultsController extends Controller {
 				->make(true);
 	}
 
-	public function getResult($id='x'){
+	/*public function getResult($id='x'){
 		$printed = \Request::get('printed');
 		$slctd_samples =\Request::has("samples")? \Request::get("samples"): [];
 		$slctd_samples_str = is_array($slctd_samples)? implode(',', $slctd_samples):"$slctd_samples";
@@ -62,6 +62,41 @@ class ResultsController extends Controller {
 				LEFT JOIN vl_logs_samplerepeats AS log_s ON s.id = log_s.sampleID
 				LEFT JOIN vl_users AS u ON wk.createdby = u.email
 				LEFT JOIN vl_results_multiplicationfactor AS fctr ON wk.id=fctr.worksheetID
+				WHERE
+				";
+		if($id=='x' and count($slctd_samples)==0) return "Please select atleast one";
+		$sql .= $id!='x'?" s.id=$id LIMIT 1": " s.id IN ($slctd_samples_str) GROUP BY s.id";
+
+		$vldbresult =  \DB::connection('live_db')->select($sql);
+		
+		if(\Request::has('pdf')) return $this->log_downloads($id,$slctd_samples_str,$vldbresult);
+
+		return view('results.result', compact("vldbresult", "printed"));
+	}*/
+
+	public function getResult($id='x'){
+		$printed = \Request::get('printed');
+		$slctd_samples =\Request::has("samples")? \Request::get("samples"): [];
+		$slctd_samples_str = is_array($slctd_samples)? implode(',', $slctd_samples):"$slctd_samples";
+
+		$sql = "SELECT  s.*, p.artNumber,p.otherID, p.gender, p.dateOfBirth,
+				GROUP_CONCAT(ph.phone SEPARATOR ',') AS phone, f.facility, d.district, h.hub AS hub_name, 
+				released.result AS final_result,released.suppressed, released.test_date,  				
+				log_s.id AS repeated, v.outcome AS verify_outcome, reason.appendix AS rejection_reason,
+				u.signaturePATH, wk.machineType, sw.sampleID, sw.worksheetID
+				FROM vl_samples AS s
+				LEFT JOIN vl_facilities AS f ON s.facilityID=f.id
+				LEFT JOIN vl_districts AS d ON f.districtID=d.id
+				LEFT JOIN vl_hubs AS h ON f.hubID=h.id
+				LEFT JOIN vl_patients As p ON s.patientID=p.id
+				LEFT JOIN vl_patients_phone As ph ON p.id = ph.patientID
+				LEFT JOIN vl_samples_verify AS v ON s.id=v.sampleID				
+				LEFT JOIN vl_appendix_samplerejectionreason AS reason ON v.outcomeReasonsID=reason.id
+				LEFT JOIN vl_samples_worksheet AS sw ON s.id=sw.sampleID
+				LEFT JOIN vl_samples_worksheetcredentials AS wk ON sw.worksheetID=wk.id
+				LEFT JOIN vl_logs_samplerepeats AS log_s ON s.id = log_s.sampleID
+				LEFT JOIN vl_users AS u ON wk.createdby = u.email
+				LEFT JOIN  vl_results_released AS released ON s.id = released.sample_id
 				WHERE
 				";
 		if($id=='x' and count($slctd_samples)==0) return "Please select atleast one";

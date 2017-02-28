@@ -1,1 +1,0 @@
-ALTER TABLE `vl_samples_worksheetcredentials` ADD `stage` ENUM('awaiting_results', 'has_results', 'passed_lab_qc', 'passed_data_qc' ) NOT NULL DEFAULT 'awaiting_results' AFTER `includeCalibrators` ;

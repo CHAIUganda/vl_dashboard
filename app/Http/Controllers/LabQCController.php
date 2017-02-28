@@ -32,10 +32,11 @@ class LabQCController extends Controller {
 			$choices = \Request::get('choices');
 			$results = \Request::get('pat_results');
 			$suppressions = \Request::get('suppressions');
+			$test_date = \Request::get('test_date');
 			$now = date("Y-m-d H:i:s");
 			$createdby = \Auth::user()->email;
 			$sql = "INSERT INTO vl_results_released (
-					worksheet_id, sample_id, result, suppressed, created, createdby) 
+					worksheet_id, sample_id, result, suppressed, test_date, created, createdby) 
 					VALUES ";
 			$sql1 = "INSERT INTO vl_logs_samplerepeats (sampleID, oldWorksheetID, created, createdby) VALUES ";
 			$passes = 0;$reschedules = 0;
@@ -43,7 +44,7 @@ class LabQCController extends Controller {
 				$result = $choice=='invalid'?'Failed':$results[$sample_id];
 				$suppressed = $choice=='invalid'?'UNKNOWN':$suppressions[$sample_id];
 				if($choice == 'release' || $choice == 'invalid'){
-					 $sql .= "($worksheet_id, $sample_id, '$result', '$suppressed', '$now', '$createdby'),";
+					 $sql .= "($worksheet_id, $sample_id, '$result', '$suppressed', '$test_date', '$now', '$createdby'),";
 					 $passes++;
 				}else if($choice == 'reschedule'){
 					$sql1 .= "($sample_id, $worksheet_id, '$now', '$createdby'),";
