@@ -39,7 +39,7 @@ switch ($result_obj->suppressed) {
 		break;
 	
 	default:
-		$smiley="smiley.sad.gif";
+		$smiley="";
 		$recommendation="There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.";
 		break;
 }
@@ -216,7 +216,7 @@ $phones = implode(", ", $phones_arr);
 				
 			</div>
 			<div class="col-xs-3">
-				<img src="/images/<?=$smiley ?>" height="150" width="150">
+				@if($result_obj->final_result!='Failed') <img src="/images/<?=$smiley ?>" height="150" width="150"> @endif
 			</div>
 
 		</div>		 				
