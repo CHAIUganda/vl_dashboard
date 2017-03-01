@@ -52,13 +52,22 @@
      ?>
         <!-- end filters-->
         @include('sections._hub_filters')
+        <br>
          <span ng-model="loading" ng-init="loading=true"></span>
         <div ng-show="loading" style="text-align: center;padding:10px;"> <img src="{{ asset('/images/loading.gif') }}" height="20" width="20"> processing</div>
 
 
           
-              
-              <div id="suppression-trend">
+             <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#suppression-trend" role="tab" data-toggle="tab">Suppression Trend</a></li>
+              <li><a href="#retest-ns" role="tab" data-toggle="tab">Retest-NS</a></li>
+              <li><a href="#rejections" role="tab" data-toggle="tab">Rejections</a></li>
+              <li><a href="#v-patients" role="tab" data-toggle="tab">VPatients</a></li>
+              <li><a href="#a-patients" role="tab" data-toggle="tab">APatients</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane active" id="suppression-trend">
                 <div class="facilties-sect" style="width:50%">
                    <table id="suppression-table" class="table table-condensed table-bordered">
                       <tr>
@@ -94,6 +103,7 @@
                     </table>
                 </div>
                 <div class="facilties-sect">
+                  <span class="rm_item">Previously Not Suppressing, Not Suppressing Recently</span>
                   <table id="previously_not_suppressing_ns_table" datatable="ng"  class="row-border hover table table-bordered table-condensed table-striped">
                       <thead>
                           <tr>
@@ -129,6 +139,7 @@
                 <br><br><br>
 
                 <div class="facilties-sect">
+                  <span class="rm_item">Previously Suppressing, Not Suppressing Recently</span>
                   <table id="previously_suppressing_ns_table" datatable="ng"  class="row-border hover table table-bordered table-condensed table-striped">
                       <thead>
                           <tr>
@@ -162,7 +173,67 @@
                        </tbody>
                   </table>
                 </div>
-              </div>
+              </div><!--End suppression-trends tab -->
+              
+              <div class="tab-pane" id="retest-ns"> @include('suppression_trends._retest_ns')</div>
+              <div class="tab-pane" id="rejections"> @include('suppression_trends._rejections')</div>
+
+              <div class="tab-pane" id="v-patients">
+                       <div class="facilties-sect">
+                        <table id="v_patients_table" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th >Patient ID</th>
+                                    <th >Facility</th>
+                                    <th >ART Number</th>
+                                    <th >Date of Arrival at CPHL</th>
+                                    <th >Results </th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>                                
+                                      
+                              <tr ng-repeat="validPatientResults_object in validPatientResults" >
+                              
+                                  <td class="ng-cloak"><% validPatientResults_object.patientID %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.facility %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.artNumber %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.datesArrivedAtCPHL %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.results %></td>
+                              </tr>                 
+                             </tbody>
+                        </table>
+                      </div>
+               </div><!--end v-patients tab-pane-->
+               <div class="tab-pane" id="a-patients">
+                    <div class="facilties-sect">
+                        <table id="a_patients_table" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th >Patient ID</th>
+                                    <th >Facility</th>
+                                    <th >ART Number</th>
+                                    <th >Date of Arrival at CPHL</th>
+                                    <th >Results </th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>                                
+                              <tr ng-repeat="allPatientsResults_object in allPatientsResults" >
+                              
+                                  <td class="ng-cloak"><% allPatientsResults_object.patientID %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.facility %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.artNumber %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.datesArrivedAtCPHL %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.results %></td>
+                              
+                          </tr>           
+                             </tbody>
+                        </table>
+                      </div>
+               </div><!--end a-patients tab-pane-->
+            </div>   
+
       
  </div>
 </div>

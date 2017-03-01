@@ -4,6 +4,7 @@ use EID\Http\Requests;
 use EID\Http\Controllers\Controller;
 
 use EID\LiveData;
+use Log;
 
 class ResultsController extends Controller {
 
@@ -138,7 +139,13 @@ class ResultsController extends Controller {
 	}
 
 	public function getPatientResults(){
-		
+		extract(\Request::all());
+		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){
+			$to_date=date("Ym");
+			$fro_date=$this->_dateNMonthsBack();
+		}
+        $hub_id = \Auth::user()->hub_id;
+
 		$sql = "select sr.patientID,sr.vlSampleID,sr.created,sr.patientUniqueID, sr.result,
 						h.hub, f.facility,sr.collectionDate,sr.receiptDate,p.artNumber,p.phone
 						
@@ -146,8 +153,8 @@ class ResultsController extends Controller {
 						(select s.patientID,s.vlSampleID,s.created,s.patientUniqueID, r.result,
 						 s.hubID, s.facilityID,s.collectionDate,s.receiptDate
 						   from 
-					           ( select * from vl_samples where hubID=21 and  str_to_date(created,'%Y-%m') 
-						between str_to_date('2015-01','%Y-%m') and str_to_date('2016-02','%Y-%m')) s left join 
+					           ( select * from vl_samples where hubID=$hub_id and  str_to_date(created,'%Y-%m') 
+						between str_to_date('$fro_date','%Y%m') and str_to_date('$to_date','%Y%m')) s left join 
 								(select sampleID, result as result, created 
 									from vl_results_abbott order by sampleID,created) r
 						on s.vlSampleID = r.sampleID 
@@ -164,7 +171,7 @@ class ResultsController extends Controller {
 					";
 
 
-
+      
 		$patient_results =  \DB::connection('live_db')->select($sql);
 		
 		//$patient_results = 100;
@@ -225,4 +232,20 @@ class ResultsController extends Controller {
 		return view('results.print_envelope', compact('facility'));
 	}
 	
+	private function _dateNMonthsBack(){
+    	$ret;
+    	$n=env('INIT_MONTHS');
+        $m=date('m');
+        $y=date('Y');
+        for($i=1;$i<=$n;$i++){
+        	if($i==$n) $ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
+
+            if($m==0){
+                $m=12;
+                $y--;
+            }
+            $m--;
+        }
+        return $ret;
+    }
 }
