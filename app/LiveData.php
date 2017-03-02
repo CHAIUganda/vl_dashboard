@@ -74,9 +74,10 @@ class LiveData extends Model
                       ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
                       ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
                       ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
+                      ->leftjoin('vl_results_released AS rr', 'rr.sample_id', '=', 'pr.sample_id')
                       ->select('sample_id','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 
-                               'artNumber', 'otherID', 'qc_at','printed','printed_at','printed_by')
-                      ->from('vl_facility_printing AS pr');
+                               'artNumber', 'otherID', 'qc_at','printed','printed_at','printed_by', 'rr.sample_id')
+                      ->from('vl_facility_printing AS pr')->where('ready', '=', 'YES')->whereNotNull('rr.sample_id');
       if($printed=='NO'){
         //this to be interpreted as pending
         $ret = $ret->where('printed','=','NO')->where('downloaded','=','NO');
