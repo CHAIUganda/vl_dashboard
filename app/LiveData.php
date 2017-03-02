@@ -83,7 +83,7 @@ class LiveData extends Model
         $ret = $ret->where('printed','=','NO')->where('downloaded','=','NO')->where('ready', '=', 'YES')->whereNotNull('rr.sample_id');
       }elseif($printed=='YES'){
         //this to be interpreted as printed or downloaded
-        $ret =$ret->where(function($query){
+        $ret = $ret->where(function($query){
                     $query->where('printed','=','YES')->orWhere('downloaded','=','YES');
               }); 
       }

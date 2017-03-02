@@ -52,6 +52,10 @@ Route::group(['middleware' => 'auth'], function()
 		Route::controllers(['/lab_qc/index' => 'LabQCController']);
 	});
 
+	Route::group(['middleware'=>['permission:lab_qc']], function() { 
+		Route::controllers(['/facility_list' => 'MonitoringController']);
+	});
+
 
 	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);
 
