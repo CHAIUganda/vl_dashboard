@@ -135,7 +135,8 @@ ctrllers.DashController = function($scope,$http){
     };
 
     var getUniformResults = function(result){
-        var returnString = null;
+        //var returnString = null;
+        var returnString = "rejected";
         var str="";
         str = result;
         if(str == null){
@@ -150,19 +151,23 @@ ctrllers.DashController = function($scope,$http){
         }else if(str.startsWith("Not detected")){
                 returnString = "suppressed";
             }else if(str.startsWith("-1")){
-                returnString = "Errors";
+                returnString = "rejected";
             }else if(str.startsWith("4442")){
-                returnString = "Errors";
+                returnString = "rejected";
             }else if(str.startsWith("3109")){
-                returnString = "Errors";
+                returnString = "rejected";
             }else if(str.startsWith("3110")){
-                returnString = "Errors";
+                returnString = "rejected";
             }else if(str.startsWith("3118")){
-                returnString = "Errors";
+                returnString = "rejected";
             }else if(str.startsWith("3119")){
-                returnString = "Errors";
+                returnString = "rejected";
             }else if(str.startsWith("3153")){
-                returnString = "Errors";
+                returnString = "rejected";
+            }else if(str.startsWith("4408")){
+                returnString = "rejected";
+            }else if(str.startsWith("3130")){
+                returnString = "rejected";
             }else if(str.startsWith("Target not detected")){
                 returnString = "suppressed";
             }else if(str.startsWith("< 1.60 Log")){//40 Copies m/L
@@ -195,15 +200,20 @@ ctrllers.DashController = function($scope,$http){
                     returnString = "notSuppressed";
                 }
                 else if(str == 3118 || str == 3109){
-                    returnString = "Errors";
+                    returnString = "rejected";
                 }
+            }else{
+                returnString = "rejected";
             }
 
+            if (returnString == null){
+                 returnString = "rejected";
+            }
         return returnString;
     };
     var removeFirstTimeVLTesters = function(clean_results){
         var patients_with_more_results =[];
-        for (var i = 0; i < clean_results.length; i++) {
+        for (var i = 1; i < clean_results.length; i++) {
 
             var clean_results_object = clean_results[i];
             var previous_index = i - 1;
@@ -213,7 +223,24 @@ ctrllers.DashController = function($scope,$http){
 
             var patients_with_more_results_object = [];
 
-            if (i == 0 || previous_clean_results_object.patientID == clean_results_object.patientID)  {
+            if (i == 1 && previous_clean_results_object.patientID == clean_results_object.patientID)  {
+                
+                patients_with_more_results_previous_object = {
+                            "patientID":clean_results_object.patientID,
+                            "vlSampleID":clean_results_object.vlSampleID,
+                            "created":clean_results_object.created,
+                            "patientUniqueID":clean_results_object.patientUniqueID,
+                            "result":clean_results_object.result,
+                            "status":getUniformResults(clean_results_object.result),
+                            "hub":clean_results_object.hub,
+                            "facility":clean_results_object.facility,
+                            "collectionDate":clean_results_object.collectionDate,
+                            "receiptDate":clean_results_object.receiptDate,
+                            "artNumber":clean_results_object.artNumber,
+                            "phone":clean_results_object.phone
+                        };
+                patients_with_more_results.push(patients_with_more_results_previous_object);
+
                 patients_with_more_results_object = {
                             "patientID":clean_results_object.patientID,
                             "vlSampleID":clean_results_object.vlSampleID,
@@ -228,13 +255,10 @@ ctrllers.DashController = function($scope,$http){
                             "artNumber":clean_results_object.artNumber,
                             "phone":clean_results_object.phone
                         };
-
-                patients_with_more_results.push(patients_with_more_results_object);
+                    patients_with_more_results.push(patients_with_more_results_object);
             }//end of if
-            else if (previous_clean_results_object.patientID != clean_results_object.patientID && 
-                next_clean_results_object != null ) {
-                if(clean_results_object.patientID == next_clean_results_object.patientID ){
-                    patients_with_more_results_object = {
+            else if(previous_clean_results_object.patientID == clean_results_object.patientID){
+                patients_with_more_results_object = {
                             "patientID":clean_results_object.patientID,
                             "vlSampleID":clean_results_object.vlSampleID,
                             "created":clean_results_object.created,
@@ -249,7 +273,26 @@ ctrllers.DashController = function($scope,$http){
                             "phone":clean_results_object.phone
                         };
                     patients_with_more_results.push(patients_with_more_results_object);
-                }
+            }
+            else if( next_clean_results_object != null){
+                if(clean_results_object.patientID == next_clean_results_object.patientID){
+                    patients_with_more_results_object = {
+                            "patientID":clean_results_object.patientID,
+                            "vlSampleID":clean_results_object.vlSampleID,
+                            "created":clean_results_object.created,
+                            "patientUniqueID":clean_results_object.patientUniqueID,
+                            "result":clean_results_object.result,
+                            "status":getUniformResults(clean_results_object.result),
+                            "hub":clean_results_object.hub,
+                            "facility":clean_results_object.facility,
+                            "collectionDate":clean_results_object.collectionDate,
+                            "receiptDate":clean_results_object.receiptDate,
+                            "artNumber":clean_results_object.artNumber,
+                            "phone":clean_results_object.phone
+                        };
+                    patients_with_more_results.push(patients_with_more_results_object); 
+                }//end inner if
+                    
             }
         }//end for loop
 
@@ -339,6 +382,520 @@ ctrllers.DashController = function($scope,$http){
         };
         return suppression_trend;
     };
+
+    var getAllPatientsResults = function(patients_with_more_results){
+        var patient_records =[];
+        var sorted_patient_records_object = null;
+        var dummy_receipt_dates = "";
+        var dummy_results = "";
+        var test ="";
+        var array_size = patients_with_more_results.length;
+        for (var i = 0; i< array_size; i++) {
+            var current_record = patients_with_more_results[i];
+
+            var next_index = i + 1;
+            var next_record = null;
+
+            var second_next_index = i + 2;
+            var second_next_record = null;
+
+            var third_next_index = i + 3;
+            var third_next_record = null;
+
+            var fourth_next_index = i + 4; 
+            var fourth_next_record = null;
+            
+            //check last four records
+            if(fourth_next_index < array_size){
+                fourth_next_record = patients_with_more_results[fourth_next_index];
+                third_next_record =  patients_with_more_results[third_next_index];
+                second_next_record = patients_with_more_results[second_next_index];
+                next_record = patients_with_more_results[next_index];
+
+                if(fourth_next_record.patientID == current_record.patientID){
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+third_next_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+fourth_next_record.receiptDate;
+
+                    
+                    dummy_results = dummy_results +'\&'+current_record.status;
+                    dummy_results = dummy_results +'\&'+next_record.status;
+                    dummy_results = dummy_results +'\&'+second_next_record.status;
+                    dummy_results = dummy_results +'\&'+third_next_record.status;
+                    dummy_results = dummy_results +'\&'+fourth_next_record.status;
+
+                    
+                    test = test +'\&'+current_record.result;
+                    test = test +'\&'+next_record.result;
+                    test = test +'\&'+second_next_record.result;
+                    test = test +'\&'+third_next_record.result;
+                    test = test +'\&'+fourth_next_record.result;
+
+                    //construct object to push
+                    var patient_id = current_record.patientUniqueID;
+                    sorted_patient_records_object = {
+                        "patientID":patient_id,
+                        "patientUniqueID":current_record.patientUniqueID,
+                        "hub":current_record.hub,
+                        "facility":current_record.facility,
+                        "artNumber":current_record.artNumber,
+                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
+                        "test":test,
+                        "results": dummy_results.substr(1)
+                    };
+                     //push object to array
+                    patient_records.push(sorted_patient_records_object);
+                    dummy_receipt_dates = "";
+                    dummy_results = "";
+                    sorted_patient_records_object = null;
+                    i=i+4;
+                    continue;
+                }
+
+            }
+            //check last three records
+            if (third_next_index  < array_size) {
+                third_next_record = patients_with_more_results[third_next_index];
+                second_next_record = patients_with_more_results[second_next_index];
+                next_record = patients_with_more_results[next_index];
+
+                if(third_next_record.patientID == current_record.patientID){
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+third_next_record.receiptDate;
+
+                    dummy_results = dummy_results +'\&'+current_record.status;
+                    dummy_results = dummy_results +'\&'+next_record.status;
+                    dummy_results = dummy_results +'\&'+second_next_record.status;
+                    dummy_results = dummy_results +'\&'+third_next_record.status;
+
+                    test = test +'\&'+current_record.result;
+                    test = test +'\&'+next_record.result;
+                    test = test +'\&'+second_next_record.result;
+                    test = test +'\&'+third_next_record.result;
+                    
+
+                    //construct object to push
+                    var patient_id = current_record.patientUniqueID;
+                    sorted_patient_records_object = {
+                        "patientID":patient_id,
+                        "patientUniqueID":current_record.patientUniqueID,
+                        "hub":current_record.hub,
+                        "facility":current_record.facility,
+                        "artNumber":current_record.artNumber,
+                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
+                        "test":test,
+                        "results": dummy_results.substr(1)
+                    };
+                     //push object to array
+                    patient_records.push(sorted_patient_records_object);
+                    dummy_receipt_dates = "";
+                    dummy_results = "";
+                    sorted_patient_records_object = null;
+                    i=i+3;
+                    continue;
+                }
+            } 
+            //check last two records
+            if(second_next_index < array_size){
+                second_next_record = patients_with_more_results[second_next_index];
+                next_record = patients_with_more_results[next_index];
+
+                if(second_next_record.patientID == current_record.patientID){
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
+
+                    dummy_results = dummy_results +'\&'+current_record.status;
+                    dummy_results = dummy_results +'\&'+next_record.status;
+                    dummy_results = dummy_results +'\&'+second_next_record.status;
+
+                    test = test +'\&'+current_record.result;
+                    test = test +'\&'+next_record.result;
+                    test = test +'\&'+second_next_record.result;
+                    
+
+                    //construct object to push
+                    var patient_id = current_record.patientUniqueID;
+                    sorted_patient_records_object = {
+                        "patientID":patient_id,
+                        "patientUniqueID":current_record.patientUniqueID,
+                        "hub":current_record.hub,
+                        "facility":current_record.facility,
+                        "artNumber":current_record.artNumber,
+                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
+                        "test":test,
+                        "results": dummy_results.substr(1)
+                    };
+                     //push object to array
+                    patient_records.push(sorted_patient_records_object);
+                    dummy_receipt_dates = "";
+                    dummy_results = "";
+                    patient_records_object = null;
+                    i=i+2;
+                    continue;
+                }
+            }
+            //check last record
+             if(next_index < array_size){
+                next_record = patients_with_more_results[next_index];
+                if(next_record.patient_id == current_record.patient_id){
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
+                    dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
+
+                    dummy_results = dummy_results +'\&'+current_record.status;
+                    dummy_results = dummy_results +'\&'+next_record.status;
+
+                    test = test +'\&'+current_record.result;
+                    test = test +'\&'+next_record.result;
+                    
+                    //construct object to push
+                    var patient_id = current_record.patientUniqueID;
+                    sorted_patient_records_object = {
+                        "patientID":patient_id,
+                        "patientUniqueID":current_record.patientUniqueID,
+                        "hub":current_record.hub,
+                        "facility":current_record.facility,
+                        "artNumber":current_record.artNumber,
+                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
+                        "test":test,
+                        "results": dummy_results.substr(1)
+                    };
+                     //push object to array
+                    patient_records.push(sorted_patient_records_object);
+                    dummy_receipt_dates = "";
+                    dummy_results = "";
+                    sorted_patient_records_object = null;
+                    i=i+1;
+
+                    continue;
+                }
+            }
+            
+        };
+         return patient_records;
+    };
+    var removeRejections = function(patients_with_more_results){
+        var patients_with_more_results_and_no_rejections=[];
+        var array_size = patients_with_more_results.length;
+
+        for (var i = 0; i< array_size; i++) {
+            var current_record = patients_with_more_results[i];
+            if(current_record.status == "rejected"){
+                continue;
+            }else{
+                patients_with_more_results_and_no_rejections.push(current_record);
+            }
+        }
+        return patients_with_more_results_and_no_rejections;
+    };
+    var getValidPatientResults = function(patients_with_more_results){
+        var valid_patient_results =[];
+        var sorted_patient_records_object = null;
+        var dummy_receipt_dates = "";
+        var dummy_results = "";
+        var test ="";
+        var array_size = patients_with_more_results.length;
+        for (var i = 0; i< array_size; i++) {
+            var current_record = patients_with_more_results[i];
+
+            var next_index = i + 1;
+            var next_record = null;
+
+            var second_next_index = i + 2;
+            var second_next_record = null;
+
+            var third_next_index = i + 3;
+            var third_next_record = null;
+
+            var fourth_next_index = i + 4; 
+            var fourth_next_record = null;
+            
+            //check last four records
+            if(fourth_next_index < array_size){
+                fourth_next_record = patients_with_more_results[fourth_next_index];
+                third_next_record =  patients_with_more_results[third_next_index];
+                second_next_record = patients_with_more_results[second_next_index];
+                next_record = patients_with_more_results[next_index];
+
+                if(fourth_next_record.patientID == current_record.patientID){
+
+                    if(current_record.status == "suppressed" || current_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+current_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
+                    }
+                    if(current_record.status == "suppressed" || next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
+                    }
+                    
+                    if(second_next_record.status == "suppressed" || second_next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+second_next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
+                    }
+                    if(third_next_record.status == "suppressed" || third_next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+third_next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+third_next_record.receiptDate;
+                    }
+                    
+                    if(third_next_record.status == "suppressed" || third_next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+fourth_next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+fourth_next_record.receiptDate;
+                    }
+                    
+
+                    
+                    
+
+                    //construct object to push
+                    var patient_id = current_record.patientUniqueID;
+                    sorted_patient_records_object = {
+                        "patientID":patient_id,
+                        "patientUniqueID":current_record.patientUniqueID,
+                        "hub":current_record.hub,
+                        "facility":current_record.facility,
+                        "artNumber":current_record.artNumber,
+                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
+                        
+                        "results": dummy_results.substr(1)
+                    };
+                     //push object to array
+                    valid_patient_results.push(sorted_patient_records_object);
+                    dummy_receipt_dates = "";
+                    dummy_results = "";
+                    sorted_patient_records_object = null;
+                    i=i+4;
+                    continue;
+                }
+
+            }
+            //check last three records
+            if (third_next_index  < array_size) {
+                third_next_record = patients_with_more_results[third_next_index];
+                second_next_record = patients_with_more_results[second_next_index];
+                next_record = patients_with_more_results[next_index];
+
+                if(third_next_record.patientID == current_record.patientID){
+                    
+                    if(current_record.status == "suppressed" || current_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+current_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
+                    }
+                    if(current_record.status == "suppressed" || next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
+                    }
+                    
+                    if(second_next_record.status == "suppressed" || second_next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+second_next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
+                    }
+                    if(third_next_record.status == "suppressed" || third_next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+third_next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+third_next_record.receiptDate;
+                    }
+
+                    //construct object to push
+                    var patient_id = current_record.patientUniqueID;
+                    sorted_patient_records_object = {
+                        "patientID":patient_id,
+                        "patientUniqueID":current_record.patientUniqueID,
+                        "hub":current_record.hub,
+                        "facility":current_record.facility,
+                        "artNumber":current_record.artNumber,
+                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
+                        "results": dummy_results.substr(1)
+                    };
+                     //push object to array
+                    valid_patient_results.push(sorted_patient_records_object);
+                    dummy_receipt_dates = "";
+                    dummy_results = "";
+                    sorted_patient_records_object = null;
+                    i=i+3;
+                    continue;
+                }
+            } 
+            //check last two records
+            if(second_next_index < array_size){
+                second_next_record = patients_with_more_results[second_next_index];
+                next_record = patients_with_more_results[next_index];
+
+                if(second_next_record.patientID == current_record.patientID){
+                    if(current_record.status == "suppressed" || current_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+current_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
+                    }
+                    if(current_record.status == "suppressed" || next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
+                    }
+                    
+                    if(second_next_record.status == "suppressed" || second_next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+second_next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
+                    }
+                    
+
+                    //construct object to push
+                    var patient_id = current_record.patientUniqueID;
+                    sorted_patient_records_object = {
+                        "patientID":patient_id,
+                        "patientUniqueID":current_record.patientUniqueID,
+                        "hub":current_record.hub,
+                        "facility":current_record.facility,
+                        "artNumber":current_record.artNumber,
+                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
+                        "results": dummy_results.substr(1)
+                    };
+                     //push object to array
+                    valid_patient_results.push(sorted_patient_records_object);
+                    dummy_receipt_dates = "";
+                    dummy_results = "";
+                    patient_records_object = null;
+                    i=i+2;
+                    continue;
+                }
+            }
+            //check last record
+             if(next_index < array_size){
+                next_record = patients_with_more_results[next_index];
+                if(next_record.patient_id == current_record.patient_id){
+                    if(current_record.status == "suppressed" || current_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+current_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
+                    }
+                    if(current_record.status == "suppressed" || next_record.status == "notSuppressed"){
+                        dummy_results = dummy_results +'\&'+next_record.status;
+                        dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
+                    }
+                    
+                    //construct object to push
+                    var patient_id = current_record.patientUniqueID;
+                    sorted_patient_records_object = {
+                        "patientID":patient_id,
+                        "patientUniqueID":current_record.patientUniqueID,
+                        "hub":current_record.hub,
+                        "facility":current_record.facility,
+                        "artNumber":current_record.artNumber,
+                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
+                        "results": dummy_results.substr(1)
+                    };
+                     //push object to array
+                    valid_patient_results.push(sorted_patient_records_object);
+                    dummy_receipt_dates = "";
+                    dummy_results = "";
+                    sorted_patient_records_object = null;
+                    i=i+1;
+
+                    continue;
+                }
+            }
+            
+        };
+         return valid_patient_results;
+    };
+
+    var getPatientsWithInvalidResults = function(clean_results){
+        var patients_with_invalid_results = [];
+        
+
+        var array_size = clean_results.length;
+        for (var i = 0; i< array_size; i++) {
+            var clean_results_object = clean_results[i];
+            var uniformResult = getUniformResults(clean_results_object.result);
+            var invalid_patient_record = null;
+            if(clean_results_object.result != null && uniformResult == 'rejected'){
+                invalid_patient_record = {
+                    "patientID":clean_results_object.patientID,
+                    "vlSampleID":clean_results_object.vlSampleID,
+                    "created":clean_results_object.created,
+                    "patientUniqueID":clean_results_object.patientUniqueID,
+                    "result":clean_results_object.result,
+                    "status":getUniformResults(clean_results_object.result),
+                    "hub":clean_results_object.hub,
+                    "facility":clean_results_object.facility,
+                    "collectionDate":clean_results_object.collectionDate,
+                    "receiptDate":clean_results_object.receiptDate,
+                    "artNumber":clean_results_object.artNumber,
+                    "phone":clean_results_object.phone
+                };
+                patients_with_invalid_results.push(invalid_patient_record);
+            }//end for loop
+        }
+
+        return patients_with_invalid_results;
+    };
+    
+    //=====Date Customizations====================
+    Date.isLeapYear = function (year) { 
+        return (((year % 4=== 0)&&(year % 100 !== 0)) || (year % 400 === 0)); 
+    };
+
+    Date.getDaysInMonth = function (year, month) {
+        return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+    };
+
+    Date.prototype.isLeapYear = function () { 
+        return Date.isLeapYear(this.getFullYear()); 
+    };
+
+    Date.prototype.getDaysInMonth = function () { 
+        return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+    };
+
+    Date.prototype.addMonths = function (value) {
+        var n = this.getDate();
+        this.setDate(1);
+        this.setMonth(this.getMonth() + value);
+        this.setDate(Math.min(n, this.getDaysInMonth()));
+    return this;
+    };
+    //=====End Date customization====================
+    var getRecommendedRetestDate =function(collectionDate){
+        //parse string to Date
+        var collection_date_object = new Date(collectionDate);
+
+        //add 6 months
+        var recommended_retest_date = collection_date_object.addMonths(6);
+        var recommended_retest_month = recommended_retest_date.getMonth()+1;//Months= 0 - 11
+        var recommended_retest_date_string = recommended_retest_date.getFullYear()+"-"+recommended_retest_month+"-"+recommended_retest_date.getDate();
+
+        return recommended_retest_date_string;
+    };
+    var getRetestNSPatients = function(clean_results){
+        var retestNSPatients = [];
+        var array_size = clean_results.length;
+
+         for (var i = 0; i< array_size; i++) {
+            var clean_results_object = clean_results[i];
+            var uniformResult = getUniformResults(clean_results_object.result);
+            var retest_ns_patient_record = null;
+
+            if(clean_results_object.result != null && uniformResult == 'notSuppressed'){
+                retest_ns_patient_record = {
+                    "patientID":clean_results_object.patientID,
+                    "vlSampleID":clean_results_object.vlSampleID,
+                    "created":clean_results_object.created,
+                    "patientUniqueID":clean_results_object.patientUniqueID,
+                    "result":clean_results_object.result,
+                    "status":uniformResult,
+                    "hub":clean_results_object.hub,
+                    "facility":clean_results_object.facility,
+                    "collectionDate":clean_results_object.collectionDate,
+                    "recommendedRetestDate":getRecommendedRetestDate(clean_results_object.collectionDate),
+                    "receiptDate":clean_results_object.receiptDate,
+                    "artNumber":clean_results_object.artNumber,
+                    "phone":clean_results_object.phone
+                };
+                retestNSPatients.push(retest_ns_patient_record);
+            }//end for loop
+        }
+
+        return retestNSPatients;
+    };
     var getData=function(){
             $scope.loading = true;
             var prms = {};
@@ -360,6 +917,15 @@ ctrllers.DashController = function($scope,$http){
                 //calculate those
                 var suppression_trend = getSuppressionTrend(sorted_patient_records);
 
+                //VPatients
+                //var valid_patient_results = getValidPatients();
+
+                //APatients
+                //var all_patient_results = getAllPatientsResults(patients_with_more_results);
+
+                //rejections
+                //var patients_with_invalid_results = getPatientsWithInvalidResults(clean_results);
+
                 $scope.previouslyNonSuppressingCurrentlyNotSuppressing=suppression_trend.previouslyNotSuppressingCurrentlyNotSuppressing;
                 $scope.previouslyNonSuppressingCurrentlySuppressing=suppression_trend.previouslyNotSuppressing - suppression_trend.previouslyNotSuppressingCurrentlyNotSuppressing;
                 $scope.previouslyNotSuppressing = suppression_trend.previouslyNotSuppressing;
@@ -370,6 +936,13 @@ ctrllers.DashController = function($scope,$http){
 
                 $scope.previouslyNScurrentlyNS = suppression_trend.previouslyNScurrentlyNS;
                 $scope.previouslyScurrentlyNS = suppression_trend.previouslyScurrentlyNS;
+
+                var patients_with_more_results_and_no_rejections = removeRejections(patients_with_more_results);
+                $scope.validPatientResults = getValidPatientResults(patients_with_more_results_and_no_rejections);
+                $scope.allPatientsResults = getAllPatientsResults(patients_with_more_results);
+
+                $scope.patientsWithInvalidResults = getPatientsWithInvalidResults(clean_results);
+                $scope.retestNSPatients = getRetestNSPatients(clean_results);
 
                 $scope.filtered = $scope.date_filtered;    
                 $scope.loading = false;
