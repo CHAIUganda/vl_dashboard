@@ -49,10 +49,13 @@ class QCController extends Controller {
 		$qc_by = \Auth::user()->email;
 		if(\Request::has('choices')){
 			$samples = \Request::get('choices');
-			$sql = "INSERT INTO vl_facility_printing (sample_id, ready, qc_at, qc_by) VALUES ";
+			$comments = \Request::get('comments');
+			$sql = "INSERT INTO vl_facility_printing (sample_id, ready, comments, qc_at, qc_by) VALUES ";
 			foreach ($samples as $sample_id => $choice) {
 				$ready = $choice == 'approved'?'YES':'NO';
-				$sql .= "($sample_id,'$ready', '$now', '$qc_by'),";				
+				$comment = $choice == 'approved'?'':$comments[$sample_id];
+
+				$sql .= "($sample_id,'$ready', '$comment', '$now', '$qc_by'),";				
 			}
 
 			$sql = trim($sql, ",");

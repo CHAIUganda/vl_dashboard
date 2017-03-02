@@ -36,6 +36,7 @@ $released_url = "/lab_qc/index?tab=released";
             <thead>
                 <tr>
                     <th>Worksheet Number</th> 
+                    <th>Number Failed</th>
                     <th>Date time</th> 
                     <th>Created by</th>             
                 </tr>
@@ -58,9 +59,11 @@ $(function() {
         pageLength: 50,
         ajax: '{!! url("/lab_qc/index/data?tab=$tab") !!}',
         columns: [
-            {data: 'worksheetReferenceNumber', name: 'worksheetReferenceNumber'},
+            {data: 'worksheetReferenceNumber', name: 'w.worksheetReferenceNumber'},
+            {data: 'num_failed', name: 'num_failed', searchable: false},
             {data: 'created', name: 'w.created'},
-            {data: 'createdby', name: 'w.createdby'}, 
+            {data: 'createdby', name: 'u.names'}, 
+
         ]
     });
 });

@@ -58,9 +58,9 @@ $(function() {
         pageLength: 50,
         ajax: '{!! url("/qc/data?tab=".$tab) !!}',
         columns: [
-            {data: 'worksheetReferenceNumber', name: 'worksheetReferenceNumber'},
+            {data: 'worksheetReferenceNumber', name: 'w.worksheetReferenceNumber'},
             {data: 'created', name: 'w.created'},
-            {data: 'createdby', name: 'w.createdby'}, 
+            {data: 'createdby', name: 'u.names'}, 
         ]
     });
 });

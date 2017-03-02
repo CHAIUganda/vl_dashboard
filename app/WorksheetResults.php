@@ -10,8 +10,18 @@ class WorksheetResults extends Model
     protected $connection = 'live_db';
 
     public static function getWorksheetList($tab, $data_qc='no'){
-      $ret = self::select('w.id','worksheetReferenceNumber', 'w.created', 'w.createdby')
+      if($data_qc=='no'){
+         $ret = self::leftjoin('vl_users AS u', 'u.email', '=', 'w.createdby')
+            ->select('w.id','worksheetReferenceNumber', 'w.created', 'u.names AS createdby')
             ->from('vl_samples_worksheetcredentials AS w');
+      }else{
+        $ret = self::leftjoin('vl_results_roche AS r', 'r.worksheetID', '=', 'w.id')
+            ->leftjoin('vl_results_abbott AS a', 'a.worksheetID', '=', 'w.id')
+            ->leftjoin('vl_users AS u', 'u.email', '=', 'w.createdby')
+            ->select('w.id','worksheetReferenceNumber', 'w.created', 'u.names AS createdby', \DB::raw(self::fail_case()))
+            ->from('vl_samples_worksheetcredentials AS w');
+      }
+      
       if($tab == 'released'){
         $ret = $ret->where('stage', '=', 'passed_lab_qc');
       }elseif($tab == 'abbott' || $tab == 'roche'){
@@ -21,7 +31,7 @@ class WorksheetResults extends Model
         $ret = $ret->where('stage', '=', 'passed_data_qc');
       }
 
-      return $ret->orderby('w.id', 'DESC');
+      return $ret->groupby('w.id')->orderby('w.id', 'DESC');
     }   
 
     public static function worksheetSamples($id){
@@ -44,6 +54,40 @@ class WorksheetResults extends Model
        $wk = self::select("*")->from("vl_samples_worksheetcredentials")->where('id','=',$id)->limit(1)->get();
        return $wk[0];
 
+    }
+
+
+    private static function fail_case(){
+      $abbott_result_fails = "('-1.00',
+               '3153 There is insufficient volume in the vessel to perform an aspirate or dispense operation.',
+               '3109 A no liquid detected error was encountered by the Liquid Handler.',
+               'A no liquid detected error was encountered by the Liquid Handler.',
+               'Unable to process result, instrument response is invalid.',
+               '3118 A clot limit passed error was encountered by the Liquid Handler.',
+               '3119 A no clot exit detected error was encountered by the Liquid Handler.',
+               '3130 A less liquid than expected error was encountered by the Liquid Handler.',
+               '3131 A more liquid than expected error was encountered by the Liquid Handler.',
+               '3152 The specified submerge position for the requested liquid volume exceeds the calibrated Z bottom',
+               '4455 Unable to process result, instrument response is invalid.',
+               'A no liquid detected error was encountered by the Liquid Handler.',
+               'Failed          Internal control cycle number is too high. Valid range is [18.48, 22.48].',
+               'Failed          Failed            Internal control cycle number is too high. Valid range is [18.48,',
+               'Failed          Failed          Internal control cycle number is too high. Valid range is [18.48, 2',
+               'OPEN',
+               'There is insufficient volume in the vessel to perform an aspirate or dispense operation.',
+               'Unable to process result, instrument response is invalid.')";
+      $abbott_flags = 
+        "('4442 Internal control cycle number is too high.',
+                 '4450 Normalized fluorescence too low.',
+                 '4447 Insufficient level of Assay reference dye.',
+                 '4457 Internal control failed.')";
+
+       $abott_fail = " (a.result IN $abbott_result_fails OR a.flags IN $abbott_flags) ";
+      
+      return "SUM(CASE WHEN 
+                  (r.`result`='Failed' OR r.`result`='Invalid') OR $abott_fail
+                  THEN 1 ELSE 0 END) AS num_failed";
+     
     }
 
 

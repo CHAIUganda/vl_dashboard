@@ -202,8 +202,8 @@ class MyHTML{
 			
 				//return
 				return "&lt; ".number_format((float)$result,2)." Copies / mL";
-			} elseif(substr(trim($result),0,1)==">") {
-				//clean the result remove "Copies / mL" and "," from $result
+			} elseif(substr(trim($result),0,1)==">") 
+{				//clean the result remove "Copies / mL" and "," from $result
 				$result=preg_replace("/Copies \/ mL/s","",$result);
 				$result=preg_replace("/,/s","",$result);
 				$result=preg_replace("/\>/s","",$result);
@@ -268,6 +268,37 @@ class MyHTML{
 			}
 		}
 		return $check;		
+	}
+
+	public static function abbott_fail_sql(){
+		$abbott_result_fails = array(
+			"-1.00",
+			"3153 There is insufficient volume in the vessel to perform an aspirate or dispense operation.",
+			"3109 A no liquid detected error was encountered by the Liquid Handler.",
+			"A no liquid detected error was encountered by the Liquid Handler.",
+			"Unable to process result, instrument response is invalid.",
+			"3118 A clot limit passed error was encountered by the Liquid Handler.",
+			"3119 A no clot exit detected error was encountered by the Liquid Handler.",
+			"3130 A less liquid than expected error was encountered by the Liquid Handler.",
+			"3131 A more liquid than expected error was encountered by the Liquid Handler.",
+			"3152 The specified submerge position for the requested liquid volume exceeds the calibrated Z bottom",
+			"4455 Unable to process result, instrument response is invalid.",
+			"A no liquid detected error was encountered by the Liquid Handler.",
+			"Failed          Internal control cycle number is too high. Valid range is [18.48, 22.48].",
+			"Failed          Failed            Internal control cycle number is too high. Valid range is [18.48,",
+			"Failed          Failed          Internal control cycle number is too high. Valid range is [18.48, 2",
+			"OPEN",
+			"There is insufficient volume in the vessel to perform an aspirate or dispense operation.",
+			"Unable to process result, instrument response is invalid.",
+			);
+		$abbott_flags = array(
+			"4442 Internal control cycle number is too high.",
+			"4450 Normalized fluorescence too low.",
+			"4447 Insufficient level of Assay reference dye.",
+			"4457 Internal control failed.",
+		);
+		return 1;
+		//return " (a.result IN (".implode(", ", $abbott_result_fails).") OR a.flags IN (".implode(",", $abbott_flags)."))";
 	}
 
 	public static function getNumericalResult($result=""){

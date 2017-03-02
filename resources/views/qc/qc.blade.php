@@ -45,7 +45,7 @@
                     <td>
                        <label>{!! Form::radio("choices[$sample->sample_id]", 'approved', 0, ["sample"=>"$sample->sample_id", "class"=>"approvals"]) !!} Approve</label>
                        <label>{!! Form::radio("choices[$sample->sample_id]", 'reject', 0,["sample"=>"$sample->sample_id", "class"=>"rejects"]) !!} Reject</label><br>
-                       <textarea style="display:none" id="comment{{ $sample->sample_id }}"></textarea>
+                       {!! Form::textarea("comments[$sample->sample_id]", "", ["style"=>"display:none", "id"=>"comment$sample->sample_id", "rows"=>"4", "cols"=>"30"]) !!}
                     </td> 
                 </tr>
                 @endforeach
