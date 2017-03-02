@@ -10,7 +10,7 @@ class WorksheetResults extends Model
     protected $connection = 'live_db';
 
     public static function getWorksheetList($tab, $data_qc='no'){
-      if($data_qc=='no'){
+      if($data_qc=='yes'){
          $ret = self::leftjoin('vl_users AS u', 'u.email', '=', 'w.createdby')
             ->select('w.id','worksheetReferenceNumber', 'w.created', 'u.names AS createdby')
             ->from('vl_samples_worksheetcredentials AS w');
@@ -18,7 +18,7 @@ class WorksheetResults extends Model
         $ret = self::leftjoin('vl_results_roche AS r', 'r.worksheetID', '=', 'w.id')
             ->leftjoin('vl_results_abbott AS a', 'a.worksheetID', '=', 'w.id')
             ->leftjoin('vl_users AS u', 'u.email', '=', 'w.createdby')
-            ->select('w.id','worksheetReferenceNumber', 'w.created', 'u.names AS createdby', \DB::raw(self::fail_case()))
+            ->select('w.id','worksheetReferenceNumber', 'w.created', 'u.names AS createdby', 'w.stage', \DB::raw(self::fail_case()))
             ->from('vl_samples_worksheetcredentials AS w');
       }
       

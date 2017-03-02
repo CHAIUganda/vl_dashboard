@@ -60,7 +60,7 @@ $(function() {
         ajax: '{!! url("/lab_qc/index/data?tab=$tab") !!}',
         columns: [
             {data: 'worksheetReferenceNumber', name: 'w.worksheetReferenceNumber'},
-            {data: 'num_failed', name: 'num_failed', searchable: false},
+            {data: 'num_failed', name: 'num_failed', orderable: false, searchable: false},
             {data: 'created', name: 'w.created'},
             {data: 'createdby', name: 'u.names'}, 
 
