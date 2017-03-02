@@ -77,10 +77,10 @@ class LiveData extends Model
                       ->leftjoin('vl_results_released AS rr', 'rr.sample_id', '=', 'pr.sample_id')
                       ->select('pr.sample_id','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 
                                'artNumber', 'otherID', 'qc_at','printed','printed_at','printed_by')
-                      ->from('vl_facility_printing AS pr')->where('ready', '=', 'YES')->whereNotNull('rr.sample_id');
+                      ->from('vl_facility_printing AS pr');
       if($printed=='NO'){
         //this to be interpreted as pending
-        $ret = $ret->where('printed','=','NO')->where('downloaded','=','NO');
+        $ret = $ret->where('printed','=','NO')->where('downloaded','=','NO')->where('ready', '=', 'YES');
       }elseif($printed=='YES'){
         //this to be interpreted as printed or downloaded
         $ret =$ret->where(function($query){
@@ -96,9 +96,7 @@ class LiveData extends Model
         $ret = $ret->where('f.hubID', $hub_id);
       }elseif(!empty($facility_id)){
          $ret = $ret->where('f.id', $facility_id);
-      }else{
-         $ret = $ret->where('s.id', 0);
-      } 
+      }
 
       $ret = $printed=='YES'?$ret->orderby('printed_at', 'DESC'):$ret->orderby('qc_at', 'DESC');
       return $ret;    
