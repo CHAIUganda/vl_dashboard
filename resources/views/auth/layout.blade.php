@@ -3,6 +3,7 @@
 @section('content')  
 
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li id='monitoring-tab' ><a href="/monitor" >Monitoring</a></li>
     <li id='logs-tab' ><a href="/logs" >Logs</a></li>
     <li id='users-tab' ><a href="/admin/list_users" >User Management</a></li>
 </ul>

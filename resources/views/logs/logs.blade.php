@@ -1,6 +1,4 @@
 @extends('auth.layout')
-
-
 @section('admin_content')  
 {!! Session::get('msge') !!}<br>
     <table id="results-table" class="table table-condensed table-bordered">

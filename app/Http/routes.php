@@ -31,61 +31,40 @@ Route::group(['middleware' => 'auth'], function()
 		
 		#Route::get('admin/list_users', 'AdminController@list_users');	
 
-		Route::controllers([
-			'admin/list_users' => 'AdminController',
-		]); 
-
-		Route::controllers([
-			'logs' => 'LogsController',
-		]);  
+		Route::controllers(['admin/list_users' => 'AdminController']);
+		Route::controllers(['logs' => 'LogsController']);  
+		Route::controllers(['/monitor' => 'MonitoringController']);
 	});
 
 	Route::group(['middleware'=>['permission:print_results']], function() { 
+		Route::controllers(['results' => 'FacilityListController']);
 		Route::controllers(['results_list' => 'ResultsController']);
+		#Route::get('/results', ['as' => 'facilities', 'uses' => 'ResultsController@facilities']);
+		Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'as' => 'result', 'uses' => 'ResultsController@getResult']);
+		Route::get('/log_printing/',['as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
+		Route::get('/print_envelope/{id}', ['as' => 'print_envelope', 'uses' => 'ResultsController@print_envelope']);
+
+		Route::get('/results/suppression-trend', ['as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
+		Route::get('/suppression_trends/index', ['as' => 'patient_results', 'uses' => function(){ return view('suppression_trends.index'); }]);
 	});
 
 	Route::group(['middleware'=>['permission:qc']], function() { 
 		Route::controllers(['/qc' => 'QCController']);
+		Route::get('/data_qc/{id}/', ['as' => 'data_qc', 'uses' => 'QCController@data_qc']);
+		Route::post('/data_qc/{id}/', ['as' => 'data_qc_post', 'uses' => 'QCController@data_qc']);
+		Route::get('/qc/wk_search/{q}/', [ 'as' => 'qc_worksheet_search', 'uses' => 'QCController@worksheet_search']);
+		Route::get('/sample/{id}', ['as' => 'sample', 'uses' => 'QCController@sample']);
+		Route::get('/qc/byhub/{id}', ['as' => 'qcbyhub', 'uses' => 'QCController@byhub']);
+		Route::get('/qc/byfacility/{id}', ['as' => 'qcbyfacility', 'uses' => 'QCController@byfacility']);
 	});
 
 	Route::group(['middleware'=>['permission:lab_qc']], function() { 
 		Route::controllers(['/lab_qc/index' => 'LabQCController']);
+		Route::match(array('GET', 'POST'), '/lab_qc/qc/{id}/', ['middleware' => ['permission:lab_qc'], 'as' => 'labqc_qc', 'uses' => 'LabQCController@qc']);	
 	});
-
-	Route::group(['middleware'=>['permission:lab_qc']], function() { 
-		Route::controllers(['/facility_list' => 'MonitoringController']);
-	});
-
 
 	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);
-
-
-	Route::get('/results', ['middleware' => ['permission:print_results'], 'as' => 'facilities', 'uses' => 'ResultsController@facilities']);
-
-	Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'middleware' => ['permission:print_results'], 'as' => 'result', 'uses' => 'ResultsController@getResult']);
-	
-	
 	//Route::get('/qc', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@index']);
-	
-	Route::get('/data_qc/{id}/', ['middleware' => ['permission:qc'], 'as' => 'data_qc', 'uses' => 'QCController@data_qc']);
-	Route::post('/data_qc/{id}/', ['middleware' => ['permission:qc'], 'as' => 'data_qc_post', 'uses' => 'QCController@data_qc']);
-
-	Route::get('/qc/wk_search/{q}/', [ 'middleware' => ['permission:qc'], 'as' => 'qc_worksheet_search', 'uses' => 'QCController@worksheet_search']);
-	Route::get('/log_printing/',['middleware' => ['permission:print_results'], 'as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
-
-	Route::get('/sample/{id}', ['middleware' => ['permission:qc'], 'as' => 'sample', 'uses' => 'QCController@sample']);
-	Route::get('/qc/byhub/{id}', ['middleware' => ['permission:qc'], 'as' => 'qcbyhub', 'uses' => 'QCController@byhub']);
-	Route::get('/qc/byfacility/{id}', ['middleware' => ['permission:qc'], 'as' => 'qcbyfacility', 'uses' => 'QCController@byfacility']);
-	//Route::get('/lab_qc/worksheet_list', ['middleware' => ['permission:qc'], 'as' => 'labqc_worksheet_list', 'uses' => 'LabQCController@worksheet_list']);
-	
-	
-	Route::match(array('GET', 'POST'), '/lab_qc/qc/{id}/', ['middleware' => ['permission:lab_qc'], 'as' => 'labqc_qc', 'uses' => 'LabQCController@qc']);
-
-	Route::get('/print_envelope/{id}', ['middleware' => ['permission:print_results'], 'as' => 'print_envelope', 'uses' => 'ResultsController@print_envelope']);
-
-	Route::get('/results/suppression-trend', ['middleware' => ['permission:print_results'], 'as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
-	Route::get('/suppression_trends/index', ['middleware' => ['permission:print_results'], 'as' => 'patient_results', 'uses' => function(){ return view('suppression_trends.index'); }]);
-	
 
 });
 Route::get("/","DashboardController@init");
