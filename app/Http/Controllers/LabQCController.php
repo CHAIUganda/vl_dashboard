@@ -21,7 +21,9 @@ class LabQCController extends Controller {
 		$results = WorksheetResults::getWorksheetList($tab);
 		return \Datatables::of($results)
 				->addColumn('worksheetReferenceNumber', function($result){
-					return "<a href='/lab_qc/qc/$result->id'>$result->worksheetReferenceNumber</a>";
+					$tab = \Request::get("tab");
+
+					return $tab=='released'?$result->worksheetReferenceNumber:"<a href='/lab_qc/qc/$result->id'>$result->worksheetReferenceNumber</a>";
 				})
 				->make(true);
 	}
