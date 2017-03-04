@@ -26,6 +26,14 @@ switch ($machine_type) {
 		break;
 }
 
+if(empty($result_obj->final_result)){
+	$m_result = explode('::',$result_obj->merged_result);
+	$result_latest = end($m_result);
+	$result_properties = explode("|||", $result_latest);
+	$result_obj->final_result = array_key_exists(0, $result_properties)?$result_properties[0]:"";
+	$result_obj->suppressed = array_key_exists(1, $result_properties)?$result_properties[1]:"";
+	$result_obj->test_date = array_key_exists(2, $result_properties)?$result_properties[2]:"";
+}
 
 switch ($result_obj->suppressed) {
 	case 'YES': // patient suppressed, according to the guidlines at that time

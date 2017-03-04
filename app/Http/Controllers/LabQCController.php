@@ -34,7 +34,7 @@ class LabQCController extends Controller {
 			$suppressions = \Request::get('suppressions');
 			$test_date = \Request::get('test_date');
 			$now = date("Y-m-d H:i:s");
-			$createdby = \Auth::user()->email;
+			$createdby = \Auth::user()->name;
 			$sql = "INSERT INTO vl_results_released (
 					worksheet_id, sample_id, result, suppressed, test_date, created, createdby) 
 					VALUES ";

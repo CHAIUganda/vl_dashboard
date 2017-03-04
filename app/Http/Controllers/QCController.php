@@ -47,7 +47,7 @@ class QCController extends Controller {
 
 	public function data_qc($id){
 		$now = date("Y-m-d H:i:s");
-		$qc_by = \Auth::user()->email;
+		$qc_by = \Auth::user()->name;
 		if(\Request::has('choices')){
 			$samples = \Request::get('choices');
 			$comments = \Request::get('comments');

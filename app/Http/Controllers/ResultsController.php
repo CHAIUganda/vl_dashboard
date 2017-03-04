@@ -84,7 +84,8 @@ class ResultsController extends Controller {
 				GROUP_CONCAT(ph.phone SEPARATOR ',') AS phone, f.facility, d.district, h.hub AS hub_name, 
 				released.result AS final_result,released.suppressed, released.test_date,  				
 				log_s.id AS repeated, v.outcome AS verify_outcome, reason.appendix AS rejection_reason,
-				u.signaturePATH, wk.machineType, sw.sampleID, sw.worksheetID
+				u.signaturePATH, wk.machineType, sw.sampleID, sw.worksheetID,
+				GROUP_CONCAT(merged.resultAlphanumeric, '|||', merged.suppressed, '|||', merged.created SEPARATOR '::') AS merged_result
 				FROM vl_samples AS s
 				LEFT JOIN vl_facilities AS f ON s.facilityID=f.id
 				LEFT JOIN vl_districts AS d ON f.districtID=d.id
@@ -97,7 +98,8 @@ class ResultsController extends Controller {
 				LEFT JOIN vl_samples_worksheetcredentials AS wk ON sw.worksheetID=wk.id
 				LEFT JOIN vl_logs_samplerepeats AS log_s ON s.id = log_s.sampleID
 				LEFT JOIN vl_users AS u ON wk.createdby = u.email
-				LEFT JOIN  vl_results_released AS released ON s.id = released.sample_id
+				LEFT JOIN vl_results_released AS released ON s.id = released.sample_id
+				LEFT JOIN vl_results_merged AS merged ON merged.vlSampleID = s.vlSampleID
 				WHERE
 				";
 		if($id=='x' and count($slctd_samples)==0) return "Please select atleast one";
@@ -112,7 +114,7 @@ class ResultsController extends Controller {
 
 	private function log_downloads($id,$slctd_samples_str,$vldbresult){
 		$printed = \Request::get('printed');
-		$by = \Auth::user()->email;
+		$by = \Auth::user()->name;
 		$on = date('Y-m-d H:i:s');
 		$s_arr = $id!='x'?[$id]:explode(",", $slctd_samples_str);
 
@@ -126,7 +128,7 @@ class ResultsController extends Controller {
 		}else{
 			$sql = "INSERT INTO vl_facility_downloads (sample_id, downloaded_by, downloaded_on) VALUES";
 			foreach ($s_arr as $smpl) {
-				$sql .= "($smpl, '".\Auth::user()->email."', '".date('Y-m-d H:i:s')."'),";				
+				$sql .= "($smpl, '".\Auth::user()->name."', '".date('Y-m-d H:i:s')."'),";				
 			}
 			$sql = trim($sql, ',');		
 
@@ -143,7 +145,7 @@ class ResultsController extends Controller {
 	public function log_printing(){
 		$printed = \Request::get('printed');
 		$samples = \Request::get('s');
-		$by = \Auth::user()->email;
+		$by = \Auth::user()->name;
 		$on = date('Y-m-d H:i:s');
 		if($printed=='NO'){
 			$sql = "UPDATE vl_facility_printing SET printed='YES', 
