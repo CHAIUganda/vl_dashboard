@@ -80,7 +80,7 @@ class LiveData extends Model
                       ->from('vl_facility_printing AS pr');
       if($printed=='NO'){
         //this to be interpreted as pending
-        $ret = $ret->where('printed','=','NO')->where('downloaded','=','NO')->where('ready', '=', 'YES')->whereNotNull('rr.sample_id');
+        $ret = $ret->where('printed','=','NO')->where('downloaded','=','NO')->where('ready', '=', 'YES');
       }elseif($printed=='YES'){
         //this to be interpreted as printed or downloaded
         $ret = $ret->where(function($query){

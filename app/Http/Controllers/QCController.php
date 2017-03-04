@@ -60,8 +60,11 @@ class QCController extends Controller {
 
 			$sql = trim($sql, ",");
 			\DB::connection('live_db')->unprepared($sql);
-			$sql2 = "UPDATE vl_samples_worksheetcredentials SET `stage` = 'passed_data_qc' WHERE id = ".\Request::get('worksheet_id');
-			\DB::connection('live_db')->unprepared($sql2);
+			if(\Request::has('worksheet_id')){
+				$sql2 = "UPDATE vl_samples_worksheetcredentials SET `stage` = 'passed_data_qc' WHERE id = ".\Request::get('worksheet_id');
+				\DB::connection('live_db')->unprepared($sql2);
+			}
+			
 			return redirect("/qc/");
 		}
 		$samples = LiveData::worksheetSamples($id);
@@ -91,6 +94,18 @@ class QCController extends Controller {
 			$ret .= "<a href='/qc/$wk->id/'>$wk->worksheetReferenceNumber</a><br>";			
 		}
 		return $ret;
+	}
+
+	public function qc_rejected($date_rejected){
+		$samples = LiveData::leftjoin("vl_samples AS s", "s.id", "=", "v.sampleID")
+						   ->leftjoin("vl_facilities AS f", "f.id", "=", "s.facilityID")
+						   ->leftjoin("vl_districts AS d", "d.id", "=", "f.districtID")
+						   ->leftjoin("vl_patients AS p", "p.id", "=", "s.patientID")
+						   ->select("*")->from("vl_samples_verify AS v")
+						   ->whereDate('v.created','=',$date_rejected)
+						   ->where('v.outcome', '=', 'rejected')
+						   ->get();
+		return view("qc.qc_rejected", compact("samples", "date_rejected"));
 	}
 
 

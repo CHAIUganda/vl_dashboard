@@ -75,7 +75,7 @@
                         <li id='results' >{!! link_to("/results","RESULTS",['class'=>'hdr']) !!}</li>
                         <li id='suppression_trends' >{!! link_to("/suppression_trends/index","SUPPRESSION TRENDS",['class'=>'hdr']) !!}</li>
                         @endpermission
-                        @role('admin')<li id='admin' >{!! link_to("/logs","ADMIN",['class'=>'hdr']) !!}</li> @endrole
+                        @role('admin')<li id='admin' >{!! link_to("/monitor","ADMIN",['class'=>'hdr']) !!}</li> @endrole
                         @else
                         <li id='login'>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li> 
                         @endif 

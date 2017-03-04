@@ -56,6 +56,9 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/sample/{id}', ['as' => 'sample', 'uses' => 'QCController@sample']);
 		Route::get('/qc/byhub/{id}', ['as' => 'qcbyhub', 'uses' => 'QCController@byhub']);
 		Route::get('/qc/byfacility/{id}', ['as' => 'qcbyfacility', 'uses' => 'QCController@byfacility']);
+		Route::get('/qc_rejected/{rejection_date}', ['as' => 'qc_rejected', 'uses' => 'QCController@qc_rejected']);
+
+		
 	});
 
 	Route::group(['middleware'=>['permission:lab_qc']], function() { 

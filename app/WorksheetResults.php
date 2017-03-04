@@ -65,19 +65,20 @@ class WorksheetResults extends Model
     public static function getFacilityList(){
       $stats = "SUM(CASE WHEN p.printed = 'NO' AND p.downloaded = 'NO' THEN 1 ELSE 0 END) AS num_pending,
                 SUM(CASE WHEN p.printed = 'YES' THEN 1 ELSE 0 END) AS num_printed,
-                SUM(CASE WHEN p.downloaded = 'YES' THEN 1 ELSE 0 END) AS num_downloaded
+                SUM(CASE WHEN p.downloaded = 'YES' THEN 1 ELSE 0 END) AS num_downloaded,
+                MAX(printed_at) AS printed_at
                 ";
       $res = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'p.sample_id')
                     ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
                     ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')                
-                    ->select('f.*', 'hub', 'printed_at', \DB::raw($stats))
+                    ->select('f.*', 'hub', \DB::raw($stats))
                     ->from('vl_facility_printing AS p');
       if(!empty(\Auth::user()->hub_id)){
         $res = $res->where('f.hubID', \Auth::user()->hub_id);
       }elseif(!empty(\Auth::user()->facility_id)){
         $res = $res->where('f.id', '=', \Auth::user()->facility_id);
       }
-      return $res->groupby('f.id')->orderby('num_pending', 'DESC')->orderby('printed_at', 'DESC');
+      return $res->groupby('f.id')->orderby('num_pending', 'DESC');
     }
 
 
