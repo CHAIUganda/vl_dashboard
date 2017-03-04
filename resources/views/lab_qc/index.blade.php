@@ -3,17 +3,14 @@
 @section('content')
 <link href="{{ asset('/css/vl2.css') }}" rel="stylesheet">
 <?php 
+$roche_actv="";
+$abbott_actv="";
+$released_actv="";
 if($tab=='roche'){
     $roche_actv="class=active";
-    $abbott_actv="";
-    $released_actv="";
 }elseif($tab=='abbott'){
     $abbott_actv="class=active";
-    $roche_actv="";
-    $released_actv="";
 }else{
-    $abbott_actv="";
-    $roche_actv="";
     $released_actv="class=active";
 }
 

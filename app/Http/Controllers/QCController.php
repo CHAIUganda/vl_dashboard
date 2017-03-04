@@ -21,7 +21,8 @@ class QCController extends Controller {
 		$results = WorksheetResults::getWorksheetList($tab, 'yes');
 		return \Datatables::of($results)
 				->addColumn('worksheetReferenceNumber', function($result){
-					return "<a href='/data_qc/$result->id'>$result->worksheetReferenceNumber</a>";
+					$tab=\Request::get("tab");
+					return $tab=='passed_data_qc'?$result->worksheetReferenceNumber:"<a href='/data_qc/$result->id'>$result->worksheetReferenceNumber</a>";
 				})
 				->make(true);
 	}
