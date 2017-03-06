@@ -16,6 +16,9 @@ class FacilityListController extends Controller {
 	public function getData(){
 		$facilities = WorksheetResults::getFacilityList();
 		return \Datatables::of($facilities)
+				->addColumn('facility', function($result){
+					return "<a href='/results_list?f=$result->id'> $result->facility</a>";
+				})
 				->addColumn('action', function($result){
 					$url = "/results_list?f=$result->id";
 					return "<a class='btn btn-danger btn-xs' href='$url'>view pending</a>

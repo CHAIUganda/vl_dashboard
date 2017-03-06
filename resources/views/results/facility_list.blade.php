@@ -4,8 +4,8 @@
 <table id="results-table" class="table table-condensed table-bordered  table-striped">
 <thead>
     <tr>
-        <th>Facility</th>
-        <th>Hub</th>               
+        <th>Hub</th>  
+        <th>Facility</th>                     
         <th>Contact Person</th>
         <th>Phone</th>
         <th>Email</th>
