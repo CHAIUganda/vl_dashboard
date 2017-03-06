@@ -29,6 +29,7 @@
                 <tr> <td>2</td> <td>PC</td> <td/> <td/> <td/> <td/> <td/> <td/> </tr>
                 <tr> <td>3</td> <td>HPC</td> <td/> <td/> <td/> <td/> <td/> <td/> </tr>
                 <?php
+                $smpl_arr = array();
                 $nr = 4;
                 if($wk->includeCalibrators == 1){
                     while($nr<=11){
@@ -39,7 +40,8 @@
 
                 ?>
                 @foreach($samples AS $sample)
-                <?php 
+                <?php
+                $smpl_arr[$sample->sampleID] = "xx"; 
 
                 $styl = "";
                 $resultxxx = "";
@@ -90,7 +92,7 @@
             </tbody>
         </table>
         {!! Form::hidden('test_date', $test_date) !!}
-        {!! Form::hidden('len', count($samples), ['id'=>'len']) !!}
+        {!! Form::hidden('len', count($smpl_arr), ['id'=>'len']) !!}
         
         
         <br>
