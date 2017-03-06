@@ -24,7 +24,7 @@ class WorksheetResults extends Model
 
         $ret = $ret->where(function($query){
                 $qc_date = env('QC_START_DATE','2017-03-02');
-                $query->where('r.created','>=',$qc_date)->orWhere('a.created','=',$qc_date);
+                $query->where('r.created','>=',$qc_date)->orWhere('a.created','>=',$qc_date);
               }); 
       }
       
