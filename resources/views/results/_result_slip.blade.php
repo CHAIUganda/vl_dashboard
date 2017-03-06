@@ -33,6 +33,8 @@ if(empty($result_obj->final_result)){
 	$result_obj->final_result = array_key_exists(0, $result_properties)?$result_properties[0]:"";
 	$result_obj->suppressed = array_key_exists(1, $result_properties)?$result_properties[1]:"";
 	$result_obj->test_date = array_key_exists(2, $result_properties)?$result_properties[2]:"";
+
+	$result_obj->final_result = ($result_obj->suppressed == 'UNKNOWN')?'Failed':$result_obj->final_result;
 }
 
 switch ($result_obj->suppressed) {
