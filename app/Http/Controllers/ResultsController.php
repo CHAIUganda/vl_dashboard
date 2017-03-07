@@ -270,6 +270,15 @@ class ResultsController extends Controller {
 		$facility = $facility[0];
 		return view('results.print_envelope', compact('facility'));
 	}
+
+	public function searchbyhub($txt){
+		$hubs = LiveData::select('id', 'hub')->from('vl_hubs')->where('hub', 'LIKE', "%$txt%")->limit(10)->get();
+		$ret = "";
+		foreach ($hubs as $hub) {
+			$ret .= "<a href='/results?h=$hub->id'>$hub->hub</a><br>";			
+		}
+    	return $ret;
+    }
 	
 	private function _dateNMonthsBack(){
     	$ret;

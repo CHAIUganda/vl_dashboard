@@ -73,8 +73,12 @@ class WorksheetResults extends Model
                     ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')                
                     ->select('f.*', 'hub', \DB::raw($stats))
                     ->from('vl_facility_printing AS p');
-      if(!empty(\Auth::user()->hub_id)){
-        $res = $res->where('f.hubID', \Auth::user()->hub_id);
+
+      $hub_id = \Auth::user()->hub_id;
+      if(empty($hub_id) && \Request::has('h')) $hub_id = \Request::get('h');
+
+      if(!empty($hub_id)){
+        $res = $res->where('f.hubID', $hub_id);
       }elseif(!empty(\Auth::user()->facility_id)){
         $res = $res->where('f.id', '=', \Auth::user()->facility_id);
       }

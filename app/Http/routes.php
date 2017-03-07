@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'as' => 'result', 'uses' => 'ResultsController@getResult']);
 		Route::get('/log_printing/',['as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
 		Route::get('/print_envelope/{id}', ['as' => 'print_envelope', 'uses' => 'ResultsController@print_envelope']);
+		Route::get('/searchbyhub/{txt}', ['as' => 'searchbyhub', 'uses' => 'ResultsController@searchbyhub']);
 
 		Route::get('/results/suppression-trend', ['as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
 		Route::get('/suppression_trends/index', ['as' => 'patient_results', 'uses' => function(){ return view('suppression_trends.index'); }]);
@@ -57,7 +58,6 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/qc/byhub/{id}', ['as' => 'qcbyhub', 'uses' => 'QCController@byhub']);
 		Route::get('/qc/byfacility/{id}', ['as' => 'qcbyfacility', 'uses' => 'QCController@byfacility']);
 		Route::get('/qc_rejected/{rejection_date}', ['as' => 'qc_rejected', 'uses' => 'QCController@qc_rejected']);
-
 		
 	});
 
