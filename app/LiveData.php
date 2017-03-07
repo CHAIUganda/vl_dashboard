@@ -17,6 +17,11 @@ class LiveData extends Model
       return 'x';
     }
 
+    public static function getFacilityName($id){
+      $r = LiveData::select('facility')->from('vl_facilities')->where('id','=', $id)->limit(1)->get();
+      return (count($r)>0)?$r[0]->facility:"";
+    }
+
     public static function wkshtby($cond=1){
       $sql = "SELECT w.id, w.worksheetReferenceNumber FROM vl_samples_worksheet AS ws 
               LEFT JOIN vl_samples_worksheetcredentials AS w ON ws.worksheetID=w.id

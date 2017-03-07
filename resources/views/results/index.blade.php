@@ -17,7 +17,7 @@ $printed_url="/results_list?printed=YES$facility_id";
 ?>
 
 <div style="text-align:center;text-decoration: underline;" class='print-ttl'>
-    {{session('facility')}}
+    {{ $facility_name }}
     <a href="javascript:windPop('/print_envelope/{{ \Request::get('f') }}')" style="float:right" class="btn btn-danger btn-xs">Print Envelope</a>
 </div>
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">

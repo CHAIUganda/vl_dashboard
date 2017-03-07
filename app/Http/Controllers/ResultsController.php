@@ -11,7 +11,8 @@ class ResultsController extends Controller {
 	public function getIndex(){
 		$printed=\Request::get("printed");
 		$printed=empty($printed)?'NO':$printed;
-		return view('results.index', compact('printed'));
+		$facility_name = LiveData::getFacilityName(\Request::get('f'));
+		return view('results.index', compact('printed', 'facility_name'));
 	}
 
 	public function getData(){
@@ -21,7 +22,6 @@ class ResultsController extends Controller {
 		$results = LiveData::getResultsList($printed);
 		return \Datatables::of($results)
 				->addColumn('sample_checkbox', function($result){
-					session(['facility'=>$result->facility]);
 					return "<input type='checkbox' class='samples' name='samples[]' value=$result->sample_id>";
 				})
 				->addColumn('action', function ($result) {
