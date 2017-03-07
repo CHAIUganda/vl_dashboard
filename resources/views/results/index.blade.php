@@ -67,7 +67,9 @@ $(function() {
 
         processing: true,
         serverSide: true,
-        pageLength: 50,
+        @if($printed=='YES') pageLength: 50, @endif
+        @if($printed=='NO') paging:false, @endif
+
         ajax: '{!! url("/results_list/data?printed=$printed$facility_id") !!}',
         columns: [
             {data: 'sample_checkbox', name: 'sample_checkbox', orderable: false, searchable: false},
