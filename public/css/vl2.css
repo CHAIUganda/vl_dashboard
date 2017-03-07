@@ -157,7 +157,7 @@ page[size="A4"] {
   width: 21cm;
   height: 29.7cm; 
 }
-page[size="A4"][layout="portrait"] {
+page[size="A4"][layout="landscape"] {
   width: 29.7cm;
   height: 21cm;  
 }

@@ -14,25 +14,35 @@
 </head>
 
 <body>
-    <div style="font-size:20px; ">
-    
-    
-        <div id="print-btn-div" style='text-align:center; padding:20px;'>
-            <!-- <button id="pdf-btn" class='btn btn-danger' >Download</button> -->
-            <button id="print-btn" class='btn btn-danger' >Print</button>
-        </div>
+    <div id="print-btn-div" style='text-align:center; padding:20px;'>
+       
+        <button id="print-btn" class='btn btn-danger' >Print</button>
+    </div>
 
-        <div style="text-align:center;font-size:30px">{{ $facility->hub }}</div>
-        <br><br>
+    <page size="A4" layout="landscape" style="font-size:50px;">
+            <div style="margin-left:40px;"> 
+                <span>From: CPHL</span>
 
-        {{ $facility->facility }}<br>
-        District: {{ $facility->district }}<br>
-        {{ $facility->contactPerson }}<br>
-        {{ $facility->phone }}<br>
-        C/O:
-        <br> Viral Load Results
+                <div style="display:inline-block; margin-left:200px;">
+                    <img src="/images/hub_bike.png">
+                    <span style="font-weight:bolder;">{{ $facility->hub }}</span>
+                </div>
+                <br><br> <br>               
+                <div class="row">
+                    <div class="col-xs-1"><span>To:</span></div>
+                    <div class="col-xs-8">              
+                        
+                        <br><span>{{ $facility->facility }}</span><br>
+                        <span>District: {{ $facility->district }}</span><br><br>
+                        <span style="font-weight:bold;font-size:30px">Viral Load Results</span>
+                    </div>
+                    
+                    <h1 style=" margin-top:50px;margin-left:700px;margin-right:-250px;transform:rotate(90deg);">{{ $facility->hub }} &nbsp;  &nbsp; {{ $facility->facility }}</h1>
+                    
 
-    </div>   
+                </div>  
+            </div>
+        </page>
 
     <script type="text/javascript">
 
