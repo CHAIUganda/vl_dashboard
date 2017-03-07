@@ -83,12 +83,12 @@ class WorksheetResults extends Model
         $res = $res->where('f.id', '=', \Auth::user()->facility_id);
       }
 
+      $res = $res->groupby('f.id');
+
       if($limit == "pending"){
-         $res = $res->where('p.ready', '=', 'YES' )
-                    ->where('p.printed', '=', 'NO')
-                    ->where('p.downloaded', '=', 'NO');
+         $res = $res->having('num_pending', '>=', 1);
       }
-      return $res->groupby('f.id')->orderby('num_pending', 'DESC');
+      return $res->orderby('num_pending', 'DESC');
     }
 
 
