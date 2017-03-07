@@ -62,7 +62,7 @@ class WorksheetResults extends Model
 
     }
 
-    public static function getFacilityList(){
+    public static function getFacilityList($limit = "pending"){
       $stats = "SUM(CASE WHEN p.printed = 'NO' AND p.downloaded = 'NO' AND ready = 'YES' THEN 1 ELSE 0 END) AS num_pending,
                 SUM(CASE WHEN p.printed = 'YES' THEN 1 ELSE 0 END) AS num_printed,
                 SUM(CASE WHEN p.downloaded = 'YES' THEN 1 ELSE 0 END) AS num_downloaded,
@@ -81,6 +81,12 @@ class WorksheetResults extends Model
         $res = $res->where('f.hubID', $hub_id);
       }elseif(!empty(\Auth::user()->facility_id)){
         $res = $res->where('f.id', '=', \Auth::user()->facility_id);
+      }
+
+      if($limit == "pending"){
+         $res = $res->where('p.ready', '=', 'YES' )
+                    ->where('p.printed', '=', 'NO')
+                    ->where('p.downloaded', '=', 'NO');
       }
       return $res->groupby('f.id')->orderby('num_pending', 'DESC');
     }

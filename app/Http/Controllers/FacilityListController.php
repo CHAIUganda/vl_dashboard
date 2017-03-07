@@ -14,7 +14,7 @@ class FacilityListController extends Controller {
 	}
 
 	public function getData(){
-		$facilities = WorksheetResults::getFacilityList();
+		$facilities = WorksheetResults::getFacilityList('pending');
 		return \Datatables::of($facilities)
 				->addColumn('num_pending', function($result){
 					return "<a href='/results_list?f=$result->id'> $result->num_pending</a>";
