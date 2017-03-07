@@ -1,6 +1,7 @@
-@extends(($sect == 'admin') ? 'auth.layout' : 'layout');
+@extends(($sect == 'admin') ? 'auth.layout' : 'layout')
 
 @section(($sect == 'admin') ? 'admin_content' : 'content')
+
 <table id="results-table" class="table table-condensed table-bordered  table-striped">
 <thead>
     <tr>
@@ -12,7 +13,7 @@
         <th># Pending</th>
         <th># Printed</th>
         <th># Downloaded</th>
-        <th># Last Printed/ Downloaded</th> 
+        @if($sect == 'admin')<th># Last Printed/ Downloaded</th>@endif 
         @if($sect == 'results')<th></th>@endif
     </tr>
 </thead>
@@ -41,7 +42,7 @@ $(function() {
             {data: 'num_pending', name: 'num_pending', searchable: false},
             {data: 'num_printed', name: 'num_printed', searchable: false},
             {data: 'num_downloaded', name: 'num_downloaded', searchable: false },
-            {data: 'printed_at', name: 'p.printed_at'},
+            @if($sect == 'admin'){data: 'printed_at', name: 'p.printed_at'},@endif
             @if($sect == 'results') {data: 'action', name: 'action', orderable: false, searchable: false}, @endif
         ]
     });
