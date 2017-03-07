@@ -63,7 +63,7 @@ class WorksheetResults extends Model
     }
 
     public static function getFacilityList(){
-      $stats = "SUM(CASE WHEN p.printed = 'NO' AND p.downloaded = 'NO' THEN 1 ELSE 0 END) AS num_pending,
+      $stats = "SUM(CASE WHEN p.printed = 'NO' AND p.downloaded = 'NO' AND ready = 'YES' THEN 1 ELSE 0 END) AS num_pending,
                 SUM(CASE WHEN p.printed = 'YES' THEN 1 ELSE 0 END) AS num_printed,
                 SUM(CASE WHEN p.downloaded = 'YES' THEN 1 ELSE 0 END) AS num_downloaded,
                 MAX(printed_at) AS printed_at
