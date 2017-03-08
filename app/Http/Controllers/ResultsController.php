@@ -5,6 +5,8 @@ use EID\Http\Controllers\Controller;
 
 use EID\LiveData;
 use Log;
+use DateTime;
+use DateInterval;
 
 class ResultsController extends Controller {
 
@@ -205,15 +207,63 @@ class ResultsController extends Controller {
 					order by sr.patientID
 					";
 
-
-      
-		$patient_results =  \DB::connection('live_db')->select($sql);
 		
-		//$patient_results = 100;
-		//echo ".......patients retrieved.............";
-		return compact("patient_results");
+        $patient_results = null;
+        $patient_retested_dates = null;
+        try{
+        	$patient_results =  \DB::connection('live_db')->select($sql);
+        	
+        	$patient_retested_dates = $this->getPatientRetestedDates($fro_date,$to_date,$hub_id);
+        	
+        }catch(\Illuminate\Database\QueryException $e){
+        	Log::info("---ooops---");
+        	Log::error($e->getMessage());
+        	
+        }
+		
+		
+
+		
+		
+		return compact("patient_results","patient_retested_dates");
 
 	}
+	private function addSixMonths($to_date){
+	    $year = intval(substr($to_date,0,4));
+	    $month = intval(substr($to_date,4));
+	    
+	    //increment month and year
+	    $month = $month + 6;
+	    if($month > 12){
+	        $difference = $month - 12;
+	        $month = $difference;
+	        $year ++;
+	    }
+	    $new_month=null;
+	    if($month < 10){
+	        $new_month = "0$month";
+	    }else{
+	         $new_month = "$month";
+	    }
+	    $new_date = "$year"."$new_month";
+	    return $new_date;
+	}
+	private function getPatientRetestedDates($fro_date,$to_date,$hub_id){
+		$to_date_incremented= $this->addSixMonths($to_date);
+		ini_set('memory_limit','384M');
+		
+        
+        $sql = "select patientID,patientUniqueID,collectionDate from vl_samples where hubID=$hub_id and  str_to_date(created,'%Y-%m') 
+						between str_to_date('$fro_date','%Y%m') and str_to_date('$to_date_incremented','%Y%m') order by patientUniqueID,collectionDate";
+		Log::info("$sql");
+		$patient_retested_dates =  \DB::connection('live_db')->select($sql);
+		
+		
+
+		return $patient_retested_dates;
+
+	}
+
 
 /*
 	public function getPatientResults(){

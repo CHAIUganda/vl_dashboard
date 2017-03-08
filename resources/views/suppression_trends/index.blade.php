@@ -238,8 +238,5 @@
  </div>
 </div>
 
-<script type="text/javascript">
-$('#suppression_trends').addClass('active');
-</script>
 <script type="text/javascript" src=" {{ asset('js/live_for_hubs.js') }} "></script>
 @endsection()
