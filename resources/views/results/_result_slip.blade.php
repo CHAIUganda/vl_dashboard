@@ -280,7 +280,7 @@ $phones = implode(", ", $phones_arr);
 		
 	</div>
 	</div>
-	<footer style='float:right'>"a SANAS Accredited Medical Laboratory, No. M0589" 1 of 1</footer>
+	<footer><span style='float:left'>"a SANAS Accredited Medical Laboratory, No. M0589"</span> <span style='float:right'>1 of 1</span></footer>
 	<?php } ?>
 </page>
 <!-- </div> -->

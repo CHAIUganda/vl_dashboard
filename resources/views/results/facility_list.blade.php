@@ -1,20 +1,21 @@
 @extends(($sect == 'admin') ? 'auth.layout' : 'layout')
 
 @section(($sect == 'admin') ? 'admin_content' : 'content')
-<br>
 <?php 
 $h_limit = "";
 if(\Request::has('h')) $h_limit = "?h=".\Request::get('h');
 ?>
+<h2 style="text-align:center;text-transform:uppercase">{{ Auth::user()->hub_name }}</h2>
 @if(empty(Auth::user()->facility_id) AND empty(Auth::user()->hub_id))
     {!! Form::text('hub','', ['id'=>'hub','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search Hub"] ) !!}
     <div class='live_drpdwn' id="worksheet_dropdown" style='display:none'></div>
+    <br>
 @endif()
-<br>
+
 <table id="results-table" class="table table-condensed table-bordered  table-striped">
 <thead>
     <tr>
-        <th>Hub</th>  
+        @if(empty(Auth::user()->hub_id))<th>Hub</th> @endif 
         <th>Facility</th>                     
         <th>Contact Person</th>
         <th>Phone</th>
@@ -43,7 +44,7 @@ $(function() {
         pageLength: 10,
         ajax: '{!! url("/results/data$h_limit") !!}',
         columns: [    
-            {data: 'hub', name: 'h.hub'},
+             @if(empty(Auth::user()->hub_id)) {data: 'hub', name: 'h.hub'},@endif
             {data: 'facility', name: 'f.facility'},
             {data: 'contactPerson', name: 'f.contactPerson'},
             {data: 'phone', name: 'f.phone'},

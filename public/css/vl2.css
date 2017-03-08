@@ -173,8 +173,8 @@ page[size="A4"][layout="landscape"] {
 .stamp-date{
 	position: absolute;
     top: 50px;
-    left: 65px;
-    font-size: 18px;
+    left: 64px;
+    font-size: 16px;
     font-weight: bold;
     color: #F01319;
 }
