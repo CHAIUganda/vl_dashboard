@@ -21,19 +21,19 @@
                                 <tbody>                                
                                   <tr ng-repeat="retestNSPatients_object in retestNSPatients" >
                                   
-                                      <td class="ng-cloak"><% retestNSPatients_object.patientUniqueID %></td>
-                                      <td class="ng-cloak"><% retestNSPatients_object.facility %></td>
-                                      <td class="ng-cloak"><% retestNSPatients_object.artNumber %></td>
-                                      <td class="ng-cloak"><% retestNSPatients_object.collectionDate %></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><% retestNSPatients_object.patientUniqueID %></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><% retestNSPatients_object.facility %></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><% retestNSPatients_object.artNumber %></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><% retestNSPatients_object.collectionDate %></td>
 
-                                      <td class="ng-cloak"><% retestNSPatients_object.receiptDate %></td>
-                                      <td class="ng-cloak"><% retestNSPatients_object.result %></td>
-                                      <td class="ng-cloak"><% retestNSPatients_object.recommendedRetestDate %></td>
-                                      <td class="ng-cloak"><% retestNSPatients_object.phone %></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><% retestNSPatients_object.receiptDate %></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><% retestNSPatients_object.result %></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><% retestNSPatients_object.recommendedRetestDate %></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><% retestNSPatients_object.phone %></td>
 
-                                      <td><a>Click Here</a></td>
-                                      <td></td>
-                                      <td></td>
+                                      <td ng-class="[retestNSPatients_object.class]"><a>Click Here</a></td>
+                                      <td ng-class="[retestNSPatients_object.class]"></td>
+                                      <td ng-class="[retestNSPatients_object.class]"></td>
                                   
                               </tr>           
                                  </tbody>
