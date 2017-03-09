@@ -861,9 +861,90 @@ ctrllers.DashController = function($scope,$http){
         //add 6 months
         var recommended_retest_date = collection_date_object.addMonths(6);
         var recommended_retest_month = recommended_retest_date.getMonth()+1;//Months= 0 - 11
-        var recommended_retest_date_string = recommended_retest_date.getFullYear()+"-"+recommended_retest_month+"-"+recommended_retest_date.getDate();
+        if(recommended_retest_month < 10){
+            recommended_retest_month = "0"+recommended_retest_month;
+        }
+        var recommended_retest_day = recommended_retest_date.getDate();
+        if(recommended_retest_day < 10){
+            recommended_retest_day = "0"+recommended_retest_day;
+        }
+        var recommended_retest_date_string = recommended_retest_date.getFullYear()+"-"+recommended_retest_month+"-"+recommended_retest_day;
 
         return recommended_retest_date_string;
+    };
+
+    var getRetestedDate = function(patientUniqueID,recommended_retest_date,patient_retested_dates){
+        var recommended_retest_date_object = new Date(recommended_retest_date);
+        var patient_retested_date = null;
+        for(var index=0; index < patient_retested_dates.length; index++){
+            patient_retested_date = null;
+            var next_index = index + 1;
+
+            //date format: Y-m-d e.g. 2016-04-01
+            if(patientUniqueID == patient_retested_dates[index].patientUniqueID){
+                patient_retested_date = patient_retested_dates[index].collectionDate;
+                var dummy_date_object = new Date(patient_retested_date);
+                if(recommended_retest_date_object.getTime() <= dummy_date_object.getTime()){
+
+                    return patient_retested_date;
+                }else if(patientUniqueID != patient_retested_dates[next_index].patientUniqueID){
+                    patient_retested_date = null;
+                    break;//stops looping over irrelevant data since all info about this patient has been exhausted
+                }
+            }
+            
+        }//end loop
+        return patient_retested_date;
+    };
+    var getNumberOfMonthsMissed = function(recommended_retest_date,retested_date){
+            
+
+
+
+            var months = 0;
+            var recommended_retest_date_object = new Date(recommended_retest_date);
+            if(retested_date == null){
+                months = 2;
+                return months;
+            }
+                
+            var retested_date_object = new Date(retested_date);
+
+            
+
+            var today = new Date();
+            if(recommended_retest_date_object.getTime() >= today.getTime()){
+                return -1;
+            }
+            
+            
+            while((recommended_retest_date_object.getMonth()+''+recommended_retest_date_object.getFullYear()) != 
+                    (retested_date_object.getMonth()+''+retested_date_object.getFullYear())) {
+                months++;
+                recommended_retest_date_object.setMonth(recommended_retest_date_object.getMonth()+1);
+            }
+            return months;
+            
+            
+        
+    };
+    var getColour = function(patientUniqueID,recommended_retest_date){
+        var retested_date = getRetestedDate(patientUniqueID,recommended_retest_date,$scope.patient_retested_dates);
+        
+        var months_missed = getNumberOfMonthsMissed(recommended_retest_date,retested_date);
+
+        var colour = "";
+
+        if(months_missed >= 2){
+            colour = "two-months-over-due";
+        }else if(months_missed >= 1){
+            colour = "one-month-over-due";
+        }else if(months_missed >= 0){
+            colour = "due";
+        }else if(months_missed == -1){
+            colour = "not-due";
+        }
+        return colour;
     };
     var getRetestNSPatients = function(clean_results){
         var retestNSPatients = [];
@@ -874,7 +955,9 @@ ctrllers.DashController = function($scope,$http){
             var uniformResult = getUniformResults(clean_results_object.result);
             var retest_ns_patient_record = null;
 
+
             if(clean_results_object.result != null && uniformResult == 'notSuppressed'){
+                var recommended_retest_date = getRecommendedRetestDate(clean_results_object.collectionDate);
                 retest_ns_patient_record = {
                     "patientID":clean_results_object.patientID,
                     "vlSampleID":clean_results_object.vlSampleID,
@@ -885,10 +968,11 @@ ctrllers.DashController = function($scope,$http){
                     "hub":clean_results_object.hub,
                     "facility":clean_results_object.facility,
                     "collectionDate":clean_results_object.collectionDate,
-                    "recommendedRetestDate":getRecommendedRetestDate(clean_results_object.collectionDate),
+                    "recommendedRetestDate":recommended_retest_date,
                     "receiptDate":clean_results_object.receiptDate,
                     "artNumber":clean_results_object.artNumber,
-                    "phone":clean_results_object.phone
+                    "phone":clean_results_object.phone,
+                    "class":getColour(clean_results_object.patientUniqueID,recommended_retest_date)
                 };
                 retestNSPatients.push(retest_ns_patient_record);
             }//end for loop
@@ -896,6 +980,8 @@ ctrllers.DashController = function($scope,$http){
 
         return retestNSPatients;
     };
+
+    
     var getData=function(){
             $scope.loading = true;
             var prms = {};
@@ -904,6 +990,7 @@ ctrllers.DashController = function($scope,$http){
             prms.to_date = $scope.to_date;
             
             $http({method:'GET',url:"/results/suppression-trend",params:prms}).success(function(data) {
+                
                 //1. remove duplicates
                 var clean_results = removeDuplicates(data.patient_results);
                 
@@ -942,6 +1029,8 @@ ctrllers.DashController = function($scope,$http){
                 $scope.allPatientsResults = getAllPatientsResults(patients_with_more_results);
 
                 $scope.patientsWithInvalidResults = getPatientsWithInvalidResults(clean_results);
+
+                $scope.patient_retested_dates = data.patient_retested_dates;
                 $scope.retestNSPatients = getRetestNSPatients(clean_results);
 
                 $scope.filtered = $scope.date_filtered;    
