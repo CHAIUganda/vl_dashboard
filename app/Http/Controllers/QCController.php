@@ -102,9 +102,11 @@ class QCController extends Controller {
 						   ->leftjoin("vl_facilities AS f", "f.id", "=", "s.facilityID")
 						   ->leftjoin("vl_districts AS d", "d.id", "=", "f.districtID")
 						   ->leftjoin("vl_patients AS p", "p.id", "=", "s.patientID")
+						   ->leftjoin("vl_facility_printing AS fp", "fp.sample_id", "=", "s.id")
 						   ->select("*")->from("vl_samples_verify AS v")
 						   ->whereDate('v.created','=',$date_rejected)
 						   ->where('v.outcome', '=', 'rejected')
+						   ->whereNull("fp.id")
 						   ->get();
 		return view("qc.qc_rejected", compact("samples", "date_rejected"));
 	}

@@ -1,38 +1,70 @@
-@extends(($sect == 'admin') ? 'auth.layout' : 'layout')
+@extends('layout')
 
-@section(($sect == 'admin') ? 'admin_content' : 'content')
+@section('content')
 <?php 
-$h_limit = "";
-if(\Request::has('h')) $h_limit = "?h=".\Request::get('h');
+$params = "";
+$limit = "?";
+if(\Request::get('h')) $limit .= "h=". \Request::get('h');
+
+$pending_actv="";
+$completed_actv="";
+if(isset($tab)){
+    if($tab=='pending'){
+        $pending_actv="class=active";
+    }else{
+        $completed_actv="class=active";    
+    }
+    $limit .= "&tab=$tab";
+} 
+
+$pending_url = "/results?tab=pending";
+$completed_url = "/results?tab=completed";
 ?>
 <h2 style="text-align:center;text-transform:uppercase">{{ Auth::user()->hub_name }}</h2>
 @if(empty(Auth::user()->facility_id) AND empty(Auth::user()->hub_id))
     {!! Form::text('hub','', ['id'=>'hub','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search Hub"] ) !!}
     <div class='live_drpdwn' id="worksheet_dropdown" style='display:none'></div>
     <br>
+    @if($sect == 'results')
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li {{ $pending_actv }} title='Print'><a href="{!! $pending_url !!}" >Pending</a></li>
+        <li {{ $completed_actv }} title='Completed'><a href="{!! $completed_url !!}" >All</a></li>
+    </ul>
+
+    @endif
 @endif()
 
-<table id="results-table" class="table table-condensed table-bordered  table-striped">
-<thead>
-    <tr>
-        @if(empty(Auth::user()->hub_id))<th>Hub</th> @endif 
-        <th>Facility</th>                     
-        <th>Contact Person</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th># Pending</th>
-        <th># Printed</th>
-        <th># Downloaded</th>
-        @if($sect == 'admin')<th># Last Printed/ Downloaded</th>@endif 
-        @if($sect == 'results')<th></th>@endif
-    </tr>
-</thead>
-</table>          
+@if(isset($tab))
+<div id="my-tab-content" class="tab-content">
+    <div class="tab-pane active" id="print"> 
+        @endif
+        <table id="results-table" class="table table-condensed table-bordered  table-striped">
+        <thead>
+            <tr>
+                @if(empty(Auth::user()->hub_id))<th>Hub</th> @endif 
+                <th>Facility</th>                     
+                <th>Contact Person</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th># Pending</th>
+                <th># Printed</th>
+                <th># Downloaded</th>
+                @if($sect == 'admin')<th># Last Printed/ Downloaded</th>@endif 
+                @if($sect == 'results')<th></th>@endif
+            </tr>
+        </thead>
+        </table> 
+        @if(isset($tab))  
+    </div>
+</div>  
+@endif 
 
 <script type="text/javascript">
-@if($sect == 'admin') 
-    $('#monitoring-tab').addClass('active'); 
+@if($sect == 'admin')
+    <?php $url = '/monitor' ?> 
+    $('#monitor').addClass('active'); 
 @else
+    <?php $url = '/results' ?> 
     $('#results').addClass('active');
 @endif
 
@@ -42,7 +74,7 @@ $(function() {
         processing: true,
         serverSide: true,
         pageLength: 10,
-        ajax: '{!! url("/results/data$h_limit") !!}',
+        ajax: '{!! url("$url/data$limit") !!}',
         columns: [    
              @if(empty(Auth::user()->hub_id)) {data: 'hub', name: 'h.hub'},@endif
             {data: 'facility', name: 'f.facility'},

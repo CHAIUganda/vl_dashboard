@@ -10,11 +10,19 @@ class FacilityListController extends Controller {
 
 	public function getIndex(){
 		$sect = 'results';
-		return view('results.facility_list', compact('sect'));
+		if(empty(\Auth::user()->facility_id) AND empty(\Auth::user()->hub_id)){
+			$tab = \Request::has('tab')?\Request::get('tab'):'pending';
+		}		
+		
+		return view('results.facility_list', compact('sect', 'tab'));
 	}
 
 	public function getData(){
-		$facilities = WorksheetResults::getFacilityList('pending');
+		$tab = "";
+		if(empty(\Auth::user()->facility_id) AND empty(\Auth::user()->hub_id)){
+			$tab = \Request::has('tab')?\Request::get('tab'):'pending';
+		}
+		$facilities = WorksheetResults::getFacilityList($tab);
 		return \Datatables::of($facilities)
 				->addColumn('num_pending', function($result){
 					return "<a href='/results_list?f=$result->id'> $result->num_pending</a>";

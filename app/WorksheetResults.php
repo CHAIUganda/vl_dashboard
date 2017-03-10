@@ -62,7 +62,7 @@ class WorksheetResults extends Model
 
     }
 
-    public static function getFacilityList($limit = "pending"){
+    public static function getFacilityList($limit = ""){
       $stats = "SUM(CASE WHEN p.printed = 'NO' AND p.downloaded = 'NO' AND ready = 'YES' THEN 1 ELSE 0 END) AS num_pending,
                 SUM(CASE WHEN p.printed = 'YES' THEN 1 ELSE 0 END) AS num_printed,
                 SUM(CASE WHEN p.downloaded = 'YES' THEN 1 ELSE 0 END) AS num_downloaded,
@@ -88,6 +88,7 @@ class WorksheetResults extends Model
       if($limit == "pending"){
          $res = $res->having('num_pending', '>=', 1);
       }
+
       return $res->orderby('num_pending', 'DESC');
     }
 
