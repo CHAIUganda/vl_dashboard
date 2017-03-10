@@ -1,33 +1,15 @@
 /** hub module*/
-.hide-cell-border{
-	border-left: #000000;
-	border-top: #000000;
+.not-due{
+ 	background:#ffffff;
 }
 
-.letterP3 {    
-  -webkit-transform: rotate(90deg); 
-     -moz-transform: rotate(90deg); 
-      -ms-transform: rotate(90deg); 
-       -o-transform: rotate(90deg); 
-          transform: rotate(90deg);
-            color: #000;
-            font-size: 22px;                
-            height: 200px;
-            width: 200px;
-float: left;        
-    vertical-align:top;    
+.due{
+   background-color: #5cb85c;
+}
+.one-month-over-due{
+background-color: #efd342;
+}
+.two-months-over-due{
+	background-color: #f44336;
 }
 
-.letterP4 {    
-  -webkit-transform: rotate(-90deg); 
-     -moz-transform: rotate(-90deg); 
-      -ms-transform: rotate(-90deg); 
-       -o-transform: rotate(-90deg); 
-          transform: rotate(-90deg);
-            color: #000;
-            height: 50%;
-            width: 50%;
-          
-    float: left;
-    vertical-align:top;
-}
