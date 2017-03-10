@@ -989,7 +989,7 @@ ctrllers.DashController = function($scope,$http){
             prms.fro_date = $scope.fro_date;
             prms.to_date = $scope.to_date;
             
-            $http({method:'GET',url:"/results/suppression-trend",params:prms}).success(function(data) {
+            $http({method:'GET',url:"/suppression_trends/reports",params:prms}).success(function(data) {
                 
                 //1. remove duplicates
                 var clean_results = removeDuplicates(data.patient_results);
