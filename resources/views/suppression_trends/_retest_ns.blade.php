@@ -1,5 +1,5 @@
 <div class="facilties-sect">
-      <table id="a_patients_table" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
+      <table id="retest_ns_table" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
         <thead>
           <tr>
                                         <th >Patient ID</th>

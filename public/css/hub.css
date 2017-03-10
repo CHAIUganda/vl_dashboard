@@ -13,3 +13,14 @@ background-color: #efd342;
 	background-color: #f44336;
 }
 
+.action-pane-table{
+
+            border-collapse: collapse;
+            border:  2px solid black;
+
+         }
+         .action-pane{
+              border:  2px solid black;
+              text-align: center;
+        }
+

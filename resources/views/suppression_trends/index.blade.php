@@ -60,10 +60,12 @@
           
              <ul class="nav nav-tabs" role="tablist">
               <li class="active"><a href="#suppression-trend" role="tab" data-toggle="tab">Suppression Trend</a></li>
-              <li><a href="#retest-ns" role="tab" data-toggle="tab">Retest-NS</a></li>
+              <li><a href="#action-pane" role="tab" data-toggle="tab">Action Pane</a></li>
+              <li><a href="#retest-ns" role="tab" data-toggle="tab">Retest-NotSuppressing</a></li>
+              <li><a href="#retest-s" role="tab" data-toggle="tab">Retest-Suppressing</a></li>
               <li><a href="#rejections" role="tab" data-toggle="tab">Rejections</a></li>
-              <li><a href="#v-patients" role="tab" data-toggle="tab">VPatients</a></li>
-              <li><a href="#a-patients" role="tab" data-toggle="tab">APatients</a></li>
+              <li><a href="#v-patients" role="tab" data-toggle="tab">Valid Patients</a></li>
+              <li><a href="#a-patients" role="tab" data-toggle="tab">All Patients</a></li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
@@ -174,8 +176,9 @@
                   </table>
                 </div>
               </div><!--End suppression-trends tab -->
-              
+              <div class="tab-pane" id="action-pane"> @include('suppression_trends._action_pane')</div>
               <div class="tab-pane" id="retest-ns"> @include('suppression_trends._retest_ns')</div>
+              <div class="tab-pane" id="retest-s"> @include('suppression_trends._retest_suppressing')</div>
               <div class="tab-pane" id="rejections"> @include('suppression_trends._rejections')</div>
 
               <div class="tab-pane" id="v-patients">
