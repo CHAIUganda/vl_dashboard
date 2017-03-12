@@ -112,15 +112,19 @@ class QCController extends Controller {
 
 
 	public function qc_rejected_sample($sample_id){
-		return "saved";
-		// $now = date("Y-m-d H:i:s");
-		// $qc_by = \Auth::user()->name;
-		// extract(\Request::all());
-		// $sql  = "INSERT INTO vl_facility_printing (sample_id, ready, comments, qc_at, qc_by) 
-		// 		VALUES ($sample_id, '$ready', '$comments', '$now', '$qc_by')
-		// 		ON DUPLICATE KEY UPDATE 
-		// 			ready = VALUES(ready), comments = VALUES(comments), qc_at = VALUES(qc_at), qc_by = VALUES(qc_by)";
-		// \DB::connection('live_db')->unprepared($sql);
+		$now = date("Y-m-d H:i:s");
+		$qc_by = \Auth::user()->name;
+		extract(\Request::all());
+		$sql  = "INSERT INTO vl_facility_printing (sample_id, ready, comments, qc_at, qc_by) 
+				VALUES ($sample_id, '$ready', '$comments', '$now', '$qc_by')
+				ON DUPLICATE KEY UPDATE 
+					ready = VALUES(ready), comments = VALUES(comments), qc_at = VALUES(qc_at), qc_by = VALUES(qc_by)";
+
+		if(\DB::connection('live_db')->unprepared($sql)){
+			return 1;
+		}else{
+			return 0;
+		}
 
 	}
 

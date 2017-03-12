@@ -1,0 +1,1 @@
+ALTER TABLE vl_facility_printing ADD UNIQUE (sample_id);

@@ -19,6 +19,7 @@ $released_url = "/qc?tab=passed_data_qc";
     
     Date Rejected: <input type="text" id="date_rejected" value="{{ $date_rejected }}" readonly='true'>
     <a class="btn btn-danger btn-xs" href="#" id="go">Go</a>
+    <div id="sh"></div>
     <div class="tab-pane active" id="print" >       
 
         <table id="results-table" class="table table-condensed table-bordered  table-striped" style="font-size:12px">
@@ -50,16 +51,20 @@ $released_url = "/qc?tab=passed_data_qc";
                     <td>{{ $sample->collectionDate }}</td>
                     <td>{{ $sample->receiptDate }}</td>
                     <td>
-                        <span>
+                        <span id="action{{ $sample->sampleID }}">
                         @if(empty($sample->fpid))
 
-                           <label>{!! Form::radio("choices$sample->sampleID", 'approved', 0, ["sample"=>"$sample->sampleID", "class"=>"approvals"]) !!} Approve</label>
-                           <label>{!! Form::radio("choices$sample->sampleID", 'reject', 0,["sample"=>"$sample->sampleID", "class"=>"rejects"]) !!} Reject</label><br>
+                           <label>{!! Form::radio("choices$sample->sampleID", 'approved', 0, ["sample"=>"$sample->sampleID", "class"=>"approvals"]) !!} Release</label>
+                           <label>{!! Form::radio("choices$sample->sampleID", 'reject', 0,["sample"=>"$sample->sampleID", "class"=>"rejects"]) !!} Retain</label><br>
                            <label>{!! Form::hidden("xx", "", ["id"=>"ready".$sample->sampleID]) !!}</label>
                            {!! Form::textarea("comments[$sample->sampleID]", "", ["style"=>"display:none", "id"=>"comment$sample->sampleID", "rows"=>"4", "cols"=>"30"]) !!}
                            <span style="display:none" class="btn btn-primary btn-xs qc_save" id="save{{ $sample->sampleID }}" sample="{{ $sample->sampleID }}">save</span>
                         @else
-                            Released ({{ $sample->ready }})
+                            @if($sample->ready=='YES') 
+                                <span >Released </span>
+                            @else
+                                <span style="color:red">Retained</span>
+                            @endif
                         @endif
                         </span>
                     </td> 
@@ -106,6 +111,7 @@ $(".rejects").click(function(){
 
 $(".approvals").click(function(){
     var sample = $(this).attr('sample');
+    $("#comment"+sample).hide();
     $("#ready"+sample).attr('value','YES');
     $("#save"+sample).show();
     
@@ -127,11 +133,23 @@ $("#go").click(function(){
 
 $(".qc_save").click(function(){
     var sample = $(this).attr('sample');
-    var comment = $("#comment"+sample).val();
     var ready = $("#ready"+sample).val();
+    var comments = "";
+    var status = "";
+    if(ready=='NO'){
+        status = "retaining";
+        comments = $("#comment"+sample).val();
+    }else{
+        status = "releasing";
+    } 
+    var token = $("[name=_token]").val();
 
-    $.post("/qc_rejected/"+sample+"/",  {ready:ready, comment: comment}).done(function( data ) {
-        alert( "Data Loaded: " + data );
+    $.post("/qc_rejected/"+sample+"/",  {ready:ready, comments: comments, _token: token}).done(function( data ) {
+      if(data==1){
+         $("#action"+sample).html("<span>"+status+" successful</span>");
+      }else{
+         $("#action"+sample).html("<span style='color:red'>"+status+" failed</span>");
+      }
     });
 });
 
