@@ -33,6 +33,9 @@ Route::group(['middleware' => 'auth'], function()
 
 		Route::controllers(['admin/list_users' => 'AdminController']);
 		Route::controllers(['logs' => 'LogsController']);  
+	});
+
+	Route::group(['middleware'=>['permission:monitoring']], function(){
 		Route::controllers(['/monitor' => 'MonitoringController']);
 	});
 
@@ -58,6 +61,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/qc/byhub/{id}', ['as' => 'qcbyhub', 'uses' => 'QCController@byhub']);
 		Route::get('/qc/byfacility/{id}', ['as' => 'qcbyfacility', 'uses' => 'QCController@byfacility']);
 		Route::get('/qc_rejected/{rejection_date}', ['as' => 'qc_rejected', 'uses' => 'QCController@qc_rejected']);
+		Route::post('/qc_rejected/{sample_id}/', ['as' => 'qc_rejected_sample', 'uses' => 'QCController@qc_rejected_sample']);
 		
 	});
 

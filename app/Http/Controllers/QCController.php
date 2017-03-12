@@ -103,12 +103,25 @@ class QCController extends Controller {
 						   ->leftjoin("vl_districts AS d", "d.id", "=", "f.districtID")
 						   ->leftjoin("vl_patients AS p", "p.id", "=", "s.patientID")
 						   ->leftjoin("vl_facility_printing AS fp", "fp.sample_id", "=", "s.id")
-						   ->select("*")->from("vl_samples_verify AS v")
+						   ->select("*","fp.id AS fpid")->from("vl_samples_verify AS v")
 						   ->whereDate('v.created','=',$date_rejected)
 						   ->where('v.outcome', '=', 'rejected')
-						   ->whereNull("fp.id")
 						   ->get();
 		return view("qc.qc_rejected", compact("samples", "date_rejected"));
+	}
+
+
+	public function qc_rejected_sample($sample_id){
+		return "saved";
+		// $now = date("Y-m-d H:i:s");
+		// $qc_by = \Auth::user()->name;
+		// extract(\Request::all());
+		// $sql  = "INSERT INTO vl_facility_printing (sample_id, ready, comments, qc_at, qc_by) 
+		// 		VALUES ($sample_id, '$ready', '$comments', '$now', '$qc_by')
+		// 		ON DUPLICATE KEY UPDATE 
+		// 			ready = VALUES(ready), comments = VALUES(comments), qc_at = VALUES(qc_at), qc_by = VALUES(qc_by)";
+		// \DB::connection('live_db')->unprepared($sql);
+
 	}
 
 

@@ -33,7 +33,7 @@ $released_url = "/qc?tab=passed_data_qc";
                 <th>Gender</th>
                 <th width="1%">Date of collection</th>
                 <th width="1%">Date received at CHPL</th>
-                <th style="width:120px;">Choose</th>
+                <th style="width:120px;">   </th>
             </tr>
             </thead>
             <tbody>
@@ -50,9 +50,18 @@ $released_url = "/qc?tab=passed_data_qc";
                     <td>{{ $sample->collectionDate }}</td>
                     <td>{{ $sample->receiptDate }}</td>
                     <td>
-                       <label>{!! Form::radio("choices[$sample->sampleID]", 'approved', 0, ["sample"=>"$sample->sampleID", "class"=>"approvals"]) !!} Approve</label>
-                       <label>{!! Form::radio("choices[$sample->sampleID]", 'reject', 0,["sample"=>"$sample->sampleID", "class"=>"rejects"]) !!} Reject</label><br>
-                       {!! Form::textarea("comments[$sample->sampleID]", "", ["style"=>"display:none", "id"=>"comment$sample->sampleID", "rows"=>"4", "cols"=>"30"]) !!}
+                        <span>
+                        @if(empty($sample->fpid))
+
+                           <label>{!! Form::radio("choices$sample->sampleID", 'approved', 0, ["sample"=>"$sample->sampleID", "class"=>"approvals"]) !!} Approve</label>
+                           <label>{!! Form::radio("choices$sample->sampleID", 'reject', 0,["sample"=>"$sample->sampleID", "class"=>"rejects"]) !!} Reject</label><br>
+                           <label>{!! Form::hidden("xx", "", ["id"=>"ready".$sample->sampleID]) !!}</label>
+                           {!! Form::textarea("comments[$sample->sampleID]", "", ["style"=>"display:none", "id"=>"comment$sample->sampleID", "rows"=>"4", "cols"=>"30"]) !!}
+                           <span style="display:none" class="btn btn-primary btn-xs qc_save" id="save{{ $sample->sampleID }}" sample="{{ $sample->sampleID }}">save</span>
+                        @else
+                            Released ({{ $sample->ready }})
+                        @endif
+                        </span>
                     </td> 
                 </tr>
                 @endforeach
@@ -61,11 +70,7 @@ $released_url = "/qc?tab=passed_data_qc";
         </table>
 
         {!! Form::hidden('len', count($samples), ['id'=>'len']) !!}
-        <br>
-        <div style="float:right">
-            <input type="submit" id="save" class='btn btn-sm btn-danger' value="Save Data QC" />
-        </div>
-        <br><br>
+     
 
         </div>
 </div>
@@ -80,7 +85,7 @@ $(function() {
 });
 
 
-$("#save").click(function(){
+/*$("#save").click(function(){
     var len_selected = $('input:radio:checked').length;
     var len_samples = $('#len').val();
     if(len_selected!=len_samples){
@@ -89,16 +94,21 @@ $("#save").click(function(){
     }else{
         return true;
     }   
-});
+});*/
 
 $(".rejects").click(function(){
     var sample = $(this).attr('sample');
     $("#comment"+sample).show();
+    $("#ready"+sample).attr('value','NO');
+    $("#save"+sample).show();
+
 });
 
 $(".approvals").click(function(){
     var sample = $(this).attr('sample');
-    $("#comment"+sample).hide();
+    $("#ready"+sample).attr('value','YES');
+    $("#save"+sample).show();
+    
 });
 $( function() {
     $( "#date_rejected" ).datepicker({
@@ -114,5 +124,16 @@ $("#go").click(function(){
     var url = "/qc_rejected/"+date;
     if(date!=''){ return window.location.assign(url);}else{ alert("input date rejected"); }
 })
+
+$(".qc_save").click(function(){
+    var sample = $(this).attr('sample');
+    var comment = $("#comment"+sample).val();
+    var ready = $("#ready"+sample).val();
+
+    $.post("/qc_rejected/"+sample+"/",  {ready:ready, comment: comment}).done(function( data ) {
+        alert( "Data Loaded: " + data );
+    });
+});
+
 </script>
 @endsection()
