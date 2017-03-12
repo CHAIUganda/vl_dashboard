@@ -88,6 +88,7 @@ $(function() {
             @if($sect == 'results') {data: 'action', name: 'action', orderable: false, searchable: false}, @endif
         ]
     });
+
 });
 
 drpdwn= $(".live_drpdwn");
@@ -110,5 +111,6 @@ drpdwn= $(".live_drpdwn");
         var dd = $("#worksheet_dropdown");
         get_data(q, dd, "/searchbyhub/");
     });
+
 </script>
 @endsection()
