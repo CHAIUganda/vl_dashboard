@@ -20,7 +20,6 @@
         </thead>
                                 <tbody>                                
                                   <tr ng-repeat="retestSuppressingPatients_object in retestSuppressingPatients" >
-                                  
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.patientUniqueID %></td>
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.facility %></td>
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.artNumber %></td>

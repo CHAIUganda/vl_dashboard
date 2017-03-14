@@ -1015,7 +1015,6 @@ ctrllers.DashController = function($scope,$http){
                     "receiptDate":clean_results_object.receiptDate,
                     "artNumber":clean_results_object.artNumber,
                     "phone":clean_results_object.phone
-                    
                 };
                 retestSuppressingPatients.push(retest_suppressing_patient_record);
             }//end for loop
@@ -1070,6 +1069,7 @@ ctrllers.DashController = function($scope,$http){
                 $scope.allPatientsResults = getAllPatientsResults(patients_with_more_results);
 
                 $scope.patientsWithInvalidResults = getPatientsWithInvalidResults(clean_results);
+
 
                 //$scope.patient_retested_dates = data.patient_retested_dates;
                 $scope.retestNSPatients = getRetestNSPatients(patients_with_more_results);
