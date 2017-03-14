@@ -36,6 +36,49 @@
    
     <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
+    <script type="text/javascript">
+        function activeRetestNSTab () {
+            //remove class
+            $('#li-suppression-trend').removeClass('active');
+            $('#li-action-pane').removeClass('active');
+            $('#li-retest-s').removeClass('active');
+            $('#li-rejections').removeClass('active');
+            $('#li-v-patients').removeClass('active');
+            $('#li-a-patients').removeClass('active');
+            
+            //Add class
+            $('#li-retest-ns').addClass('active');
+
+        }
+        
+        function activeRetestSTab () {
+            //remove class
+            $('#li-suppression-trend').removeClass('active');
+            $('#li-action-pane').removeClass('active');
+            $('#li-retest-ns').removeClass('active');
+            $('#li-rejections').removeClass('active');
+            $('#li-v-patients').removeClass('active');
+            $('#li-a-patients').removeClass('active');
+            
+            //Add class
+            $('#li-retest-s').addClass('active');
+
+        }
+        function activeRejectionsTab () {
+            //remove class
+            $('#li-suppression-trend').removeClass('active');
+            $('#li-action-pane').removeClass('active');
+            $('#li-retest-ns').removeClass('active');
+            $('#li-retest-s').removeClass('active');
+            
+            $('#li-v-patients').removeClass('active');
+            $('#li-a-patients').removeClass('active');
+            
+            //Add class
+            $('#li-rejections').addClass('active');
+
+        }
+    </script>
     
     <!--script src="{{ asset('/js/jquery-1.11.1.min.js') }}" type="text/javascript"></script -->
     <script src="{{ asset('/js/jquery.tabletoCSV.js')}}" type="text/javascript"></script>

@@ -854,12 +854,18 @@ ctrllers.DashController = function($scope,$http){
     return this;
     };
     //=====End Date customization====================
-    var getRecommendedRetestDate =function(collectionDate){
+    var getRecommendedRetestDate =function(collectionDate,suppressionRetestType){
         //parse string to Date
         var collection_date_object = new Date(collectionDate);
 
-        //add 6 months
-        var recommended_retest_date = collection_date_object.addMonths(6);
+        var recommended_retest_date = null;
+        //add 6 months if retest_not_suppressing
+        if(suppressionRetestType == "retest_not_suppressing"){
+            recommended_retest_date = collection_date_object.addMonths(6);
+        }else if(suppressionRetestType == "retest_suppressing"){//add 12 months if retest_suppressing
+            recommended_retest_date = collection_date_object.addMonths(12);
+        }
+            
         var recommended_retest_month = recommended_retest_date.getMonth()+1;//Months= 0 - 11
         if(recommended_retest_month < 10){
             recommended_retest_month = "0"+recommended_retest_month;
@@ -957,7 +963,8 @@ ctrllers.DashController = function($scope,$http){
 
 
             if(clean_results_object.result != null && uniformResult == 'notSuppressed'){
-                var recommended_retest_date = getRecommendedRetestDate(clean_results_object.collectionDate);
+                var suppressionRetestType = "retest_not_suppressing";
+                var recommended_retest_date = getRecommendedRetestDate(clean_results_object.collectionDate,suppressionRetestType);
                 retest_ns_patient_record = {
                     "patientID":clean_results_object.patientID,
                     "vlSampleID":clean_results_object.vlSampleID,
@@ -971,8 +978,8 @@ ctrllers.DashController = function($scope,$http){
                     "recommendedRetestDate":recommended_retest_date,
                     "receiptDate":clean_results_object.receiptDate,
                     "artNumber":clean_results_object.artNumber,
-                    "phone":clean_results_object.phone,
-                    "class":getColour(clean_results_object.patientUniqueID,recommended_retest_date)
+                    "phone":clean_results_object.phone
+                    
                 };
                 retestNSPatients.push(retest_ns_patient_record);
             }//end for loop
@@ -981,7 +988,40 @@ ctrllers.DashController = function($scope,$http){
         return retestNSPatients;
     };
 
-    
+    var getRetestSuppressingPatients = function(clean_results){
+        var retestSuppressingPatients = [];
+        var array_size = clean_results.length;
+
+         for (var i = 0; i< array_size; i++) {
+            var clean_results_object = clean_results[i];
+            var uniformResult = getUniformResults(clean_results_object.result);
+            var retest_suppressing_patient_record = null;
+
+
+            if(clean_results_object.result != null && uniformResult == 'suppressed'){
+                var suppressionRetestType = "retest_suppressing";
+                var recommended_retest_date = getRecommendedRetestDate(clean_results_object.collectionDate,suppressionRetestType);
+                retest_suppressing_patient_record = {
+                    "patientID":clean_results_object.patientID,
+                    "vlSampleID":clean_results_object.vlSampleID,
+                    "created":clean_results_object.created,
+                    "patientUniqueID":clean_results_object.patientUniqueID,
+                    "result":clean_results_object.result,
+                    "status":uniformResult,
+                    "hub":clean_results_object.hub,
+                    "facility":clean_results_object.facility,
+                    "collectionDate":clean_results_object.collectionDate,
+                    "recommendedRetestDate":recommended_retest_date,
+                    "receiptDate":clean_results_object.receiptDate,
+                    "artNumber":clean_results_object.artNumber,
+                    "phone":clean_results_object.phone
+                };
+                retestSuppressingPatients.push(retest_suppressing_patient_record);
+            }//end for loop
+        }
+
+        return retestSuppressingPatients;
+    };
     var getData=function(){
             $scope.loading = true;
             var prms = {};
@@ -1030,8 +1070,10 @@ ctrllers.DashController = function($scope,$http){
 
                 $scope.patientsWithInvalidResults = getPatientsWithInvalidResults(clean_results);
 
-                $scope.patient_retested_dates = data.patient_retested_dates;
-                $scope.retestNSPatients = getRetestNSPatients(clean_results);
+
+                //$scope.patient_retested_dates = data.patient_retested_dates;
+                $scope.retestNSPatients = getRetestNSPatients(patients_with_more_results);
+                $scope.retestSuppressingPatients = getRetestSuppressingPatients(patients_with_more_results);
 
                 $scope.filtered = $scope.date_filtered;    
                 $scope.loading = false;
