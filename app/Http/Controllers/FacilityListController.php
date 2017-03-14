@@ -40,7 +40,7 @@ class FacilityListController extends Controller {
 							$pilot_facilities = 0;
 
 							if(!empty($result->hubID)) $pilot_facilities = User::where('facility_id', $result->id )->orWhere('hub_id', $result->hubID)->count();
-							$pilot = $pilot_facilities>=1? "background-color:yellow":"";
+							$pilot = $pilot_facilities>=1? "background-color:#AED6F1":"";
 						}
 						return $pilot;
 				    },
