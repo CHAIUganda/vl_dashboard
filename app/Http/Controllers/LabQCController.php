@@ -18,6 +18,8 @@ class LabQCController extends Controller {
 		$tab=\Request::get("tab");
 		$tab=empty($tab)?'roche':$tab;
 
+		
+
 		$results = WorksheetResults::getWorksheetList($tab);
 		return \Datatables::of($results)
 				->addColumn('worksheetReferenceNumber', function($result){
