@@ -9,6 +9,7 @@
         &nbsp;&nbsp;&nbsp;
         Machine Type: <u>{{ $wk->machineType }}</u><br><br>
         {!! Form::hidden('worksheet_id', $wk->id ) !!}
+        <?php $num_samples=0 ?>
 
         <table id="results-table" class="table table-condensed table-bordered  table-striped" style="font-size:12px">
             <thead>
@@ -41,9 +42,19 @@
                     <td>{{ $sample->receiptDate }}</td>
                     <td>{{ $sample->result }}</td>
                     <td>
-                       <label>{!! Form::radio("choices[$sample->sample_id]", 'approved', 0, ["sample"=>"$sample->sample_id", "class"=>"approvals"]) !!} Release</label>
-                       <label>{!! Form::radio("choices[$sample->sample_id]", 'reject', 0,["sample"=>"$sample->sample_id", "class"=>"rejects"]) !!} Retain</label><br>
-                       {!! Form::textarea("comments[$sample->sample_id]", "", ["style"=>"display:none", "id"=>"comment$sample->sample_id", "rows"=>"4", "cols"=>"30"]) !!}
+                         @if(empty($sample->fp_id))
+                            <?php $num_samples++ ?>
+                            <label>{!! Form::radio("choices[$sample->sample_id]", 'approved', 0, ["sample"=>"$sample->sample_id", "class"=>"approvals"]) !!} Release</label>
+                            <label>{!! Form::radio("choices[$sample->sample_id]", 'reject', 0,["sample"=>"$sample->sample_id", "class"=>"rejects"]) !!} Retain</label><br>
+                            {!! Form::textarea("comments[$sample->sample_id]", "", ["style"=>"display:none", "id"=>"comment$sample->sample_id", "rows"=>"4", "cols"=>"30"]) !!}
+                         @else
+                            @if($sample->ready=='YES') 
+                                <span >Released </span>
+                            @else
+                                <span style="color:red">Retained</span>
+                            @endif
+                            <?php ?>
+                        @endif
                     </td> 
                 </tr>
                 @endforeach
@@ -51,7 +62,7 @@
             </tbody>
         </table>
 
-        {!! Form::hidden('len', count($samples), ['id'=>'len']) !!}
+        {!! Form::hidden('len', $num_samples, ['id'=>'len']) !!}
         <br>
         <div style="float:right">
             <input type="submit" id="save" class='btn btn-sm btn-danger' value="Save Data QC" />

@@ -122,7 +122,7 @@ class LiveData extends Model
                       ->leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')
                       ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
                       ->leftjoin('vl_facility_printing AS fp', 'fp.sample_id', '=', 's.id')
-                      ->select('s.*','rr.sample_id', 'hub', 'facility', 'p.*', 'fp.id As fp_id', 'result', 'd.district')
+                      ->select('s.*','rr.sample_id', 'hub', 'facility', 'p.*', 'fp.id As fp_id','fp.ready', 'result', 'd.district')
                       ->from('vl_results_released AS rr')
                       ->where('rr.worksheet_id','=',$id)
                       ->orderby('lrEnvelopeNumber', 'ASC')
