@@ -59,13 +59,13 @@
 
           
              <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#suppression-trend" role="tab" data-toggle="tab">Suppression Trend</a></li>
-              <li><a href="#action-pane" role="tab" data-toggle="tab">Action Pane</a></li>
-              <li><a href="#retest-ns" role="tab" data-toggle="tab">Retest-NotSuppressing</a></li>
-              <li><a href="#retest-s" role="tab" data-toggle="tab">Retest-Suppressing</a></li>
-              <li><a href="#rejections" role="tab" data-toggle="tab">Rejections</a></li>
-              <li><a href="#v-patients" role="tab" data-toggle="tab">Valid Patients</a></li>
-              <li><a href="#a-patients" role="tab" data-toggle="tab">All Patients</a></li>
+              <li id="li-suppression-trend" class="active"><a href="#suppression-trend" role="tab" data-toggle="tab">Suppression Trend</a></li>
+              <li id="li-action-pane"><a href="#action-pane" role="tab" data-toggle="tab">Action Pane</a></li>
+              <li id="li-retest-ns"><a href="#retest-ns" role="tab" data-toggle="tab">Retest-NotSuppressing</a></li>
+              <li id="li-retest-s"><a href="#retest-s" role="tab" data-toggle="tab">Retest-Suppressing</a></li>
+              <li id="li-rejections"><a href="#rejections" role="tab" data-toggle="tab">Rejections</a></li>
+              <li id="li-v-patients"><a href="#v-patients" role="tab" data-toggle="tab">Valid Patients</a></li>
+              <li id="li-a-patients"><a href="#a-patients" role="tab" data-toggle="tab">All Patients</a></li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
@@ -242,4 +242,5 @@
 </div>
 
 <script type="text/javascript" src=" {{ asset('js/live_for_hubs.js') }} "></script>
+
 @endsection()
