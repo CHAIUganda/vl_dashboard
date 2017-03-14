@@ -978,8 +978,8 @@ ctrllers.DashController = function($scope,$http){
                     "recommendedRetestDate":recommended_retest_date,
                     "receiptDate":clean_results_object.receiptDate,
                     "artNumber":clean_results_object.artNumber,
-                    "phone":clean_results_object.phone,
-                    "class":getColour(clean_results_object.patientUniqueID,recommended_retest_date)
+                    "phone":clean_results_object.phone
+                    
                 };
                 retestNSPatients.push(retest_ns_patient_record);
             }//end for loop
@@ -1014,8 +1014,8 @@ ctrllers.DashController = function($scope,$http){
                     "recommendedRetestDate":recommended_retest_date,
                     "receiptDate":clean_results_object.receiptDate,
                     "artNumber":clean_results_object.artNumber,
-                    "phone":clean_results_object.phone,
-                    "class":getColour(clean_results_object.patientUniqueID,recommended_retest_date)
+                    "phone":clean_results_object.phone
+                    
                 };
                 retestSuppressingPatients.push(retest_suppressing_patient_record);
             }//end for loop
@@ -1071,7 +1071,7 @@ ctrllers.DashController = function($scope,$http){
 
                 $scope.patientsWithInvalidResults = getPatientsWithInvalidResults(clean_results);
 
-                $scope.patient_retested_dates = data.patient_retested_dates;
+                //$scope.patient_retested_dates = data.patient_retested_dates;
                 $scope.retestNSPatients = getRetestNSPatients(patients_with_more_results);
                 $scope.retestSuppressingPatients = getRetestSuppressingPatients(patients_with_more_results);
 

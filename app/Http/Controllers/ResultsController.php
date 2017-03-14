@@ -218,7 +218,7 @@ class ResultsController extends Controller {
         	ini_set('memory_limit','384M');
         	$patient_results =  \DB::connection('live_db')->select($sql);
         	
-        	$patient_retested_dates = $this->getPatientRetestedDates($fro_date,$to_date,$hub_id);
+        	//$patient_retested_dates = $this->getPatientRetestedDates($fro_date,$to_date,$hub_id);
         	
         }catch(\Illuminate\Database\QueryException $e){
         	Log::info("---ooops---");
@@ -230,7 +230,7 @@ class ResultsController extends Controller {
 
 		
 		
-		return compact("patient_results","patient_retested_dates");
+		return compact("patient_results");
 
 	}
 	private function addSixMonths($to_date){
