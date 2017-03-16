@@ -18,7 +18,11 @@ $roche_url = "/lab_qc/index?tab=roche";
 $abbott_url = "/lab_qc/index?tab=abbott";
 $released_url = "/lab_qc/index?tab=released";
 ?>
-
+<ul class="breadcrumb">
+    <li><a href="/">HOME</a></li>
+    <li class="active">RESULTS AUTH</li>
+    
+</ul>
 
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li {{ $roche_actv }} title='Roche'><a href="{!! $roche_url !!}" >Roche QC</a></li>

@@ -15,9 +15,12 @@ if($printed=='YES'){
 $print_url="/results_list?printed=NO$facility_id";
 $printed_url="/results_list?printed=YES$facility_id";
 ?>
-
+<ul class="breadcrumb">
+    <li><a href="/">HOME</a></li>
+    <li><a href="/results">RESULTS </a></li>
+    <li class="active">{{  $facility_name }}</li>
+</ul>
 <div style="text-align:center;" class='print-ttl'>
-    <h2 style="text-transform:uppercase">{{ $facility_name }}</h2>
     <a href="javascript:windPop('/print_envelope/{{ \Request::get('f') }}')" style="float:right" class="btn btn-danger btn-xs">Print Envelope</a>
 </div>
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">

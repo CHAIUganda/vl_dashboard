@@ -2,12 +2,16 @@
 
 @section('content')
 {!! Form::open(array('url'=>"/data_qc/$id",'id'=>'view_form', 'name'=>'view_form' )) !!}
+    <ul class="breadcrumb">
+        <li><a href="/">HOME</a></li>
+        <li><a href="/qc/index">RESULTS RELEASE</a></li>
+        <li class="active">{{ $wk->worksheetReferenceNumber }}</li>
+    </ul>
 
 <!-- <div id="my-tab-content" class="tab-content"> -->
     <div class="tab-pane active" id="print">  
-        Worksheet Ref Number: <u>{{ $wk->worksheetReferenceNumber }}</u>
-        &nbsp;&nbsp;&nbsp;
-        Machine Type: <u>{{ $wk->machineType }}</u><br><br>
+        
+        Machine Type: <u>{{ $wk->machineType }}</u>
         {!! Form::hidden('worksheet_id', $wk->id ) !!}
         <?php $num_samples=0 ?>
 

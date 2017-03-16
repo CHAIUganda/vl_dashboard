@@ -20,6 +20,12 @@ if(isset($tab)){
 $pending_url = "/results?tab=pending";
 $completed_url = "/results?tab=completed";
 ?>
+@if($sect == 'results')
+<ul class="breadcrumb">
+    <li><a href="/">HOME</a></li>
+    <li action="active">RESULTS</li>
+</ul>
+@endif
 <h2 style="text-align:center;text-transform:uppercase">{{ Auth::user()->hub_name }}</h2>
 @if(empty(Auth::user()->facility_id) AND empty(Auth::user()->hub_id))
     {!! Form::text('hub','', ['id'=>'hub','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search Hub"] ) !!}

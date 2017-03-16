@@ -20,6 +20,10 @@ $abbott_url = "/qc?tab=abbott";
 $released_url = "/qc?tab=passed_data_qc";
 ?>
 
+<ul class="breadcrumb">
+    <li><a href="/">HOME</a></li>
+    <li class="active">RESULTS RELEASE</li>
+</ul>
 
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li {{ $roche_actv }} title='Roche'><a href="{!! $roche_url !!}" >Roche QC</a></li>
