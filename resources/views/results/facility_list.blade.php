@@ -4,7 +4,7 @@
 <?php 
 $params = "";
 $limit = "?";
-if(\Request::get('h')) $limit .= "h=". \Request::get('h');
+if(\Request::has('h')) $limit .= "h=". \Request::get('h');
 
 $pending_actv="";
 $completed_actv="";

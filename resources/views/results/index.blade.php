@@ -1,5 +1,17 @@
 @extends('layout')
 
+@section('content1')
+@if(\Request::has('h'))
+<div style="font-size:12px; padding-left:5px;">
+    <?php $n=1 ?>
+    @foreach($facilities AS $facility)
+        <a href="/results_list?f={{ $facility->id }}&h={{ $facility->hubID }}">{{$facility->facility}}</a><br><br>
+    @endforeach
+</div>
+@endif
+
+@endsection             
+
 @section('content')
 <link href="{{ asset('/css/vl2.css') }}" rel="stylesheet">
 <?php 

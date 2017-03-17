@@ -14,7 +14,18 @@ class ResultsController extends Controller {
 		$printed=\Request::get("printed");
 		$printed=empty($printed)?'NO':$printed;
 		$facility_name = LiveData::getFacilityName(\Request::get('f'));
-		return view('results.index', compact('printed', 'facility_name'));
+		$facilities = [];
+		if(\Request::has('h')){
+			$facilities = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'p.sample_id')
+                    ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')          
+                    ->select('f.id','f.facility','f.hubID')
+                    ->from('vl_facility_printing AS p')
+                    ->where('f.hubID', \Request::get('h'))
+                    ->where('p.ready', 'YES')->where('printed', 'NO')->where('downloaded', 'NO')
+                    ->groupby('f.id')
+                    ->get();
+		}
+		return view('results.index', compact('printed', 'facility_name', 'facilities'));
 	}
 
 	public function getData(){

@@ -100,9 +100,11 @@
             </div>
         </div>
     </div> 
-
-    <div class='container'>
+    <div class='row'>
+    <div class="col-xs-1"> @yield('content1') </div>
+    <div class='col-xs-11 container'>
         @yield('content')
     </div>
+
 </body>
 </html>
