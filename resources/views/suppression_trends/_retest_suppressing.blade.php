@@ -1,5 +1,5 @@
 <div class="facilties-sect">
-      <table id="retest_ns_table" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
+      <table id="suppression_trend_table" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
         <thead>
           <tr>
                                         <th >Patient ID</th>
@@ -19,17 +19,16 @@
           </tr>
         </thead>
                                 <tbody>                                
-                                  <tr ng-repeat="retestNSPatients_object in retestNSPatients" >
-                                  
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.patientUniqueID %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.facility %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.artNumber %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.collectionDate %></td>
+                                  <tr ng-repeat="retestSuppressingPatients_object in retestSuppressingPatients" >
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.patientUniqueID %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.facility %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.artNumber %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.collectionDate %></td>
 
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.receiptDate %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.result %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.recommendedRetestDate %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.phone %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.receiptDate %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.result %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.recommendedRetestDate %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.phone %></td>
 
                                       <td ng-class="ng-cloak"><a>Click Here</a></td>
                                       <td ng-class="ng-cloak"></td>

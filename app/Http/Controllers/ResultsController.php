@@ -226,9 +226,10 @@ class ResultsController extends Controller {
         $patient_results = null;
         $patient_retested_dates = null;
         try{
+        	ini_set('memory_limit','384M');
         	$patient_results =  \DB::connection('live_db')->select($sql);
         	
-        	$patient_retested_dates = $this->getPatientRetestedDates($fro_date,$to_date,$hub_id);
+        	//$patient_retested_dates = $this->getPatientRetestedDates($fro_date,$to_date,$hub_id);
         	
         }catch(\Illuminate\Database\QueryException $e){
         	Log::info("---ooops---");
@@ -240,7 +241,7 @@ class ResultsController extends Controller {
 
 		
 		
-		return compact("patient_results","patient_retested_dates");
+		return compact("patient_results");
 
 	}
 	private function addSixMonths($to_date){
@@ -270,7 +271,7 @@ class ResultsController extends Controller {
         
         $sql = "select patientID,patientUniqueID,collectionDate from vl_samples where hubID=$hub_id and  str_to_date(created,'%Y-%m') 
 						between str_to_date('$fro_date','%Y%m') and str_to_date('$to_date_incremented','%Y%m') order by patientUniqueID,collectionDate";
-		Log::info("$sql");
+		
 		$patient_retested_dates =  \DB::connection('live_db')->select($sql);
 		
 		
