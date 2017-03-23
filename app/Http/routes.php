@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/qc/byfacility/{id}', ['as' => 'qcbyfacility', 'uses' => 'QCController@byfacility']);
 		
 		Route::get('/qc_rejected/{rejection_date}', ['as' => 'qc_rejected', 'uses' => 'QCController@qc_rejected']);
-		Route::post('/qc_rejected_save/{sample_id}/', ['as' => 'qc_rejected_sample', 'uses' => 'QCController@qc_rejected_sample']);
+		Route::get('/qc_rejected_save/{sample_id}/', ['as' => 'qc_rejected_sample', 'uses' => 'QCController@qc_rejected_sample']);
 		
 	});
 

@@ -144,11 +144,11 @@ $(".qc_save").click(function(){
     } 
     var token = $("[name=_token]").val();
 
-    $.post("/qc_rejected_save/"+sample+"/",  {ready:ready, comments: comments, _token: token}, function( data, status ) {
+    $.get("/qc_rejected_save/"+sample+"/",  {ready:ready, comments: comments, _token: token}, function( data, status ) {
       if(data==1){
-         $("#action"+sample).html("<span>"+status_action+"  "+status+"</span>");
+         $("#action"+sample).html("<span>"+status_action+"  successful</span>");
       }else{
-         $("#action"+sample).html("<span style='color:red'>"+status_action+"  "+status+"</span>");
+         $("#action"+sample).html("<span style='color:red'>"+status_action+" failed </span>");
       }
     });
 });
