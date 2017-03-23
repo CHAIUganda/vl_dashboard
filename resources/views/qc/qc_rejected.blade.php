@@ -135,20 +135,20 @@ $(".qc_save").click(function(){
     var sample = $(this).attr('sample');
     var ready = $("#ready"+sample).val();
     var comments = "";
-    var status = "";
+    var status_action = "";
     if(ready=='NO'){
-        status = "retaining";
+        status_action = "retaining";
         comments = $("#comment"+sample).val();
     }else{
-        status = "releasing";
+        status_action = "releasing";
     } 
     var token = $("[name=_token]").val();
 
-    $.post("/qc_rejected_save/"+sample+"/",  {ready:ready, comments: comments, _token: token}).done(function( data ) {
+    $.post("/qc_rejected_save/"+sample+"/",  {ready:ready, comments: comments, _token: token}, function( data, status ) {
       if(data==1){
-         $("#action"+sample).html("<span>"+status+" successful</span>");
+         $("#action"+sample).html("<span>"+status_action+"  "+status+"</span>");
       }else{
-         $("#action"+sample).html("<span style='color:red'>"+data+" failed</span>");
+         $("#action"+sample).html("<span style='color:red'>"+status_action+"  "+status+"</span>");
       }
     });
 });
