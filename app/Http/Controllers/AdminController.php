@@ -15,8 +15,8 @@ class AdminController extends Controller {
 			$data=\Request::all();
 			
 			$user = User::create($data);
-			$role = Role::findOrFail($data['role_id']);
-			$user->attachRole($role);
+			//$role = Role::findOrFail($data['role_id']);
+			$user->attachRoles($data['roles']);
 			return redirect('admin/create_user')->with('msge',"saving successful");	
 
 		}else{
@@ -24,7 +24,7 @@ class AdminController extends Controller {
 			$hubs = LiveData::getHubs();
 			$facilities = LiveData::getFacilities();
 
-			$roles = \MyHTML::get_arr_pair($roles, 'display_name');
+			//$roles = \MyHTML::get_arr_pair($roles, 'display_name');
 			$hubs = \MyHTML::get_arr_pair($hubs, 'hub');
 			$facilities = \MyHTML::get_arr_pair($facilities, 'facility');
 

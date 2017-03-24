@@ -25,8 +25,12 @@ New User:
         <td>{!! Form::password('confirm_password',['class'=>'form-control','id'=>'e','required'=>1]) !!} </td>
     </tr>
     <tr>
-        <td class='td_label'><label for='user_r'>User role:</label></td>
-        <td>{!! Form::select('role_id',[""=>""]+$roles,"",['id'=>'user_r']) !!}</td>
+        <td class='td_label'><label for='user_r'>User role(s):</label></td>
+        <td>
+            @foreach($roles AS $role)
+            <label>{!! Form::checkbox("roles[]", $role->id) !!} {{ $role->display_name }}</label>
+            @endforeach
+        </td>
     </tr>
     <tr>
         <td class='td_label'><label for='g'>Email:</label></td>
