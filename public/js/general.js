@@ -13,9 +13,9 @@
   	return document.getElementById(id);
   }
 
-  function select(name,items,slcted_item){
+  function select(name,items,slcted_item, more){
 
-  	var slct="<select name='"+name+"'>";
+  	var slct="<select name='"+name+"' "+more+">";
   	for(var i in items){
   		if(i==slcted_item){
   			slct+="<option selected value='"+i+"'>"+items[i]+"</option>";

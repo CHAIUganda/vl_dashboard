@@ -13,6 +13,7 @@ class AdminController extends Controller {
 	public function create_user(){
 		if(\Request::has('username')){
 			$data=\Request::all();
+			$data['other_facilities'] = serialize($data['other_facilities']);
 			
 			$user = User::create($data);
 			//$role = Role::findOrFail($data['role_id']);

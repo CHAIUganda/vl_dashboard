@@ -43,10 +43,15 @@ New User:
     <tr>
         <td class='td_label'><label for='k'>Limit by:</label></td>
         <td >
-            {!! Form::radio('limit_by','1','',['onchange'=>'showLimit(1)']) !!} Facility
-            {!! Form::radio('limit_by','2','',['onchange'=>'showLimit(2)']) !!} Hub
+            <label>{!! Form::radio('limit_by','1','',['onchange'=>'showLimit(1)']) !!} Facility</label>
+            <label>{!! Form::radio('limit_by','2','',['onchange'=>'showLimit(2)']) !!} Hub</label>
             <br>
-            <div class='limitby' id='limit1'>{!! Form::select('facility_id',[""=>""]+$facilities,"",['id'=>'fclty']) !!}</div>
+            <div class='limitby' id='limit1'>
+                {!! Form::select('facility_id',[""=>""]+$facilities,"",['id'=>'fclty']) !!}
+                <br>
+                <div class="other_facilities"></div>
+                <br><a href="#" id="add_facility" style="display:none;">Add Facility</a>
+            </div>
             <div class='limitby' id='limit2'>{!! Form::select('hub_id',[""=>""]+$hubs,"",['id'=>'hb']) !!}</div>
         </td>
     </tr>
@@ -59,6 +64,8 @@ New User:
 
 <script type="text/javascript">
 $('#users-tab').addClass('active');
+
+var facilities_json = {!! json_encode([""=>""]+$facilities) !!};
 
  function chkForm(d){
     if(d.password.value!=d.confirm_password.value){
@@ -95,17 +102,30 @@ $('#users-tab').addClass('active');
 
  $("#fclty").on("change",function(){
     $("#facility_name").val($("#fclty option:selected").text());
- })
+    delete facilities_json[this.value];
+    $("#add_facility").show();
+ });
+
+ $("#add_facility").on("click", function(){
+    //select(name,items,"");
+    var more = "class='other_facilities_select' onchange='setOtherFacilities(this)'";
+    $(".other_facilities").append("<br>"+select("other_facilities[]",facilities_json, "", more)+"<br>");
+    $(".other_facilities_select").select2({   placeholder:"Select facility", allowClear:true, width: '40%' });
+ });
  
  $("#hb").on("change",function(){
     $("#hub_name").val($("#hb option:selected").text());
- })
+ });
+
+  function setOtherFacilities(that){
+    delete facilities_json[that.value];
+ }
 </script>
 
 <style type="text/css">
-.limitby{
-    display: none;
-}
+    .limitby{
+        display: none;
+    }
 </style>
 
 @endsection()

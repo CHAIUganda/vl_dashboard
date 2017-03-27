@@ -81,6 +81,11 @@ class WorksheetResults extends Model
         $res = $res->where('f.hubID', $hub_id);
       }elseif(!empty(\Auth::user()->facility_id)){
         $res = $res->where('f.id', '=', \Auth::user()->facility_id);
+        $others = unserialize(\Auth::user()->other_facilities);        
+        if(count($others)>0){
+          $others_str = implode(",", $others);
+          $res = $res->orWhereIn('f.id', $others);
+        } 
       }
 
       $res = $res->groupby('f.id');
