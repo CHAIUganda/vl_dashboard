@@ -112,14 +112,16 @@ var facilities_json = {!! json_encode([""=>""]+$facilities) !!};
     $(".other_facilities").append("<br>"+select("other_facilities[]",facilities_json, "", more)+"<br>");
     $(".other_facilities_select").select2({   placeholder:"Select facility", allowClear:true, width: '40%' });
  });
+
+ function setOtherFacilities(that){
+    delete facilities_json[that.value];
+ }
  
  $("#hb").on("change",function(){
     $("#hub_name").val($("#hb option:selected").text());
  });
 
-  function setOtherFacilities(that){
-    delete facilities_json[that.value];
- }
+ 
 </script>
 
 <style type="text/css">

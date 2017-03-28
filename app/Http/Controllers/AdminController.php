@@ -36,18 +36,24 @@ class AdminController extends Controller {
 	public function edit_user($id){
 		$user = User::findOrFail($id);
 		if(\Request::has('edit')){
-			$data=\Request::all();			
+			$data=\Request::all();	
+			$data['other_facilities'] = serialize($data['other_facilities']);		
 			$user->update($data);
+			$user->detachRoles();
+			$user->attachRoles($data['roles']);
+
 			return redirect('admin/list_users')->with('msge',"saving successful");	
 
 		}else{
 			$hubs = LiveData::getHubs();
 			$facilities = LiveData::getFacilities();
 
+			$roles = Role::orderby('name')->get();
+
 			$hubs = \MyHTML::get_arr_pair($hubs, 'hub');
 			$facilities = \MyHTML::get_arr_pair($facilities, 'facility');
 
-			return view('auth.edit_user', compact('hubs', 'facilities', 'user', 'id'));
+			return view('auth.edit_user', compact('hubs', 'facilities', 'user', 'id', 'roles'));
 		}
 	}
 

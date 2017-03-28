@@ -80,20 +80,17 @@ class WorksheetResults extends Model
       if(!empty($hub_id)){
         $res = $res->where('f.hubID', $hub_id);
       }elseif(!empty(\Auth::user()->facility_id)){
-        $res = $res->where('f.id', '=', \Auth::user()->facility_id);
-        $others = unserialize(\Auth::user()->other_facilities);        
-        if(count($others)>0){
-          $others_str = implode(",", $others);
-          $res = $res->orWhereIn('f.id', $others);
-        } 
+        //$res = $res->where('f.id', '=', \Auth::user()->facility_id);
+        $others = !empty(\Auth::user()->other_facilities)? unserialize(\Auth::user()->other_facilities):[];  
+        array_push($others, \Auth::user()->facility_id);
+        $res = $res->orWhereIn('f.id', $others);
       }
 
       $res = $res->groupby('f.id');
-
       if($limit == "pending"){
          $res = $res->having('num_pending', '>=', 1);
       }
-
+      
       return $res->orderby('num_pending', 'DESC');
     }
 
