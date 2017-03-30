@@ -13,7 +13,7 @@ class AdminController extends Controller {
 	public function create_user(){
 		if(\Request::has('username')){
 			$data=\Request::all();
-			$data['other_facilities'] = serialize($data['other_facilities']);
+			if(isset($data['other_facilities'])) $data['other_facilities'] = serialize($data['other_facilities']);
 			
 			$user = User::create($data);
 			//$role = Role::findOrFail($data['role_id']);
@@ -37,7 +37,7 @@ class AdminController extends Controller {
 		$user = User::findOrFail($id);
 		if(\Request::has('edit')){
 			$data=\Request::all();	
-			$data['other_facilities'] = serialize($data['other_facilities']);		
+			if(isset($data['other_facilities']))  $data['other_facilities'] = serialize($data['other_facilities']);		
 			$user->update($data);
 			$user->detachRoles();
 			$user->attachRoles($data['roles']);
