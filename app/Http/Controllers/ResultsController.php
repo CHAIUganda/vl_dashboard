@@ -269,7 +269,25 @@ class ResultsController extends Controller {
 
 	}
 
+	public function getPatientViralLoads(){
+		extract(\Request::all());
+		
+		$sql = "SELECT s.vlSampleID,s.collectionDate, r.result FROM vl_samples s, vl_results_abbott r 
+		 where s.vlSampleID = r.sampleID  and s.patientID=$patientID 
+			union
+		SELECT s.vlSampleID,s.collectionDate, r.result FROM vl_samples s, vl_results_roche r 
+		where s.vlSampleID = r.sampleID and s.patientID=$patientID";
 
+		$patient_viral_loads=null;
+		try{
+        	$patient_viral_loads =  \DB::connection('live_db')->select($sql);        	
+        }catch(\Illuminate\Database\QueryException $e){
+        	Log::info("---ooops---");
+        	Log::error($e->getMessage());
+        	
+        }
+		return compact("patient_viral_loads");
+	}
 /*
 	public function getPatientResults(){
 		

@@ -83,6 +83,8 @@ ctrllers.DashController = function($scope,$http){
     $scope.districts2 = [];
     $scope.hubs2 = [];
     $scope.age_group_slct = age_group_json;
+
+
     
     var removeDuplicates = function(patient_results){
         var clean_results =[];
@@ -1081,9 +1083,230 @@ ctrllers.DashController = function($scope,$http){
                });
     };
 
-    getData();
-    
 
+    getData();
+    var removeRepeatingDates=function(patient_viral_loads){
+        var clean_results =[];
+        var last_index = patient_viral_loads.length -1;
+        for (var i = 1; i < patient_viral_loads.length; i++) {
+            var previous_index = i -1;
+            var previous_record = patient_viral_loads[previous_index];
+            var current_record = patient_viral_loads[i];
+
+            if(previous_record.collectionDate != current_record.collectionDate){
+                clean_results.push(previous_record);
+            }
+            if(i == last_index){
+                clean_results.push(current_record);
+                
+            }
+        }
+        return clean_results;
+    };
+    var getResult=function(result){
+     
+            var newResult = 0.0;
+            if(result == "" || result == null)
+                return newResult;
+            var dummy = result.replace(/\s/g, '');
+            if(dummy=="Notdetected"){
+                newResult = 20.0;
+            }
+            else if(dummy=="Targetnotdetected"){
+                newResult = 20.0;
+            }else if(dummy.startsWith("-1")){
+                        newResult = -1;
+                    }else if(dummy.startsWith("4442")){
+                        newResult = -4442
+                    }else if(dummy.startsWith("3109")){
+                        newResult = -3109;
+                    }else if(dummy.startsWith("3110")){
+                        newResult = -3110;
+                    }else if(dummy.startsWith("3118")){
+                        newResult = -3118;
+                    }else if(dummy.startsWith("3119")){
+                        newResult = -3119;
+                    }else if(dummy.startsWith("3153")){
+                        newResult = -3153;
+                    }else if(dummy.startsWith("4408")){
+                        newResult = -4408;
+                    }else if(dummy.startsWith("3130")){
+                        newResult = -3130;
+                    }else if(dummy.startsWith("<75Copies")){
+                        newResult = 74;
+                    }else if(dummy.startsWith("<75copies")){
+                        newResult = 74;
+                    }else if(dummy.startsWith("<550Copies")){
+                        newResult = 549;
+                    }else if(dummy.startsWith(">10,000,000Copies")){
+                        newResult = 10000001;
+                    }else if(dummy.startsWith("<150Copies")){
+                        newResult = 149;
+                    }else if (dummy.includes("Log")) {////logs
+                        //other numbers
+                        var originalStr = dummy;
+                        dummy = dummy.match(/[0-9]+/g);
+                        var newfloat = null;
+                        if(dummy.length > 1){
+                            newfloat = dummy[0]+'.'+dummy[1];
+                        }else{
+                            newfloat = dummy[0];
+                        }
+                         
+                        var powerof = parseFloat(newfloat);
+                        newResult = Math.pow(10,powerof);
+                        if(originalStr.startsWith("<"))
+                          newResult = parseInt(newResult) - 1;
+                        else if(originalStr.startsWith(">"))
+                            newResult = parseInt(newResult) + 1;
+
+                    }else{
+                        //other numbers
+                         while(dummy.includes(",")){
+                            dummy = dummy.replace(',','');
+                        }
+                        dummy = dummy.match(/[0-9]+/g);
+                        newResult = parseInt(dummy);
+                    }
+        return newResult;
+    };
+    var getMonthAndYear =function(datestring){
+            var month=datestring.slice(5,7);
+            var year = datestring.slice(2,4);
+            switch(month){
+                case "01":
+                    monthString = "Jan";
+                    break;
+                case "02":
+                    monthString = "Feb";
+                    break;
+                case "03":
+                    monthString = "Mar";
+                    break;
+                case "04":
+                  monthString = "Apr";
+                  break;
+
+                case "05":
+                    monthString = "May";
+                    break;
+
+                case "06":
+                    monthString = "Jun";
+                    break;
+
+                case "07":
+                    monthString = "Jul";
+                    break;
+                case "08":
+                    monthString = "Aug";
+                    break;
+                case "09":
+                    monthString = "Sep";
+                    break;
+                case "10":
+                  monthString = "Oct";
+                  break;
+
+                case "11":
+                    monthString = "Nov";
+                    break;
+
+                case "12":
+                    monthString = "Dec";
+                    break;
+            }
+        return monthString+"-"+year;
+    };
+    var generateFormattedResults = function(no_repeating_dates) {
+        
+        var clean_results = [];
+
+        for (var i = 0; i < no_repeating_dates.length; i++) {
+            var current_record = no_repeating_dates[i];
+            clean_results.push({x:current_record.collectionDate,y:getResult(current_record.result)});
+        };
+        
+        return clean_results;
+    };
+    
+    var getPatientViralLoads=function(progressMapType){
+            $scope.loading = true;
+            var prms = {};
+            
+            prms.patientID=$scope.patientID;
+            
+            $http({method:'GET',url:"/suppression_trends/patientviralloads",params:prms}).success(function(data) {
+                //drawing of the graph
+                 
+                //remove repeating dates
+                var no_repeating_dates = removeRepeatingDates(data.patient_viral_loads);
+
+                //generate VL results
+                $scope.progressMapData = generateFormattedResults(no_repeating_dates);
+                //$scope.progressMapData = [{"2016-04-26":4000},{"2016-07-21":900}];
+                
+                
+                try{
+                    $scope.drawProgessMap(progressMapType);
+                    console.log("finished fetching data");
+                }catch(err){
+                    console.log(err.message);
+                }
+                
+                //end progressmap graph
+            });
+            $scope.loading = false;
+    };//getPatientViralLoads
+    $scope.loadProgressMap = function(patientID,patientUniqueID,progressMapType){
+        $scope.patientID = patientID;
+        $scope.patientUniqueID = patientUniqueID;
+        getPatientViralLoads(progressMapType);
+
+    };
+    $scope.drawProgessMap = function(progressMapType){     
+        var data=[{"key":"Selection","values":[],"color":"#f44336" }];
+        var labels=[];
+        var x=0;
+        var y_vals=[];
+        $scope.progressmaplabels=[];
+            
+            for (var index = 0; index < $scope.progressMapData.length; index++) {
+                var current_record = $scope.progressMapData[index];
+
+                //add values i.e. indeces to the x axis, and actual figures to the y axis
+                data[0].values.push({x: index,y:current_record.y});
+
+                //generate labels for the X-axis in the format MMM-YY
+                labels.push(getMonthAndYear(current_record.x));
+                $scope.progressmaplabels.push({x:getMonthAndYear(current_record.x)});
+                //generate Y-axis values as well
+                y_vals.push({y:current_record.y});
+            };
+        
+        $scope.progressmapresults= y_vals;
+
+        nv.addGraph(function() {
+            var chart = nv.models.lineChart()
+                        .margin({right: 50})
+                        .useInteractiveGuideline(true)
+                        .x(function(d) { return d.x })
+                        .y(function(d) { return d.y })
+                        .forceY(y_vals);
+            
+            chart.xAxis.tickFormat(function(d) {
+                return labels[d];
+            });
+
+            chart.yAxis.tickFormat(d3.format(',.0d'));
+        if( progressMapType =="retestNonSuppressedMap"){
+             d3.select('#progressmap_restest_not_suppressed_id svg').datum(data).transition().duration(500).call(chart);
+        }else if(progressMapType =="retestSuppressedMap"){
+             d3.select('#progressmap_restest_suppressed_id svg').datum(data).transition().duration(500).call(chart);
+        }
+            return chart;
+        });
+    };
     $scope.dateFilter=function(){
         if($scope.fro_date!="all" && $scope.to_date!="all"){
             var fro_nr=Number($scope.fro_date);//numberise the fro date

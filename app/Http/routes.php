@@ -50,6 +50,8 @@ Route::group(['middleware' => 'auth'], function()
 
 		Route::get('/suppression_trends/reports', ['as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
 		Route::get('/suppression_trends/index', ['as' => 'patient_results', 'uses' => function(){ return view('suppression_trends.index'); }]);
+		Route::get('/suppression_trends/patientviralloads', ['as' => 'patient_results', 'uses' => 'ResultsController@getPatientViralLoads']);
+
 	});
 
 	Route::group(['middleware'=>['permission:qc']], function() { 
