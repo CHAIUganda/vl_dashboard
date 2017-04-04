@@ -69,15 +69,15 @@
                     $styl = "style=background:#F5A9A9;";
                     $pat_result = 'Failed';
                 }else{
-                    $num_result = MyHTML::getNumericalResult($resultxxx);
-                    $num_result2 = $num_result*$sample->factor;
-                    $suppressed = MyHTML::isSuppressed2($num_result2);
                     $pat_result = MyHTML::getVLNumericResult($resultxxx, $wk->machineType, $sample->factor);
+                    $num_result = MyHTML::getNumericalResult($pat_result);
+                    $suppressed = MyHTML::isSuppressed2($num_result);
+                    
                 }
                 ?>
 
                 <tr {{ $styl }}>
-                    <td>{{ $nr }}  </td>
+                    <td>{{ $nr }} {{$suppressed}} </td>
                     <td>{{ $sample->vlSampleID }}</td>                    
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
                     <td>{{ $sample->formNumber }}</td>
