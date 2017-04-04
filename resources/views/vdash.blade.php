@@ -120,7 +120,12 @@
                         <span class="desc">current regimen</span>
                     </a>
                 </li>
-
+                <li id='tb_hd5'>
+                    <a href="#tab5" id='tb_lnk5' ng-click="displayRegimenGroups()">
+                        <span style="font-size:10px">Reg All</span> 
+                        <span class="desc">All Regimens</span>
+                    </a>
+                </li>
                <!--  <li id='tb_hd5'>
                     <a href="#tab5" id='tb_lnk5' ng-click="displayRegimenTime()">
                         <span class="num ng-cloak">
@@ -136,6 +141,7 @@
             <section id="tab2"> @include('sections._suppression_rate') </section>
             <section id="tab3"> @include('sections._rejections')</section>
             <section id="tab4"> @include('sections._current_regimen')</section>
+            <section id="tab5"> @include('sections._all_regimens')</section>
             <!-- <section id="tab4"> @include('sections._regimen_groups')</section>
             <section id="tab5"> @include('sections._regimen_time')</section> -->
         </div><!-- /content -->
