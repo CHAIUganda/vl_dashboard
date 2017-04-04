@@ -53,12 +53,12 @@ Edit User
             {!! Form::radio('limit_by','3','',['onchange'=>'showLimit(3)']) !!} None
             <br>
             <div class='limitby' style="display:{!! $dsply1 !!}" id='limit1'>
-                {!! Form::select('facility',[""=>""]+$facilities,$user->facility_id,['id'=>'fclty']) !!}
+                {!! Form::select('facility_id',[""=>""]+$facilities,$user->facility_id,['id'=>'fclty']) !!}
                  <br>
                 <div class="other_facilities"></div>
                 <br><a href="#" id="add_facility">Add Facility</a>
             </div>
-            <div class='limitby' style="display:{!! $dsply2 !!}" id='limit2'>{!! Form::select('hub',[""=>""]+$hubs,$user->hub_id,['id'=>'hb']) !!}</div>
+            <div class='limitby' style="display:{!! $dsply2 !!}" id='limit2'>{!! Form::select('hub_id',[""=>""]+$hubs,$user->hub_id,['id'=>'hb']) !!}</div>
         </td>
     </tr>
     <tr><td/><td>{!! MyHTML::submit('Update User') !!} </td></tr>
@@ -76,16 +76,18 @@ function showLimit(val){
     document.getElementById('limit'+val).style.display="block";
  }
 
- $(document).ready(function() {
+ /*$(document).ready(function() {
     $("#user_r").select2({  placeholder:"Select user role", allowClear:true, width: '40%' });
     $("#fclty").select2({   placeholder:"Select facility", allowClear:true, width: '40%' });
     $("#hb").select2({  placeholder:"Select hub", allowClear:true, width: '40%' });
- });
+ });*/
 
 $("#fclty").on("change",function(){
     $("#facility_name").val($("#fclty option:selected").text());
-     delete facilities_json[this.value];
-     $("#add_facility").show();
+    $("#hub_name").val("");
+    $("#hb option:selected").remove();
+    delete facilities_json[this.value];
+    $("#add_facility").show();
 })
 
 $("#add_facility").on("click", function(){
@@ -101,6 +103,8 @@ $("#add_facility").on("click", function(){
  
 $("#hb").on("change",function(){
   $("#hub_name").val($("#hb option:selected").text());
+  $("#facility_name").val("");
+  $("#fclty option:selected").remove();
 })
 </script>
 

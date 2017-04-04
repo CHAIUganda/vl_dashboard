@@ -36,7 +36,7 @@ class AdminController extends Controller {
 	public function edit_user($id){
 		$user = User::findOrFail($id);
 		if(\Request::has('edit')){
-			$data=\Request::all();	
+			$data=\Request::all();
 			if(isset($data['other_facilities']))  $data['other_facilities'] = serialize($data['other_facilities']);		
 			$user->update($data);
 			$user->detachRoles();
