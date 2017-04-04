@@ -70,7 +70,8 @@
                     $pat_result = 'Failed';
                 }else{
                     $num_result = MyHTML::getNumericalResult($resultxxx);
-                    $suppressed = MyHTML:: isSuppressed2($num_result);
+                    $num_result2 = $num_result*$sample->factor;
+                    $suppressed = MyHTML::isSuppressed2($num_result2);
                     $pat_result = MyHTML::getVLNumericResult($resultxxx, $wk->machineType, $sample->factor);
                 }
                 ?>
