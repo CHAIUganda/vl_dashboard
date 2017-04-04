@@ -30,11 +30,34 @@
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.recommendedRetestDate %></td>
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.phone %></td>
 
-                                      <td ng-class="ng-cloak"><a>Click Here</a></td>
+                                      <td ng-class="ng-cloak">
+                                        <div class="popup" ng-click="loadProgressMap(retestSuppressingPatients_object.patientID,retestNSPatients_object.patientUniqueID,'retestSuppressedMap')">
+                                          Click Here for details
+                                        </div>
+                                      </td>
                                       <td ng-class="ng-cloak"></td>
                                       <td ng-class="ng-cloak"></td>
                                   
                               </tr>           
                                  </tbody>
                             </table>
+</div>
+<div id="progressmap_restest_suppressed_id">
+    <h3>Progress Map for <% patientUniqueID %></h3>
+    <svg></svg>
+    <table class="table table-bordered table-condensed table-striped">
+      <tr>
+        <th class="ng-cloak" colspan="2">Collection Date</th> 
+      </tr>
+      <tr>
+        <td ng-repeat="progressmaplabel in progressmaplabels" class="figure ng-cloak">
+           <% progressmaplabel.x %>
+        </td>
+      </tr>
+      <tr>
+        <td ng-repeat="progressmapresult in progressmapresults" class="figure ng-cloak">
+           <% progressmapresult.y %>
+        </td>
+      </tr>
+    </table>
 </div>
