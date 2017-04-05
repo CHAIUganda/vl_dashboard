@@ -27,20 +27,21 @@
                 <th>Art Number</th>
                 <th>Machine Result</th>
                 <th>Result </th>
+                <th>Suppressed?</th>
                 <th style="width:250px">Choose</th>
             </tr>
             </thead>
             <tbody>
                 
-                <tr> <td>1</td> <td>NC</td> <td/> <td/> <td/> <td/> <td/> <td/> </tr>
-                <tr> <td>2</td> <td>PC</td> <td/> <td/> <td/> <td/> <td/> <td/> </tr>
-                <tr> <td>3</td> <td>HPC</td> <td/> <td/> <td/> <td/> <td/> <td/> </tr>
+                <tr> <td>1</td> <td>NC</td> <td/> <td/> <td/> <td/> <td/> <td/> <td/></tr>
+                <tr> <td>2</td> <td>PC</td> <td/> <td/> <td/> <td/> <td/> <td/> <td/></tr>
+                <tr> <td>3</td> <td>HPC</td> <td/> <td/> <td/> <td/> <td/> <td/> <td/></tr>
                 <?php
                 $smpl_arr = array();
                 $nr = 4;
                 if($wk->includeCalibrators == 1){
                     while($nr<=11){
-                        echo " <tr> <td>$nr</td> <td>Calibrator</td> <td/> <td/> <td/> <td/> <td/> <td/> </tr>";
+                        echo " <tr> <td>$nr</td> <td>Calibrator</td> <td/> <td/> <td/> <td/> <td/> <td/> <td/></tr>";
                         $nr++;
                     }
                 } 
@@ -77,13 +78,14 @@
                 ?>
 
                 <tr {{ $styl }}>
-                    <td>{{ $nr }} {{$suppressed}} </td>
+                    <td>{{ $nr }}  </td>
                     <td>{{ $sample->vlSampleID }}</td>                    
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
                     <td>{{ $sample->formNumber }}</td>
                     <td>{{ $sample->artNumber }}</td>
                     <td>{{ $resultxxx }}</td>
                     <td>{{ $pat_result  }} {!! Form::hidden("pat_results[$sample->sampleID]",$pat_result) !!}</td> 
+                    <td>{{ $suppressed }}</td>
                     <td>
                         {!! Form::hidden("suppressions[$sample->sampleID]",$suppressed) !!}
                         
