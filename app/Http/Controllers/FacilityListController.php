@@ -43,12 +43,23 @@ class FacilityListController extends Controller {
 						return $pilot;
 				    },
 				])
-				->addColumn('action', function($result){
+				->addColumn('options', function ($result) {
 					$xtra = \Request::has('h')?"&h=".\Request::get('h'):"";
 					$url = "/results_list?f=$result->id$xtra";
-					return "<a class='btn btn-danger btn-xs' href='$url'>view pending</a>
-							<a class='btn btn-danger btn-xs' href='$url&printed=YES'>printed/downloaded</a>";
-				})->make(true);
+					if(empty(\Auth::user()->facility_id) AND empty(\Auth::user()->hub_id)){
+						$links = [
+							'View Pending' => "$url",
+							'View Printed or Downloaded' => "$url&printed=YES",
+							'Print Envelope' => "javascript:windPop('/print_envelope/$result->id')"
+							];
+			        	return  \MyHTML::dropdownLinks($links);
+					}else{
+						return "<a class='btn btn-danger btn-xs' href='$url'>view pending</a>
+								<a class='btn btn-danger btn-xs' href='$url&printed=YES'>printed/downloaded</a>";						
+					}
+
+					
+			    })->make(true);
 	}
 	
 }

@@ -58,7 +58,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
                 <th># Printed</th>
                 <th># Downloaded</th>
                 @if($sect == 'admin')<th># Last Printed/ Downloaded</th>@endif 
-                @if($sect == 'results')<th></th>@endif
+                @if($sect == 'results')<th>Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>@endif
             </tr>
         </thead>
         </table> 
@@ -93,7 +93,7 @@ $(function() {
             {data: 'num_printed', name: 'num_printed', searchable: false},
             {data: 'num_downloaded', name: 'num_downloaded', searchable: false },
             @if($sect == 'admin'){data: 'printed_at', name: 'p.printed_at'},@endif
-            @if($sect == 'results') {data: 'action', name: 'action', orderable: false, searchable: false}, @endif
+            @if($sect == 'results') {data: 'options', name: 'options', orderable: false, searchable: false}, @endif
         ]
     });
 
