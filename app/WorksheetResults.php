@@ -91,7 +91,22 @@ class WorksheetResults extends Model
          $res = $res->having('num_pending', '>=', 1);
       }
 
+      if(\Request::has('h')) return $res->orderby('facility', 'ASC');
+
       return $res->orderby('num_pending', 'DESC');
+    }
+
+    public static function getSamples(){
+      return LiveData::leftjoin(' vl_samples as s', 's.id', '=', 'fp.sample_id')
+              ->leftjoin('vl_patients AS p', 'p.id', '=', 's.patientID')
+              ->leftjoin('vl_samples_verify AS v', 'v.sampleID', '=', 's.id')              
+              ->leftjoin('vl_results_released AS rr', 'rr.sample_id', '=', 's.id')
+              ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
+              ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
+              ->leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')              
+              ->select('s.*','p.*','facility', 'hub', 'district', 'v.outcome', 'v.created as verified_at', 'fp.*', 'rr.*')
+              ->from('vl_facility_printing AS fp')
+              ->whereYear('s.created','=', 2016)->whereMonth('s.created', '=' , 4);
     }
 
 

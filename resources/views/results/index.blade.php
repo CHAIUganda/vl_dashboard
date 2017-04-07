@@ -5,7 +5,13 @@
 <div style="font-size:12px; padding-left:5px;">
     <?php $n=1 ?>
     @foreach($facilities AS $facility)
-        <a href="/results_list?f={{ $facility->id }}&h={{ $facility->hubID }}">{{$facility->facility}}</a><br><br>
+        <?php
+        if($facility->id == \Request::get('f')){
+            echo "$facility->facility <span style='color:blue'>$facility->num </span><br><br>";
+        }else{
+            echo " <a href='/results_list?f= $facility->id &h=$facility->hubID'>$facility->facility <span style='color:blue'    >$facility->num </span> </a><br><br>";
+        }
+        ?>       
     @endforeach
 </div>
 @endif

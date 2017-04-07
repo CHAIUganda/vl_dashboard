@@ -19,6 +19,8 @@ if(isset($tab)){
 
 $pending_url = "/results?tab=pending";
 $completed_url = "/results?tab=completed";
+
+$tab_limit = isset($tab)?"?tab=$tab":"";
 ?>
 @if($sect == 'results')
 <ul class="breadcrumb">
@@ -102,7 +104,7 @@ drpdwn= $(".live_drpdwn");
     function get_data(q,drpdwn,link){
         if(q && q.length>=3){   
             //console.log("this is what you have just typed:"+ q+"link"+link);      
-            $.get(link+q+"/", function(data){
+            $.get(link+q+"/{{ $tab_limit }}", function(data){
                 drpdwn.show();
                 drpdwn.html(data);
             });

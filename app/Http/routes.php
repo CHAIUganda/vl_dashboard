@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::group(['middleware'=>['permission:monitoring']], function(){
 		Route::controllers(['/monitor' => 'MonitoringController']);
+		Route::controllers(['/monitor_download' => 'MonitorDownloadController']);
 	});
 
 	Route::group(['middleware'=>['permission:print_results']], function() { 

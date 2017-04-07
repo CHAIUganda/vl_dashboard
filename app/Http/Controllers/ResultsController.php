@@ -18,11 +18,12 @@ class ResultsController extends Controller {
 		if(\Request::has('h')){
 			$facilities = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'p.sample_id')
                     ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')          
-                    ->select('f.id','f.facility','f.hubID')
+                    ->select('f.id','f.facility','f.hubID', \DB::raw("count(p.id) AS num"))
                     ->from('vl_facility_printing AS p')
                     ->where('f.hubID', \Request::get('h'))
                     ->where('p.ready', 'YES')->where('printed', 'NO')->where('downloaded', 'NO')
                     ->groupby('f.id')
+                    ->orderby('facility', 'ASC')
                     ->get();
 		}
 		return view('results.index', compact('printed', 'facility_name', 'facilities'));
@@ -355,7 +356,7 @@ class ResultsController extends Controller {
 		$hubs = LiveData::select('id', 'hub')->from('vl_hubs')->where('hub', 'LIKE', "%$txt%")->limit(10)->get();
 		$ret = "";
 		foreach ($hubs as $hub) {
-			$ret .= "<a href='/results?h=$hub->id'>$hub->hub</a><br>";			
+			$ret .= "<a href='/results?h=$hub->id&tab=".\Request::get('tab')."'>$hub->hub</a><br>";			
 		}
     	return $ret;
     }
