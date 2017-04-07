@@ -7,9 +7,9 @@
     @foreach($facilities AS $facility)
         <?php
         if($facility->id == \Request::get('f')){
-            echo "$facility->facility <span style='color:blue'>$facility->num </span><br><br>";
+            echo "$facility->facility <b style='color:blue'>$facility->num </b><br><br>";
         }else{
-            echo " <a href='/results_list?f= $facility->id &h=$facility->hubID'>$facility->facility <span style='color:blue'    >$facility->num </span> </a><br><br>";
+            echo " <a href='/results_list?f= $facility->id &h=$facility->hubID'>$facility->facility <b style='color:blue'    >$facility->num </b> </a><br><br>";
         }
         ?>       
     @endforeach

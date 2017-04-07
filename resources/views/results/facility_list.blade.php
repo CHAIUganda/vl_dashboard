@@ -58,7 +58,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
                 <th># Printed</th>
                 <th># Downloaded</th>
                 @if($sect == 'admin')<th># Last Printed/ Downloaded</th>@endif 
-                @if($sect == 'results')<th>Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>@endif
+                @if($sect == 'results')<th>Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>@endif
             </tr>
         </thead>
         </table> 
