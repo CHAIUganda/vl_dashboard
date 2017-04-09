@@ -98,6 +98,8 @@ class WorksheetResults extends Model
     }
 
     public static function getSamples(){
+      $date_from = \Request::has('date_from')?\Request::get('date_from'):date("Y-m-01");
+      $date_to = \Request::has('date_to')?\Request::get('date_to'):date("Y-m-d");
       return LiveData::leftjoin('vl_samples as s', 's.id', '=', 'fp.sample_id')
               ->leftjoin('vl_patients AS p', 'p.id', '=', 's.patientID')
               ->leftjoin('vl_samples_verify AS v', 'v.sampleID', '=', 's.id')              
@@ -107,7 +109,7 @@ class WorksheetResults extends Model
               ->leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')              
               ->select('s.*','p.*','facility', 'hub', 'district', 'v.outcome', 'v.created as verified_at', 'fp.*', 'rr.*', 'rr.created as lab_qc_at')
               ->from('vl_facility_printing AS fp')
-              ->where('s.created', '>=', '2016-04-01')->where('s.created', '<=', '2016-04-31');
+              ->where('s.created', '>=', "$date_from")->where('s.created', '<=', "$date_to");
     }
 
 

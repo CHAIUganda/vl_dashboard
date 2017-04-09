@@ -29,23 +29,25 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 </ul>
 @endif
 <h2 style="text-align:center;text-transform:uppercase">{{ Auth::user()->hub_name }}</h2>
-@if(empty(Auth::user()->facility_id) AND empty(Auth::user()->hub_id))
+@if(empty(Auth::user()->facility_id) AND empty(Auth::user()->hub_id) AND $sect == 'results')
     {!! Form::text('hub','', ['id'=>'hub','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search Hub"] ) !!}
     <div class='live_drpdwn' id="worksheet_dropdown" style='display:none'></div>
-    <br>
-    @if($sect == 'results')
+    <br>   
     <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
         <li {{ $pending_actv }} title='Print'><a href="{!! $pending_url !!}" >Pending</a></li>
         <li {{ $completed_actv }} title='Completed'><a href="{!! $completed_url !!}" >All</a></li>
     </ul>
-
-    @endif
 @endif()
 
-@if(isset($tab))
+@if($sect == 'admin')
+ <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active"><a href="/monitor" >Monitor</a></li>
+        <li><a href="/monitor_download" >Download</a></li>
+    </ul>
+@endif
+
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print"> 
-        @endif
         <table id="results-table" class="table table-condensed table-bordered  table-striped">
         <thead>
             <tr>
@@ -62,10 +64,9 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
             </tr>
         </thead>
         </table> 
-        @if(isset($tab))  
+       
     </div>
 </div>  
-@endif 
 
 <script type="text/javascript">
 @if($sect == 'admin')

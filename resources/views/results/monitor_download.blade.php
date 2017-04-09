@@ -1,32 +1,24 @@
 @extends('layout')
 
 @section('content')
-<?php 
-$params = "";
-$limit = "?";
-if(\Request::has('h')) $limit .= "h=". \Request::get('h');
+<?php
+$date_from = \Request::has('date_from')?\Request::get('date_from'):date("Y-m-01");
+$date_to = \Request::has('date_to')?\Request::get('date_to'):date("Y-m-d");
 
-$pending_actv="";
-$completed_actv="";
-if(isset($tab)){
-    if($tab=='pending'){
-        $pending_actv="class=active";
-    }else{
-        $completed_actv="class=active";    
-    }
-    $limit .= "&tab=$tab";
-} 
-
-$pending_url = "/results?tab=pending";
-$completed_url = "/results?tab=completed";
 ?>
-<ul class="breadcrumb">
-    <li><a href="/">HOME</a></li>
-    <li action="active">RESULTS</li>
+
+<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li ><a href="/monitor" >Monitor</a></li>
+    <li class="active"><a href="/monitor_download" >Download</a></li>
 </ul>
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print"> 
+        <div class="form-inline" style="margin:10px">
+            {!! Form::select('date',['receiptDate'=>'Date Received'],'', ['class'=>'form-control input-sm input_sm']) !!}
+            {!! Form::text('date_from', $date_from,['placeholder'=>'From', 'id'=>'date_from', 'class'=>'form-control input-sm input_sm']) !!} 
+            {!! Form::text('date_to', $date_to,['placeholder'=>'To', 'id'=>'date_to', 'class'=>'form-control input-sm input_sm']) !!}
+        </div>
         <table id="results-table" class="table table-condensed table-bordered  table-striped">
         <thead>
             <tr>                
@@ -37,11 +29,12 @@ $completed_url = "/results?tab=completed";
                 <th>Other ID</th>
                 <th>Form Number</th>
                 <th>Sample ID</th>
-                <th>Result</th>
+                <th>Date Received</th>
                 <th>Test Date</th>
                 <th>Auth At</th>
                 <th>Released At</th>
-                <th>Printed At</th>              
+                <th>Printed At</th>   
+                <th>Result</th>           
             </tr>
         </thead>
         </table> 
@@ -51,12 +44,20 @@ $completed_url = "/results?tab=completed";
 <script type="text/javascript">
  $('#monitor').addClass('active'); 
 $(function() {
+    $("#date_from").datepicker({
+         changeMonth: true,
+         changeYear: true,
+         minDate: new Date("2017-03-01"),
+         maxDate: new Date(),
+         dateFormat: "yy-mm-dd"
+    });
+
     $('#results-table').DataTable({
 
         processing: true,
         serverSide: true,
         pageLength: 10,
-        ajax: '{!! url("/monitor_download/data") !!}',
+        ajax: '{!! url("/monitor_download/data?date_from=$date_from&date_to=$date_to") !!}',
         dom: 'Bfrtip',
         buttons: ['csv', 'excel'],
         columns: [        
@@ -67,15 +68,31 @@ $(function() {
             {data: 'otherID', name: 'p.otherID'},
             {data: 'formNumber', name: 's.formNumber'},
             {data: 'vlSampleID', name: 's.vlSampleID'},
-            {data: 'result', name: 'rr.result'},
+            {data: 'receiptDate', name: 's.receiptDate'},            
             {data: 'test_date', name: 'rr.test_date'},
             {data: 'lab_qc_at', name: 'rr.lab_qc_at'},
             {data: 'qc_at', name: 'fp.qc_at'},
             {data: 'printed_at', name: 'fp.printed_at'},
+            {data: 'result', name: 'rr.result'},
         ]
     });
 
 });
+
+$("#date_from").on("change",function(){
+    $("#date_to").datepicker({
+         changeMonth: true,
+         changeYear: true,
+         minDate: new Date($("#date_from").val()),
+         maxDate: new Date(),
+         dateFormat: "yy-mm-dd"
+    });
+});
+
+$("#date_to").on("change",function(){
+    window.location.assign("/monitor_download?date_from="+$("#date_from").val()+"&date_to="+$(this).val());
+});
+
 
 </script>
 @endsection()
