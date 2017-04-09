@@ -54,20 +54,25 @@
                 $styl = "";
                 $resultxxx = "";
                 $flag = "";
+                $interpretation = "";
+                $wid = "";
                 if($wk->machineType == 'abbott'){
                     $resultxxx = $sample->abbott_result;
                     $flag = $sample->flags;
                     $test_date = $sample->abbott_date;
+                    $interpretation = $sample->interpretation;
+                    $wid = $sample->wid_a;
                 }else{
                     $resultxxx = $sample->roche_result;
                     $test_date = $sample->roche_date;
+                    $wid = $sample->wid_r;
                 }
    
 
-                $failed = MyHTML::isResultFailed($wk->machineType,$resultxxx,$flag);
+                $failed = MyHTML::isResultFailed($wk->machineType,$resultxxx,$flag, $interpretation);
                 $suppressed = "UNKNOWN";
                 if($failed == 1){
-                    $styl = "style=background:#F5A9A9;";
+                    $styl = "background:#F5A9A9;";
                     $pat_result = 'Failed';
                 }else{
                     $pat_result = MyHTML::getVLNumericResult($resultxxx, $wk->machineType, $sample->factor);
@@ -77,8 +82,8 @@
                 }
                 ?>
 
-                <tr {{ $styl }}>
-                    <td>{{ $nr }}  </td>
+                <tr  style="<?php echo $styl; if($wid!=$id) echo "font-weight: bold;"; ?>" > 
+                    <td>{{ $nr }}</td>
                     <td>{{ $sample->vlSampleID }}</td>                    
                     <td>{{ $sample->lrCategory }}{{ $sample->lrEnvelopeNumber }}/{{ $sample->lrNumericID }}</td>
                     <td>{{ $sample->formNumber }}</td>
@@ -88,10 +93,13 @@
                     <td>{{ $suppressed }}</td>
                     <td>
                         {!! Form::hidden("suppressions[$sample->sampleID]",$suppressed) !!}
-                        
+                       @if($wid == $id)
                        <?php if($pat_result!='Failed'){ ?><label>{!! Form::radio("choices[$sample->sampleID]", 'release') !!} Release</label><?php } ?>
                        <label>{!! Form::radio("choices[$sample->sampleID]", 'reschedule') !!} Reschedule</label>
                        <label>{!! Form::radio("choices[$sample->sampleID]", 'invalid') !!} Invalid</label>
+                       @else
+                        As tested on previous worksheet
+                       @endif
                     </td>                   
                 </tr> 
                 <?php $nr++; ?>
@@ -136,4 +144,10 @@ $("#save").click(function(){
 
 
 </script>
+
+<style type="text/css">
+.h{
+
+}
+</style>
 @endsection()

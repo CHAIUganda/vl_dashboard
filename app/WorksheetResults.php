@@ -48,8 +48,9 @@ class WorksheetResults extends Model
                 ->leftjoin('vl_results_abbott AS res_a', 'res_a.SampleID', '=', 's.vlSampleID')
                 ->leftjoin('vl_results_roche AS res_r', 'res_r.SampleID', '=', 's.vlSampleID')
                 ->leftjoin('vl_results_multiplicationfactor AS fctr', 'fctr.worksheetID', '=', 'wk.worksheetID')
-                ->select('s.*','wk.sampleID', 'hub', 'facility', 'p.*', 'res_a.result AS abbott_result','res_a.flags', 
-                         'res_r.Result AS roche_result', 'factor', 'res_a.created AS abbott_date', 'res_r.created AS roche_date')
+                ->select('s.*','wk.sampleID', 'hub', 'facility', 'p.*', 'res_a.result AS abbott_result','res_a.flags','res_a.interpretation', 
+                         'res_r.Result AS roche_result', 'factor', 'res_a.created AS abbott_date', 'res_r.created AS roche_date',
+                         'res_a.worksheetID AS wid_a', 'res_r.worksheetID AS wid_r')
                 ->from('vl_samples_worksheet AS wk')
                 ->where('wk.worksheetID','=',$id)
                 ->get();
@@ -97,21 +98,21 @@ class WorksheetResults extends Model
     }
 
     public static function getSamples(){
-      return LiveData::leftjoin(' vl_samples as s', 's.id', '=', 'fp.sample_id')
+      return LiveData::leftjoin('vl_samples as s', 's.id', '=', 'fp.sample_id')
               ->leftjoin('vl_patients AS p', 'p.id', '=', 's.patientID')
               ->leftjoin('vl_samples_verify AS v', 'v.sampleID', '=', 's.id')              
               ->leftjoin('vl_results_released AS rr', 'rr.sample_id', '=', 's.id')
               ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
               ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
               ->leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')              
-              ->select('s.*','p.*','facility', 'hub', 'district', 'v.outcome', 'v.created as verified_at', 'fp.*', 'rr.*')
+              ->select('s.*','p.*','facility', 'hub', 'district', 'v.outcome', 'v.created as verified_at', 'fp.*', 'rr.*', 'rr.created as lab_qc_at')
               ->from('vl_facility_printing AS fp')
-              ->whereYear('s.created','=', 2016)->whereMonth('s.created', '=' , 4);
+              ->where('s.created', '>=', '2016-04-01')->where('s.created', '<=', '2016-04-31');
     }
 
 
     private static function fail_case(){
-      $abbott_result_fails = "('-1.00',
+     /* $abbott_result_fails = "('-1.00',
                '3153 There is insufficient volume in the vessel to perform an aspirate or dispense operation.',
                '3109 A no liquid detected error was encountered by the Liquid Handler.',
                'A no liquid detected error was encountered by the Liquid Handler.',
@@ -135,10 +136,10 @@ class WorksheetResults extends Model
                  '4447 Insufficient level of Assay reference dye.',
                  '4457 Internal control failed.')";
 
-       $abott_fail = " (a.result IN $abbott_result_fails OR a.flags IN $abbott_flags) ";
+       $abott_fail = " (a.result IN $abbott_result_fails OR a.flags IN $abbott_flags) ";*/
       
       return "SUM(CASE WHEN 
-                  (r.`result`='Failed' OR r.`result`='Invalid') OR $abott_fail
+                  (r.`result`='Failed' OR r.`result`='Invalid') OR (a.flags <> 'OPEN' AND a.interpretation <> 'OPEN')
                   THEN 1 ELSE 0 END) AS num_failed";
      
     }

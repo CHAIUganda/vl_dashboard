@@ -229,11 +229,11 @@ class MyHTML{
 		}
 	}
 
-	public static function isResultFailed($machineType,$result,$flag){
+	public static function isResultFailed($machineType,$result,$flag, $interpretation=""){
 		$check = 0;
 
 		if($machineType=='abbott'){
-			$abbott_result_fails = array(
+			/*$abbott_result_fails = array(
 				"-1.00",
 				"3153 There is insufficient volume in the vessel to perform an aspirate or dispense operation.",
 				"3109 A no liquid detected error was encountered by the Liquid Handler.",
@@ -260,6 +260,9 @@ class MyHTML{
 				"4457 Internal control failed.",
 			);
 			if(in_array($result, $abbott_result_fails) || in_array($flag, $abbott_flags)){
+				$check = 1;
+			}*/
+			if($flag != 'OPEN' && $interpretation != 'OPEN'){
 				$check = 1;
 			}
 		}elseif($machineType=='roche'){
