@@ -89,8 +89,8 @@
                     <td>{{ $sample->formNumber }}</td>
                     <td>{{ $sample->artNumber }}</td>
                     <td>{{ $resultxxx }}</td>
-                    <td>{{ $pat_result  }} {!! Form::hidden("pat_results[$sample->sampleID]",$pat_result) !!}</td> 
-                    <td>{{ $suppressed }}</td>
+                    <td>@if(!empty($wid)){{ $pat_result  }} {!! Form::hidden("pat_results[$sample->sampleID]",$pat_result) !!}@endif</td> 
+                    <td>@if(!empty($wid)){{ $suppressed }}@endif</td>
                     <td>
                         {!! Form::hidden("suppressions[$sample->sampleID]",$suppressed) !!}
                        @if($wid == $id)
