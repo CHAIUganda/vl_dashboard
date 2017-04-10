@@ -233,8 +233,11 @@ class MyHTML{
 		$check = 0;
 
 		if($machineType=='abbott'){
-			/*$abbott_result_fails = array(
-				"-1.00",
+			$abbott_flags = array(
+				"4442 Internal control cycle number is too high.",
+				"4450 Normalized fluorescence too low.",
+				"4447 Insufficient level of Assay reference dye.",
+				"4457 Internal control failed.",
 				"3153 There is insufficient volume in the vessel to perform an aspirate or dispense operation.",
 				"3109 A no liquid detected error was encountered by the Liquid Handler.",
 				"A no liquid detected error was encountered by the Liquid Handler.",
@@ -249,22 +252,18 @@ class MyHTML{
 				"Failed          Internal control cycle number is too high. Valid range is [18.48, 22.48].",
 				"Failed          Failed            Internal control cycle number is too high. Valid range is [18.48,",
 				"Failed          Failed          Internal control cycle number is too high. Valid range is [18.48, 2",
-				"OPEN",
 				"There is insufficient volume in the vessel to perform an aspirate or dispense operation.",
 				"Unable to process result, instrument response is invalid.",
-				);
-			$abbott_flags = array(
-				"4442 Internal control cycle number is too high.",
-				"4450 Normalized fluorescence too low.",
-				"4447 Insufficient level of Assay reference dye.",
-				"4457 Internal control failed.",
 			);
-			if(in_array($result, $abbott_result_fails) || in_array($flag, $abbott_flags)){
-				$check = 1;
-			}*/
-			if($flag != 'OPEN' && $interpretation != 'OPEN'){
+
+			$abbott_result_fails = array_merge($abbott_flags, array( "-1","-1.00","OPEN"));
+			
+			if(empty($result) || in_array($result, $abbott_result_fails) || in_array($flag, $abbott_flags)){
 				$check = 1;
 			}
+			/*if($flag != 'OPEN' && $interpretation != 'OPEN'){
+				$check = 1;
+			}*/
 		}elseif($machineType=='roche'){
 			if(trim($result) == 'Failed' || trim($result) == 'Invalid'){
 				$check = 1;

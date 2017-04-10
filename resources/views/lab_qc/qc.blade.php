@@ -98,7 +98,13 @@
                        <label>{!! Form::radio("choices[$sample->sampleID]", 'reschedule') !!} Reschedule</label>
                        <label>{!! Form::radio("choices[$sample->sampleID]", 'invalid') !!} Invalid</label>
                        @else
-                        As tested on previous worksheet
+                        As tested on worksheet
+                        <?php 
+                        $other_wk = \EID\WorksheetResults::getWorksheet($wid);
+
+                        echo "($other_wk->worksheetReferenceNumber)";
+
+                        ?>
                        @endif
                     </td>                   
                 </tr> 

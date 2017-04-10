@@ -114,34 +114,34 @@ class WorksheetResults extends Model
 
 
     private static function fail_case(){
-     /* $abbott_result_fails = "('-1.00',
-               '3153 There is insufficient volume in the vessel to perform an aspirate or dispense operation.',
-               '3109 A no liquid detected error was encountered by the Liquid Handler.',
-               'A no liquid detected error was encountered by the Liquid Handler.',
-               'Unable to process result, instrument response is invalid.',
-               '3118 A clot limit passed error was encountered by the Liquid Handler.',
-               '3119 A no clot exit detected error was encountered by the Liquid Handler.',
-               '3130 A less liquid than expected error was encountered by the Liquid Handler.',
-               '3131 A more liquid than expected error was encountered by the Liquid Handler.',
-               '3152 The specified submerge position for the requested liquid volume exceeds the calibrated Z bottom',
-               '4455 Unable to process result, instrument response is invalid.',
-               'A no liquid detected error was encountered by the Liquid Handler.',
-               'Failed          Internal control cycle number is too high. Valid range is [18.48, 22.48].',
-               'Failed          Failed            Internal control cycle number is too high. Valid range is [18.48,',
-               'Failed          Failed          Internal control cycle number is too high. Valid range is [18.48, 2',
-               'OPEN',
-               'There is insufficient volume in the vessel to perform an aspirate or dispense operation.',
-               'Unable to process result, instrument response is invalid.')";
-      $abbott_flags = 
-        "('4442 Internal control cycle number is too high.',
-                 '4450 Normalized fluorescence too low.',
-                 '4447 Insufficient level of Assay reference dye.',
-                 '4457 Internal control failed.')";
+      $abbott_flags =
+        "'4442 Internal control cycle number is too high. ',
+        '4450 Normalized fluorescence too low. ',
+        '4447 Insufficient level of Assay reference dye. ',
+        '4457 Internal control failed. ',
+        '3153 There is insufficient volume in the vessel to perform an aspirate or dispense operation. ',
+        '3109 A no liquid detected error was encountered by the Liquid Handler. ',
+        'A no liquid detected error was encountered by the Liquid Handler. ',
+        'Unable to process result, instrument response is invalid. ',
+        '3118 A clot limit passed error was encountered by the Liquid Handler. ',
+        '3119 A no clot exit detected error was encountered by the Liquid Handler. ',
+        '3130 A less liquid than expected error was encountered by the Liquid Handler. ',
+        '3131 A more liquid than expected error was encountered by the Liquid Handler. ',
+        '3152 The specified submerge position for the requested liquid volume exceeds the calibrated Z bottom ',
+        '4455 Unable to process result, instrument response is invalid. ',
+        'A no liquid detected error was encountered by the Liquid Handler. ',
+        'Failed          Internal control cycle number is too high. Valid range is [18.48, 22.48]. ',
+        'Failed          Failed            Internal control cycle number is too high. Valid range is [18.48, ',
+        'Failed          Failed          Internal control cycle number is too high. Valid range is [18.48, 2 ',
+        'There is insufficient volume in the vessel to perform an aspirate or dispense operation. ',
+        'Unable to process result, instrument response is invalid.'";
 
-       $abott_fail = " (a.result IN $abbott_result_fails OR a.flags IN $abbott_flags) ";*/
+      $abbott_result_fails = $abbott_flags.",'-1.00','OPEN','-1'";
+
+       $abott_fail = " ( a.result = '' OR a.result IN ($abbott_result_fails) OR a.flags IN ($abbott_flags)) ";
       
       return "SUM(CASE WHEN 
-                  (r.`result`='Failed' OR r.`result`='Invalid') OR (a.flags <> 'OPEN' AND a.interpretation <> 'OPEN')
+                  (r.`result`='Failed' OR r.`result`='Invalid') OR $abott_fail
                   THEN 1 ELSE 0 END) AS num_failed";
      
     }
