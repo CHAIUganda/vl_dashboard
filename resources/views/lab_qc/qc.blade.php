@@ -101,7 +101,7 @@
                         
                         <?php 
                         try {
-                             $other_wk = \EID\WorksheetResults::getWorksheet(1);
+                             $other_wk = \EID\WorksheetResults::getWorksheet($wid);
                              echo "As tested on worksheet ($other_wk->worksheetReferenceNumber)";
                         } catch (Exception $e) {
                              echo "problem here, should be investigated";
