@@ -48,6 +48,12 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print"> 
+        @if(empty(Auth::user()->facility_id))
+        <div style="text-align:center;"> 
+            <span style="background-color:#F5A9A9;border: 1px solid;"> &nbsp; &nbsp;  &nbsp;</span> 
+            Facility has an account and may be printing
+        </div>
+        @endif()
         <table id="results-table" class="table table-condensed table-bordered  table-striped">
         <thead>
             <tr>
