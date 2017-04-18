@@ -167,7 +167,10 @@ class DashboardController extends Controller {
 		$regimen_numbers = $this->_regimenNumbers();
 		$reg_times=$this->_regimenTimeNumbers();
 		$line_numbers=$this->_lineNumbers();
-		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers","regimen_numbers","reg_times","line_numbers");
+		$regimen_by_line_of_treatment = $this->_regimenByLineOfTreatment();
+		$regimen_names = $this->_regimentNames();
+		return compact("whole_numbers","t_indication","f_numbers","dist_numbers","drn_numbers",
+			"regimen_numbers","reg_times","line_numbers","regimen_by_line_of_treatment","regimen_names");
 	}
 
 	/*private function _wholeNumbers($conds){
@@ -341,7 +344,36 @@ class DashboardController extends Controller {
 		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		return isset($res['result'])?$res['result']:[];
 	}
+	 private function _regimenByLineOfTreatment(){
+		$grp=[];
+		$grp['_id']='$regimen_line';
+		$grp['samples_received']=['$sum'=>'$samples_received'];
+		$grp['suppressed']=['$sum'=>'$suppressed'];
+		$grp['total_results']=['$sum'=>'$total_results'];
+		$grp['valid_results']=['$sum'=>'$valid_results'];
 
+		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		return isset($res['result'])?$res['result']:[];
+	}
+
+	private function _regimentNames(){
+		$sql = "SELECT * FROM vl_appendix_regimen";
+
+		
+        $regimen_names = null;
+        
+        try{
+        	//ini_set('memory_limit','384M');
+        	$regimen_names =  \DB::connection('live_db')->select($sql);
+ 
+        }catch(\Illuminate\Database\QueryException $e){
+        	Log::info("---error fetching all regimen names from mysql---");
+        	Log::error($e->getMessage());
+        	
+        }
+		
+		return $regimen_names;
+	}
 	private function median($arr){
 		sort($arr);
 		$quantity=count($arr);
