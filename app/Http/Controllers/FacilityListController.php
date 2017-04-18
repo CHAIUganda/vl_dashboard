@@ -41,7 +41,7 @@ class FacilityListController extends Controller {
 							$pilot = $pilot_facilities>=1? "background-color:#AED6F1":"";
 						}
 
-						if(empty(\Auth::user()->facility_id)){
+						if(empty(\Auth::user()->facility_id) && empty($pilot)){
 							$pilot_facility_account = User::where('facility_id', $result->id)->count();
 							$pilot = $pilot_facility_account>=1? "background-color:#F5A9A9;":"";
 						}
