@@ -1,5 +1,4 @@
 
-
         <div class="facilties-sect " >
         	<div id="regimen_by_line_of_treatment" class="border-frame">
         		<span>By Line of Regimen</span>
@@ -619,4 +618,3 @@
 			  </table>
 			</div>
         </div>
-         
