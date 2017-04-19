@@ -500,7 +500,11 @@ div.addition-metrics{
     margin-bottom: 0;
 }
 
-
+.border-frame{
+    
+    border-bottom: 1px solid #f44336;
+    padding: 10px;
+}
 
 
 
