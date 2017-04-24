@@ -8,25 +8,25 @@
 	<tr>
 		<td class="tb-label">Samples Received</td>
 		<td ng-repeat="dn in duration_numbers" class="figure ng-cloak">
-			<% dn.samples_received %>
+			<% dn.samples_received | number %>
 		</td>
 	</tr>
 	<tr>
 		<td class="tb-label">Patients for Samples received</td>
 		<td class="figure ng-cloak" ng-repeat="dn in duration_numbers">
-			<% dn.patients_received %>
+			<% dn.patients_received | number %>
 		</td>
 	</tr>
 	<tr>
 		<td class="tb-label">Samples Tested</td>
 		<td class="figure ng-cloak" ng-repeat="dn in duration_numbers">
-			<% dn.total_results %>
+			<% dn.total_results | number %>
 		</td>
 	</tr>
 	<tr>
 		<td class="tb-label">Valid Tests</td>
 		<td class="figure ng-cloak" ng-repeat="dn in duration_numbers">
-			<% dn.valid_results %>
+			<% dn.valid_results | number %>
 		</td>
 	</tr>
 	<tr>
