@@ -202,16 +202,22 @@ ctrllers.DashController = function($scope,$http){
             var age_range = to_age_value - from_age_value;
             
             
-            //to_age becomes the id. This is what we put in the mongoDB.
-            if(age_range == 1){
+            
+            if(age_range == 1){//to_age becomes the id. This is what we put in the mongoDB.
                 
+                age_ids_array.push(from_age_value);
                 age_ids_array.push(to_age_value);
 
-            }else if(age_range > 1){
+            }else if(age_range == 0){
+                age_ids_array.push(to_age_value);
+            }
+            else if(age_range > 1){
                 var age_range_id = from_age_value;
-                for(var age_index=1; age_index <= age_range; age_index++){
-                    age_range_id ++;
+
+                for(var age_index=0; age_index <= age_range; age_index++){
+                   
                     age_ids_array.push(age_range_id);
+                    age_range_id++;
                 }//end inner loop
             }
         }//end outer loop
@@ -281,6 +287,7 @@ ctrllers.DashController = function($scope,$http){
                 $scope.filtered = count($scope.filter_districts)>0||count($scope.filter_hubs)>0||count($scope.filtered_age_range)>0||$scope.date_filtered;    
                 $scope.loading = false;
                 
+
                 //transposeDurationNumbers();
                 //console.log("lalallalal:: samples_received:: "+data.samples_received+" suppressed:: "+data.suppressed+" "+data.valid_results);
             });
@@ -1034,7 +1041,7 @@ ctrllers.DashController = function($scope,$http){
                age_range_array_cleaned.push(age_range_array[i]); 
             }
         }
-        
+
         return age_range_array_cleaned;
     };
     //rounding off numbers to the nearest decimal place
