@@ -31,7 +31,7 @@
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.phone %></td>
 
                                       <td ng-class="ng-cloak">
-                                        <div class="popup" ng-click="loadProgressMap(retestSuppressingPatients_object.patientID,retestNSPatients_object.patientUniqueID,'retestSuppressedMap')">
+                                        <div class="cursor" ng-click="loadProgressMap(retestSuppressingPatients_object.patientID,retestSuppressingPatients_object.patientUniqueID,'retestSuppressedMap')">
                                           Click Here for details
                                         </div>
                                       </td>
