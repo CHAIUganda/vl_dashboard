@@ -161,6 +161,7 @@ class LiveData extends Model
 
     public static function getSamples($year,$cond=1){
     	$age_grp_case=self::ageGroupCase();
+      
       #$reg_type_case=self::regimenTypeCase();
       $reg_time_case=self::regimenTimeCase();
     	$sql="SELECT facilityID,month(s.created) AS mth,count(s.id) AS num,
@@ -309,10 +310,14 @@ class LiveData extends Model
       //31536000 is the number of seconds in a year of 365 days
        $age=" ROUND((UNIX_TIMESTAMP(s.created)-UNIX_TIMESTAMP(dateOfBirth))/31536000) ";
        $arr=[];
-        for ($index=1; $index < 100; $index ++) { 
+        for ($index=0; $index < 100; $index ++) { 
+           /* //No age. Just get a descrete particular age e.g. 30 years. 
             $from_age = $index - 1;
             $to_age = $index;
             $arr[$index]="$age >=$from_age && $age < $to_age";
+            */
+            $age_value_for_this_index=$index;
+            $arr[$index]="$age = $age_value_for_this_index";
 
         }
     
