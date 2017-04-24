@@ -274,7 +274,11 @@ class DashboardController extends Controller {
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
 		$grp['dbs_patients']=['$sum'=>'$dbs_patients_received'];
 		$grp['total_results']=['$sum'=>'$total_results'];
+		Log::info("---district numbers---");
 		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		Log::info($this->conditions);
+		Log::info("---district numbers: grp---");
+		Log::info($grp);
 		return isset($res['result'])?$res['result']:[];
 	}
 
