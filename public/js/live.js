@@ -265,6 +265,10 @@ ctrllers.DashController = function($scope,$http){
                 $scope.export_duration_on_art = exportDurationOnArt($scope);
 
                 $scope.line_numbers = data.line_numbers||{};
+                $scope.regimenLineOfTreatment=generateRegimenLineOfTreatment(data);
+                $scope.firstLineRegimens = generateFirstLineRegimens(data);
+                $scope.secondLineRegimens = generateSecondLineRegimens(data);
+                $scope.otherRegimens=generateOtherRegimens(data);
 
                //console.log("lajejdieorer: "+JSON.stringify($scope.regimen_group_numbers));
 
@@ -284,34 +288,149 @@ ctrllers.DashController = function($scope,$http){
 
     getData();    
 
-
-    /*function transposeDurationNumbers(){
-       
-        var duration_numbers_for_month_list = [];
-        var duration_numbers_for_samples_received = [];
-        var duration_numbers_for_samples_tested = [];
-        var duration_numbers_for_patients_tested = [];
+    var generateRegimenLineOfTreatment = function(data){
+        var regimenLineOfTreatmentObject = null;
+        var regimenLineOfTreatmentArray =[]; 
+        regimenLineOfTreatmentArray = data.regimen_by_line_of_treatment;
         
+        var firstLineNotSuppressed=0;
+        var firstLineSuppressed=0;
+        var secondLineNotSuppressed=0;
+        var secondLineSuppressed=0;
+        var otherLineNotSuppressed=0;
+        var otherLineSuppressed=0;
 
-        if($scope.duration_numbers){
-            for (var index in $scope.duration_numbers) {
-                var duration_numbers_instance = $scope.duration_numbers[index];
+        var firstLine=0;
+        var secondLine=0;
+        var otherLine=0;
 
+        var notSuppressed=0;
+        var suppressed=0;
 
-                duration_numbers_for_month_list.push(dateFormat(duration_numbers_instance['_id']));
-                duration_numbers_for_samples_received.push(duration_numbers_instance['samples_received']);
-                duration_numbers_for_samples_tested.push(duration_numbers_instance['valid_results']);
-                duration_numbers_for_patients_tested.push(duration_numbers_instance['patients_tested']);
-            }
-
-            $scope.duration_numbers_for_month_list = duration_numbers_for_month_list;
-            $scope.duration_numbers_for_samples_received = duration_numbers_for_samples_received;
-            $scope.duration_numbers_for_samples_tested = duration_numbers_for_samples_tested;
-            $scope.duration_numbers_for_patients_tested = duration_numbers_for_patients_tested;
+        var total=0;
+        //regimenLineOfTreatmentObject = {firstLineNS:};
+        for(var index=0; index< regimenLineOfTreatmentArray.length; index++){
+           var dummy_egimenLineOfTreatment = regimenLineOfTreatmentArray[index];
+           if(dummy_egimenLineOfTreatment._id = 1){
+                firstLineSuppressed = dummy_egimenLineOfTreatment.suppressed;
+                firstLineNotSuppressed = dummy_egimenLineOfTreatment.valid_results - firstLineSuppressed;
+           }else if(dummy_egimenLineOfTreatment._id = 2){
+                secondLineSuppressed = dummy_egimenLineOfTreatment.suppressed;
+                secondLineNotSuppressed = dummy_egimenLineOfTreatment.valid_results - secondLineSuppressed;
+           }else if(dummy_egimenLineOfTreatment._id = 5){
+                otherLineSuppressed = dummy_egimenLineOfTreatment.suppressed;
+                otherLineNotSuppressed = dummy_egimenLineOfTreatment.valid_results - otherLineSuppressed;
+           }
         }
+
+        firstLine = firstLineSuppressed+firstLineNotSuppressed;
+        secondLine = secondLineSuppressed+secondLineNotSuppressed;
+        otherLine = otherLineSuppressed + otherLineNotSuppressed;
+
+        notSuppressed = firstLineNotSuppressed+secondLineNotSuppressed+otherLineNotSuppressed;
+        suppressed = firstLineSuppressed+secondLineSuppressed+otherLineSuppressed;
+
+        total=notSuppressed+suppressed;
+
+        regimenLineOfTreatmentObject = {"firstLineSuppressed":firstLineSuppressed,"firstLineNotSuppressed":firstLineNotSuppressed,
+                                        "secondLineSuppressed":secondLineSuppressed,"secondLineNotSuppressed":secondLineNotSuppressed,
+                                        "otherLineSuppressed":otherLineSuppressed,"otherLineNotSuppressed":otherLineNotSuppressed,
+                                        "firstLine":firstLine,"secondLine":secondLine,"otherLine":otherLine,
+                                        "notSuppressed":notSuppressed,"suppressed":suppressed,"total":total};
+        return regimenLineOfTreatmentObject;
+    };
+    var generateFirstLineRegimens = function(data){
+        //pick first line regimens
+        var regimenNamesArray = data.regimen_names;
+        var regimenNumbersArray = data.regimen_numbers;
+        //generate object with firstline regimens only
+        var one_c_AZT_3TC_NVP=1;
+        var one_d_AZT_3TC_EFV=2;
+        var one_e_TDF_3TC_NVP=3;
+        var one_f_TDF_3TC_EFV=4;
+        var one_g_TDF_FTC_NVP=5;
+        var one_h_TDF_FTC_EFV=6;
+        var one_i_ABC_3TC_EFV=7;
+        var one_j_ABC_3TC_NVP=8;
+        var four_a_d4T_3TC_NVP=19, four_b_d4T_3TC_EFV=20, four_c_AZT_3TC_NVP=21, four_d_AZT_3TC_EFV=22;
+        var four_e_ABC_3TC_NVP=23, four_f_ABC_3TC_EFV=24;
+
+        var regimens ={"one_c":getRegimen(data,one_c_AZT_3TC_NVP),"one_d":getRegimen(data,one_d_AZT_3TC_EFV),
+                        "one_e":getRegimen(data,one_e_TDF_3TC_NVP),"one_f":getRegimen(data,one_f_TDF_3TC_EFV),
+                        "one_g":getRegimen(data,one_g_TDF_FTC_NVP),"one_h":getRegimen(data,one_h_TDF_FTC_EFV),
+                        "one_i":getRegimen(data,one_i_ABC_3TC_EFV),"one_j":getRegimen(data,one_j_ABC_3TC_NVP),
+                        "four_a":getRegimen(data,four_a_d4T_3TC_NVP),"four_b":getRegimen(data,four_b_d4T_3TC_EFV),
+                        "four_c":getRegimen(data,four_c_AZT_3TC_NVP),"four_d":getRegimen(data,four_d_AZT_3TC_EFV),
+                        "four_e": getRegimen(data,four_e_ABC_3TC_NVP), "four_f":getRegimen(data,four_f_ABC_3TC_EFV)};
+        return regimens;
+
+    };
+
+    var generateSecondLineRegimens = function(data){
         
-        
-    }*/
+        var two_b_TDF_3TC_LPV_r=11;
+        var two_c_TDF_FTC_LPV_r=12;
+        var two_e_AZT_FTC_NVP=13;
+        var two_f_TDF_FTC_ATV_r=14;
+
+        var two_g_TDF_3TC_ATV_r=15;
+        var two_h_AZT_3TC_ATV_r=16;
+        var two_i_ABC_3TC_LPV_r=17;
+        var two_j_ABC_3TC_ATV_r=18;
+
+        var five_d_TDF_3TC_LPV_r=25;
+        var five_e_TDF_FTC_LPV_r=26;
+        var five_g_AZT_ABC_LPV_r=27;
+        var five_i_AZT_3TC_ATV_r=28;
+        var five_j_ABC_3TC_LPV_r=29;
+        var five_k_ABC_3TC_ATV_r=30;
+
+        var regimens ={"two_b":getRegimen(data,two_b_TDF_3TC_LPV_r),"two_c":getRegimen(data,two_c_TDF_FTC_LPV_r),
+                        "two_e": getRegimen(data,two_e_AZT_FTC_NVP),"two_f":getRegimen(data,two_f_TDF_FTC_ATV_r),
+                      "two_g":getRegimen(data,two_g_TDF_3TC_ATV_r),"two_h":getRegimen(data,two_h_AZT_3TC_ATV_r),
+                      "two_i":getRegimen(data,two_i_ABC_3TC_LPV_r), "two_j":getRegimen(data,two_j_ABC_3TC_ATV_r),
+                      "five_d":getRegimen(data,five_d_TDF_3TC_LPV_r),"five_e":getRegimen(data,five_e_TDF_FTC_LPV_r),
+                      "five_g":getRegimen(data,five_g_AZT_ABC_LPV_r),"five_i":getRegimen(data,five_i_AZT_3TC_ATV_r),
+                      "five_j":getRegimen(data,five_j_ABC_3TC_LPV_r),"five_k":getRegimen(data,five_k_ABC_3TC_ATV_r)};
+        return regimens;
+
+    };
+
+    var generateOtherRegimens = function(data){
+
+        var left_blank=31;
+        var other_regimen=71;
+        var regimens ={"left_blank":getRegimen(data,left_blank),"other_regimen":getRegimen(data,other_regimen)};
+        return regimens;
+    };
+  
+    var getRegimen=function(data,regimenIdentifier){//treatmentStatusID:it is 
+        var regimenNumbersArray = data.regimen_numbers;
+        var regimenID = regimenIdentifier;//database id for both mongo and mysql
+        var regimenObject ={};
+        var suppressed=0;
+        var notSuppressed=0;
+        var suppressedPercentage=0;
+        var notSuppressedPercentage=0;
+
+        for(var index=0; index < regimenNumbersArray.length; index++){
+            var dummyRegimenNumber = regimenNumbersArray[index];
+            if(dummyRegimenNumber._id == regimenID){
+                suppressed = dummyRegimenNumber.suppressed;
+                suppressedPercentage = (suppressed/dummyRegimenNumber.valid_results)*100 ;
+
+                notSuppressed = dummyRegimenNumber.valid_results - suppressed;
+                notSuppressedPercentage = 100 - suppressedPercentage;
+                break;
+            }
+        }
+
+        regimenObject = {"suppressed":suppressed, "suppressedPercentage":suppressedPercentage,
+                        "notSuppressed":notSuppressed,"notSuppressedPercentage":notSuppressedPercentage};
+        return regimenObject;
+    };
+   
+    
     $scope.testClick = function(){
         $scope.getArray = [{a: 1, b:2}, {a:3, b:4}];
     }
