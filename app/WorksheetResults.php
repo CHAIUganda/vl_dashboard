@@ -109,7 +109,7 @@ class WorksheetResults extends Model
               ->leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')              
               ->select('s.*','p.*','facility', 'hub', 'district', 'v.outcome', 'v.created as verified_at', 'fp.*', 'rr.*', 'rr.created as lab_qc_at')
               ->from('vl_facility_printing AS fp')
-              ->where('s.receiptDate', '>=', "$date_from")->where('s.created', '<=', "$date_to");
+              ->where('s.receiptDate', '>=', "$date_from")->where('s.receiptDate', '<=', "$date_to");
     }
 
 
