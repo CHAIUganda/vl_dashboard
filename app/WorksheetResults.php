@@ -103,15 +103,16 @@ class WorksheetResults extends Model
       return LiveData::leftjoin('vl_samples as s', 's.id', '=', 'fp.sample_id')
               ->leftjoin('vl_patients AS p', 'p.id', '=', 's.patientID')
               ->leftjoin('vl_samples_verify AS v', 'v.sampleID', '=', 's.id')              
-              ->leftjoin('vl_results_released AS rr', 'rr.sample_id', '=', 's.id')
+              ->leftjoin('vl_results_released AS rr', 'rr.sample_id', '=', 'fp.sample_id')
               ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
               ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
               ->leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')              
-              ->select('s.*','p.*','facility', 'hub', 'district', 'v.outcome', 'v.created as verified_at', 'fp.*', 'rr.*', 'rr.created as lab_qc_at')
+              ->select('s.formNumber','s.vlSampleID','s.receiptDate','p.artNumber','otherID','facility', 
+                       'hub', 'district', 'v.outcome', 'v.created as verified_at', 
+                       'fp.qc_at','fp.printed_at', 'rr.test_date','rr.result', 'rr.created as lab_qc_at')
               ->from('vl_facility_printing AS fp')
-              ->where('s.receiptDate', '>=', "$date_from")->where('s.receiptDate', '<=', "$date_to");
+              ->whereDate("s.receiptDate",'>=',$date_from)->whereDate('s.receiptDate', '<=', $date_to);
     }
-
 
     private static function fail_case(){
       $abbott_flags =
