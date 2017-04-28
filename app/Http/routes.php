@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::group(['middleware'=>['permission:monitoring']], function(){
 		Route::controllers(['/monitor' => 'MonitoringController']);
 		Route::controllers(['/monitor_download' => 'MonitorDownloadController']);
+		Route::get('/monitor_summary', function(){ $res = EID\WorksheetResults::getSummary(); return view('results.monitor_summary', compact('res')); });
 	});
 
 	Route::group(['middleware'=>['permission:print_results']], function() { 

@@ -114,6 +114,19 @@ class WorksheetResults extends Model
               ->whereDate("s.receiptDate",'>=',$date_from)->whereDate('s.receiptDate', '<=', $date_to);
     }
 
+    public static function getSummary(){
+       $date_from = \Request::has('date_from')?\Request::get('date_from'):date("Y-m-d");
+       $date_to = \Request::has('date_to')?\Request::get('date_to'):date("Y-m-d");
+       $stats = "SUM(CASE WHEN 
+                          p.printed = 'NO' AND p.downloaded = 'NO' AND ready = 'YES' 
+                          AND DATE(qc_at) >= '$date_from' AND DATE(qc_at) <= '$date_to' THEN 1 ELSE 0 END ) AS num_pending,
+                SUM(CASE WHEN 
+                          (p.printed = 'YES' OR p.downloaded = 'YES')
+                          AND DATE(printed_at) >= '$date_from' AND DATE(printed_at) <= '$date_to'THEN 1 ELSE 0 END) AS num_printed
+                ";
+      return LiveData::select(\DB::raw($stats))->from('vl_facility_printing AS p')->get()->first();
+    }
+
     private static function fail_case(){
       $abbott_flags =
         "'4442 Internal control cycle number is too high. ',

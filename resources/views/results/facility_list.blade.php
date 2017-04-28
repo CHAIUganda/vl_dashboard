@@ -43,6 +43,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
  <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
         <li class="active"><a href="/monitor" >Monitor</a></li>
         <li><a href="/monitor_download" >Download</a></li>
+        <li><a href="/monitor_summary" >Summary</a></li>
     </ul>
 @endif
 
