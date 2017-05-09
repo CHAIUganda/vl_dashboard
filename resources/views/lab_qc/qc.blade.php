@@ -67,19 +67,27 @@
                     $test_date = $sample->roche_date;
                     $wid = $sample->wid_r;
                 }
-   
 
-                $failed = MyHTML::isResultFailed($wk->machineType,$resultxxx,$flag, $interpretation);
-                $suppressed = "UNKNOWN";
-                if($failed == 1){
-                    $styl = "background:#F5A9A9;";
-                    $pat_result = 'Failed';
+                if($flag=='cobas8800'){
+                    $c8800 = MyHTML::interpretCobas8800($resultxxx);
+                    $pat_result = $c8800['alpha_numerical_result'];
+                    $num_result = $c8800['numerical_result'];
+                    $suppressed = $c8800['suppressed'];
                 }else{
-                    $pat_result = MyHTML::getVLNumericResult($resultxxx, $wk->machineType, $sample->factor);
-                    $num_result = MyHTML::getNumericalResult($pat_result);
-                    $suppressed = MyHTML::isSuppressed2($num_result);
-                    
-                }
+                    $failed = MyHTML::isResultFailed($wk->machineType,$resultxxx,$flag, $interpretation);
+                    $suppressed = "UNKNOWN";
+                    if($failed == 1){
+                        $pat_result = 'Failed';
+                    }else{
+                        $pat_result = = MyHTML::getVLNumericResult($resultxxx, $wk->machineType, $sample->factor);
+                        $num_result = MyHTML::getNumericalResult($pat_result);
+                        $suppressed = MyHTML::isSuppressed2($num_result);
+                    }
+                }  
+
+                if($pat_result=='Failed') $styl = "background:#F5A9A9;";
+
+                   
                 ?>
 
                 <tr  style="<?php echo $styl; if($wid!=$id) echo "font-weight: bold;"; ?>" > 

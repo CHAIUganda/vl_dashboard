@@ -416,5 +416,28 @@ class MyHTML{
         return $ret;
     }
 
+    public static function interpretCobas8800($result){
+		$ret = array();
+		if($result == 'Target Not Detected'){
+			$numerical_result = 0;
+			$suppressed = 'YES';
+			$alpha_numerical_result = $result;
+		}elseif($result == 'Invalid'){
+			$numerical_result = 0;
+			$suppressed = 'UNKNOWN';
+			$alpha_numerical_result = 'Failed';
+		}elseif(substr($result, 2) == 'Titer min'){
+			$numerical_result = 20;
+			$suppressed = 'YES';
+			$alpha_numerical_result = substr($result, 0,1)." 20 Copies / mL";
+		}else{
+			$numerical_result = substr($result, 0, -6)+0;
+			$suppressed = $numerical_result>1000?'NO':'YES';
+			$alpha_numerical_result = "$numerical_result Copies / mL";
+		}
+
+		return compact("numerical_result", "suppressed", "alpha_numerical_result");
+	}
+
 }
 //{1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sept',10:'Oct',11:'Nov',12:'Dec'};
