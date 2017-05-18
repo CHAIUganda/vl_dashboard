@@ -70,7 +70,7 @@ class Engine extends Command
 
     private function _loadData(){
         $this->mongo->dashboard_data_refined->drop();
-        $year=2015;
+        $year=2014;
         $current_year=date('Y');
         $facilities_arr=LiveData::getFacilities2();
         try{
