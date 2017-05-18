@@ -307,7 +307,7 @@ class DHIS2 extends Command
                  echo "\n ".$ex->getMessage()." \n";
            }
            echo "\n ....Finish..CPHL and DHIS2 merger...\n";
-        
+
     }
     private function insertComprehensiveListOfDhis2FacilitiesIntoDB($final_facilities){
         $districts_with_hubs=$this->getDistrictsWithHubs();

@@ -136,11 +136,11 @@ class LiveData extends Model
     }
 
     public static function getDistricts(){
-      return LiveData::select('id','district')->from('vl_districts')->get();
+      return LiveData::select('id','district','dhis2_name')->from('vl_districts')->get();
     }
 
     public static function getFacilities(){
-      return LiveData::select('id','facility','ipID','hubID','districtID')->from('vl_facilities')->get();
+      return LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID')->from('vl_facilities')->get();
     }
 
     public static function getFacilities2(){

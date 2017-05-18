@@ -50,15 +50,18 @@ class Engine extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '2024M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
+        
         $this->mongo->drop(); 
         $this->_loadHubs();
         $this->_loadDistricts();
         $this->_loadFacilities();
         $this->_loadIPs();
         $this->_loadRegimens();
+        
         $this->_loadData();
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
@@ -67,7 +70,7 @@ class Engine extends Command
 
     private function _loadData(){
         $this->mongo->dashboard_data_refined->drop();
-        $year=2014;
+        $year=2015;
         $current_year=date('Y');
         $facilities_arr=LiveData::getFacilities2();
         try{
@@ -76,15 +79,13 @@ class Engine extends Command
 
         }
         while($year<=$current_year){
+            
             $samples=LiveData::getSamples($year);
             $dbs_samples=LiveData::getSamples($year," sampleTypeID=1 ");
-
             $dbs_number_of_patients_received = LiveData::getNumberOfPatients($year, " sampleTypeID=1");
             $number_of_patients_received = LiveData::getNumberOfPatients($year);
-
             $rjctn_rsns=LiveData::getRejects($year);
             $rjctn_rsns2=LiveData::getRejects2($year);
-
             $t_rslts=LiveData::getResults($year);
             $v_rslts=LiveData::getResults($year,$this->_validCases());
             $sprsd_cond=$this->_validCases()." AND ".$this->_suppressedCases();
@@ -137,6 +138,8 @@ class Engine extends Command
                 $data["suppressed"]= isset($sprsd[$key])?(int)$sprsd[$key]:0;
                 $this->mongo->dashboard_data_refined->insert($data);
                 $i++;
+
+                
                 //echo "$i\n";                
               }//end of for loop
               echo " inserted $i records for $year\n";
@@ -214,7 +217,8 @@ class Engine extends Command
         $this->mongo->facilities->drop();
         $res=LiveData::getFacilities();
         foreach($res AS $row){
-            $data=['id'=>$row->id,'name'=>$row->facility,'hub_id'=>$row->hubID,'ip_id'=>$row->ipID,'district_id'=>$row->districtID];
+            $facility_name = $row->dhis2_name!=null ? $row->dhis2_name:$row->facility;
+            $data=['id'=>$row->id,'name'=>$facility_name,'hub_id'=>$row->hubID,'ip_id'=>$row->ipID,'district_id'=>$row->districtID];
             $this->mongo->facilities->insert($data);
         }
     }
@@ -232,7 +236,10 @@ class Engine extends Command
         $this->mongo->districts->drop();
         $res=LiveData::getDistricts();
         foreach($res AS $row){
-            $data=['id'=>$row->id,'name'=>$row->district];
+
+            $district_name = $row->dhis2_name!=null ? $row->dhis2_name:$row->district;
+            
+            $data=['id'=>$row->id,'name'=>$district_name];
             $this->mongo->districts->insert($data);
         }
     }
