@@ -38,11 +38,12 @@
                     </tr>                        
                  </tbody>
             </table>
-        </div>
+          <br>
          <br>
-         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          <button id="exportDistrictsRegimenNumbers" type="button" ng-csv="export_regimen_numbers"  class="btn btn-success" filename="regimen_groups_<%current_timestamp%>.csv" csv-header="['Regimen', 'Samples Received','Samples Tested','Valid Results','Number Suppressed','Suppression Rate','Percentage of Samples()']">Regimen Download CSV</button>
 
+        </div>
+       
     </div>
 
     <div class="row" ng-hide="show_reg">
@@ -81,11 +82,13 @@
                  </tbody>
             </table>
         </div>
+     
+        
          <br>
          <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          <button id="exportDurationOnArt" type="button" ng-csv="export_duration_on_art" filename="duration_on_art_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['Time on Treatment', 'Samples Received','Percentage of Samples (%)', 'Samples Tested','Number Suppressed']">Download CSV</button>
-
     </div>
+    
     
         
 </div>
