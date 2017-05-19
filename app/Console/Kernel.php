@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \EID\Console\Commands\Inspire::class,
         \EID\Console\Commands\MyName::class,
         \EID\Console\Commands\Engine::class,
+        \EID\Console\Commands\DHIS2::class,
     ];
 
     /**

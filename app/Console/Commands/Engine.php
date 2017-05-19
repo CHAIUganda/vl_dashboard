@@ -50,15 +50,18 @@ class Engine extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '2024M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
+        
         $this->mongo->drop(); 
         $this->_loadHubs();
         $this->_loadDistricts();
         $this->_loadFacilities();
         $this->_loadIPs();
         $this->_loadRegimens();
+        
         $this->_loadData();
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
@@ -67,25 +70,30 @@ class Engine extends Command
 
     private function _loadData(){
         $this->mongo->dashboard_data_refined->drop();
-        $year=2013;
+        $year=2014;
         $current_year=date('Y');
         $facilities_arr=LiveData::getFacilities2();
+        try{
+
+        }catch(Exception $e){
+
+        }
         while($year<=$current_year){
+            
             $samples=LiveData::getSamples($year);
             $dbs_samples=LiveData::getSamples($year," sampleTypeID=1 ");
-
             $dbs_number_of_patients_received = LiveData::getNumberOfPatients($year, " sampleTypeID=1");
             $number_of_patients_received = LiveData::getNumberOfPatients($year);
-
             $rjctn_rsns=LiveData::getRejects($year);
             $rjctn_rsns2=LiveData::getRejects2($year);
-
             $t_rslts=LiveData::getResults($year);
             $v_rslts=LiveData::getResults($year,$this->_validCases());
             $sprsd_cond=$this->_validCases()." AND ".$this->_suppressedCases();
             $sprsd=LiveData::getResults($year,$sprsd_cond); 
             $i=0;
-            foreach($samples AS $s){
+           
+            try {
+                 foreach($samples AS $s){
                 $key=$s->mth.$s->age_group.$s->facilityID.$s->sex;
                 $key.=$s->regimen.$s->reg_line.$s->reg_time.$s->trt;
 
@@ -93,7 +101,7 @@ class Engine extends Command
                 //filter params
                 $y_m = $year.str_pad($s->mth,2,0,STR_PAD_LEFT);
                 $data["year_month"] = (int)$y_m;
-                $data["age_group_id"] = isset($s->age_group)?(int)$s->age_group:0;
+                $data["age_group_id"] = isset($s->age_group)?(int)$s->age_group:-1;
                 $data["facility_id"] = isset($s->facilityID)?(int)$s->facilityID:0;
                 if(isset($s->facilityID)){
                     $f_obj=isset($facilities_arr[$s->facilityID])?$facilities_arr[$s->facilityID]:new \stdClass;
@@ -130,11 +138,18 @@ class Engine extends Command
                 $data["suppressed"]= isset($sprsd[$key])?(int)$sprsd[$key]:0;
                 $this->mongo->dashboard_data_refined->insert($data);
                 $i++;
+
+                
                 //echo "$i\n";                
-            }
-            echo " inserted $i records for $year\n";
-            $year++;
-        }
+              }//end of for loop
+              echo " inserted $i records for $year\n";
+              $year++;
+            } catch (Exception $e) {
+                var_dump($e);
+            }//end catch
+            
+            
+        }//end of while loop
     }
 /*
     private function _loadHubs(){
@@ -202,7 +217,8 @@ class Engine extends Command
         $this->mongo->facilities->drop();
         $res=LiveData::getFacilities();
         foreach($res AS $row){
-            $data=['id'=>$row->id,'name'=>$row->facility,'hub_id'=>$row->hubID,'ip_id'=>$row->ipID,'district_id'=>$row->districtID];
+            $facility_name = $row->dhis2_name!=null ? $row->dhis2_name:$row->facility;
+            $data=['id'=>$row->id,'name'=>$facility_name,'hub_id'=>$row->hubID,'ip_id'=>$row->ipID,'district_id'=>$row->districtID];
             $this->mongo->facilities->insert($data);
         }
     }
@@ -220,7 +236,10 @@ class Engine extends Command
         $this->mongo->districts->drop();
         $res=LiveData::getDistricts();
         foreach($res AS $row){
-            $data=['id'=>$row->id,'name'=>$row->district];
+
+            $district_name = $row->dhis2_name!=null ? $row->dhis2_name:$row->district;
+            
+            $data=['id'=>$row->id,'name'=>$district_name];
             $this->mongo->districts->insert($data);
         }
     }
