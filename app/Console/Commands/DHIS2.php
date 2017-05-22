@@ -187,7 +187,7 @@ class DHIS2 extends Command
 
     private function getDistrictsWithHubs(){
         //load list of districts with Hubs
-        $file = fopen("/Users/simon/projects/METS/viral-load-dashboard/cphl/districts_hubs.csv", "r");
+        $file = fopen("./docs/others/districts_hubs.csv", "r");
         $data = array();    
         while ( !feof($file)){
 
@@ -233,7 +233,7 @@ class DHIS2 extends Command
 
     private function extractFacilitiesNotInDHIS(){
         $dhis2_facilities=$this->getDhis2Facilities();
-        $file = fopen("/Users/simon/projects/METS/viral-load-dashboard/cphl/notInDhis2.csv","w");
+        $file = fopen("./docs/others/notInDhis2.csv","w");
        
         foreach ($dhis2_facilities as $facility)
           {
@@ -380,7 +380,7 @@ class DHIS2 extends Command
         return $isExisiting;
     }
     private function getVlFacilities(){
-        $vl_file = fopen("/Users/simon/projects/METS/viral-load-dashboard/cphl/vl_facilities.csv", "r");
+        $vl_file = fopen("./docs/others/vl_facilities.csv", "r");
         $vl_facilities = array();
          while (!feof($vl_file)) {
             $array_instance = fgetcsv($vl_file);
@@ -410,7 +410,7 @@ class DHIS2 extends Command
         
     }
     private function getComprehensiveListOfDhis2Facilities(){
-        $file = fopen("/Users/simon/projects/METS/viral-load-dashboard/cphl/comprehensive_dhis2_facilities.csv", "r");
+        $file = fopen("./docs/others/comprehensive_dhis2_facilities.csv", "r");
         $data = array();
         //loading CSV entire data
        
@@ -453,7 +453,7 @@ class DHIS2 extends Command
         return $facilities;
     }
     private function getDhis2Facilities(){
-        $file = fopen("/Users/simon/projects/METS/viral-load-dashboard/cphl/dhis2_facilities.csv", "r");
+        $file = fopen("./docs/others/dhis2_facilities.csv", "r");
         $data = array();
         //loading CSV entire data
        
@@ -514,7 +514,7 @@ class DHIS2 extends Command
     private function updateDistrictWithDHIS2Data()
     {
         
-        $file = fopen("/Users/simon/projects/METS/viral-load-dashboard/cphl/dhis2.csv", "r");
+        $file = fopen("./docs/others/dhis2.csv", "r");
         $data = array();
         //loading CSV entire data
         while ( ! feof($file )) {
