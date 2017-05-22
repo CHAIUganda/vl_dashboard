@@ -264,7 +264,7 @@ class DHIS2 extends Command
               
                 if($db_id > 0){
                     $sql = "update vl_facilities set district_uid='".$district_uid."',dhis2_uid='".$facility_uid."',dhis2_name='".$facility_name."' where id=$db_id";
-                    $affectedDistricts =  \DB::connection('live_db')->select($sql);
+                    $affectedDistricts =  \DB::connection('live_db')->update($sql);
                 }else if ($db_id  == 0) {
                     $db_district_id = $this->getDistictDbId($district_uid);
                      
@@ -549,7 +549,7 @@ class DHIS2 extends Command
             $dhis2_name_array=explode(" ",$dhis2_name_original);
             $dhis2_name = trim($dhis2_name_array[0]);
             $sql = "update vl_districts set dhis2_uid='".$dhis2_uid."',dhis2_name='".$dhis2_name_original."' where district like '".$dhis2_name."' ";
-            $affectedDistricts =  \DB::connection('live_db')->select($sql);
+            $affectedDistricts =  \DB::connection('live_db')->update($sql);
 
             if ($affectedDistricts == 0) {
                $sql = "insert into vl_districts (dhis2_uid,district,dhis2_name) values('".$dhis2_uid."','".$dhis2_name."','".$dhis2_name."')";
