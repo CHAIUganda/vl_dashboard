@@ -40,12 +40,12 @@ if(empty($result_obj->final_result)){
 switch ($result_obj->suppressed) {
 	case 'YES': // patient suppressed, according to the guidlines at that time
 		$smiley="smiley.smile.gif";
-		$recommendation = MyHTML::getRecommendation('YES', $result_obj->test_date, $sample_type);
+		$recommendation = MyHTML::getRecommendation('YES', $result_obj->test_date, $sample_type, $result_obj->dateOfBirth);
 		break;
 
 	case 'NO': // patient suppressed, according to the guidlines at that time
 		$smiley="smiley.sad.gif";
-		$recommendation = MyHTML::getRecommendation('NO', $result_obj->test_date, $sample_type);					
+		$recommendation = MyHTML::getRecommendation('NO', $result_obj->test_date, $sample_type, $result_obj->dateOfBirth);					
 		break;
 	
 	default:

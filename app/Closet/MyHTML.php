@@ -351,22 +351,32 @@ class MyHTML{
 		return $ret;
 	}
 
-	public static function getRecommendation($suppressed,$test_date,$sample_type){
+	public static function getRecommendation($suppressed,$test_date,$sample_type, $dob){
+		$today = date('Y-m-d');
 		$ret="";
-		$rec1="Below 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 12 months.";
-		$rec2="Above 1,000 copies/mL: Patient has elevated viral load. <br>Please initiate intensive adherence counseling and conduct a repeat viral load test after six months.";
-		$rec3="Below 5,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 12 months.";
-		$rec4="Above 5,000 copies/mL: Patient has elevated viral load. <br>Please initiate intensive adherence counseling and conduct a repeat viral load test after six months.";
-		if(strtotime($test_date)>=1459458000){ //after 2016-04-01 00:00:00
-			$ret=$suppressed=='YES'?$rec1:$rec2;
-		}else{ // before 2016-03-31 23:23:59
-			if($sample_type=='DBS'){
-				$ret=$suppressed=='YES'?$rec3:$rec4;
+		$nxt_date = "";
+		$rec_suppressed_adults="Below 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 12 months.";
+		$rec_suppressed_kids="Below 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 6 months.";
+		$rec_unsuppressed="Above 1,000 copies/mL: Patient has elevated viral load. <br>Please initiate intensive adherence counseling and conduct a repeat viral load test within 4-6 months.";
+		$msg = "Expected in ";
+		if($suppressed=='NO'){
+			$ret = $rec_unsuppressed;
+			$nxt_date =  " ($msg ".date('M, Y', strtotime($test_date)+(121*24*3600)).")";
+		}elseif($suppressed == 'YES'){
+			$yrs = (strtotime($today)-strtotime($dob))/(3600*24*365);
+			if($yrs<20){
+				$ret = $rec_suppressed_kids;
+				$nxt_date =  " ($msg ".date('M, Y', strtotime($test_date)+(182*24*3600)).")";
 			}else{
-				$ret=$suppressed=='YES'?$rec1:$rec2;
+				$ret = $rec_suppressed_adults;
+				$nxt_date =  " ($msg ".date('M, Y', strtotime($test_date)+(365*24*3600)).")";
 			}
+		}else{
+			$ret = "";
+			$nxt_date = "";
 		}
-		return $ret;
+
+		return $ret.$nxt_date;
 	}
 
 	public static function get_arr_pair($result, $name=''){
