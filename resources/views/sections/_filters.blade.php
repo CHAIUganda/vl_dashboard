@@ -139,21 +139,37 @@
                 </option>
             </select>
         </td>   
-        <td width='10%' id='dist_elmt'>
+        <td width='5%%' id='dist_elmt'>
             <select ng-model="line" ng-init="line='all'" ng-change="filter('line')">
                 <option value='all'>LINE</option>
                 <option class="ng-cloak" ng-repeat="(l_nr,l) in labels.lines" value="<% l_nr %>">
                     <% l %>
                 </option>
             </select>
-        </td>   
-        <td width='10%' id='dist_elmt'>
+        </td>
+        <td width='5%'>
             <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
-                <option value='all'>PMTCT/TB</option>
+                <option value='all'>TREATMENT INDICATION</option>
                 <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.indications" value="<% i_nr %>">
                     <% i %>
                 </option>
             </select>
-        </td>        
+        </td>    
+        <td width='5%'>
+            <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
+                <option value='all'>eMTCT</option>
+                <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.emtct" value="<% i_nr %>">
+                    <% i %>
+                </option>
+            </select>
+        </td> 
+       <td width='5%'>
+            <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
+                <option value='all'>TB STATUS</option>
+                <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.tb_status" value="<% i_nr %>">
+                    <% i %>
+                </option>
+            </select>
+        </td>
     </tr>
 </table>

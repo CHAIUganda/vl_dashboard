@@ -93,8 +93,8 @@ ctrllers.DashController = function($scope,$http){
     var genders_json = {'m':'Male','f':'Female','x':'Unknown'};
     var lines_json = {1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
     var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
-
-    
+    var emtct_json = {1:"PREGNANT",3:"BREAST FEEDING"};
+    var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
     
 
     $scope.month_labels = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
@@ -109,7 +109,10 @@ ctrllers.DashController = function($scope,$http){
     $scope.labels.facilities = [];
     $scope.labels.regimens = [];
     $scope.labels.regimens2 = [];
+
     $scope.labels.indications = t_indication_json;
+    $scope.labels.emtct = emtct_json;
+    $scope.labels.tb_status=tb_status_json;
 
     $scope.labels.from_age = from_age_json;
     $scope.labels.to_age = to_age_json;
