@@ -126,14 +126,7 @@
                         <span class="desc">All Regimens</span>
                     </a>
                 </li>
-               <!--  <li id='tb_hd5'>
-                    <a href="#tab5" id='tb_lnk5' ng-click="displayRegimenTime()">
-                        <span class="num ng-cloak">
-                            RD                          
-                        </span>
-                        <span class="desc">regimen durations</span>
-                    </a>
-                </li> -->
+             
             </ul>
         </nav>
         <div class="content-wrap">
