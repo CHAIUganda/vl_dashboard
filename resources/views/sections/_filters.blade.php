@@ -59,7 +59,18 @@
                 <span class="filter-val ng-cloak"> <% i_name %> (p) <x ng-click='removeTag("indication",i_nr)'>&#120;</x></span> 
             </span>
         </span>
+        
+        <span ng-model='filter_emtct' ng-init='filter_emtct={}'>
+            <span ng-repeat="(emtct_key,emtct_value) in filter_emtct">
+                <span class="filter-val ng-cloak"> <% emtct_value %> (e) <x ng-click='removeTag("emtct",emtct_key)'>&#120;</x></span> 
+            </span>
+        </span>
 
+        <span ng-model='filter_tb_status' ng-init='filter_tb_status={}'>
+            <span ng-repeat="(tb_status_key,tb_status_value) in filter_tb_status">
+                <span class="filter-val ng-cloak"> <% tb_status_value %> (t) <x ng-click='removeTag("tb_status",tb_status_key)'>&#120;</x></span> 
+            </span>
+        </span>
         <span ng-show="filtered" class="filter_clear" ng-click="clearAllFilters()">reset all</span>
 
     </div>
@@ -67,7 +78,7 @@
 
 <table border='1' cellpadding='0' cellspacing='0' class='filter-tb'>
     <tr>
-        <td width='10%' >
+        <td width='9%' >
             <span ng-model='fro_date_slct' ng-init='fro_date_slct={!! json_encode($months_by_years) !!}'></span>
             <select ng-model="fro_date" ng-init="fro_date='all'">
                 <option value='all'>FROM DATE</option>
@@ -78,7 +89,7 @@
                 </optgroup>
             </select>
         </td>
-        <td width='10%' >
+        <td width='9%' >
             <span ng-model='to_date_slct' ng-init='to_date_slct={!! json_encode($months_by_years) !!}'></span>
             <select ng-model="to_date" ng-init="to_date='all'" ng-change="dateFilter(   )">
                 <option value='all'>TO DATE</option>
@@ -89,7 +100,7 @@
                 </optgroup>
             </select>
         </td>
-        <td width='10%' id='dist_elmt'>
+        <td width='9%' id='dist_elmt'>
             <select ng-model="district" ng-init="district='all'" ng-change="filter('district')">
                 <option value='all'>DISTRICTS</option>
                 <option class="ng-cloak" ng-repeat="dist in districts2 | orderBy:'name'" value="<% dist.id %>">
@@ -97,7 +108,7 @@
                 </option>
             </select>
         </td>
-        <td width='10%' id='dist_elmt'>
+        <td width='9%' id='dist_elmt'>
             <select ng-model="hub" ng-init="hub='all'" ng-change="filter('hub')">
                 <option value='all'>HUBS</option>
                 <option class="ng-cloak" ng-repeat="hb in hubs2|orderBy:'name'" value="<% hb.id %>">
@@ -105,7 +116,7 @@
                 </option>
             </select>
         </td>
-        <td width='10%' id='dist_elmt'>
+        <td width='9%' id='dist_elmt'>
             <select ng-model="from_age" ng-init="from_age='all'">
                 <option value='all'>From Age</option>
                 <option class="ng-cloak" ng-repeat="fro_age in labels.from_age " value="<% fro_age %>">
@@ -114,7 +125,7 @@
             </select>
 
         </td>
-        <td width='10%' id='dist_elmt'>
+        <td width='9%' id='dist_elmt'>
             <select ng-model="to_age" ng-init="to_age='all'" ng-change="filter('age_range')">
                 <option value='all'>To Age</option>
                 <option class="ng-cloak" ng-repeat="to_age in labels.to_age " value="<% to_age %>">
@@ -123,7 +134,7 @@
             </select>
 
         </td>
-        <td width='10%' id='dist_elmt'>
+        <td width='9%' id='dist_elmt'>
             <select ng-model="gender" ng-init="gender='all'" ng-change="filter('gender')">
                 <option value='all'>GENDER</option>
                 <option class="ng-cloak" ng-repeat="(g_nr,gnd) in labels.genders" value="<% g_nr %>">
@@ -131,7 +142,7 @@
                 </option>
             </select>
         </td>
-        <td width='10%' id='dist_elmt'>
+        <td width='9%' id='dist_elmt'>
             <select ng-model="regimen" ng-init="regimen='all'" ng-change="filter('regimen')">
                 <option value='all'>REGIMEN</option>
                 <option class="ng-cloak" ng-repeat="reg in labels.regimens" value="<% reg.id %>">
@@ -139,7 +150,7 @@
                 </option>
             </select>
         </td>   
-        <td width='5%%' id='dist_elmt'>
+        <td width='9%' id='dist_elmt'>
             <select ng-model="line" ng-init="line='all'" ng-change="filter('line')">
                 <option value='all'>LINE</option>
                 <option class="ng-cloak" ng-repeat="(l_nr,l) in labels.lines" value="<% l_nr %>">
@@ -147,27 +158,27 @@
                 </option>
             </select>
         </td>
-        <td width='5%'>
+        <!--td width='5%'>
             <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
                 <option value='all'>TREATMENT INDICATION</option>
                 <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.indications" value="<% i_nr %>">
                     <% i %>
                 </option>
             </select>
-        </td>    
-        <td width='5%'>
-            <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
+        </td -->    
+        <td width='9%'>
+            <select ng-model="emtct" ng-init="emtct='all'" ng-change="filter('emtct')">
                 <option value='all'>eMTCT</option>
-                <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.emtct" value="<% i_nr %>">
-                    <% i %>
+                <option class="ng-cloak" ng-repeat="(emtct_value,emtct_key) in labels.emtct" value="<% emtct_value %>">
+                    <% emtct_key %>
                 </option>
             </select>
         </td> 
-       <td width='5%'>
-            <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
+       <td width='9%'>
+            <select ng-model="tb_status" ng-init="tb_status='all'" ng-change="filter('tb_status')">
                 <option value='all'>TB STATUS</option>
-                <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.tb_status" value="<% i_nr %>">
-                    <% i %>
+                <option class="ng-cloak" ng-repeat="(tb_status_value,tb_status_key) in labels.tb_status" value="<% tb_status_value %>">
+                    <% tb_status_key %>
                 </option>
             </select>
         </td>
