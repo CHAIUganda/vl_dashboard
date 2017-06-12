@@ -54,6 +54,7 @@ class DashboardController extends Controller {
 	}
 	private function _setConditions(){
 		extract(\Request::all());
+		Log::info(\Request::all());
 		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){
 			$to_date=date("Ym");
 			$fro_date=$this->_dateNMonthsBack();
@@ -69,12 +70,37 @@ class DashboardController extends Controller {
 		//if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen_group_id'=>  ['$in'=> json_decode($regimens)] ];
 		if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen'=>  ['$in'=> json_decode($regimens)] ];
 		if(!empty($lines)&&$lines!='[]') $conds['$and'][]=[ 'regimen_line'=>  ['$in'=> json_decode($lines)] ];
-		if(!empty($indications)&&$indications!='[]') $conds['$and'][]=[ 'treatment_indication_id'=>  ['$in'=> json_decode($indications)] ];
+		if(!empty($indications)&&$indications!='[]')$conds['$and'][]=[ 'treatment_indication_id'=>  ['$in'=> json_decode($indications)] ];
+		
+		if(!empty($emtct)&&$emtct!='[]') {
+			$emtct_array =json_decode($emtct);
+			if (sizeof($emtct_array) == 1) {
+				$emtct_value = $emtct_array[0];
+				if($emtct_value  == 'pregnancy_status'){
+					$pregancy_status_array = array(0 => 'y');
+					$conds['$and'][]=[ 'pregnancy_status'=>  ['$in'=> $pregancy_status_array] ];
+				}else if($emtct[0] == 'breast_feeding_status'){
+					$breast_feeding_status_array = array(0 => 'y');
+					$conds['$and'][]=[ 'breast_feeding_status'=>  ['$in'=> $breast_feeding_status_array] ];
+				}
+			}else{
+				foreach ($emtct_array as $value) {
+					if($value == 'pregnancy_status'){
+						$pregancy_status_array = array(0 => 'y' );
+						$conds['$and'][]=[ 'pregnancy_status'=>  ['$in'=> $pregancy_status_array] ];
+					}else if($value == 'breast_feeding_status'){
+						$breast_feeding_status_array = array(0 => 'y');
+						$conds['$and'][]=[ 'breast_feeding_status'=>  ['$in'=> $breast_feeding_status_array ] ];
+					}
+			  }
+			}
+			
+		}//end emtct if
 
-		//print_r($conds);
-		//$this->info("--------------conditions----------");
-
-
+		if(!empty($tb_status)&&$tb_status!='[]')$conds['$and'][]=[ 'active_tb_status'=>  ['$in'=> json_decode($tb_status)] ];
+		
+		Log::info($conds);
+	
 		return $conds;
 	}
 
@@ -273,8 +299,12 @@ class DashboardController extends Controller {
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
 		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
 		$grp['dbs_patients']=['$sum'=>'$dbs_patients_received'];
+
 		$grp['total_results']=['$sum'=>'$total_results'];
 		
+		Log::info(".......1......");
+		Log::info($this->conditions);
+		Log::info(".......2......");
 		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		
 		return isset($res['result'])?$res['result']:[];

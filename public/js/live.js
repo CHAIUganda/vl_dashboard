@@ -8,8 +8,8 @@ Logan Smith                 CHAI    2015(v1)    Interface Design, Q/A
 Lena Derisavifard           CHAI    2015(v1)    Req Specification, Q/A, UAT
 Kitutu Paul                 CHAI    2015(v1)    System development
 Sam Otim                    CHAI    2015(v1)    System development
-
-Credit to CHAI Uganda, CPHL and stakholders
+Simon Peter Muwanga         METS/MUSPH 2016(v2) System development
+Credit to CHAI Uganda,METS/MUSPH, CPHL and stakholders
 */
 var $injector = angular.injector();
 
@@ -53,7 +53,7 @@ ctrllers.DashController = function($scope,$http){
     $scope.identity = angular.identity;
     $scope.params = {
         'districts':[],'hubs':[],'age_ranges':[],'genders':[],
-        'regimens':[],'lines':[], 'indications': []};
+        'regimens':[],'lines':[], 'indications': [],'emtct':[],'tb_status':[]};
 
     var hubs_json = {};
     var age_group_json = {1:"0<2",2:"2-<5",3:"5-<10",4:"10-<15",5:"15-<20",6:"20-<25",7:"25+"};  
@@ -93,7 +93,7 @@ ctrllers.DashController = function($scope,$http){
     var genders_json = {'m':'Male','f':'Female','x':'Unknown'};
     var lines_json = {1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
     var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
-    var emtct_json = {1:"PREGNANT",3:"BREAST FEEDING"};
+    var emtct_json = {1:"PREGNANT",2:"BREAST FEEDING"};
     var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
     
 
@@ -228,6 +228,38 @@ ctrllers.DashController = function($scope,$http){
         return age_ids_array;
     };
 
+    var convertEmtctIdsToMongoKeys=function(emtctScopeParam){
+        
+        var emtct_ids_array = emtctScopeParam;
+        var emtct_mongo_keys_array=[];
+        for (var i = 0; i < emtct_ids_array.length; i++) {
+            if(emtct_ids_array[i] == 1){
+                emtct_mongo_keys_array.push("pregnancy_status");
+            }else if (emtct_ids_array[i] == 2) {
+                emtct_mongo_keys_array.push("breast_feeding_status");
+            }
+        };
+
+        return emtct_mongo_keys_array;
+    };
+
+    var convertTbStatusIdsToMongoKeys=function(tbStatusScopeParam){
+        var tb_status_ids_array = tbStatusScopeParam;
+        var tb_status_mongo_keys_array=[];
+        for(var i=0; i < tb_status_ids_array.length; i++){
+            var dummy_value=parseInt(tb_status_ids_array[i]);
+            if(dummy_value == parseInt("1")){
+                tb_status_mongo_keys_array.push("y");
+            }else if(dummy_value == parseInt("2")){
+                tb_status_mongo_keys_array.push("n");
+            }else if(dummy_value == parseInt("3")){
+                tb_status_mongo_keys_array.push("x");
+            }
+        }
+
+        return tb_status_mongo_keys_array;
+    };
+
     var getData=function(){
             $scope.loading = true;
             var prms = {};
@@ -238,6 +270,8 @@ ctrllers.DashController = function($scope,$http){
             prms.regimens = JSON.stringify($scope.params.regimens);
             prms.lines = JSON.stringify($scope.params.lines);
             prms.indications = JSON.stringify($scope.params.indications);
+            prms.emtct = JSON.stringify(convertEmtctIdsToMongoKeys($scope.params.emtct));
+            prms.tb_status = JSON.stringify(convertTbStatusIdsToMongoKeys($scope.params.tb_status));
             prms.fro_date = $scope.fro_date;
             prms.to_date = $scope.to_date;
             $http({method:'GET',url:"/live/",params:prms}).success(function(data) {
@@ -517,6 +551,18 @@ ctrllers.DashController = function($scope,$http){
             $scope.params.indications.push(Number($scope.indication));
             $scope.indication='all';
             break;
+
+            case "emtct":
+            $scope.filter_emtct[$scope.emtct] = emtct_json[$scope.emtct];
+            $scope.params.emtct.push(Number($scope.emtct));
+            $scope.emtct='all';
+            break;
+
+            case "tb_status":
+            $scope.filter_tb_status[$scope.tb_status] = tb_status_json[$scope.tb_status];
+            $scope.params.tb_status.push(Number($scope.tb_status));
+            $scope.tb_status='all';
+            break;
         }
 
         delete $scope.filter_districts["all"];
@@ -526,6 +572,8 @@ ctrllers.DashController = function($scope,$http){
         delete $scope.filter_regimen["all"];
         delete $scope.filter_line["all"];
         delete $scope.filter_indication["all"];
+        delete $scope.filter_emtct["all"];
+        delete $scope.filter_tb_status["all"];
 
         getData();
 
@@ -612,6 +660,16 @@ ctrllers.DashController = function($scope,$http){
             delete $scope.filter_indication[nr];
             $scope.params.indications=rmveFrmArr(nr,$scope.params.indications);
             break;
+
+            case "emtct": 
+            delete $scope.filter_emtct[nr];
+            $scope.params.indications=rmveFrmArr(nr,$scope.params.emtct);
+            break;
+
+            case "tb_status": 
+            delete $scope.filter_tb_status[nr];
+            $scope.params.indications=rmveFrmArr(nr,$scope.params.tb_status);
+            break;
         }
         //$scope.filter(mode);
         getData();
@@ -626,6 +684,8 @@ ctrllers.DashController = function($scope,$http){
         $scope.filter_regimen={};
         $scope.filter_line={};
         $scope.filter_indication={};
+        $scope.filter_emtct={};
+        $scope.filter_tb_status={};
         $scope.filter_duration=$scope.init_duration;
         $scope.filtered=false;
         $scope.date_filtered=false;
@@ -633,7 +693,7 @@ ctrllers.DashController = function($scope,$http){
         $scope.to_date="all";
         $scope.params = {
                 'districts':[],'hubs':[],'age_ranges':[],'genders':[],
-                'regimens':[],'lines':[],'indications':[]
+                'regimens':[],'lines':[],'indications':[],'emtct':[],'tb_status':[]
             };
         getData();
         //generalFilter();

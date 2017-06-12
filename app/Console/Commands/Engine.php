@@ -136,6 +136,17 @@ class Engine extends Command
                 $data["total_results"] = isset($t_rslts[$key])?(int)$t_rslts[$key]:0;
                 $data["valid_results"] = isset($v_rslts[$key])?(int)$v_rslts[$key]:0;
                 $data["suppressed"]= isset($sprsd[$key])?(int)$sprsd[$key]:0;
+
+                //eMTCT
+                $data["pregnancy_status"] = isset($s->pregnancyStatus)?$s->pregnancyStatus:0; 
+                $data["number_pregnant"] = isset($s->numberPregant)?$s->numberPregant:0; 
+
+                $data["breast_feeding_status"] = isset($s->breastFeedingStatus)?$s->breastFeedingStatus:0;
+                $data["number_breast_feeding"] = isset($s->numberBreastFeeding)?$s->numberBreastFeeding:0;
+
+                $data["active_tb_status"] = isset($s->activeTBStatus)?$s->activeTBStatus:0;
+                $data["number_active_on_tb"] = isset($s->numberActiveOnTB)?$s->numberActiveOnTB:0;
+
                 $this->mongo->dashboard_data_refined->insert($data);
                 $i++;
 
