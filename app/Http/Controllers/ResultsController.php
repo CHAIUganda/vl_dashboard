@@ -13,6 +13,7 @@ class ResultsController extends Controller {
 	public function getIndex(){
 		$printed=\Request::get("printed");
 		$printed=empty($printed)?'NO':$printed;
+		$search = \Request::get("search");
 		$facility_name = LiveData::getFacilityName(\Request::get('f'));
 		$facilities = [];
 		if(\Request::has('h')){
@@ -26,7 +27,7 @@ class ResultsController extends Controller {
                     ->orderby('facility', 'ASC')
                     ->get();
 		}
-		return view('results.index', compact('printed', 'facility_name', 'facilities'));
+		return view('results.index', compact('printed', 'facility_name', 'facilities', "search"));
 	}
 
 	public function getData(){
@@ -359,6 +360,23 @@ class ResultsController extends Controller {
 			$ret .= "<a href='/results?h=$hub->id&tab=".\Request::get('tab')."'>$hub->hub</a><br>";			
 		}
     	return $ret;
+    }
+
+    public function search_result($txt){
+    	$txt = str_replace(' ', '', $txt);
+    	$f = \Request::get('f');
+    	$results = LiveData::leftjoin('vl_patients AS p', 'p.id', '=', 's.patientID')
+    				->select('s.id AS pk', 'formNumber', 'artNumber')->from('vl_samples AS s')
+    				->whereRaw("s.facilityID=$f AND (formNumber LIKE '%$txt%' OR REPLACE(artNumber, ' ','') LIKE '%$txt%')")->limit(10)->get();
+    	$ret = "<table class='table table-striped table-condensed table-bordered'>
+    			<tr><th>Form Number</th><th>Art Number</th><th /></tr>";
+    	foreach ($results AS $result){
+    		$url = "/result/$result->pk";
+    		$print_url = "<a href='javascript:windPop(\"$url\")'>print</a>";
+    		$download_url = "<a href='$url?pdf=1'>download</a>";
+    		$ret .= "<tr><td>$result->formNumber</td><td>$result->artNumber</td><td>$print_url | $download_url</td></tr>";	
+    	}
+    	return $ret."</table>";
     }
 	
 	private function _dateNMonthsBack(){

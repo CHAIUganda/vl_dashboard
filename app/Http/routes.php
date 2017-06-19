@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/log_printing/',['as' => 'log_printing', 'uses'=>'ResultsController@log_printing']);
 		Route::get('/print_envelope/{id}', ['as' => 'print_envelope', 'uses' => 'ResultsController@print_envelope']);
 		Route::get('/searchbyhub/{txt}', ['as' => 'searchbyhub', 'uses' => 'ResultsController@searchbyhub']);
+		Route::get('/search_result/{txt}', ['as' => 'search_result', 'uses' => 'ResultsController@search_result']);
 
 		Route::get('/suppression_trends/reports', ['as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
 		Route::get('/suppression_trends/index', ['as' => 'patient_results', 'uses' => function(){ return view('suppression_trends.index'); }]);

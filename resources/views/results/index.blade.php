@@ -22,16 +22,24 @@
 <link href="{{ asset('/css/vl2.css') }}" rel="stylesheet">
 <?php 
 $facility_id = \Request::has('f')?'&f='.\Request::get('f'):"";
-if($printed=='YES'){
+if($search == 'YES'){
+    $search_actv="class=active";
+    $printed_actv="";
+    $print_actv="";
+
+}elseif($printed=='YES'){
     $printed_actv="class=active";
     $print_actv="";
+    $search_actv="";
 }else{
     $print_actv="class=active";
     $printed_actv="";
+    $search_actv="";
 }
 
 $print_url="/results_list?printed=NO$facility_id";
 $printed_url="/results_list?printed=YES$facility_id";
+$search_url="/results_list?search=YES$facility_id";
 ?>
 <ul class="breadcrumb">
     <li><a href="/">HOME</a></li>
@@ -44,13 +52,19 @@ $printed_url="/results_list?printed=YES$facility_id";
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li {{ $print_actv }} title='Print'><a href="{!! $print_url !!}" >Pending</a></li>
     <li {{ $printed_actv }} title='Already printed'><a href="{!! $printed_url !!}" >Printed/Downloaded</a></li>
+    <li {{ $search_actv }} title='Search'><a href="{!! $search_url !!}" >Search</a></li>
 </ul>
 {!! Form::open(array('url'=>'/result','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
 
 {!! Form::hidden('printed', $printed) !!}
 
-<div id="my-tab-content" class="tab-content">
+<div id="my-tab-content" class="tab-content" style="min-height:400px">
     <div class="tab-pane active" id="print"> 
+        @if($search=='YES')
+        Search using ART Number or Form Number:
+          {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search..."] ) !!}
+          <div class='live_drpdwn' id="id-dropdown" style='display:none'></div>
+        @else
         <a href="#" class='btn btn-xs btn-danger' id="select_all" >Select all visible</a>
         {!! MyHTML::submit('Download selected','btn  btn-xs btn-danger','pdf') !!}
         <input type="button" class='btn btn-xs btn-danger' value="Print preview selected" onclick="viewSelected();"   /> 
@@ -74,6 +88,7 @@ $printed_url="/results_list?printed=YES$facility_id";
             </tr>
             </thead>
         </table>
+        @endif
     </div>
 </div>
   
@@ -83,6 +98,7 @@ $printed_url="/results_list?printed=YES$facility_id";
 
 $('#results').addClass('active');
 
+@if($search!='YES')
 $(function() {
     $('#results-table').DataTable({
 
@@ -108,6 +124,7 @@ $(function() {
         ]
     });
 });
+@endif
 
 $('#select_all').click(function(){
     var status = $(this).html();
@@ -131,5 +148,27 @@ function viewSelected() {
       alert('You must allow popups for this map to work.');
    }
 }
+
+
+drpdwn= $(".live_drpdwn");
+
+function get_data(q,drpdwn,link){
+    if(q && q.length>=3){   
+        //console.log("this is what you have just typed:"+ q+"link"+link);      
+        $.get(link+q+"?f="+{{ \Request::get('f') }}, function(data){
+            drpdwn.show();
+            drpdwn.html(data);
+        });
+    }else{
+        drpdwn.hide();
+        drpdwn.html("");
+    }
+}
+
+$("#id-search").keyup(function(){
+    var q = $(this).val();
+    var dd = $("#id-dropdown");
+    get_data(q, dd, "/search_result/");
+});
 </script>
 @endsection()
