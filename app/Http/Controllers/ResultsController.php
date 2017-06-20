@@ -365,9 +365,10 @@ class ResultsController extends Controller {
     public function search_result($txt){
     	$txt = str_replace(' ', '', $txt);
     	$f = \Request::get('f');
+    	$f_limit = \Request::has('f')?"s.facilityID=$f AND":"";
     	$results = LiveData::leftjoin('vl_patients AS p', 'p.id', '=', 's.patientID')
     				->select('s.id AS pk', 'formNumber', 'artNumber')->from('vl_samples AS s')
-    				->whereRaw("s.facilityID=$f AND (formNumber LIKE '%$txt%' OR REPLACE(artNumber, ' ','') LIKE '%$txt%')")->limit(10)->get();
+    				->whereRaw("$f_limit (formNumber LIKE '%$txt%' OR REPLACE(artNumber, ' ','') LIKE '%$txt%')")->limit(10)->get();
     	$ret = "<table class='table table-striped table-condensed table-bordered'>
     			<tr><th>Form Number</th><th>Art Number</th><th /></tr>";
     	foreach ($results AS $result){

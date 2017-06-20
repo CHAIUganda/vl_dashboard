@@ -30,9 +30,18 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 @endif
 <h2 style="text-align:center;text-transform:uppercase">{{ Auth::user()->hub_name }}</h2>
 @if(empty(Auth::user()->facility_id) AND empty(Auth::user()->hub_id) AND $sect == 'results')
-    {!! Form::text('hub','', ['id'=>'hub','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search Hub"] ) !!}
-    <div class='live_drpdwn' id="worksheet_dropdown" style='display:none'></div>
-    <br>   
+   <div class="row">
+    <div class="col-md-6">
+        {!! Form::text('hub','', ['id'=>'hub','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search Hub"] ) !!}
+        <div class='live_drpdwn' id="worksheet_dropdown" style='display:none'></div>
+        <br> 
+    </div>
+     <div class="col-md-6">
+        {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search result..."] ) !!}
+        <div class='live_drpdwn' id="id-dropdown" style='display:none'></div>
+     </div>
+   </div>
+      
     <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
         <li {{ $pending_actv }} title='Print'><a href="{!! $pending_url !!}" >Pending</a></li>
         <li {{ $completed_actv }} title='Completed'><a href="{!! $completed_url !!}" >All</a></li>
@@ -126,6 +135,12 @@ drpdwn= $(".live_drpdwn");
         var q = $(this).val();
         var dd = $("#worksheet_dropdown");
         get_data(q, dd, "/searchbyhub/");
+    });
+
+    $("#id-search").keyup(function(){
+        var q = $(this).val();
+        var dd = $("#id-dropdown");
+        get_data(q, dd, "/search_result/");
     });
 
 </script>
