@@ -158,14 +158,7 @@
                 </option>
             </select>
         </td>
-        <!--td width='5%'>
-            <select ng-model="indication" ng-init="indication='all'" ng-change="filter('indication')">
-                <option value='all'>TREATMENT INDICATION</option>
-                <option class="ng-cloak" ng-repeat="(i_nr,i) in labels.indications" value="<% i_nr %>">
-                    <% i %>
-                </option>
-            </select>
-        </td -->    
+  
         <td width='9%'>
             <select ng-model="emtct" ng-init="emtct='all'" ng-change="filter('emtct')">
                 <option value='all'>eMTCT</option>
