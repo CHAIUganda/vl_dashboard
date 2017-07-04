@@ -199,14 +199,6 @@ class DashboardController extends Controller {
 			"regimen_numbers","reg_times","line_numbers","regimen_by_line_of_treatment","regimen_names");
 	}
 
-	/*private function _wholeNumbers($conds){
-		$cols=" SUM(samples_received) AS samples_received,
-				SUM(suppressed) AS suppressed,
-				SUM(valid_results) AS valid_results,
-				SUM(rejected_samples) AS rejected_samples";
-		return SamplesData::getSamplesData($cols,$conds)->first();
-	}*/
-
 
 	private function _wholeNumbers(){
 		$grp=[];
@@ -220,13 +212,7 @@ class DashboardController extends Controller {
 		return $ret;
 	}
 
-	/*private function _treatmentIndicationNumbers($conds){
-		$cols="treatment_indication_id,SUM(samples_received) AS samples_received";
-		$res=SamplesData::getSamplesData($cols,$conds,"treatment_indication_id");
-		$ret=[];
-		foreach($res AS $row) $ret[$row->treatment_indication_id]=$row->samples_received;
-		return $ret;
-	}*/
+
 
 	private function _treatmentIndicationNumbers(){
 		$grp=[];
@@ -250,17 +236,6 @@ class DashboardController extends Controller {
 		return $ret;
 	}
 
-	/*private function _facilityNumbers($conds){
-		$cols=" f.facility_id,f.name,
-				SUM(samples_received) AS samples_received,
-				SUM(suppressed) AS suppressed,
-				SUM(valid_results) AS valid_results,
-				SUM(rejected_samples) AS rejected_samples,
-				SUM(dbs_samples) AS dbs_samples,
-				SUM(total_results) AS total_results
-				";
-		return SamplesData::getSamplesData($cols,$conds,'f.facility_id');
-	}*/
 
 	private function _facilityNumbers(){
 		$grp=[];
@@ -277,17 +252,7 @@ class DashboardController extends Controller {
 		return isset($res['result'])?$res['result']:[];
 	}
 
-	/*private function _districtNumbers($conds){
-		$cols=" d.district_id,d.name,
-				SUM(samples_received) AS samples_received,
-				SUM(suppressed) AS suppressed,
-				SUM(valid_results) AS valid_results,
-				SUM(rejected_samples) AS rejected_samples,
-				SUM(dbs_samples) AS dbs_samples,
-				SUM(total_results) AS total_results
-				";
-		return SamplesData::getSamplesData($cols,$conds,'d.district_id');
-	}*/
+
 
 	private function _districtNumbers(){
 		$grp=[];
@@ -302,9 +267,6 @@ class DashboardController extends Controller {
 
 		$grp['total_results']=['$sum'=>'$total_results'];
 		
-		Log::info(".......1......");
-		Log::info($this->conditions);
-		Log::info(".......2......");
 		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		
 		return isset($res['result'])?$res['result']:[];

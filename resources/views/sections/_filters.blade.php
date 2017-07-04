@@ -150,6 +150,7 @@
                 </option>
             </select>
         </td>   
+
         <td width='9%' id='dist_elmt'>
             <select ng-model="line" ng-init="line='all'" ng-change="filter('line')">
                 <option value='all'>LINE</option>
@@ -167,6 +168,7 @@
                 </option>
             </select>
         </td> 
+      
        <td width='9%'>
             <select ng-model="tb_status" ng-init="tb_status='all'" ng-change="filter('tb_status')">
                 <option value='all'>TB STATUS</option>
