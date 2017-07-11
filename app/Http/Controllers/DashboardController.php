@@ -98,8 +98,6 @@ class DashboardController extends Controller {
 		}//end emtct if
 
 		if(!empty($tb_status)&&$tb_status!='[]')$conds['$and'][]=[ 'active_tb_status'=>  ['$in'=> json_decode($tb_status)] ];
-		
-		Log::info($conds);
 	
 		return $conds;
 	}
