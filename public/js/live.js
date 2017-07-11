@@ -94,7 +94,7 @@ ctrllers.DashController = function($scope,$http){
     var lines_json = {1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
     var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
 
-    var emtct_json = {1:"PREGNANT",2:"BREAST FEEDING"};
+    var emtct_json = {1:"PREGNANT",2:"BREAST FEEDING",3: "PMTCT/OPTION B+"};
     var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
     
 
@@ -229,6 +229,17 @@ ctrllers.DashController = function($scope,$http){
         return age_ids_array;
     };
 
+    var getTreatmentIndicationsFromEmtctParam=function(emtctScopeParam){
+        var emtct_ids_array = emtctScopeParam;
+        var treatment_indication_mongo_keys_array=[];
+        for (var i = 0; i < emtct_ids_array.length; i++) {
+            if(emtct_ids_array[i] == 3){//
+                treatment_indication_mongo_keys_array.push(1);//PMTCT/Option B+
+            }
+        };
+
+        return treatment_indication_mongo_keys_array;
+    };
     var convertEmtctIdsToMongoKeys=function(emtctScopeParam){
         
         var emtct_ids_array = emtctScopeParam;
@@ -270,7 +281,8 @@ ctrllers.DashController = function($scope,$http){
             prms.genders = JSON.stringify($scope.params.genders);
             prms.regimens = JSON.stringify($scope.params.regimens);
             prms.lines = JSON.stringify($scope.params.lines);
-            prms.indications = JSON.stringify($scope.params.indications);
+            //prms.indications = JSON.stringify($scope.params.indications);
+            prms.indications = JSON.stringify(getTreatmentIndicationsFromEmtctParam($scope.params.emtct));
             prms.emtct = JSON.stringify(convertEmtctIdsToMongoKeys($scope.params.emtct));
             prms.tb_status = JSON.stringify(convertTbStatusIdsToMongoKeys($scope.params.tb_status));
             prms.fro_date = $scope.fro_date;
