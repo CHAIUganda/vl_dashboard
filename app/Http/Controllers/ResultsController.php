@@ -368,9 +368,11 @@ class ResultsController extends Controller {
     	$f_limit = \Request::has('f')?"s.facilityID=$f AND":"";
     	$results = LiveData::leftjoin('vl_patients AS p', 'p.id', '=', 's.patientID')
     				->leftjoin('vl_facility_printing AS fp', 'fp.sample_id', '=', 's.id')
+    				->leftjoin('vl_results_released AS rr', 'rr.sample_id', '=', 's.id')
     				->select('s.id AS pk', 'formNumber', 'artNumber')->from('vl_samples AS s')
     				->whereRaw("$f_limit (formNumber LIKE '%$txt%' OR REPLACE(artNumber, ' ','') LIKE '%$txt%')")
     				->whereNotNull('fp.id')
+    				->whereNotNull('rr.id')
     				->limit(10)->get();
     	$ret = "<table class='table table-striped table-condensed table-bordered'>
     			<tr><th>Form Number</th><th>Art Number</th><th /></tr>";
