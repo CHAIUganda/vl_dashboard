@@ -48,8 +48,7 @@
 
                 ?>
                 @foreach($samples AS $sample)
-                <?php
-                $smpl_arr[$sample->sampleID] = "xx"; 
+                <?php 
 
                 $styl = "";
                 $resultxxx = "";
@@ -100,8 +99,11 @@
                     <td>@if(!empty($wid)){{ $pat_result  }} {!! Form::hidden("pat_results[$sample->sampleID]",$pat_result) !!}@endif</td> 
                     <td>@if(!empty($wid)){{ $suppressed }}@endif</td>
                     <td>
-                        {!! Form::hidden("suppressions[$sample->sampleID]",$suppressed) !!}
-                       @if($wid == $id)
+                       @if(!empty($sample->rlsed))
+                       authorised
+                       @elseif($wid == $id)
+                       <?php $smpl_arr[$sample->sampleID] = "xx"; ?>
+                       {!! Form::hidden("suppressions[$sample->sampleID]",$suppressed) !!}
                        <?php if($pat_result!='Failed'){ ?><label>{!! Form::radio("choices[$sample->sampleID]", 'release') !!} Release</label><?php } ?>
                        <label>{!! Form::radio("choices[$sample->sampleID]", 'reschedule') !!} Reschedule</label>
                        <label>{!! Form::radio("choices[$sample->sampleID]", 'invalid') !!} Invalid</label>

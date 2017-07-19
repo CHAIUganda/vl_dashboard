@@ -45,12 +45,13 @@ class WorksheetResults extends Model
                 ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
                 ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
                 ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
+                ->leftjoin('vl_results_released AS res_rlsed', 'res_rlsed.sample_id', '=', 's.id')
                 ->leftjoin('vl_results_abbott AS res_a', 'res_a.SampleID', '=', 's.vlSampleID')
                 ->leftjoin('vl_results_roche AS res_r', 'res_r.SampleID', '=', 's.vlSampleID')
                 ->leftjoin('vl_results_multiplicationfactor AS fctr', 'fctr.worksheetID', '=', 'wk.worksheetID')
                 ->select('s.*','wk.sampleID', 'hub', 'facility', 'p.*', 'res_a.result AS abbott_result','res_a.flags','res_a.interpretation', 
                          'res_r.Result AS roche_result', 'factor', 'res_a.created AS abbott_date', 'res_r.created AS roche_date',
-                         'res_a.worksheetID AS wid_a', 'res_r.worksheetID AS wid_r')
+                         'res_a.worksheetID AS wid_a', 'res_r.worksheetID AS wid_r', 'res_rlsed.id AS rlsed')
                 ->from('vl_samples_worksheet AS wk')
                 ->where('wk.worksheetID','=',$id)
                 ->get();
