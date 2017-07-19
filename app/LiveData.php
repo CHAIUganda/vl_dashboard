@@ -10,7 +10,9 @@ class LiveData extends Model
     protected $connection = 'live_db';
 
     const SEX_CASE = "CASE WHEN `gender`='Female' THEN 'f' WHEN `gender`='Male' THEN 'm' ELSE 'x' END";
-
+    const PREGNANT_CASE = "CASE WHEN pregnant='Yes' THEN 'y' WHEN pregnant='No' THEN 'n' ELSE 'x' END";
+    const BREAST_FEEDING_CASE="CASE WHEN breastfeeding='Yes' THEN 'y' WHEN breastfeeding='No' THEN 'n' ELSE 'x' END";
+    const TB_STATUS_CASE="CASE WHEN activeTBStatus='Yes' THEN 'y' WHEN activeTBStatus='No' THEN 'n' ELSE 'x' END";
     //const TRTMT_IDCTN_CASE = "CASE WHEN `treatmentInitiationID`=1 THEN 'b_plus' WHEN `treatmentInitiationID`=4 THEN 'tb' ELSE 'x' END";
 
     public static function getSample($id){
@@ -170,12 +172,16 @@ class LiveData extends Model
                    reg_t.treatmentStatusID AS reg_line,
                    $reg_time_case AS reg_time,
                    treatmentInitiationID AS trt,
-                   count(distinct patientUniqueID) as number_patients_received   
+                   count(distinct patientUniqueID) as number_patients_received,
+                   ".self::PREGNANT_CASE." as pregnancyStatus,count(pregnant) as numberPregant,
+                   ".self::BREAST_FEEDING_CASE." as breastFeedingStatus, count(breastfeeding) as numberBreastFeeding,
+                   ".self::TB_STATUS_CASE." as activeTBStatus,count(activeTBStatus) as numberActiveOnTB  
 		        FROM vl_samples AS s
 		        LEFT JOIN vl_patients AS p ON s.patientID=p.id
             LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
 		        WHERE YEAR(s.created)='$year' AND $cond		  
-		        GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt";
+		        GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt,
+                    pregnant,breastfeeding,activeTBStatus";
 
 		  $res=\DB::connection('live_db')->select($sql);
       if($cond==1) return $res;
