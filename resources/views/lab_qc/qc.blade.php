@@ -99,7 +99,7 @@
                     <td>@if(!empty($wid)){{ $pat_result  }} {!! Form::hidden("pat_results[$sample->sampleID]",$pat_result) !!}@endif</td> 
                     <td>@if(!empty($wid)){{ $suppressed }}@endif</td>
                     <td>
-                       @if(!empty($sample->rlsed))
+                       @if($sample->rlsed_wid==$wid and $sample->rlsed_sid == $sample->sampleID)
                        authorised
                        @elseif($wid == $id)
                        <?php $smpl_arr[$sample->sampleID] = "xx"; ?>

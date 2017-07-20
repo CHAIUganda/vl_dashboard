@@ -51,12 +51,14 @@ class WorksheetResults extends Model
                 ->leftjoin('vl_results_multiplicationfactor AS fctr', 'fctr.worksheetID', '=', 'wk.worksheetID')
                 ->select('s.*','wk.sampleID', 'hub', 'facility', 'p.*', 'res_a.result AS abbott_result','res_a.flags','res_a.interpretation', 
                          'res_r.Result AS roche_result', 'factor', 'res_a.created AS abbott_date', 'res_r.created AS roche_date',
-                         'res_a.worksheetID AS wid_a', 'res_r.worksheetID AS wid_r', 'res_rlsed.id AS rlsed')
+                         'res_a.worksheetID AS wid_a', 'res_r.worksheetID AS wid_r', 'res_rlsed.worksheet_id AS rlsed_wid','res_rlsed.sample_id AS rlsed_sid')
                 ->from('vl_samples_worksheet AS wk')
                 ->where('wk.worksheetID','=',$id)
                 ->get();
       return $ret;
     }
+
+    //$sample->rlsed_wid==$wid and $sample->rlsed_sid ==  
 
     public static function getWorksheet($id){
        $wk = self::select("*")->from("vl_samples_worksheetcredentials")->where('id','=',$id)->limit(1)->get();

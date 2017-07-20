@@ -41,6 +41,9 @@ class LabQCController extends Controller {
 					VALUES ";
 			$sql1 = "INSERT INTO vl_logs_samplerepeats (sampleID, oldWorksheetID, created, createdby) VALUES ";
 			$passes = 0;$reschedules = 0;
+			$sample_arr = array_keys($choices);
+			$check_samples = implode(",", $sample_arr);
+			\DB::connection('live_db')->unprepared("DELETE FROM vl_results_released WHERE sample_id IN ($check_samples)");
 			foreach ($choices as $sample_id => $choice ) {
 				$result = $choice=='invalid'?'Failed':$results[$sample_id];
 				$suppressed = $choice=='invalid'?'UNKNOWN':$suppressions[$sample_id];
