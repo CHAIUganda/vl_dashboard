@@ -95,7 +95,7 @@ class ResultsController extends Controller {
 		$slctd_samples =\Request::has("samples")? \Request::get("samples"): [];
 		$slctd_samples_str = is_array($slctd_samples)? implode(',', $slctd_samples):"$slctd_samples";
 
-		$sql = "SELECT  s.*, p.artNumber,p.otherID, p.gender, p.dateOfBirth,
+		$sql = "SELECT  s.*, fp.qc_at, p.artNumber,p.otherID, p.gender, p.dateOfBirth,
 				GROUP_CONCAT(ph.phone SEPARATOR ',') AS phone, f.facility, d.district, h.hub AS hub_name, 
 				released.result AS final_result,released.suppressed, released.test_date,  				
 				log_s.id AS repeated, v.outcome AS verify_outcome, reason.appendix AS rejection_reason,
@@ -115,6 +115,7 @@ class ResultsController extends Controller {
 				LEFT JOIN vl_users AS u ON wk.createdby = u.email
 				LEFT JOIN vl_results_released AS released ON s.id = released.sample_id
 				LEFT JOIN vl_results_merged AS merged ON merged.vlSampleID = s.vlSampleID
+				LEFT JOIN vl_facility_printing AS fp ON s.id = fp.sample_id
 				WHERE
 				";
 		if($id=='x' and count($slctd_samples)==0) return "Please select atleast one";

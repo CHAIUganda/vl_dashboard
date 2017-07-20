@@ -274,7 +274,7 @@ $phones = implode(", ", $phones_arr);
 		</div>
 		<div class="col-xs-3">
 			<img src="/images/stamp.vl.png" class="stamp" >
-			<span class="stamp-date"><?=$local_today ?></span>
+			<span class="stamp-date"><?=strtoupper(date('d M Y', strtotime($result_obj->qc_at))) ?><br><span class='date-released'>DATE RELEASED</span></span>
 
 		</div>
 		

@@ -91,6 +91,12 @@ page[size="A4"][layout="portrait"] {
  color: #F01319;
 }
 
+.date-released{
+  font-size:12px;color:#000;
+  border-top:dotted 1px;
+  font-weight: lighter;
+}
+
      </style>
 
 </head>

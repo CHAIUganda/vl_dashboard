@@ -62,6 +62,14 @@
 
         </script>
 
+        <style type="text/css">
+        .date-released{
+            font-size:12px;color:#000;
+            border-top:dotted 1px;
+            font-weight: lighter;
+        }
+        </style>
+
 
 </body>
 
