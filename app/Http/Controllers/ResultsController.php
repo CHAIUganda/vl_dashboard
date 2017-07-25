@@ -238,13 +238,11 @@ class ResultsController extends Controller {
         	Log::error($e->getMessage());
         	
         }
+	
 		
-		
+		//return compact("patient_results");
 
-		
-		
-		return compact("patient_results");
-
+        return $patient_results;
 	}
 
 	public function getPatientResultsForFacility(){
@@ -293,14 +291,20 @@ class ResultsController extends Controller {
         	Log::info("---ooops---");
         	Log::error($e->getMessage());
         	
-        }
-		
-		
+        }		
+		//return compact("patient_results");
+		return $patient_results;
 
-		
-		
+	}
+	public function getPatientResults(){
+		$patient_results = null;
+		if(!empty(\Auth::user()->hub_id) && \Auth::user()->can('view_reports_as_hub')){
+			$patient_results = $this->getPatientResultsForHub();
+		}elseif(!empty(\Auth::user()->facility_id) && \Auth::user()->can('view_reports_as_facility')){
+			$patient_results = $this->getPatientResultsForFacility();
+		}
+
 		return compact("patient_results");
-
 	}
 	private function addSixMonths($to_date){
 	    $year = intval(substr($to_date,0,4));
