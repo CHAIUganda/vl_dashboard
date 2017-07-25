@@ -73,15 +73,11 @@ Route::group(['middleware' => 'auth'], function()
 	});
 
 
-    Route::group(['middleware'=>['permission:view_reports_as_facility']], function() { 
+    Route::group(['middleware'=>['permission:view_reports_as_facility|view_reports_as_hub']], function() { 
 		Route::get('/suppression_trends/index', ['uses' => function(){ return view('suppression_trends.index'); }]);
-		Route::get('/suppression_trends/reports', ['uses' => 'ResultsController@getPatientResultsForFacility']);
+		Route::get('/suppression_trends/reports', ['uses' => 'ResultsController@getPatientResults']);
 	});
 
-    Route::group(['middleware'=>['permission:view_reports_as_hub']], function() { 
-		Route::get('/suppression_trends/index', ['uses' => function(){ return view('suppression_trends.index'); }]);
-		Route::get('/suppression_trends/reports', ['uses' => 'ResultsController@getPatientResultsForHub']);
-	});
 
 	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);
 	//Route::get('/qc', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@index']);
