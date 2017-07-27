@@ -440,6 +440,10 @@ class MyHTML{
 			$numerical_result = 20;
 			$suppressed = 'YES';
 			$alpha_numerical_result = substr($result, 0,1)." 20 Copies / mL";
+		}elseif(substr($result, 2) == 'Titer max'){
+			$numerical_result = 100000000;
+			$suppressed = 'NO';
+			$alpha_numerical_result = substr($result, 0,1)." 10,0000,000 Copies / mL";
 		}else{
 			$numerical_result = number_format((float)$result);
 			$n_result =  str_replace(",", "", $numerical_result)+0;
