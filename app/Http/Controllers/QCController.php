@@ -56,7 +56,7 @@ class QCController extends Controller {
 				$ready = $choice == 'approved'?'YES':'NO';
 				$comment = $choice == 'approved'?'':$comments[$sample_id];
 
-				$sql .= "($sample_id,'$ready', '$comment', '$now', '$qc_by'),";				
+				$sql .= "($sample_id,'$ready', '".addslashes($comment)."', '$now', '$qc_by'),";				
 			}
 
 			$sql = trim($sql, ",");
