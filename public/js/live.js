@@ -95,8 +95,9 @@ ctrllers.DashController = function($scope,$http){
     var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
 
     //var emtct_json = {1:"PREGNANT",2:"BREAST FEEDING",3: "PMTCT/OPTION B+"};
+    //var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
     var emtct_json = {1:"currently Pregnant",2:"currently breastfeeding",3: "initiated ART because of PMTCT"};
-    var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
+    var tb_status_json = {1:"Active TB",2:"no active TB",3:"Left Blank"};
     
 
     $scope.month_labels = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};

@@ -136,8 +136,33 @@
                         @else
                         <li id='login'>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li> 
                         @endif 
-                </ul>
+                        
 
+                        
+                </ul>
+               
+                 <ul class="nav navbar-nav navbar-right">
+                     <li id='notifications' class="dropdown">
+                            <a href="#" cclass="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <span class="glyphicon glyphicon-bell"></span> 
+                                <sup>4 Updates</sup>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                               <li><a href="#">Facilities Access
+                                <span>Facilities can view their reports just like hubs</span></a>
+                               </li>
+                               <li><a href="#">Template for loading
+                                <span>Template for loading from non-CPHL site has been made</span>
+                               </a></li> 
+                               <li><a href="#">eMTCT Filter Renamed
+                                <span>items have names changed</span>
+                               </a></li>
+                               <li><a href="#">TB Status Filter Renamed
+                                <span>items in the filter have been renamed following the VL Meeting as of 4-Aug-17</span>
+                               </a></li>
+                           </ul>
+                     </li>
+                </ul>
                 @if(Auth::check())
                  <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -150,7 +175,7 @@
                 </ul>
 
                 @endif
-
+                
             </div>
         </div>
     </div> 
