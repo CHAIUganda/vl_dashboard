@@ -96,8 +96,8 @@ ctrllers.DashController = function($scope,$http){
 
     //var emtct_json = {1:"PREGNANT",2:"BREAST FEEDING",3: "PMTCT/OPTION B+"};
     //var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
-    var emtct_json = {1:"currently Pregnant",2:"currently breastfeeding",3: "initiated ART because of PMTCT"};
-    var tb_status_json = {1:"Active TB",2:"no active TB",3:"Left Blank"};
+    var emtct_json = {1:"Pregnant",2:"Breastfeeding",3: "Initiated ART because of PMTCT"};
+    var tb_status_json = {1:"Active TB",2:"No TB",3:"Left Blank"};
     
 
     $scope.month_labels = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
@@ -231,12 +231,12 @@ ctrllers.DashController = function($scope,$http){
         return age_ids_array;
     };
 
-    var getTreatmentIndicationsFromEmtctParam=function(emtctScopeParam){
+    var getTreatmentIndicationsFromEmtctParam=function(emtctScopeParam){//skipped because TWG needed a union, not an intersection
         var emtct_ids_array = emtctScopeParam;
         var treatment_indication_mongo_keys_array=[];
         for (var i = 0; i < emtct_ids_array.length; i++) {
             if(emtct_ids_array[i] == 3){//
-                treatment_indication_mongo_keys_array.push(1);//PMTCT/Option B+
+               // treatment_indication_mongo_keys_array.push(1);//PMTCT/Option B+
             }
         };
 
@@ -251,6 +251,8 @@ ctrllers.DashController = function($scope,$http){
                 emtct_mongo_keys_array.push("pregnancy_status");
             }else if (emtct_ids_array[i] == 2) {
                 emtct_mongo_keys_array.push("breast_feeding_status");
+            }else if(emtct_ids_array[i] == 3){
+                emtct_mongo_keys_array.push("initiated_art_because_pmtct");
             }
         };
 
