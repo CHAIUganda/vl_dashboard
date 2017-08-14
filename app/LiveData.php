@@ -166,7 +166,7 @@ class LiveData extends Model
       
       #$reg_type_case=self::regimenTypeCase();
       $reg_time_case=self::regimenTimeCase();
-    	$sql="SELECT facilityID,month(s.created) AS mth,count(distinct s.id) AS num,
+    	$sql="SELECT facilityID,month(s.created) AS mth,count(distinct s.vlSampleID) AS num,
                    $age_grp_case AS age_group,".self::SEX_CASE." AS sex,
                    currentRegimenID AS regimen,
                    reg_t.treatmentStatusID AS reg_line,
