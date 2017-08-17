@@ -107,6 +107,5 @@ $("#date_to").on("change",function(){
     window.location.assign("/monitor_download?date_from="+$("#date_from").val()+"&date_to="+$(this).val());
 });
 
-
 </script>
 @endsection()

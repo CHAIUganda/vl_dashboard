@@ -130,7 +130,7 @@ class ResultsController extends Controller {
 
 	private function log_downloads($id,$slctd_samples_str,$vldbresult){
 		$printed = \Request::get('printed');
-		$by = \Auth::user()->name;
+		$by = addslashes(\Auth::user()->name); 
 		$on = date('Y-m-d H:i:s');
 		$s_arr = $id!='x'?[$id]:explode(",", $slctd_samples_str);
 
@@ -144,7 +144,7 @@ class ResultsController extends Controller {
 		}else{
 			$sql = "INSERT INTO vl_facility_downloads (sample_id, downloaded_by, downloaded_on) VALUES";
 			foreach ($s_arr as $smpl) {
-				$sql .= "($smpl, '".\Auth::user()->name."', '".date('Y-m-d H:i:s')."'),";				
+				$sql .= "($smpl, '".$by."', '".date('Y-m-d H:i:s')."'),";				
 			}
 			$sql = trim($sql, ',');		
 
@@ -161,7 +161,7 @@ class ResultsController extends Controller {
 	public function log_printing(){
 		$printed = \Request::get('printed');
 		$samples = \Request::get('s');
-		$by = \Auth::user()->name;
+		$by = addslashes(\Auth::user()->name);
 		$on = date('Y-m-d H:i:s');
 		if($printed=='NO'){
 			$sql = "UPDATE vl_facility_printing SET printed='YES', 
