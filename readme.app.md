@@ -16,6 +16,16 @@
 7. MongoDB extension see here [Installing MongoDB ext](http://php.net/manual/en/mongodb.setup.php)  
    $ sudo apt-get install php5-mongo 
 
+## PHP7.0 mongo driver
+1. $ sudo apt-get install php7.0-dev
+2. $ sudo pecl install mongodb
+3. $ sudo vi /etc/php/7.0/mods-available/mongo.ini
+	Add:
+		extension = mongodb.so
+
+4. $ sudo phpenmod mongo
+
+
 ##Web Server
 1. Install a web server - Apache or Nginx
 
