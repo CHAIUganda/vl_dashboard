@@ -1201,6 +1201,7 @@ ctrllers.DashController = function($scope,$http){
 
             var district_instance = {
                 district_name : district_labels[districtRecord._id],
+                suppressed_results : districtRecord.suppressed,
                 valid_results : districtRecord.valid_results,
                 
                 suppression_rate : Math.round(((districtRecord.suppressed/districtRecord.valid_results)*100),1)
@@ -1232,6 +1233,7 @@ ctrllers.DashController = function($scope,$http){
                 district_name : district_labels[facilityRecord._id.district_id],
                 hub_name: hub_name_value,
                 facility_name : facility_labels[facilityRecord._id.facility_id],
+                suppressed_results : facilityRecord.suppressed,
                 valid_results : facilityRecord.valid_results,
                 suppression_rate : Math.round(((facilityRecord.suppressed/facilityRecord.valid_results)*100),1)
             }
