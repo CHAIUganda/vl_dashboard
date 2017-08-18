@@ -50,7 +50,7 @@ class Engine extends Command
      */
     public function handle()
     {
-        ini_set('memory_limit', '2024M');
+        ini_set('memory_limit', '2500M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
@@ -79,16 +79,22 @@ class Engine extends Command
 
         }
         while($year<=$current_year){
-            
             $samples=LiveData::getSamples($year);
-            $dbs_samples=LiveData::getSamples($year," sampleTypeID=1 ");
+            //$dbs_samples=LiveData::getSamples($year," sampleTypeID=1 ");
+            
             $dbs_number_of_patients_received = LiveData::getNumberOfPatients($year, " sampleTypeID=1");
+
+                      
             $number_of_patients_received = LiveData::getNumberOfPatients($year);
+            
             $rjctn_rsns=LiveData::getRejects($year);
+           
             $rjctn_rsns2=LiveData::getRejects2($year);
             $t_rslts=LiveData::getResults($year);
             $v_rslts=LiveData::getResults($year,$this->_validCases());
+            
             $sprsd_cond=$this->_validCases()." AND ".$this->_suppressedCases();
+            
             $sprsd=LiveData::getResults($year,$sprsd_cond); 
             $i=0;
            
@@ -122,7 +128,7 @@ class Engine extends Command
 
                 //numbers
                 $data["samples_received"] = isset($s->num)?(int)$s->num:0;
-                $data["dbs_samples"] = isset($dbs_samples[$key])?(int)$dbs_samples[$key]:0;
+                $data["dbs_samples"] = ((int)$s->sampleTypeID == 1)?(int)$s->num:0;
                 $data["rejected_samples"] = isset($rjctn_rsns[$key])?(int)$rjctn_rsns[$key]:0;
 
                 #$data["patients_tested"] = isset($s->numberOfPatientsTested)?(int)$s->numberOfPatientsTested:0;
@@ -133,9 +139,9 @@ class Engine extends Command
                 $data["incomplete_form_rejections"]=isset($rjctn_rsns2[$key.'incomplete_form'])?(int)$rjctn_rsns2[$key.'incomplete_form']:0;
                 $data["eligibility_rejections"]=isset($rjctn_rsns2[$key.'eligibility'])?(int)$rjctn_rsns2[$key.'eligibility']:0;
 
-                $data["total_results"] = isset($t_rslts[$key])?(int)$t_rslts[$key]:0;
-                $data["valid_results"] = isset($v_rslts[$key])?(int)$v_rslts[$key]:0;
-                $data["suppressed"]= isset($sprsd[$key])?(int)$sprsd[$key]:0;
+                $data["total_results"] = isset($s->samples_tested)?(int)$s->samples_tested:0;
+                $data["valid_results"] = ($s->validity == 'valid')?(int)$s->samples_tested:0;
+                $data["suppressed"]= $this->_getSuppressedNumbers($s);
 
                 //eMTCT
                 $data["pregnancy_status"] = isset($s->pregnancyStatus)?$s->pregnancyStatus:0; 
@@ -214,6 +220,16 @@ class Engine extends Command
         \DB::unprepared($sql);
     }
 */
+    private function _getSuppressedNumbers($samplesArray){
+        if($samplesArray->validity == 'valid'){
+            if((int)$samplesArray->sampleTypeID == 1 && (int)$samplesArray->resultNumeric < 1000)
+                return (int)$samplesArray->samples_tested;
+            else if((int)$samplesArray->sampleTypeID == 2 && (int)$samplesArray->resultNumeric < 5000)
+                return (int)$samplesArray->samples_tested;
+        }
+
+        return 0; 
+    }
     private function _loadHubs(){
         $this->mongo->hubs->drop();
         $res=LiveData::getHubs();

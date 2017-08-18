@@ -94,8 +94,10 @@ ctrllers.DashController = function($scope,$http){
     var lines_json = {1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
     var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
 
-    var emtct_json = {1:"PREGNANT",2:"BREAST FEEDING",3: "PMTCT/OPTION B+"};
-    var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
+    //var emtct_json = {1:"PREGNANT",2:"BREAST FEEDING",3: "PMTCT/OPTION B+"};
+    //var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
+    var emtct_json = {1:"Pregnant",2:"Breastfeeding",3: "Initiated ART because of PMTCT"};
+    var tb_status_json = {1:"Active TB",2:"No TB",3:"Left Blank"};
     
 
     $scope.month_labels = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
@@ -229,12 +231,12 @@ ctrllers.DashController = function($scope,$http){
         return age_ids_array;
     };
 
-    var getTreatmentIndicationsFromEmtctParam=function(emtctScopeParam){
+    var getTreatmentIndicationsFromEmtctParam=function(emtctScopeParam){//skipped because TWG needed a union, not an intersection
         var emtct_ids_array = emtctScopeParam;
         var treatment_indication_mongo_keys_array=[];
         for (var i = 0; i < emtct_ids_array.length; i++) {
             if(emtct_ids_array[i] == 3){//
-                treatment_indication_mongo_keys_array.push(1);//PMTCT/Option B+
+               // treatment_indication_mongo_keys_array.push(1);//PMTCT/Option B+
             }
         };
 
@@ -249,6 +251,8 @@ ctrllers.DashController = function($scope,$http){
                 emtct_mongo_keys_array.push("pregnancy_status");
             }else if (emtct_ids_array[i] == 2) {
                 emtct_mongo_keys_array.push("breast_feeding_status");
+            }else if(emtct_ids_array[i] == 3){
+                emtct_mongo_keys_array.push("initiated_art_because_pmtct");
             }
         };
 
@@ -1197,6 +1201,7 @@ ctrllers.DashController = function($scope,$http){
 
             var district_instance = {
                 district_name : district_labels[districtRecord._id],
+                suppressed_results : districtRecord.suppressed,
                 valid_results : districtRecord.valid_results,
                 
                 suppression_rate : Math.round(((districtRecord.suppressed/districtRecord.valid_results)*100),1)
@@ -1228,6 +1233,7 @@ ctrllers.DashController = function($scope,$http){
                 district_name : district_labels[facilityRecord._id.district_id],
                 hub_name: hub_name_value,
                 facility_name : facility_labels[facilityRecord._id.facility_id],
+                suppressed_results : facilityRecord.suppressed,
                 valid_results : facilityRecord.valid_results,
                 suppression_rate : Math.round(((facilityRecord.suppressed/facilityRecord.valid_results)*100),1)
             }

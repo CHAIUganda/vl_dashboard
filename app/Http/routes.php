@@ -51,10 +51,6 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/searchbyhub/{txt}', ['as' => 'searchbyhub', 'uses' => 'ResultsController@searchbyhub']);
 		Route::get('/search_result/{txt}', ['as' => 'search_result', 'uses' => 'ResultsController@search_result']);
 
-		Route::get('/suppression_trends/reports', ['as' => 'patient_results', 'uses' => 'ResultsController@getPatientResults']);
-		Route::get('/suppression_trends/index', ['as' => 'patient_results', 'uses' => function(){ return view('suppression_trends.index'); }]);
-		Route::get('/suppression_trends/patientviralloads', ['as' => 'patient_results', 'uses' => 'ResultsController@getPatientViralLoads']);
-
 	});
 
 	Route::group(['middleware'=>['permission:qc']], function() { 
@@ -75,6 +71,13 @@ Route::group(['middleware' => 'auth'], function()
 		Route::controllers(['/lab_qc/index' => 'LabQCController']);
 		Route::match(array('GET', 'POST'), '/lab_qc/qc/{id}/', ['middleware' => ['permission:lab_qc'], 'as' => 'labqc_qc', 'uses' => 'LabQCController@qc']);	
 	});
+
+
+    Route::group(['middleware'=>['permission:view_reports_as_facility|view_reports_as_hub']], function() { 
+		Route::get('/suppression_trends/index', ['uses' => function(){ return view('suppression_trends.index'); }]);
+		Route::get('/suppression_trends/reports', ['uses' => 'ResultsController@getPatientResults']);
+	});
+
 
 	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);
 	//Route::get('/qc', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@index']);
