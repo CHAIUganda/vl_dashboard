@@ -17,16 +17,18 @@
                 <thead>
                     <tr>
                         <th width='70%'>District</th>
-                        <th width='10%'>Suppressed Results</th>
                         <th width='10%'>Valid Results</th>
+                        <th width='10%'>Suppressed Results</th>
+                        <th width='10%'>Non Suppressed Results</th>
                         <th width='10%'>Suppression Rate (%)</th>
                     </tr>
                 </thead>
                 <tbody>                                
                     <tr ng-repeat="d in district_numbers" >
                         <td class="ng-cloak"><% labels.districts[d._id] %></td>
-                        <td class="ng-cloak"><% d.suppressed|number %></td>
                         <td class="ng-cloak"><% d.valid_results|number %></td>
+                        <td class="ng-cloak"><% d.suppressed|number %></td>
+                        <td class="ng-cloak"><% (d.valid_results - d.suppressed)|number %></td>
                         <td class="ng-cloak"><% ((d.suppressed/d.valid_results)*100)|number:1 %> %</td>
                     </tr>                        
                  </tbody>
