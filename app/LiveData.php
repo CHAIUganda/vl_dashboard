@@ -13,6 +13,14 @@ class LiveData extends Model
     const PREGNANT_CASE = "CASE WHEN pregnant='Yes' THEN 'y' WHEN pregnant='No' THEN 'n' ELSE 'x' END";
     const BREAST_FEEDING_CASE="CASE WHEN breastfeeding='Yes' THEN 'y' WHEN breastfeeding='No' THEN 'n' ELSE 'x' END";
     const TB_STATUS_CASE="CASE WHEN activeTBStatus='Yes' THEN 'y' WHEN activeTBStatus='No' THEN 'n' ELSE 'x' END";
+    const VALID_RESULTS_TABLE="SELECT id,vlSampleID,
+      case
+        when resultAlphanumeric in ('Failed','Failed.',
+            'Invalid',
+            'Invalid test result. There is insufficient sample to repeat the assay.',
+            'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.',
+            'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.'
+ )  then 'invalid' else 'valid' end as validity FROM vl_results_merged";
     //const TRTMT_IDCTN_CASE = "CASE WHEN `treatmentInitiationID`=1 THEN 'b_plus' WHEN `treatmentInitiationID`=4 THEN 'tb' ELSE 'x' END";
 
     public static function getSample($id){
@@ -160,13 +168,14 @@ class LiveData extends Model
       return self::select('id', 'appendix')->from('vl_appendix_regimen')->get();
     }
 
-
-    public static function getSamples($year,$cond=1){
+  
+    public static function getSamples($year){
     	$age_grp_case=self::ageGroupCase();
       
       #$reg_type_case=self::regimenTypeCase();
       $reg_time_case=self::regimenTimeCase();
-    	$sql="SELECT facilityID,month(s.created) AS mth,count(s.id) AS num,
+    	$sql="SELECT facilityID,month(s.created) AS mth,r.validity,count(distinct s.vlSampleID) AS num,
+                   count(distinct r.vlSampleID) AS samples_tested,r.resultNumeric,
                    $age_grp_case AS age_group,".self::SEX_CASE." AS sex,
                    currentRegimenID AS regimen,
                    reg_t.treatmentStatusID AS reg_line,
@@ -175,23 +184,35 @@ class LiveData extends Model
                    count(distinct patientUniqueID) as number_patients_received,
                    ".self::PREGNANT_CASE." as pregnancyStatus,count(pregnant) as numberPregant,
                    ".self::BREAST_FEEDING_CASE." as breastFeedingStatus, count(breastfeeding) as numberBreastFeeding,
-                   ".self::TB_STATUS_CASE." as activeTBStatus,count(activeTBStatus) as numberActiveOnTB  
-		        FROM vl_samples AS s
+                   ".self::TB_STATUS_CASE." as activeTBStatus,count(activeTBStatus) as numberActiveOnTB,
+                   s.sampleTypeID
+                
+		        FROM 
+            (SELECT distinct r.vlSampleID,r.resultNumeric,case when r.resultAlphanumeric in ('Failed','Failed.',
+                'Invalid',
+                'Invalid test result. There is insufficient sample to repeat the assay.',
+                'There is No Result Given. The vl_results_mergedTest Failed the Quality Control Criteria. We advise you send a a new sample.',
+                'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.'
+              )  then 'invalid' else 'valid' end as validity
+           FROM vl_results_merged r inner join vl_samples s on s.vlSampleID=r.vlSampleID where YEAR(s.created)='$year' group by r.vlSampleID) AS r
+
+            right JOIN vl_samples AS s ON r.vlSampleID=s.vlSampleID
 		        LEFT JOIN vl_patients AS p ON s.patientID=p.id
-            LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
-		        WHERE YEAR(s.created)='$year' AND $cond		  
-		        GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt,
-                    pregnant,breastfeeding,activeTBStatus";
+            LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id 
+            
+		        WHERE YEAR(s.created)='$year'  		  
+		        GROUP BY mth,r.validity,age_group,facilityID,sex,regimen,reg_line,reg_time,trt,pregnant,
+            breastfeeding,activeTBStatus,s.sampleTypeID";
 
 		  $res=\DB::connection('live_db')->select($sql);
-      if($cond==1) return $res;
+      /*if($cond==1) return $res;
       $ret=[];
       foreach ($res as $r) {
         $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
         $k.=$r->regimen.$r->reg_line.$r->reg_time.$r->trt;
         $ret[$k]=$r->num;
-      }
-      return $ret; 
+      }*/
+      return $res; 
     }
 
     public static function getNumberOfPatients($year,$cond=1){
@@ -211,6 +232,7 @@ class LiveData extends Model
             WHERE YEAR(s.created)='$year' AND $cond     
             GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt";
 
+            
       $res=\DB::connection('live_db')->select($sql);
       if($cond==1){
         return $res;
@@ -243,6 +265,7 @@ class LiveData extends Model
           WHERE YEAR(s.created)='$year' AND outcome='Rejected'
           GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt
           ";
+          
         $res=\DB::connection('live_db')->select($sql);
         $ret=[];
         foreach ($res as $r) {
@@ -272,6 +295,7 @@ class LiveData extends Model
               WHERE YEAR(s.created)='$year' AND outcome='Rejected'
               GROUP BY rjctn_rsn,mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt
               ";
+            
         $res=\DB::connection('live_db')->select($sql);
         $ret=[];
         foreach ($res as $r) {
