@@ -16,7 +16,7 @@
             <table datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
-                        <th width='70%'>District</th>
+                        <th width='60%'>District</th>
                         <th width='10%'>Valid Results</th>
                         <th width='10%'>Suppressed Results</th>
                         <th width='10%'>Non Suppressed Results</th>
@@ -41,9 +41,10 @@
                         
                         <th width='20%'>District</th>
                         <th width='20%'>Hub</th>
-                        <th width='55%'>Facility</th>
-                        <th width='5%'>Suppressed Results</th>
+                        <th width='50%'>Facility</th>
                         <th width='5%'>Valid Results</th>
+                        <th width='5%'>Suppressed Results</th>
+                        <th width='5%'>Suppressed Results</th>
                         <th width='5%'>Suppression rate (%)</th>
                     </tr>
                 </thead>
@@ -53,8 +54,9 @@
                         <td class="ng-cloak"><% labels.districts[f._id.district_id] %></td>
                         <td class="ng-cloak"><% getHubName(f._id.hub_id) %></td>
                         <td class="ng-cloak"><% labels.facilities[f._id.facility_id] %></td>
-                        <td class="ng-cloak"><% f.suppressed|number %></td>
                         <td class="ng-cloak"><% f.valid_results|number %></td>
+                        <td class="ng-cloak"><% f.suppressed|number %></td>
+                        <td class="ng-cloak"><% (f.valid_results - f.suppressed)|number %></td>
                         <td class="ng-cloak"><% ((f.suppressed/f.valid_results)*100)|number:1 %> %</td>
                     </tr>                        
                  </tbody>
