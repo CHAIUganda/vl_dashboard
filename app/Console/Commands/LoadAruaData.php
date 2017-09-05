@@ -11,7 +11,7 @@ class LoadAruaData extends Command
      *
      * @var string
      */
-    protected $signature = 'arua:run';
+    protected $signature = 'tester';
 
     /**
      * The console command description.
@@ -37,16 +37,18 @@ class LoadAruaData extends Command
      */
     public function handle()
     {
-        echo "---Started Loading Arua Data";
+        echo "---Started Loading Arua Data--\n";
 
         //read file into array
-        $arua_data = $this->getAruaData();
-        var_dump($arua_data);
+        //$arua_data = $this->getAruaData();
+        //echo "CSV file read succefully \n";
+        //var_dump($arua_data);
 
         //insert patients
 
         //insert regimens
         //insert samples
+        //insert sample results(into results_merged)
     }
   
     private function getAruaData(){

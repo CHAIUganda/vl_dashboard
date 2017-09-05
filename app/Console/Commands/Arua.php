@@ -38,15 +38,16 @@ class Arua extends Command
     public function handle()
     {
         //read file into array
-        $arua_data = $this->getAruaData();
+        //$arua_data = $this->getAruaData();
         
 
         //insert patients
-        //$this->insertPatients($arua_data);
+        //$this->insertPatients($arua_data); perfect
 
         
         //insert samples
-       echo  $this->getTreatmentLast6Months('0 - New');
+       $test = $this->getTreatmentLast6Months('1 - Follow-up');
+       echo "$test\n";
         //$this->insertSamples($arua_data);
         
         //insert results
@@ -96,9 +97,9 @@ class Arua extends Command
                    array_push($data, $sample); 
                 }
                
-            /*if($counter == 20){
+            if($counter == 20){
                 break;
-            }*/
+            }
 
             $counter ++;
         }
@@ -417,12 +418,17 @@ class Arua extends Command
       return $regimenID;
     }
 
+    /***
+    *1 - Follow-up = patient has been on treatment for the last six months, and attended 1 encounter
+    *0 - New = This is a new patient.
+    */
     private function getTreatmentLast6Months($treatmentLast6Months){
       $first_character = explode('-', $treatmentLast6Months);
+      var_dump($first_character);
       $hadTreatmentInLast6Months = "Left Blank";
-      if (intval($first_character[0]) == 0) {
+      if (trim($first_character[1]) == 'Follow' || trim($first_character[1]) == 'New') {
         $hadTreatmentInLast6Months = "Yes";
-      }elseif (intval($first_character[0]) == 1){
+      }else{
         $hadTreatmentInLast6Months = "No";
       }
 
@@ -494,4 +500,5 @@ class Arua extends Command
            }*/
         }
     }
+
 }

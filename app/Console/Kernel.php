@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
         \EID\Console\Commands\MyName::class,
         \EID\Console\Commands\Engine::class,
         \EID\Console\Commands\DHIS2::class,
-        \EID\Console\Commands\Arua::class,
+        \EID\Console\Commands\Arua::class
     ];
 
     /**
