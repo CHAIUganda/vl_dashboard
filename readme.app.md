@@ -1,5 +1,5 @@
 # Pre-requisites
-##MongoDB 
+## MongoDB 
 1. Install MongoDB from here [MongoDB](https://docs.mongodb.com/manual/installation/)  
    $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927  
    $ echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list  
@@ -26,11 +26,11 @@
 4. $ sudo phpenmod mongo
 
 
-##Web Server
+## Web Server
 1. Install a web server - Apache or Nginx
 
 
-#Mongo DB Setup
+# Mongo DB Setup
 1. $ mongo  
 	>use admin  
 	>db.createUser({user: "admin", pwd: "pass", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase","readWriteAnyDatabase"]})  
@@ -66,7 +66,7 @@
 	1
 	if 1 then all is well
 
-#Application Installation
+# Application Installation
 1. $ cd /home/user/
 2. $ git clone https://github.com/CHAIUganda/vl_dashboard.git
 3. $ cd vl_dashboard

@@ -437,9 +437,9 @@ class MyHTML{
 			$suppressed = 'UNKNOWN';
 			$alpha_numerical_result = 'Failed';
 		}elseif(substr($result, 2) == 'Titer min'){
-			$numerical_result = 20;
+			$numerical_result = 50;
 			$suppressed = 'YES';
-			$alpha_numerical_result = substr($result, 0,1)." 20 Copies / mL";
+			$alpha_numerical_result = substr($result, 0,1)." 50 Copies / mL";
 		}elseif(substr($result, 2) == 'Titer max'){
 			$numerical_result = 10000000;
 			$suppressed = 'NO';
