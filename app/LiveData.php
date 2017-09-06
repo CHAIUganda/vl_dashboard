@@ -180,8 +180,7 @@ class LiveData extends Model
 		        LEFT JOIN vl_patients AS p ON s.patientID=p.id
             LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
 		        WHERE YEAR(s.created)='$year' AND $cond		  
-		        GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt,
-                    pregnant,breastfeeding,activeTBStatus";
+		        GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt";
 
 		  $res=\DB::connection('live_db')->select($sql);
       if($cond==1) return $res;

@@ -60,7 +60,7 @@
             </span>
         </span>
         
-        <span ng-model='filter_emtct' ng-init='filter_emtct={}'>
+       <!--  <span ng-model='filter_emtct' ng-init='filter_emtct={}'>
             <span ng-repeat="(emtct_key,emtct_value) in filter_emtct">
                 <span class="filter-val ng-cloak"> <% emtct_value %> (e) <x ng-click='removeTag("emtct",emtct_key)'>&#120;</x></span> 
             </span>
@@ -70,7 +70,7 @@
             <span ng-repeat="(tb_status_key,tb_status_value) in filter_tb_status">
                 <span class="filter-val ng-cloak"> <% tb_status_value %> (t) <x ng-click='removeTag("tb_status",tb_status_key)'>&#120;</x></span> 
             </span>
-        </span>
+        </span> -->
         <span ng-show="filtered" class="filter_clear" ng-click="clearAllFilters()">reset all</span>
 
     </div>
@@ -160,7 +160,7 @@
             </select>
         </td>
   
-        <td width='9%'>
+       <!--  <td width='9%'>
             <select ng-model="emtct" ng-init="emtct='all'" ng-change="filter('emtct')">
                 <option value='all'>eMTCT</option>
                 <option class="ng-cloak" ng-repeat="(emtct_value,emtct_key) in labels.emtct" value="<% emtct_value %>">
@@ -176,6 +176,6 @@
                     <% tb_status_key %>
                 </option>
             </select>
-        </td>
+        </td> -->
     </tr>
 </table>
