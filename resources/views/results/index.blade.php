@@ -104,6 +104,7 @@ $(function() {
 
         processing: true,
         serverSide: true,
+        searching: false,
         @if($printed=='YES') pageLength: 50, @endif
         @if($printed=='NO') paging:false, @endif
 
