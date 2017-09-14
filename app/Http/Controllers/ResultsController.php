@@ -35,7 +35,9 @@ class ResultsController extends Controller {
 		$printed=empty($printed)?'NO':$printed;
 
 		$results = LiveData::getResultsList($printed);
+		$results_count = LiveData::getResultsList($printed,1);
 		return \Datatables::of($results)
+				->setTotalRecords($results_count)
 				->addColumn('sample_checkbox', function($result){
 					return "<input type='checkbox' class='samples' name='samples[]' value=$result->sample_id>";
 				})
