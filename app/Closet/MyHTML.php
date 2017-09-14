@@ -358,6 +358,15 @@ class MyHTML{
 		$rec_suppressed_adults="Below 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 12 months.";
 		$rec_suppressed_kids="Below 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 6 months.";
 		$rec_unsuppressed="Above 1,000 copies/mL: Patient has elevated viral load. <br>Please initiate intensive adherence counseling and conduct a repeat viral load test within 4-6 months.";
+		//$rec_unsuppressed="&ge; 1,000 copies/mL. Patient has unsuppressed viral load.";
+		/*$rec_unsuppressed.="<ul>";
+		$rec_unsuppressed.="<li>Please screen/test  for OI- crag and ";
+		$rec_unsuppressed.="initiate intensive adherence counseling</li> ";
+		$rec_unsuppressed.="<li>Repeat viral load test within 4­ - 6 months. </li>";
+		$rec_unsuppressed.="<li>Next VL test Expected in Oct, 2016. Send 2 samples. One for VL test. One for HIVDR test</li>";
+		$rec_unsuppressed.="</ul>";
+		$ret = $rec_unsuppressed;*/
+
 		$msg = "Expected in ";
 		if($suppressed=='NO'){
 			$ret = $rec_unsuppressed;

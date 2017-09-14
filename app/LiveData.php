@@ -77,7 +77,7 @@ class LiveData extends Model
     }
 
     public static function getResultsList($printed=''){
-      $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'sample_id')
+      $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'pr.sample_id')
                       ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
                       ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
                       ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
