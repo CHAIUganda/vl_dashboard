@@ -51,9 +51,12 @@ ctrllers.DashController = function($scope,$http){
                 'csv',  'excel']);*/
 
     $scope.identity = angular.identity;
-    $scope.params = {
+    /*$scope.params = {
         'districts':[],'hubs':[],'age_ranges':[],'genders':[],
-        'regimens':[],'lines':[], 'indications': [],'emtct':[],'tb_status':[]};
+        'regimens':[],'lines':[], 'indications': [],'emtct':[],'tb_status':[]};*/
+     $scope.params = {
+        'districts':[],'hubs':[],'age_ranges':[],'genders':[],
+        'regimens':[],'lines':[]};
 
     var hubs_json = {};
     var age_group_json = {1:"0<2",2:"2-<5",3:"5-<10",4:"10-<15",5:"15-<20",6:"20-<25",7:"25+"};  
@@ -92,10 +95,10 @@ ctrllers.DashController = function($scope,$http){
     var results_json = {}; //to hold a big map will all processed data to later on be used in the generalFilter
     var genders_json = {'m':'Male','f':'Female','x':'Unknown'};
     var lines_json = {1:'1st Line',2:'2nd Line',4:'Left Blank',5:'Other'};
-    var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
+   /* var t_indication_json = {1: "PMTCT/OPTION B+", 4:"TB INFECTION"};
 
     var emtct_json = {1:"PREGNANT",2:"BREAST FEEDING",3: "PMTCT/OPTION B+"};
-    var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};
+    var tb_status_json = {1:"Active on TB",2:"Not Active on TB",3:"Left Blank"};*/
     
 
     $scope.month_labels = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sept','10':'Oct','11':'Nov','12':'Dec'};
@@ -111,9 +114,9 @@ ctrllers.DashController = function($scope,$http){
     $scope.labels.regimens = [];
     $scope.labels.regimens2 = [];
 
-    $scope.labels.indications = t_indication_json;
+    /*$scope.labels.indications = t_indication_json;
     $scope.labels.emtct = emtct_json;
-    $scope.labels.tb_status=tb_status_json;
+    $scope.labels.tb_status=tb_status_json;*/
 
     $scope.labels.from_age = from_age_json;
     $scope.labels.to_age = to_age_json;
@@ -282,9 +285,9 @@ ctrllers.DashController = function($scope,$http){
             prms.regimens = JSON.stringify($scope.params.regimens);
             prms.lines = JSON.stringify($scope.params.lines);
             //prms.indications = JSON.stringify($scope.params.indications);
-            prms.indications = JSON.stringify(getTreatmentIndicationsFromEmtctParam($scope.params.emtct));
+            /*prms.indications = JSON.stringify(getTreatmentIndicationsFromEmtctParam($scope.params.emtct));
             prms.emtct = JSON.stringify(convertEmtctIdsToMongoKeys($scope.params.emtct));
-            prms.tb_status = JSON.stringify(convertTbStatusIdsToMongoKeys($scope.params.tb_status));
+            prms.tb_status = JSON.stringify(convertTbStatusIdsToMongoKeys($scope.params.tb_status));*/
             prms.fro_date = $scope.fro_date;
             prms.to_date = $scope.to_date;
             $http({method:'GET',url:"/live/",params:prms}).success(function(data) {
@@ -559,7 +562,7 @@ ctrllers.DashController = function($scope,$http){
             $scope.line='all';
             break;
 
-            case "indication":
+           /* case "indication":
             $scope.filter_indication[$scope.indication] = t_indication_json[$scope.indication];
             $scope.params.indications.push(Number($scope.indication));
             $scope.indication='all';
@@ -575,7 +578,7 @@ ctrllers.DashController = function($scope,$http){
             $scope.filter_tb_status[$scope.tb_status] = tb_status_json[$scope.tb_status];
             $scope.params.tb_status.push(Number($scope.tb_status));
             $scope.tb_status='all';
-            break;
+            break;*/
         }
 
         delete $scope.filter_districts["all"];
@@ -584,9 +587,9 @@ ctrllers.DashController = function($scope,$http){
         delete $scope.filter_gender["all"];
         delete $scope.filter_regimen["all"];
         delete $scope.filter_line["all"];
-        delete $scope.filter_indication["all"];
+        /*delete $scope.filter_indication["all"];
         delete $scope.filter_emtct["all"];
-        delete $scope.filter_tb_status["all"];
+        delete $scope.filter_tb_status["all"];*/
 
         getData();
 
@@ -669,7 +672,7 @@ ctrllers.DashController = function($scope,$http){
             $scope.params.lines=rmveFrmArr(nr,$scope.params.lines);
             break;
 
-            case "indication": 
+            /*case "indication": 
             delete $scope.filter_indication[nr];
             $scope.params.indications=rmveFrmArr(nr,$scope.params.indications);
             break;
@@ -682,7 +685,7 @@ ctrllers.DashController = function($scope,$http){
             case "tb_status": 
             delete $scope.filter_tb_status[nr];
             $scope.params.indications=rmveFrmArr(nr,$scope.params.tb_status);
-            break;
+            break;*/
         }
         //$scope.filter(mode);
         getData();
@@ -696,17 +699,22 @@ ctrllers.DashController = function($scope,$http){
         $scope.filter_gender={};
         $scope.filter_regimen={};
         $scope.filter_line={};
-        $scope.filter_indication={};
+        /*$scope.filter_indication={};
         $scope.filter_emtct={};
-        $scope.filter_tb_status={};
+        $scope.filter_tb_status={};*/
         $scope.filter_duration=$scope.init_duration;
         $scope.filtered=false;
         $scope.date_filtered=false;
         $scope.fro_date="all";
         $scope.to_date="all";
-        $scope.params = {
+        /*$scope.params = {
                 'districts':[],'hubs':[],'age_ranges':[],'genders':[],
                 'regimens':[],'lines':[],'indications':[],'emtct':[],'tb_status':[]
+            };*/
+
+        $scope.params = {
+                'districts':[],'hubs':[],'age_ranges':[],'genders':[],
+                'regimens':[],'lines':[]
             };
         getData();
         //generalFilter();

@@ -54,13 +54,13 @@
             </span>
         </span>
 
-        <span ng-model='filter_indication' ng-init='filter_indication={}'>
+         <!-- <span ng-model='filter_indication' ng-init='filter_indication={}'>
             <span ng-repeat="(i_nr,i_name) in filter_indication">
                 <span class="filter-val ng-cloak"> <% i_name %> (p) <x ng-click='removeTag("indication",i_nr)'>&#120;</x></span> 
             </span>
         </span>
         
-       <!--  <span ng-model='filter_emtct' ng-init='filter_emtct={}'>
+       <span ng-model='filter_emtct' ng-init='filter_emtct={}'>
             <span ng-repeat="(emtct_key,emtct_value) in filter_emtct">
                 <span class="filter-val ng-cloak"> <% emtct_value %> (e) <x ng-click='removeTag("emtct",emtct_key)'>&#120;</x></span> 
             </span>
