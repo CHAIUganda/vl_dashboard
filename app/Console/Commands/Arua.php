@@ -37,20 +37,26 @@ class Arua extends Command
      */
     public function handle()
     {
-        //read file into array
-        //$arua_data = $this->getAruaData();
         
-
+        //read file into array
+        $arua_data = $this->getAruaData();
+        
+    
         //insert patients
-        //$this->insertPatients($arua_data); perfect
+        echo "----- patients insertion is starting----\n";
+        $this->insertPatients($arua_data);
 
         
         //insert samples
-       $test = $this->getTreatmentLast6Months('1 - Follow-up');
-       echo "$test\n";
-        //$this->insertSamples($arua_data);
+        echo "----- sample insertion is starting----\n";
+        $this->insertSamples($arua_data);
+        
         
         //insert results
+        echo "----- results insertion is starting----\n";
+        $this->insertResults($arua_data);
+        echo "----- results insertion is complete----\n";
+        
     }
 
     private function getAruaData(){
@@ -97,9 +103,6 @@ class Arua extends Command
                    array_push($data, $sample); 
                 }
                
-            if($counter == 20){
-                break;
-            }
 
             $counter ++;
         }
@@ -150,7 +153,6 @@ class Arua extends Command
         $sql = "SELECT count(*) count FROM vl_patients where uniqueID like '$uniqueID'";
         $rows =  \DB::connection('live_db')->select($sql);
        
-        var_dump($rows);
         if(!empty($rows) > 0){
         
             $rowsObject = $rows[0];
@@ -165,10 +167,15 @@ class Arua extends Command
     private function insertPatients($arua_data){
         $counter = 0;
         $arua_data_with_unique_patient_ids = $this->unique_multidim_array($arua_data,'patient_art'); 
-        
-        for ($index=0; $index < sizeof($arua_data_with_unique_patient_ids); $index++) { 
+        $NoPatients= intval(sizeof($arua_data_with_unique_patient_ids));
+        echo "size of array: $NoPatients \n";
+        //for ($index=0; $index < $NoPatients; $index++) { 
+        foreach ($arua_data_with_unique_patient_ids as $key => $dummy_patient) {
+            # code...
+          
          
-            $dummy_patient = $arua_data_with_unique_patient_ids[$index];
+            //$dummy_patient = $arua_data_with_unique_patient_ids[$index];
+            
             $facility_id=50;
             $date_of_collection=$dummy_patient['date_collection'];
             $art_number=$dummy_patient["patient_art"];
@@ -182,14 +189,16 @@ class Arua extends Command
             if (!$this->isPatientExisting($uniqueID)) {
                $sql="insert into vl_patients(uniqueID,artNumber,gender,dateOfBirth,created,createdby) values 
                ('$uniqueID','$art_number','$gender','$date_of_birth','$created','$created_by')";
-               echo "$sql";
+               //echo "$sql";
                 try{
                   $affectedRows =  \DB::connection('live_db')->insert($sql);
                   $counter ++;
                 }catch(Exception $e){
-                 echo "\n ".$e->getMessage()." \n";
+                  echo "\n oops ".$e->getMessage()." \n";
                 }
                 
+            }else{
+              echo "$uniqueID exists\n";
             }
          } 
          echo "$counter patients added\n";
@@ -423,10 +432,14 @@ class Arua extends Command
     *0 - New = This is a new patient.
     */
     private function getTreatmentLast6Months($treatmentLast6Months){
+      
       $first_character = explode('-', $treatmentLast6Months);
-      var_dump($first_character);
       $hadTreatmentInLast6Months = "Left Blank";
-      if (trim($first_character[1]) == 'Follow' || trim($first_character[1]) == 'New') {
+
+      if(trim($first_character[0]) == ""){
+        $hadTreatmentInLast6Months = "Left Blank";
+      }
+     elseif (trim($first_character[1]) == 'Follow' || trim($first_character[1]) == 'New') {
         $hadTreatmentInLast6Months = "Yes";
       }else{
         $hadTreatmentInLast6Months = "No";
@@ -434,11 +447,118 @@ class Arua extends Command
 
       return $hadTreatmentInLast6Months;
     }
+    
+    private function getSampleTypeId($sampleTypeId){
+      if(strcasecmp($sampleTypeId, "plasma") == 0){
+        return 2;
+      }else{
+        return 0;
+      }
+    }
+    
+    private function getViralLoadTestingID($routineMonitoring){
+      
+      if(strpos(strtolower($routineMonitoring), strtolower('routine')) || 
+        strpos(strtolower($routineMonitoring), strtolower('ART')) ){
+          return 1;//Routine Monitoring
+      }elseif (strpos(strtolower($routineMonitoring), strtolower('After enhanced adherence'))) {
+          return 2;//Repeat viral load 
+      }else{
+          return 4;//Left Blank
+      }
+    }
+
+    private function getTreatmentInitiationID($treatmentIndication){
+      
+      if(trim(strtolower($treatmentIndication)) == trim(strtolower('CD4<500')) ){
+        return 3;//CD4<500
+      }elseif ( trim(strtolower($treatmentIndication)) == trim(strtolower('child <15yrs')) ) {
+        return 2;
+      }else{
+        return 0;
+      }
+    }
+
+    private function getTreatmentStatusID($treatmentStatusID){
+      $id = 4;//left blank
+      
+      try {
+        if(intval($treatmentStatusID) == 1){
+          $id = 1;
+        }elseif (intval($treatmentStatusID) == 2) {
+          $id = 2;
+        }elseif (intval($treatmentStatusID) == 3) {
+          $id = 5;//Other Regimen
+        }
+
+      } catch (Exception $e) {
+        if(trim(strtolower($treatmentStatusID)) == trim(strtolower('N/A')) || empty($treatmentStatusID)){
+          $id = 4;//Left Blank
+         }
+      }
+
+      return $id;
+    }
+
+    private function getReasonForTreatmentFailure($reasonForFailureID){
+        $id = 4;// N/A
+      if(trim(strtolower($reasonForFailureID)) == trim(strtolower('N/A')) || empty($reasonForFailureID)){
+          $id = 4;//N/A
+      }elseif(trim(strtolower($reasonForFailureID)) == trim(strtolower('virological')) || empty($reasonForFailureID)){
+        $id = 1;//Virological
+      }
+      return $id;
+    }
+
+   private function getTBtreatmentPhaseID($tbTreatmentPhaseID){
+     $id = 0;// N/A
+
+     return $id;
+   }
+    private function getAdherenceID($arvAdherence){
+        $id = 0;//
+        if(trim(strtolower($arvAdherence)) == trim(strtolower('GOOD ADHERENCE')) ){
+          $id = 1;
+        }elseif (trim(strtolower($arvAdherence)) == trim(strtolower('POOR ADHERENCE'))) {
+          $id = 3;
+        }elseif (trim(strtolower($arvAdherence)) == trim(strtolower('FAIR ADHERENCE'))) {
+          $id = 2;
+        }
+        return $id;
+    }
+
+    private function getDateReceived($date_collection){
+       //add 10 days to the $date_collection
+      $date = date_create($date_collection);
+      date_add($date, date_interval_create_from_date_string('15 days'));
+      return date_format($date, 'Y-m-d H:m:s');
+    }
+    private function getDateCreated($date_collection){
+       //add 10 days to the $date_collection
+      $date = date_create($date_collection);
+      date_add($date, date_interval_create_from_date_string('15 days'));
+      return date_format($date, 'Y-m-d H:m:s');
+    }
+
+    private function getPatientID($patientUniqueID){
+      $id = 0;
+      if(isset($patientUniqueID)){
+        
+        $sql = "SELECT distinct id FROM vl_patients where uniqueID like '$patientUniqueID'";
+        $patient =  \DB::connection('live_db')->select($sql);
+        
+       
+        $id = $patient[0]->id;
+      }
+      return $id;
+    }
     private function insertSamples($arua_data){
         $counter = 0;
         foreach ($arua_data as $key => $arua_data_record) {
 
            $patientUniqueID="50-A-".$arua_data_record['patient_art'];
+
+           $patientID = $this->getPatientID($patientUniqueID);
            $lrCategory="";
            $lrEnvelopeNumber="";
            $lrNumericID="";
@@ -462,42 +582,153 @@ class Arua extends Command
            $activeTBStatus="No";
            $collectionDate=$this->changeDateFormat($arua_data_record['date_collection'],'Y-m-d');
 
-           $receiptDate="2017-04-01";
+           $receiptDate=$this->getDateReceived($arua_data_record['date_collection']);
            $treatmentLast6Months=$this->getTreatmentLast6Months($arua_data_record['more_than_six_months_treatment']);
-           $treatmentInitiationDate="";
-           $sampleTypeID="";
-           $viralLoadTestingID="";//1, 2,3,4
+           $treatmentInitiationDate=$this->changeDateFormat($arua_data_record['date_tx_initiated'],'Y-m-d');
+           $sampleTypeID=$this->getSampleTypeId($arua_data_record['sample_type']);
+           $viralLoadTestingID=$this->getViralLoadTestingID($arua_data_record['routine_monitoring']);//1, 2,3,4
 
-           $treatmentInitiationID="";
-           $treatmentInitiationOther="";
-           $treatmentStatusID="";
-           $reasonForFailureID="";
-           $tbTreatmentPhaseID="";//Not able tp deduce from the excel shhet
+           $treatmentInitiationID=$this->getTreatmentInitiationID($arua_data_record['treatment_indication']);
+           $treatmentInitiationOther="";//NULL
+           $treatmentStatusID=$this->getTreatmentStatusID($arua_data_record['line_of_treatment']);
+           $reasonForFailureID=$this->getReasonForTreatmentFailure($arua_data_record['reason_for_treatment']);
+           $tbTreatmentPhaseID=0;//Not able to deduce from the excel sheet
 
-           $arvAdherenceID="";
-           $vlTestingRoutineMonitoring="";
-           $routineMonitoringLastVLDate="";
+           $arvAdherenceID=$this->getAdherenceID($arua_data_record['arv_adherence']);
+           $vlTestingRoutineMonitoring=0;
+           $routineMonitoringLastVLDate="0000-00-00";
            $routineMonitoringValue="";
-           $routineMonitoringSampleTypeID="";
+           $routineMonitoringSampleTypeID=2;//Plasma
 
-           $vlTestingRepeatTesting="";
-           $repeatVLTestLastVLDate="";
+           $vlTestingRepeatTesting=0;
+           $repeatVLTestLastVLDate="0000-00-00";
            $repeatVLTestValue="";
-           $repeatVLTestSampleTypeID="";
+           $repeatVLTestSampleTypeID=2;
            $vlTestingSuspectedTreatmentFailure="";
 
-           $suspectedTreatmentFailureLastVLDate="";
+           $suspectedTreatmentFailureLastVLDate="0000-00-00";
            $suspectedTreatmentFailureValue="";
-           $suspectedTreatmentFailureSampleTypeID="";
-           $verified="";//
-           $created="";//
-           $createdby="";//
+           $suspectedTreatmentFailureSampleTypeID=2;
+           $verified=1;//
+           $created=$this->getDateCreated($arua_data_record['date_collection']);//
+           $createdby="smuwanga@musph.ac.ug";//
 
-           $counter ++;
+
+           $sql="INSERT INTO vl_samples(
+                patientID,patientUniqueID,lrCategory,lrEnvelopeNumber,lrNumericID,
+                vlSampleID,formNumber,districtID,hubID,facilityID,
+                currentRegimenID,pregnant,pregnantANCNumber,breastfeeding,activeTBStatus,
+                collectionDate,receiptDate,treatmentLast6Months,treatmentInitiationDate,
+                
+                sampleTypeID,viralLoadTestingID,treatmentInitiationID,treatmentInitiationOther,treatmentStatusID,
+                reasonForFailureID,tbTreatmentPhaseID,arvAdherenceID,vlTestingRoutineMonitoring,routineMonitoringLastVLDate,
+                routineMonitoringValue,routineMonitoringSampleTypeID,vlTestingRepeatTesting,repeatVLTestLastVLDate,repeatVLTestValue,
+                repeatVLTestSampleTypeID,vlTestingSuspectedTreatmentFailure,suspectedTreatmentFailureLastVLDate,suspectedTreatmentFailureValue,suspectedTreatmentFailureSampleTypeID,
+                verified,created,createdby
+                  ) values(
+                  $patientID,'$patientUniqueID','$lrCategory','$lrEnvelopeNumber','$lrNumericID',
+                  '$vlSampleID','$formNumber',$districtID,$hubID,$facilityID,
+                  $currentRegimenID,'$pregnant','$pregnantANCNumber','$breastfeeding','$activeTBStatus',
+                  '$collectionDate','$receiptDate','$treatmentLast6Months','$treatmentInitiationDate',
+                  $sampleTypeID,$viralLoadTestingID,$treatmentInitiationID,'$treatmentInitiationOther',$treatmentStatusID,
+                  $reasonForFailureID,$tbTreatmentPhaseID,$arvAdherenceID,$vlTestingRoutineMonitoring,'$routineMonitoringLastVLDate',
+                  '$routineMonitoringValue',$routineMonitoringSampleTypeID,$vlTestingRepeatTesting,'$repeatVLTestLastVLDate','$repeatVLTestValue',
+                  $repeatVLTestSampleTypeID,'$vlTestingSuspectedTreatmentFailure','$suspectedTreatmentFailureLastVLDate','$suspectedTreatmentFailureValue',$suspectedTreatmentFailureSampleTypeID,
+                  $verified,'$created','$createdby'
+                  )";
+           
+             try{
+                  $affectedRows =  \DB::connection('live_db')->insert($sql);
+                  $counter ++;
+                }catch(Exception $e){
+                  echo "\n ".$e->getMessage()." \n";
+                }
+
+           
            /*
            if($counter == 4){
              break;
            }*/
+
+        }//end for loop
+    }//end of method
+
+    private function getResultNumeric($testResult){
+      $first_character = explode('-', $testResult);
+      $suppressedStatus = 0;
+
+      if(trim($first_character[1]) == "Undetectable"){
+        $suppressedStatus = 20;
+      }
+      elseif (trim($first_character[1]) == 'Detectable') {
+        $suppressedStatus = 10000;
+      }
+
+      return $suppressedStatus;
+    }
+    private function getResultAlphanumeric($testResult){
+      $first_character = explode('-', $testResult);
+      $suppressedStatus = "UNKNOWN";
+
+      if(trim($first_character[1]) == "Undetectable"){
+        $suppressedStatus = "Not detected";
+      }
+      elseif (trim($first_character[1]) == 'Detectable') {
+        $suppressedStatus = "10,000 Copies \/ mL";
+      }
+
+      return $suppressedStatus;
+    }
+    private function getSuppressed($testResult){
+      $first_character = explode('-', $testResult);
+      $suppressedStatus = "UNKNOWN";
+
+      if(trim($first_character[1]) == "Undetectable"){
+        $suppressedStatus = "YES";
+      }
+      elseif (trim($first_character[1]) == 'Detectable') {
+        $suppressedStatus = "NO";
+      }
+
+      return $suppressedStatus;
+    }
+    private function insertResults($arua_data){
+      
+      $counter = 0;
+        foreach ($arua_data as $key => $arua_data_record) {
+          $machine="SAMBA";
+
+          $worksheetID=Date('YmdHis')+"$counter";
+          $worksheetID = intval($worksheetID);
+
+          $vlSampleID=$arua_data_record['sample_id'];
+          
+          $resultAlphanumeric=$this->getResultAlphanumeric($arua_data_record['value_and_result']);
+          $resultNumeric=$this->getResultNumeric($arua_data_record['value_and_result']);
+          $suppressed=$this->getSuppressed($arua_data_record['value_and_result']);
+
+          $created=$this->getDateCreated($arua_data_record['date_collection']);//
+          $createdby="smuwanga@musph.ac.ug";
+
+          
+          if($vlSampleID==""){
+            continue;
+          }
+          $sql="insert into vl_results_merged
+               (machine,worksheetID,vlSampleID,resultAlphanumeric,resultNumeric,
+                suppressed,created,createdby) values 
+               ('$machine',$worksheetID,'$vlSampleID','$resultAlphanumeric',$resultNumeric,
+                '$suppressed','$created','$createdby')";
+               
+                try{
+                  $affectedRows =  \DB::connection('live_db')->insert($sql);
+                  $counter ++;
+                }catch(Exception $e){
+                 echo "\n  bad result entry. ".$e->getMessage()." \n";
+                 echo "sql \n";
+
+                }  
+         
         }
     }
 
