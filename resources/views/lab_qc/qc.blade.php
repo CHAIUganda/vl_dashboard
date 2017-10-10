@@ -68,7 +68,7 @@
                 }
 
                 if($flag=='cobas8800'){
-                    $c8800 = MyHTML::interpretCobas8800($resultxxx);
+                    $c8800 = MyHTML::interpretCobas8800($resultxxx, $sample->factor);
                     $pat_result = $c8800['alpha_numerical_result'];
                     $num_result = $c8800['numerical_result'];
                     $suppressed = $c8800['suppressed'];

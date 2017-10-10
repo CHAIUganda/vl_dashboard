@@ -435,8 +435,9 @@ class MyHTML{
         return $ret;
     }
 
-    public static function interpretCobas8800($result){
+    public static function interpretCobas8800($result, $worksheet_factor){
 		$ret = array();
+		$start_char = substr($result, 0, 1);
 		if($result == 'Target Not Detected'){
 			$numerical_result = 0;
 			$suppressed = 'YES';
@@ -453,10 +454,16 @@ class MyHTML{
 			$numerical_result = 10000000;
 			$suppressed = 'NO';
 			$alpha_numerical_result = substr($result, 0,1)." 10,000,000 Copies / mL";
+		}elseif($start_char == '<' || $start_char == '>'){
+			$numerical_result = number_format((float) substr($result, 1) );
+			$suppressed = $start_char=='<'?'YES':'NO';
+			$alpha_numerical_result = "$start_char $numerical_result Copies / mL";
 		}else{
 			$numerical_result = number_format((float)$result);
 			$n_result =  str_replace(",", "", $numerical_result)+0;
+			$n_result *= $worksheet_factor; 
 			$suppressed = $n_result>1000?'NO':'YES';
+			$numerical_result = number_format($n_result);			
 			$alpha_numerical_result = "$numerical_result Copies / mL";
 		}
 
