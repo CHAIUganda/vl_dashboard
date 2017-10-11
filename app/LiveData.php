@@ -10,6 +10,7 @@ class LiveData extends Model
     protected $connection = 'live_db';
 
     const SEX_CASE = "CASE WHEN `gender`='Female' THEN 'f' WHEN `gender`='Male' THEN 'm' ELSE 'x' END";
+    //const SEX_CASE = "CASE WHEN `p.gender`='Female' THEN 'f' WHEN `p.gender`='Male' THEN 'm' ELSE 'x' END";
     const PREGNANT_CASE = "CASE WHEN pregnant='Yes' THEN 'y' WHEN pregnant='No' THEN 'n' ELSE 'x' END";
     const BREAST_FEEDING_CASE="CASE WHEN breastfeeding='Yes' THEN 'y' WHEN breastfeeding='No' THEN 'n' ELSE 'x' END";
     const TB_STATUS_CASE="CASE WHEN activeTBStatus='Yes' THEN 'y' WHEN activeTBStatus='No' THEN 'n' ELSE 'x' END";
@@ -21,6 +22,14 @@ class LiveData extends Model
             'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.',
             'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.'
  )  then 'invalid' else 'valid' end as validity FROM vl_results_merged";
+
+
+  const RESULT_VALIDITY_CASE ="case when results.resultAlphanumeric in ('Failed','Failed.',
+                'Invalid',
+                'Invalid test result. There is insufficient sample to repeat the assay.',
+                'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.',
+                'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.'
+              )  then 'invalid' else 'valid' end";
     //const TRTMT_IDCTN_CASE = "CASE WHEN `treatmentInitiationID`=1 THEN 'b_plus' WHEN `treatmentInitiationID`=4 THEN 'tb' ELSE 'x' END";
 
     public static function getSample($id){
@@ -191,7 +200,7 @@ class LiveData extends Model
             (SELECT distinct r.vlSampleID,r.resultNumeric,case when r.resultAlphanumeric in ('Failed','Failed.',
                 'Invalid',
                 'Invalid test result. There is insufficient sample to repeat the assay.',
-                'There is No Result Given. The vl_results_mergedTest Failed the Quality Control Criteria. We advise you send a a new sample.',
+                'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.',
                 'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.'
               )  then 'invalid' else 'valid' end as validity
            FROM vl_results_merged r inner join vl_samples s on s.vlSampleID=r.vlSampleID where YEAR(s.created)='$year' group by r.vlSampleID) AS r
@@ -215,6 +224,34 @@ class LiveData extends Model
       return $res; 
     }
 
+    public static function getSamplesRecords($year){
+      $age_grp_case=self::ageGroupCase();
+      $reg_time_case=self::regimenTimeCase();
+      $rjctn_rsn_case=self::rjctnRsnCase();
+
+      $sql="select DISTINCT s.vlSampleID,s.id,month(s.created) as monthOfYear,s.districtID,s.hubID,s.facilityID,
+              ROUND((UNIX_TIMESTAMP(s.created)-UNIX_TIMESTAMP(dateOfBirth))/31536000) as age,
+                $age_grp_case AS age_group,s.patientUniqueID,
+              s.created,".self::SEX_CASE." AS sex,s.currentRegimenID,ts.position,s.pregnant,s.breastfeeding,
+              s.activeTBStatus,s.sampleTypeID, $reg_time_case AS reg_time,s.treatmentInitiationID AS trt,
+              results.vlSampleID as resultsSampleID,results.resultAlphanumeric,results.resultNumeric,
+              " .self::RESULT_VALIDITY_CASE." AS sampleResultValidity,
+              $rjctn_rsn_case as rejectionReason
+
+            from 
+                vl_samples s left join (SELECT vlSampleID, count(vlSampleID) as num, max(ID),resultNumeric,
+                                        resultAlphanumeric,suppressed 
+                            FROM vl_results_merged group by vlSampleID) results on s.vlSampleID=results.vlSampleID 
+               left join (select distinct sampleID,id,outcomeReasonsID from vl_samples_verify) v on s.id=v.sampleID
+
+                inner join vl_patients p on s.patientID =p.id 
+                inner join vl_appendix_regimen r on s.currentRegimenID = r.id
+                inner join vl_appendix_treatmentstatus ts on ts.id = r.treatmentStatusID
+                
+            where year(s.created)=$year";
+      $results=\DB::connection('live_db')->select($sql);
+      return $results;
+    }
     public static function getNumberOfPatients($year,$cond=1){
       $age_grp_case=self::ageGroupCase();
       #$reg_type_case=self::regimenTypeCase();

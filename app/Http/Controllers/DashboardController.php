@@ -59,6 +59,8 @@ class DashboardController extends Controller {
 			$to_date=date("Ym");
 			$fro_date=$this->_dateNMonthsBack();
 		}
+
+
 		$conds=[];
 		$conds['$and'][]=['year_month'=>  ['$gte'=> (int)$fro_date] ];
 		$conds['$and'][]=[ 'year_month'=>  ['$lte'=> (int)$to_date] ];
@@ -241,17 +243,34 @@ class DashboardController extends Controller {
 
 	private function _facilityNumbers(){
 		$grp=[];
-		//$grp['_id']='$facility_id';
-		$grp['_id']= array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id' => '$facility_id' );
-		$grp['samples_received']=['$sum'=>'$samples_received'];
-		$grp['patients_received']=['$sum'=>'$patients_received'];
-		$grp['suppressed']=['$sum'=>'$suppressed'];
-		$grp['valid_results']=['$sum'=>'$valid_results'];
-		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
-		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
-		$grp['total_results']=['$sum'=>'$total_results'];
-		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
-		return isset($res['result'])?$res['result']:[];
+		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
+		$grp['samples_received'] = ['$addToSet'=>'$vl_sample_id'];
+		$grp['patients_received']=['$addToSet'=>'$patient_unique_id'];
+
+		$projectArray['_id']='$_id';
+		//$projectArray['district_id']='$_id';
+		
+		$projectArray['samples_received']=['$size'=>'$samples_received'];
+		$projectArray['patients_received']=['$size'=>'$patients_received'];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
+		 ['$project'=>$projectArray]);
+
+		$samples_patients_received= isset($res['result'])?$res['result']:[];
+		$suppressed=$this->_getSuppressedByFacility();
+		$validResults=$this->_getValidResultsByFacility();
+		$rejectedSamples=$this->_getRejectedSamplesByFacility();
+		$dbs_samples=$this->_getDbsSamplesByFacility();
+		$totalResults=$this->_getTotalResultsByFacility();
+
+		$sample_data=[];
+		$sample_data['samples_patients_received']=$samples_patients_received;
+		$sample_data['suppressed']=$suppressed;
+		$sample_data['validResults']=$validResults;
+		$sample_data['rejectedSamples']=$rejectedSamples;
+		$sample_data['dbs_samples']=$dbs_samples;
+		$sample_data['totalResults']=$totalResults;
+		
+		return $this->_getProcessedFacilityAggregates($sample_data);
 	}
 
 
@@ -259,21 +278,244 @@ class DashboardController extends Controller {
 	private function _districtNumbers(){
 		$grp=[];
 		$grp['_id']='$district_id';
-		$grp['samples_received']=['$sum'=>'$samples_received'];
-		$grp['patients_received']=['$sum'=>'$patients_received'];
-		$grp['suppressed']=['$sum'=>'$suppressed'];
-		$grp['valid_results']=['$sum'=>'$valid_results'];
-		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
-		$grp['dbs_samples']=['$sum'=>'$dbs_samples'];
-		$grp['dbs_patients']=['$sum'=>'$dbs_patients_received'];
+		$grp['samples_received'] = ['$addToSet'=>'$vl_sample_id'];
+		$grp['patients_received']=['$addToSet'=>'$patient_unique_id'];
 
-		$grp['total_results']=['$sum'=>'$total_results'];
+		$projectArray['_id']='$_id';
+		//$projectArray['district_id']='$_id';
+		$projectArray['samples_received']=['$size'=>'$samples_received'];
+		$projectArray['patients_received']=['$size'=>'$patients_received'];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
+			['$project'=>$projectArray]);
+	
 		
-		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		$samples_patients_received= isset($res['result'])?$res['result']:[];
+		$suppressed=$this->_getSuppressedByDistrict();
+		$validResults=$this->_getValidResultsByDistrict();
+		$rejectedSamples=$this->_getRejectedSamplesByDistrict();
+		$dbs_samples=$this->_getDbsSamplesByDistrict();
+		$totalResults=$this->_getTotalResultsByDistrict();
+
+		$sample_data=[];
+		$sample_data['samples_patients_received']=$samples_patients_received;
+		$sample_data['suppressed']=$suppressed;
+		$sample_data['validResults']=$validResults;
+		$sample_data['rejectedSamples']=$rejectedSamples;
+		$sample_data['dbs_samples']=$dbs_samples;
+		$sample_data['totalResults']=$totalResults;
+		
+		return $this->_getProcessedDistrictAggregates($sample_data);
+		
+	}
+ 	private function _getProcessedDistrictAggregates($sample_data){
+ 		$samples_patients_received= $sample_data['samples_patients_received'];
+		$suppressed=$sample_data['suppressed'];
+
+		$validResults=$sample_data['validResults'];
+		$rejectedSamples=$sample_data['rejectedSamples'];
+		
+		$dbs_samples=$sample_data['dbs_samples'];
+		$totalResults=$sample_data['totalResults'];
+
+		
+		$districtsAggregates=[];
+		foreach ($samples_patients_received as $key => $value) {
+			$district_id = intval($value['_id']);
+
+			$aggregates['_id']=$district_id;//district id
+			$aggregates['samples_received']=$value['samples_received'];
+			$aggregates['patients_received']=$value['patients_received'];
+
+			
+			$dummySuppressed = $this->searchArray($suppressed, '_id',$district_id);
+			$dummySuppressed != false ? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
+										$aggregates['suppressed']=0;
+			
+			$index = array_search(intval($value['_id']), array_column($validResults, '_id'));
+			$dummyValidResults = $this->searchArray($validResults, '_id',$district_id);
+			$dummyValidResults != false ? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
+										$aggregates['valid_results']=0;	
+			
+			$dummyRejections = $this->searchArray($rejectedSamples, '_id',$district_id);
+			$dummyRejections != false ? $aggregates['rejected_samples']=$dummyRejections['rejected_samples'] : 
+										$aggregates['rejected_samples']=0;
+
+			$dummyDbsSamples = $this->searchArray($dbs_samples, '_id',$district_id);
+			$dummyDbsSamples != false ? $aggregates['dbs_samples']=$dummyDbsSamples['dbs_samples'] : 
+										$aggregates['dbs_samples']=0;
+
+			$dummyTotalResults = $this->searchArray($totalResults, '_id',$district_id);
+			$dummyTotalResults != false ? $aggregates['total_results']=$dummyTotalResults['total_results'] : 
+										$aggregates['total_results']=0;
+
+			$districtsAggregates[$key]=$aggregates;
+			
+		}
+ 		return $districtsAggregates;
+ 	}
+ 	private function _getProcessedFacilityAggregates($sample_data){
+ 		$samples_patients_received= $sample_data['samples_patients_received'];
+		$suppressed=$sample_data['suppressed'];
+
+		$validResults=$sample_data['validResults'];
+		$rejectedSamples=$sample_data['rejectedSamples'];
+		
+		$dbs_samples=$sample_data['dbs_samples'];
+		$totalResults=$sample_data['totalResults'];
+
+		
+		$districtsAggregates=[];
+		foreach ($samples_patients_received as $key => $value) {
+			
+			$_id = $value['_id'];
+			$facility_id = $_id['facility_id'];
+
+			$aggregates['_id']=$facility_id;//facility_id 
+			$aggregates['facility_id']=$facility_id;//facility_id
+			$aggregates['district_id']=intval($_id['district_id']);
+			$aggregates['hub_id']=intval($_id['hub_id']);
+			$aggregates['samples_received']=$value['samples_received'];
+			$aggregates['patients_received']=$value['patients_received'];
+
+			
+			$dummySuppressed = $this->searchArray($suppressed, '_id',$facility_id);
+			$dummySuppressed != false ? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
+										$aggregates['suppressed']=0;
+			
+			$index = array_search(intval($value['_id']), array_column($validResults, '_id'));
+			$dummyValidResults = $this->searchArray($validResults, '_id',$facility_id);
+			$dummyValidResults != false ? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
+										$aggregates['valid_results']=0;	
+			
+			$dummyRejections = $this->searchArray($rejectedSamples, '_id',$facility_id);
+			$dummyRejections != false ? $aggregates['rejected_samples']=$dummyRejections['rejected_samples'] : 
+										$aggregates['rejected_samples']=0;
+
+			$dummyDbsSamples = $this->searchArray($dbs_samples, '_id',$facility_id);
+			$dummyDbsSamples != false ? $aggregates['dbs_samples']=$dummyDbsSamples['dbs_samples'] : 
+										$aggregates['dbs_samples']=0;
+
+			$dummyTotalResults = $this->searchArray($totalResults, '_id',$facility_id);
+			$dummyTotalResults != false ? $aggregates['total_results']=$dummyTotalResults['total_results'] : 
+										$aggregates['total_results']=0;
+
+			$districtsAggregates[$key]=$aggregates;
+			
+		}
+ 		return $districtsAggregates;
+ 	}
+ 	private function searchArray($array_multidimentional, $field, $value)
+	{
+	   foreach($array_multidimentional as $key => $inner_array)
+	   {
+	      if ( $inner_array[$field] === $value )
+	         return $inner_array;
+	   }
+	   return false;
+	}
+ 	private function _getSuppressedByDistrict(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'suppression_status'=>  ['$in'=> ['yes']] ];
+		$grp=[];
+		$grp['_id']='$district_id';
+		$grp['suppressed']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+ 	}
+ 	private function _getSuppressedByFacility(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'suppression_status'=>  ['$in'=> ['yes']] ];
+		$grp=[];
+		$grp['_id']='$facility_id';
+		$grp['suppressed']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+ 	}
+ 	private function _getValidResultsByDistrict(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'sample_result_validity'=>  ['$in'=> ['valid']] ];
+		$grp=[];
+		$grp['_id']='$district_id';
+		$grp['valid_results']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+ 	}
+ 	private function _getValidResultsByFacility(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'sample_result_validity'=>  ['$in'=> ['valid']] ];
+		$grp=[];
+		$grp['_id']='$facility_id';
+		$grp['valid_results']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+ 	}
+ 	private function _getRejectedSamplesByDistrict(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility','incomplete_form','quality_of_sample']] ];
+		$grp=[];
+		$grp['_id']='$district_id';
+		$grp['rejected_samples']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+ 	}
+
+ 	private function _getRejectedSamplesByFacility(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility','incomplete_form','quality_of_sample']] ];
+		$grp=[];
+		$grp['_id']='$facility_id';
+		$grp['rejected_samples']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+ 	}
+ 	private function _getDbsSamplesByDistrict(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [2]] ];
+		$grp=[];
+		$grp['_id']='$district_id';
+		$grp['dbs_samples']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
 		
 		return isset($res['result'])?$res['result']:[];
-	}
+ 	}
+ 	private function _getDbsSamplesByFacility(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [2]] ];
+		$grp=[];
+		$grp['_id']='$facility_id';
+		$grp['dbs_samples']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
 
+		
+		return isset($res['result'])?$res['result']:[];
+ 	}
+	private function _getTotalResultsByDistrict(){
+		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'tested'=>  ['$in'=> ['yes']] ];
+		$grp=[];
+		$grp['_id']='$district_id';
+		$grp['total_results']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+	}
+	private function _getTotalResultsByFacility(){
+		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'tested'=>  ['$in'=> ['yes']] ];
+		$grp=[];
+		$grp['_id']='$facility_id';
+		$grp['total_results']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+	}
 	/*private function _durationNumbers($conds){
 		$cols=" `year_month`,
 				SUM(samples_received-dbs_samples) AS plasma_samples,
