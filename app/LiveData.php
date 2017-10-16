@@ -230,7 +230,7 @@ class LiveData extends Model
       $rjctn_rsn_case=self::rjctnRsnCase();
 
       $sql="select DISTINCT s.vlSampleID,s.id,month(s.created) as monthOfYear,s.districtID,s.hubID,s.facilityID,
-              ROUND((UNIX_TIMESTAMP(s.created)-UNIX_TIMESTAMP(dateOfBirth))/31536000) as age,
+              TIMESTAMPDIFF(YEAR,p.dateOfBirth,s.created) as age,
                 $age_grp_case AS age_group,s.patientUniqueID,
               s.created,".self::SEX_CASE." AS sex,s.currentRegimenID,ts.position,s.pregnant,s.breastfeeding,
               s.activeTBStatus,s.sampleTypeID, $reg_time_case AS reg_time,s.treatmentInitiationID AS trt,
