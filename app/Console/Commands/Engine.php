@@ -50,7 +50,7 @@ class Engine extends Command
      */
     public function handle()
     {
-        ini_set('memory_limit', '2500M');
+        ini_set('memory_limit', '2900M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
@@ -93,7 +93,7 @@ class Engine extends Command
 
                     $data["facility_id"] = isset($s->facilityID)?(int)$s->facilityID:0;
                     $data["age"] = isset($s->age)?(int)$s->age:-1;
-                    $data["age_group_id"] = isset($s->age_group)?(int)$s->age_group:-1;
+                    $data["age_group_id"] = isset($s->age)?(int)$s->age:-1;
                     $data["gender"] = isset($s->sex)?$s->sex:0;
                     $data["treatment_indication_id"] = isset($s->trt)?(int)$s->trt:0;//treatment_initiation
 

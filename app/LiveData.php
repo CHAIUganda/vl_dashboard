@@ -231,7 +231,7 @@ class LiveData extends Model
 
       $sql="select DISTINCT s.vlSampleID,s.id,month(s.created) as monthOfYear,s.districtID,s.hubID,s.facilityID,
               TIMESTAMPDIFF(YEAR,p.dateOfBirth,s.created) as age,
-                $age_grp_case AS age_group,s.patientUniqueID,
+                s.patientUniqueID,
               s.created,".self::SEX_CASE." AS sex,s.currentRegimenID,ts.position,s.pregnant,s.breastfeeding,
               s.activeTBStatus,s.sampleTypeID, $reg_time_case AS reg_time,s.treatmentInitiationID AS trt,
               results.vlSampleID as resultsSampleID,results.resultAlphanumeric,results.resultNumeric,

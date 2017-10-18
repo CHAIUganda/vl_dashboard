@@ -66,8 +66,25 @@ class DashboardController extends Controller {
 		$conds['$and'][]=[ 'year_month'=>  ['$lte'=> (int)$to_date] ];
 		if(!empty($districts)&&$districts!='[]') $conds['$and'][]=[ 'district_id'=>  ['$in'=> json_decode($districts)] ];
 		if(!empty($hubs)&&$hubs!='[]') $conds['$and'][]=[ 'hub_id'=>  ['$in'=> json_decode($hubs)] ];
-		if(!empty($age_ids)&&$age_ids!='[]') 
-			$conds['$and'][]=[ 'age_group_id'=>  ['$in'=> json_decode($age_ids)] ];
+		if(!empty($age_ids)&&$age_ids!='[]') {
+			
+			$age_bands=json_decode($age_ids);
+			$number_of_age_bands=sizeof($age_bands);
+
+			$lower_age_band=0;
+			$upper_age_band=0;
+			if($number_of_age_bands > 0){
+				$lower_age_band=$age_bands[0];
+				$last_index = $number_of_age_bands - 1;
+				$upper_age_band=$age_bands[$last_index];
+			}
+
+			
+			$conds['$and'][]=[ 'age_group_id'=>  ['$gte'=> (int)$lower_age_band] ];
+			$conds['$and'][]=[ 'age_group_id'=>  ['$lte'=> (int)$upper_age_band] ];
+			
+		}
+			
 		if(!empty($genders)&&$genders!='[]') $conds['$and'][]=[ 'gender'=>  ['$in'=> json_decode($genders)] ];
 		//if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen_group_id'=>  ['$in'=> json_decode($regimens)] ];
 		if(!empty($regimens)&&$regimens!='[]') $conds['$and'][]=[ 'regimen'=>  ['$in'=> json_decode($regimens)] ];
@@ -104,7 +121,7 @@ class DashboardController extends Controller {
 		}//end emtct if
 
 		if(!empty($tb_status)&&$tb_status!='[]')$conds['$and'][]=[ 'active_tb_status'=>  ['$in'=> json_decode($tb_status)] ];
-	  
+	  	
 		return $conds;
 	}
 
@@ -207,14 +224,38 @@ class DashboardController extends Controller {
 
 	private function _wholeNumbers(){
 		$grp=[];
-		$grp['_id']=null;
+		/*$grp['_id']=null;
 		$grp['samples_received']=['$sum'=>'$samples_received'];
+		
 		$grp['suppressed']=['$sum'=>'$suppressed'];
 		$grp['valid_results']=['$sum'=>'$valid_results'];
 		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
-		$res=$this->mongo->dashboard_data_refined->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
+		
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
 		$ret=isset($res['result'][0])?$res['result'][0]:[];
-		return $ret;
+		*/
+		$grp['_id']=null;
+		$grp['samples_received'] = ['$addToSet'=>'$vl_sample_id'];
+		$projectArray['_id']='$_id';
+		$projectArray['samples_received']=['$size'=>'$samples_received'];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
+		 ['$project'=>$projectArray]);
+	
+
+		$samples_received= isset($res['result'])?$res['result']:[];
+		$suppressed=$this->_getSuppressedByWholeNumbers();
+		$validResults=$this->_getValidResultsByWholeNumbers();
+		$rejectedSamples=$this->_getRejectedSamplesByWholeNumbers();
+		
+		$sample_data=[];
+		$sample_data['samples_received']=$samples_received;
+		$sample_data['suppressed']=$suppressed;
+		$sample_data['validResults']=$validResults;
+		$sample_data['rejectedSamples']=$rejectedSamples;
+	
+		return $this->_getProcessedWholeNumbersAggregates($sample_data);
+
+
 	}
 
 
@@ -318,6 +359,43 @@ class DashboardController extends Controller {
 		return $this->_getProcessedDistrictAggregates($sample_data);
 		
 	}
+	private function _getProcessedWholeNumbersAggregates($sample_data){
+ 		$samples_received= $sample_data['samples_received'];
+		$suppressed=$sample_data['suppressed'];
+
+		$validResults=$sample_data['validResults'];
+		$rejectedSamples=$sample_data['rejectedSamples'];
+		
+		
+		$wholeNumbersAggregates=[];
+		foreach ($samples_received as $key => $value) {
+			$_id = intval($value['_id']);
+
+			$aggregates['_id']=null;
+			$aggregates['samples_received']=$value['samples_received'];
+			
+
+			
+			$dummySuppressed = $this->searchArray($suppressed, '_id',null);
+			$dummySuppressed != false ? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
+										$aggregates['suppressed']=0;
+			
+			$dummyValidResults = $this->searchArray($validResults, '_id',null);
+			$dummyValidResults != false ? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
+										$aggregates['valid_results']=0;	
+			
+			$dummyRejections = $this->searchArray($rejectedSamples, '_id',null);
+			$dummyRejections != false ? $aggregates['rejected_samples']=$dummyRejections['rejected_samples'] : 
+										$aggregates['rejected_samples']=0;
+
+
+			$wholeNumbersAggregates[$key]=$aggregates;
+			
+		}
+		$ret=isset($wholeNumbersAggregates[0])?$wholeNumbersAggregates[0]:[];
+		
+ 		return $ret;
+ 	}
  	private function _getProcessedDistrictAggregates($sample_data){
  		$samples_patients_received= $sample_data['samples_patients_received'];
 		$suppressed=$sample_data['suppressed'];
@@ -569,6 +647,17 @@ class DashboardController extends Controller {
 	   }
 	   return false;
 	}
+	private function _getSuppressedByWholeNumbers(){
+		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'suppression_status'=>  ['$in'=> ['yes']] ];
+		
+		$grp=[];
+		$grp['_id']=null;
+		$grp['suppressed']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+	}
  	private function _getSuppressedByDistrict(){
  		$extendedConditions=$this->conditions;
 		$extendedConditions['$and'][]=[ 'suppression_status'=>  ['$in'=> ['yes']] ];
@@ -616,6 +705,16 @@ class DashboardController extends Controller {
 		$grp=[];
 		$grp['_id']='$regimen_time_id';
 		$grp['suppressed']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+    }
+    private function _getValidResultsByWholeNumbers(){
+    	$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'sample_result_validity'=>  ['$in'=> ['valid']] ];
+		$grp=[];
+		$grp['_id']=null;
+		$grp['valid_results']=['$sum'=>1];
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
 
 		return isset($res['result'])?$res['result']:[];
@@ -668,6 +767,16 @@ class DashboardController extends Controller {
 		$grp=[];
 		$grp['_id']='$regimen_time_id';
 		$grp['valid_results']=['$sum'=>1];
+		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
+
+		return isset($res['result'])?$res['result']:[];
+ 	}
+ 	private function _getRejectedSamplesByWholeNumbers(){
+ 		$extendedConditions=$this->conditions;
+		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility','incomplete_form','quality_of_sample']] ];
+		$grp=[];
+		$grp['_id']=null;
+		$grp['rejected_samples']=['$sum'=>1];
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
 
 		return isset($res['result'])?$res['result']:[];
