@@ -53,7 +53,11 @@ class Engine extends Command
         ini_set('memory_limit', '2900M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
-        //
+        
+
+  
+       
+
         
         $this->mongo->drop(); 
         $this->_loadHubs();
@@ -63,7 +67,7 @@ class Engine extends Command
         $this->_loadRegimens();
         
         $this->_loadData();
-
+        
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
 
     }
@@ -74,6 +78,7 @@ class Engine extends Command
         $current_year=date('Y');
         //$current_year=2014;
 
+        $facilities=$this->_getFacilities();
        
         while($year<=$current_year){
             $samples_records = LiveData::getSamplesRecords($year);
@@ -88,8 +93,17 @@ class Engine extends Command
                     $data["vl_sample_id"]=isset($s->vlSampleID)? $s->vlSampleID: 0;
                     $data["patient_unique_id"]=isset($s->patientUniqueID)? $s->patientUniqueID: "UNKNOWN";//
                     $data["year_month"] = (int)$year_month;
-                    $data['district_id']=isset($s->districtID)?(int)$s->districtID:0;
-                    $data['hub_id']=isset($s->hubID)?(int)$s->hubID:0;
+                    
+                        if(array_key_exists(intval($s->facilityID), $facilities)){
+                            $facility= $facilities[$s->facilityID];
+                            $data['district_id']=isset($facility->districtID)?$facility->districtID:0;
+                            $data['hub_id']=isset($facility->hubID)?(int)$facility->hubID:0;
+                        }else{
+                            echo "facilityID: ". $s->facilityID ."not known \n";
+                            continue;
+                        }
+
+                    
 
                     $data["facility_id"] = isset($s->facilityID)?(int)$s->facilityID:0;
                     $data["age"] = isset($s->age)?(int)$s->age:-1;
@@ -123,59 +137,27 @@ class Engine extends Command
 
         }//end of while loop
     }
-/*
-    private function _loadHubs(){
-        $hubs=LiveData::getHubs();
-        $sql="";
-        foreach ($hubs as $hub) {
-            $h=new \stdClass;
-            $h->hub_id=$hub->id;
-            $h->name=$hub->hub;
-            $sql.=$this->_insertSQL($h,"hubs");
+
+    private function _getFacilities(){
+        $sql = "SELECT id,districtID,hubID FROM vl_facilities";
+        $facilities =  \DB::connection('live_db')->select($sql);
+        $facilities_map = [];
+        foreach ($facilities as $key => $value) {
+            $facilities_map[$value->id]=$value;
         }
-        \DB::unprepared($sql);
+        return $facilities_map;
     }
 
-    private function _loadFacilities(){
-        $res=LiveData::getFacilities();
-        $sql="";
-        foreach ($res as $row) {
-            $f=new \stdClass;
-            $f->facility_id=$row->id;         
-            $f->name=$row->facility;
-            $f->district_id=$row->districtID;
-            $f->hub_id=$row->hubID;
-            $f->ip_id=$row->ipID;
-            $sql.=$this->_insertSQL($f,"facilities");
+    private function _getLocationIDs($facilities,$facility_id){
+        foreach ($facilities as $key => $facility) {
+            if($facility->id == $facility_id){
+                return $facility;
+             }
+                
         }
-        \DB::unprepared($sql);
+        return false;
     }
-
-    private function _loadDistricts(){
-        $res=LiveData::getDistricts();
-        $sql="";
-        foreach ($res as $row) {
-            $d=new \stdClass;
-            $d->district_id=$row->id;         
-            $d->name=$row->district;            
-            $sql.=$this->_insertSQL($d,"districts");
-        }
-        \DB::unprepared($sql);
-    }
-
-    private function _loadIPs(){
-        $res=LiveData::getIPs();
-        $sql="";
-        foreach ($res as $row) {
-            $p=new \stdClass;
-            $p->ip_id=$row->id;         
-            $p->name=$row->ip;            
-            $sql.=$this->_insertSQL($p,"ips");
-        }
-        \DB::unprepared($sql);
-    }
-*/
-     private function _getSuppressionStatus($samplesRecord){
+    private function _getSuppressionStatus($samplesRecord){
         $suppression_status = "no";
         if($samplesRecord->sampleResultValidity == 'valid'){
             if((int)$samplesRecord->sampleTypeID == 1 && (int)$samplesRecord->resultNumeric < 1000)
