@@ -467,24 +467,24 @@ class DashboardController extends Controller {
 			$aggregates['patients_received']=$value['patients_received'];
 
 			
-			$dummySuppressed = $this->searchArray($suppressed, '_id',$facility_id);
+			$dummySuppressed = $this->searchArray($suppressed, '_id',$_id);
 			$dummySuppressed != false ? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
 										$aggregates['suppressed']=0;
 			
-			$index = array_search(intval($value['_id']), array_column($validResults, '_id'));
-			$dummyValidResults = $this->searchArray($validResults, '_id',$facility_id);
+			//$index = array_search(intval($value['_id']), array_column($validResults, '_id'));
+			$dummyValidResults = $this->searchArray($validResults, '_id',$_id);
 			$dummyValidResults != false ? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
 										$aggregates['valid_results']=0;	
 			
-			$dummyRejections = $this->searchArray($rejectedSamples, '_id',$facility_id);
+			$dummyRejections = $this->searchArray($rejectedSamples, '_id',$_id);
 			$dummyRejections != false ? $aggregates['rejected_samples']=$dummyRejections['rejected_samples'] : 
 										$aggregates['rejected_samples']=0;
 
-			$dummyDbsSamples = $this->searchArray($dbs_samples, '_id',$facility_id);
+			$dummyDbsSamples = $this->searchArray($dbs_samples, '_id',$_id);
 			$dummyDbsSamples != false ? $aggregates['dbs_samples']=$dummyDbsSamples['dbs_samples'] : 
 										$aggregates['dbs_samples']=0;
 
-			$dummyTotalResults = $this->searchArray($totalResults, '_id',$facility_id);
+			$dummyTotalResults = $this->searchArray($totalResults, '_id',$_id );
 			$dummyTotalResults != false ? $aggregates['total_results']=$dummyTotalResults['total_results'] : 
 										$aggregates['total_results']=0;
 
@@ -647,6 +647,7 @@ class DashboardController extends Controller {
 	   }
 	   return false;
 	}
+	
 	private function _getSuppressedByWholeNumbers(){
 		$extendedConditions=$this->conditions;
 		$extendedConditions['$and'][]=[ 'suppression_status'=>  ['$in'=> ['yes']] ];
@@ -672,7 +673,8 @@ class DashboardController extends Controller {
  		$extendedConditions=$this->conditions;
 		$extendedConditions['$and'][]=[ 'suppression_status'=>  ['$in'=> ['yes']] ];
 		$grp=[];
-		$grp['_id']='$facility_id';
+		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
+
 		$grp['suppressed']=['$sum'=>1];
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
 
@@ -733,7 +735,7 @@ class DashboardController extends Controller {
  		$extendedConditions=$this->conditions;
 		$extendedConditions['$and'][]=[ 'sample_result_validity'=>  ['$in'=> ['valid']] ];
 		$grp=[];
-		$grp['_id']='$facility_id';
+		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
 		$grp['valid_results']=['$sum'=>1];
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
 
@@ -796,7 +798,7 @@ class DashboardController extends Controller {
  		$extendedConditions=$this->conditions;
 		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility','incomplete_form','quality_of_sample']] ];
 		$grp=[];
-		$grp['_id']='$facility_id';
+		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
 		$grp['rejected_samples']=['$sum'=>1];
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
 
@@ -859,7 +861,7 @@ class DashboardController extends Controller {
  		$extendedConditions=$this->conditions;
 		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [2]] ];
 		$grp=[];
-		$grp['_id']='$facility_id';
+		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
 		$grp['dbs_samples']=['$sum'=>1];
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
 
@@ -891,7 +893,9 @@ class DashboardController extends Controller {
 		$extendedConditions=$this->conditions;
 		$extendedConditions['$and'][]=[ 'tested'=>  ['$in'=> ['yes']] ];
 		$grp=[];
-		$grp['_id']='$facility_id';
+		//$grp['_id']='$facility_id';		
+		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
+
 		$grp['total_results']=['$sum'=>1];
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$extendedConditions],['$group'=>$grp]);
 
