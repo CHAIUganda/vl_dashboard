@@ -210,6 +210,7 @@ class DashboardController extends Controller {
 		$dist_numbers=$this->_districtNumbers();
 		$drn_numbers=$this->_durationNumbers();
 		
+		
 		//$reg_groups=$this->_regimenGroupNumbers();
 		$regimen_numbers = $this->_regimenNumbers();
 		$reg_times=$this->_regimenTimeNumbers();
@@ -355,6 +356,8 @@ class DashboardController extends Controller {
 		$sample_data['rejectedSamples']=$rejectedSamples;
 		$sample_data['dbs_samples']=$dbs_samples;
 		$sample_data['totalResults']=$totalResults;
+
+
 		
 		return $this->_getProcessedDistrictAggregates($sample_data);
 		
@@ -416,28 +419,39 @@ class DashboardController extends Controller {
 			$aggregates['patients_received']=$value['patients_received'];
 
 			
-			$dummySuppressed = $this->searchArray($suppressed, '_id',$district_id);
-			$dummySuppressed != false ? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
+			$dummySuppressed = $this->searchArrayDistricts($suppressed, '_id',$district_id);
+			
+			isset($dummySuppressed)? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
 										$aggregates['suppressed']=0;
 			
-			$index = array_search(intval($value['_id']), array_column($validResults, '_id'));
-			$dummyValidResults = $this->searchArray($validResults, '_id',$district_id);
-			$dummyValidResults != false ? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
+			$dummyValidResults = $this->searchArrayDistricts($validResults, '_id',$district_id);
+			 isset($dummyValidResults)? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
 										$aggregates['valid_results']=0;	
 			
-			$dummyRejections = $this->searchArray($rejectedSamples, '_id',$district_id);
-			$dummyRejections != false ? $aggregates['rejected_samples']=$dummyRejections['rejected_samples'] : 
-										$aggregates['rejected_samples']=0;
+			
+			
 
-			$dummyDbsSamples = $this->searchArray($dbs_samples, '_id',$district_id);
-			$dummyDbsSamples != false ? $aggregates['dbs_samples']=$dummyDbsSamples['dbs_samples'] : 
+				$dummyRejections = $this->searchArrayDistricts($rejectedSamples, '_id',$district_id);
+			 	
+			 	isset($dummyRejections)?
+				$aggregates['rejected_samples']=$dummyRejections['rejected_samples'] 
+				:$aggregates['rejected_samples']=0;
+			
+			   
+			
+			    $dummyDbsSamples = $this->searchArrayDistricts($dbs_samples, '_id',$district_id);
+			    isset($dummyDbsSamples) ? $aggregates['dbs_samples']=$dummyDbsSamples['dbs_samples'] : 
 										$aggregates['dbs_samples']=0;
+			
 
-			$dummyTotalResults = $this->searchArray($totalResults, '_id',$district_id);
-			$dummyTotalResults != false ? $aggregates['total_results']=$dummyTotalResults['total_results'] : 
+			
+				$dummyTotalResults = $this->searchArrayDistricts($totalResults, '_id',$district_id);
+			 	isset($dummyTotalResults) ? $aggregates['total_results']=$dummyTotalResults['total_results'] : 
 										$aggregates['total_results']=0;
-
+			
 			$districtsAggregates[$key]=$aggregates;
+
+			
 			
 		}
  		return $districtsAggregates;
@@ -646,6 +660,20 @@ class DashboardController extends Controller {
 	         return $inner_array;
 	   }
 	   return false;
+	}
+
+	private function searchArrayDistricts($results, $field, $value)
+	{
+		if(isset($results)){
+			foreach ($results as $key => $results_instance) {
+				if(intval($results_instance[$field]) == intval($value))
+					return $results_instance;
+			}
+		}
+		else{
+			return false;
+		}
+	   
 	}
 	
 	private function _getSuppressedByWholeNumbers(){
