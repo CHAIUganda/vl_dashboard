@@ -876,7 +876,7 @@ class DashboardController extends Controller {
 
  	private function _getDbsSamplesByDistrict(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [2]] ];
+		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [1]] ];
 		$grp=[];
 		$grp['_id']='$district_id';
 		$grp['dbs_samples']=['$sum'=>1];
@@ -887,7 +887,7 @@ class DashboardController extends Controller {
  	}
  	private function _getDbsSamplesByFacility(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [2]] ];
+		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [1]] ];
 		$grp=[];
 		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
 		$grp['dbs_samples']=['$sum'=>1];
