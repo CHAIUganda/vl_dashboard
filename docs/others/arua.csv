@@ -1,0 +1,710 @@
+form_no,sample_id,facility,district,hub,date_collection,sample_type,patient ART,gender,age,has patient been on tx for =>6 mnths,date tx_initiated,curr_regiment AND which tx line patient currently on*,,Which Treatment Line is Patient on,Indication for Treatment Initiation,reason for failure,patient has active TB?,ARV adherence,routine monitor AND repeat VL test after suspect tx failure adherence counselling AND sustected tx failure,last VL date,value AND result,tested,machine type
+UGV21396-57,1702-357,ARRH,Arua,Arua,21-Feb-2017,plasma,849,F,53,1 - Follow-up,04/06/2004,AZT-3TC-NVP,0,,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,13 - Undetectable,Yes,SAMBA
+UGV21392-53,1702-353,ARRH,Arua,Arua,21-Feb-2017,plasma,2094,F,53,1 - Follow-up,16/02/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,9 - Undetectable,Yes,SAMBA
+UGV21397-58,1702-358,ARRH,Arua,Arua,21-Feb-2017,plasma,7146,M,13,1 - Follow-up,13/04/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,14 - Undetectable,Yes,SAMBA
+UGV21394-55,1702-355,ARRH,Arua,Arua,21-Feb-2017,plasma,7418,F,44,1 - Follow-up,06/07/2006,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,11 - Undetectable,Yes,SAMBA
+UGV21384-45,1702-345,ARRH,Arua,Arua,21-Feb-2017,plasma,8171,F,47,1 - Follow-up,02/06/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Undetectable,Yes,SAMBA
+UGV21386-47,1702-347,ARRH,Arua,Arua,21-Feb-2017,plasma,14118,M,38,1 - Follow-up,08/12/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,3 - Undetectable,Yes,SAMBA
+UGV21385-46,1702-346,ARRH,Arua,Arua,21-Feb-2017,plasma,15126,M,62,1 - Follow-up,18/06/2009,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,2 - Undetectable,Yes,SAMBA
+UGV21388-49,1702-349,ARRH,Arua,Arua,21-Feb-2017,plasma,15528,F,39,1 - Follow-up,03/05/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,5 - Undetectable,Yes,SAMBA
+UGV21387-48,1702-348,ARRH,Arua,Arua,21-Feb-2017,plasma,16892,F,48,1 - Follow-up,14/11/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21393-54,1702-354,ARRH,Arua,Arua,21-Feb-2017,plasma,17752,M,41,0 - New,11/06/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,10 - Undetectable,Yes,SAMBA
+UGV21391-52,1702-352,ARRH,Arua,Arua,21-Feb-2017,plasma,19533,M,56,1 - Follow-up,17/08/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,8 - Undetectable,Yes,SAMBA
+UGV21389-50,1702-350,ARRH,Arua,Arua,21-Feb-2017,plasma,25285,F,30,0 - New,03/05/2016,AZT-3TC-NVP,0,1,CD4<500,n/a,No,FAIR ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21395-56,1702-356,ARRH,Arua,Arua,21-Feb-2017,plasma,25732,F,4,1 - Follow-up,23/02/2016,AZT-3TC-NVP,ABC-3TC-NVP,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21390-51,1702-351,ARRH,Arua,Arua,21-Feb-2017,plasma,26723,M,36,0 - New,05/11/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,7 - Undetectable,Yes,SAMBA
+UGV21415-76,1702-374,ARRH,Arua,Arua,22-Feb-2017,plasma,63,F,53,1 - Follow-up,19/07/2002,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,30 - Undetectable,Yes,SAMBA
+UGV21407-68,1702-366,ARRH,Arua,Arua,22-Feb-2017,plasma,1411,F,44,1 - Follow-up,26/05/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,22 - Undetectable,Yes,SAMBA
+UGV21414-75,1702-373,ARRH,Arua,Arua,22-Feb-2017,plasma,3797,M,40,1 - Follow-up,10/03/2005,0,0,1,CD4<500,n/a,No,0,2 - Routine FU,,29 - Undetectable,Yes,SAMBA
+UGV21403-64,1702-363,ARRH,Arua,Arua,22-Feb-2017,plasma,4201,F,61,1 - Follow-up,28/07/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,19 - Undetectable,Yes,SAMBA
+UGV21405-66,1702-365,ARRH,Arua,Arua,22-Feb-2017,plasma,9307,F,38,1 - Follow-up,10/12/2007,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21401-62,1702-361,ARRH,Arua,Arua,22-Feb-2017,plasma,15517,F,56,1 - Follow-up,06/08/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,17 - Undetectable,Yes,SAMBA
+UGV21400-61,1702-360,ARRH,Arua,Arua,22-Feb-2017,plasma,15772,F,38,1 - Follow-up,28/07/2011,OTHER SPECIFY,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,16 - Undetectable,Yes,SAMBA
+UGV21409-70,1702-368,ARRH,Arua,Arua,22-Feb-2017,plasma,15784,M,56,1 - Follow-up,03/12/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,24 - Undetectable,Yes,SAMBA
+UGV21408-69,1702-367,ARRH,Arua,Arua,22-Feb-2017,plasma,16248,F,42,1 - Follow-up,15/04/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,23 - Undetectable,Yes,SAMBA
+UGV21412-73,1702-371,ARRH,Arua,Arua,22-Feb-2017,plasma,16903,F,45,1 - Follow-up,04/06/2010,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,27 - Undetectable,Yes,SAMBA
+UGV21398-59,1702-359,ARRH,Arua,Arua,22-Feb-2017,plasma,18201,F,56,1 - Follow-up,13/01/2014,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,15 - Undetectable,Yes,SAMBA
+UGV21404-65,1702-364,ARRH,Arua,Arua,22-Feb-2017,plasma,20403,M,41,1 - Follow-up,15/06/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,20 - Undetectable,Yes,SAMBA
+UGV21417-78,1702-376,ARRH,Arua,Arua,22-Feb-2017,plasma,21203,M,32,1 - Follow-up,28/06/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21416-77,1702-375,ARRH,Arua,Arua,22-Feb-2017,plasma,22728,F,22,1 - Follow-up,17/06/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21413-74,1702-372,ARRH,Arua,Arua,22-Feb-2017,plasma,22955,F,33,0 - New,06/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,28 - Undetectable,Yes,SAMBA
+UGV21402-63,1702-362,ARRH,Arua,Arua,22-Feb-2017,plasma,23176,F,46,1 - Follow-up,27/05/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,18 - Undetectable,Yes,SAMBA
+UGV21410-71,1702-369,ARRH,Arua,Arua,22-Feb-2017,plasma,24278,F,42,1 - Follow-up,08/05/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,25 - Undetectable,Yes,SAMBA
+UGV21411-72,1702-370,ARRH,Arua,Arua,22-Feb-2017,plasma,24283,F,37,1 - Follow-up,23/09/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,26 - Undetectable,Yes,SAMBA
+UGV21418-79,1702-377,ARRH,Arua,Arua,23-Feb-2017,plasma,18,M,54,1 - Follow-up,13/02/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,33 - Undetectable,Yes,SAMBA
+UGV21425-86,1702-382,ARRH,Arua,Arua,23-Feb-2017,plasma,3124,F,56,1 - Follow-up,06/01/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,38 - Undetectable,Yes,SAMBA
+UGV21424-85,1702-381,ARRH,Arua,Arua,23-Feb-2017,plasma,12765,F,43,1 - Follow-up,24/04/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,37 - Undetectable,Yes,SAMBA
+UGV21429-90,1702-384,ARRH,Arua,Arua,23-Feb-2017,plasma,18253,M,8,1 - Follow-up,17/09/2014,OTHER SPECIFY,ABC-3TC-EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,40 - Undetectable,Yes,SAMBA
+UGV21426-87,1702-383,ARRH,Arua,Arua,23-Feb-2017,plasma,18368,M,46,1 - Follow-up,26/04/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21419-80,1702-378,ARRH,Arua,Arua,23-Feb-2017,plasma,18813,M,38,1 - Follow-up,07/11/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,34 - Undetectable,Yes,SAMBA
+UGV21423-84,1702-380,ARRH,Arua,Arua,23-Feb-2017,plasma,18893,M,52,1 - Follow-up,19/04/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,36 - Undetectable,Yes,SAMBA
+UGV21432-93,1702-386,ARRH,Arua,Arua,23-Feb-2017,plasma,22250,F,34,1 - Follow-up,01/08/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21422-83,1702-379,ARRH,Arua,Arua,23-Feb-2017,plasma,25107,M,35,1 - Follow-up,31/07/2015,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,35 - Undetectable,Yes,SAMBA
+UGV21431-92,1702-385,ARRH,Arua,Arua,23-Feb-2017,plasma,26550,F,3,1 - Follow-up,20/10/2016,OTHER SPECIFY,abc/3tc/nvp,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21435-96,1702-387,ARRH,Arua,Arua,24-Feb-2017,plasma,13646,F,,1 - Follow-up,20/10/2008,,,,CD4<500,,No,,2 - Routine FU,,43 - Undetectable,Yes,SAMBA
+UGV21461-25,1702-409,ARRH,Arua,Arua,27-Feb-2017,plasma,1061,F,37,1 - Follow-up,06/12/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21442-6,1702-394,ARRH,Arua,Arua,27-Feb-2017,plasma,3210,M,20,1 - Follow-up,18/05/2006,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,50 - Undetectable,Yes,SAMBA
+UGV21437-1,1702-389,ARRH,Arua,Arua,27-Feb-2017,plasma,5899,F,44,1 - Follow-up,23/06/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,45 - Undetectable,Yes,SAMBA
+UGV21465-29,1702-413,ARRH,Arua,Arua,27-Feb-2017,plasma,6468,F,15,1 - Follow-up,16/12/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21460-24,1702-408,ARRH,Arua,Arua,27-Feb-2017,plasma,6527,F,41,1 - Follow-up,28/01/2008,TDF-3TC-EFV,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,64 - Undetectable,Yes,SAMBA
+UGV21451-15,1702-402,ARRH,Arua,Arua,27-Feb-2017,plasma,7011,F,50,1 - Follow-up,17/11/2009,AZT-3TC-NVP,azt/3tc/lpv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,58 - Undetectable,Yes,SAMBA
+UGV21447-11,1702-399,ARRH,Arua,Arua,27-Feb-2017,plasma,7163,M,45,1 - Follow-up,10/07/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,55 - Undetectable,Yes,SAMBA
+UGV21459-23,1702-407,ARRH,Arua,Arua,27-Feb-2017,plasma,7570,F,13,1 - Follow-up,27/08/2014,OTHER SPECIFY,ABC-3TC-EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,63 - Undetectable,Yes,SAMBA
+UGV21457-21,1702-405,ARRH,Arua,Arua,27-Feb-2017,plasma,8381,F,37,1 - Follow-up,06/09/2011,AZT-3TC-EFV,azt/3tc/lpv/r,2,CD4<500,virological,No,GOOD ADHERENCE,1 - 6m-ART,,61 - Undetectable,Yes,SAMBA
+UGV21436-0,1702-388,ARRH,Arua,Arua,27-Feb-2017,plasma,8933,F,24,1 - Follow-up,15/10/2007,TDF-3TC-ATV/r,TDF-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21467-31,1702-415,ARRH,Arua,Arua,27-Feb-2017,plasma,8993,M,11,1 - Follow-up,03/01/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,71 - Undetectable,Yes,SAMBA
+UGV21446-10,1702-398,ARRH,Arua,Arua,27-Feb-2017,plasma,8994,F,45,1 - Follow-up,15/02/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,54 - Undetectable,Yes,SAMBA
+UGV21456-20,1702-404,ARRH,Arua,Arua,27-Feb-2017,plasma,9250,F,34,1 - Follow-up,28/08/2015,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,60 - Undetectable,Yes,SAMBA
+UGV21470-34,1702-418,ARRH,Arua,Arua,27-Feb-2017,plasma,11349,F,45,1 - Follow-up,17/12/2007,TDF-3TC-ATV/r,TDF-3TC-ATR/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,74 - Undetectable,Yes,SAMBA
+UGV21445-9,1702-397,ARRH,Arua,Arua,27-Feb-2017,plasma,11494,M,16,1 - Follow-up,24/06/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21443-7,1702-395,ARRH,Arua,Arua,27-Feb-2017,plasma,14187,F,42,1 - Follow-up,02/04/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,51 - Undetectable,Yes,SAMBA
+UGV21440-4,1702-392,ARRH,Arua,Arua,27-Feb-2017,plasma,15748,F,56,1 - Follow-up,03/09/2009,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,48 - Undetectable,Yes,SAMBA
+UGV21449-13,1702-401,ARRH,Arua,Arua,27-Feb-2017,plasma,16919,M,55,1 - Follow-up,04/08/2011,TDF-3TC-ATV/r,tdf/3tc/atv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,57 - Undetectable,Yes,SAMBA
+UGV21462-26,1702-410,ARRH,Arua,Arua,27-Feb-2017,plasma,17505,F,38,1 - Follow-up,07/09/2010,AZT-3TC-NVP,azt/3tc/lpv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,66 - Undetectable,Yes,SAMBA
+UGV21444-8,1702-396,ARRH,Arua,Arua,27-Feb-2017,plasma,17866,M,32,1 - Follow-up,11/10/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,52 - Undetectable,Yes,SAMBA
+UGV21463-27,1702-411,ARRH,Arua,Arua,27-Feb-2017,plasma,18101,M,40,1 - Follow-up,30/11/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,1 - 6m-ART,,67 - Undetectable,Yes,SAMBA
+UGV21466-30,1702-414,ARRH,Arua,Arua,27-Feb-2017,plasma,18299,M,40,1 - Follow-up,21/02/2011,TDF-3TC-LPV/r,tdf-3tc-lpv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,70 - Undetectable,Yes,SAMBA
+UGV21464-28,1702-412,ARRH,Arua,Arua,27-Feb-2017,plasma,19034,F,28,0 - New,10/08/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,68 - Undetectable,Yes,SAMBA
+UGV21441-5,1702-393,ARRH,Arua,Arua,27-Feb-2017,plasma,20638,F,33,1 - Follow-up,23/12/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,49 - Undetectable,Yes,SAMBA
+UGV21439-3,1702-391,ARRH,Arua,Arua,27-Feb-2017,plasma,21486,F,34,1 - Follow-up,15/08/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,47 - Undetectable,Yes,SAMBA
+UGV21448-12,1702-400,ARRH,Arua,Arua,27-Feb-2017,plasma,23989,F,52,1 - Follow-up,18/06/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,56 - Undetectable,Yes,SAMBA
+UGV21469-33,1702-417,ARRH,Arua,Arua,27-Feb-2017,plasma,24225,M,37,1 - Follow-up,22/04/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,73 - Undetectable,Yes,SAMBA
+UGV21438-2,1702-390,ARRH,Arua,Arua,27-Feb-2017,plasma,24442,M,55,1 - Follow-up,05/11/2016,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,46 - Undetectable,Yes,SAMBA
+UGV21468-32,1702-416,ARRH,Arua,Arua,27-Feb-2017,plasma,24964,M,32,1 - Follow-up,07/04/2015,TDF-3TC-EFV,ABC-3TC-EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,72 - Undetectable,Yes,SAMBA
+UGV21471-35,1702-419,ARRH,Arua,Arua,27-Feb-2017,plasma,25089,F,16,1 - Follow-up,15/06/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,75 - Undetectable,Yes,SAMBA
+UGV21452-16,1702-403,ARRH,Arua,Arua,27-Feb-2017,plasma,26310,M,42,0 - New,15/08/2016,OTHER SPECIFY,ABC-3TC-EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,59 - Undetectable,Yes,SAMBA
+UGV21458-22,1702-406,ARRH,Arua,Arua,27-Feb-2017,plasma,26386,M,25,0 - New,29/08/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,62 - Undetectable,Yes,SAMBA
+UGV21490-54,1702-434,ARRH,Arua,Arua,28-Feb-2017,plasma,284,F,50,1 - Follow-up,12/12/2005,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,90 - Undetectable,Yes,SAMBA
+UGV21495-59,1702-439,ARRH,Arua,Arua,28-Feb-2017,plasma,677,F,43,1 - Follow-up,17/04/2003,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,95 - Undetectable,Yes,SAMBA
+UGV21475-39,1702-421,ARRH,Arua,Arua,28-Feb-2017,plasma,7517,M,18,1 - Follow-up,23/08/2006,TDF-3TC-EFV,TDF/3TC/ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,77 - Undetectable,Yes,SAMBA
+UGV21496-60,1702-440,ARRH,Arua,Arua,28-Feb-2017,plasma,8510,F,37,1 - Follow-up,10/04/2015,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,96 - Undetectable,Yes,SAMBA
+UGV21488-52,1702-432,ARRH,Arua,Arua,28-Feb-2017,plasma,9921,M,46,1 - Follow-up,18/05/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,88 - Undetectable,Yes,SAMBA
+UGV21483-47,1702-429,ARRH,Arua,Arua,28-Feb-2017,plasma,10248,F,39,1 - Follow-up,26/11/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,POOR ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21479-43,1702-425,ARRH,Arua,Arua,28-Feb-2017,plasma,10991,M,40,1 - Follow-up,06/07/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21491-55,1702-435,ARRH,Arua,Arua,28-Feb-2017,plasma,14545,M,34,1 - Follow-up,27/04/2007,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,91 - Undetectable,Yes,SAMBA
+UGV21494-58,1702-438,ARRH,Arua,Arua,28-Feb-2017,plasma,14970,F,41,1 - Follow-up,07/06/2013,TDF-FTC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,94 - Undetectable,Yes,SAMBA
+UGV21497-61,1702-441,ARRH,Arua,Arua,28-Feb-2017,plasma,15136,F,30,1 - Follow-up,18/09/2012,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,97 - Undetectable,Yes,SAMBA
+UGV21484-48,1702-430,ARRH,Arua,Arua,28-Feb-2017,plasma,15963,F,52,1 - Follow-up,04/11/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,86 - Undetectable,Yes,SAMBA
+UGV21477-41,1702-423,ARRH,Arua,Arua,28-Feb-2017,plasma,16602,F,45,1 - Follow-up,21/10/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,1 - 6m-ART,,79 - Undetectable,Yes,SAMBA
+UGV21476-40,1702-422,ARRH,Arua,Arua,28-Feb-2017,plasma,18143,M,44,1 - Follow-up,12/12/2010,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,78 - Undetectable,Yes,SAMBA
+UGV21480-44,1702-426,ARRH,Arua,Arua,28-Feb-2017,plasma,19773,F,47,1 - Follow-up,29/11/2012,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,82 - Undetectable,Yes,SAMBA
+UGV21482-46,1702-428,ARRH,Arua,Arua,28-Feb-2017,plasma,20169,M,47,1 - Follow-up,23/12/2015,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,84 - Undetectable,Yes,SAMBA
+UGV21481-45,1702-427,ARRH,Arua,Arua,28-Feb-2017,plasma,21269,M,9,1 - Follow-up,25/06/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,83 - Undetectable,Yes,SAMBA
+UGV21485-49,1702-431,ARRH,Arua,Arua,28-Feb-2017,plasma,22160,F,46,1 - Follow-up,04/02/2013,OTHER SPECIFY,azt/3tc/efv,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,87 - Undetectable,Yes,SAMBA
+UGV21492-56,1702-436,ARRH,Arua,Arua,28-Feb-2017,plasma,22231,F,36,1 - Follow-up,17/04/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,92 - Undetectable,Yes,SAMBA
+UGV21474-38,1702-420,ARRH,Arua,Arua,28-Feb-2017,plasma,24877,M,41,1 - Follow-up,27/03/2015,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,76 - Undetectable,Yes,SAMBA
+UGV21493-57,1702-437,ARRH,Arua,Arua,28-Feb-2017,plasma,25758,F,25,1 - Follow-up,07/07/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,93 - Undetectable,Yes,SAMBA
+UGV21478-42,1702-424,ARRH,Arua,Arua,28-Feb-2017,plasma,26284,F,36,0 - New,23/08/2016,OTHER SPECIFY,ABC-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,80 - Undetectable,Yes,SAMBA
+UGV21489-53,1702-433,ARRH,Arua,Arua,28-Feb-2017,plasma,9669 B1,#N/A,#N/A,1 - Follow-up,09/04/2010,#N/A,#N/A,1,CD4<500,n/a,No,#N/A,2 - Routine FU,,89 - Undetectable,Yes,SAMBA
+UGV21515-79,1703-018,ARRH,Arua,Arua,1-Mar-2017,plasma,4343,F,46,1 - Follow-up,24/12/2004,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,115 - Undetectable,Yes,SAMBA
+UGV21504-68,1703-007,ARRH,Arua,Arua,1-Mar-2017,plasma,4925,F,13,1 - Follow-up,02/06/2005,OTHER SPECIFY,AZT-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,104 - Undetectable,Yes,SAMBA
+UGV21511-75,1703-014,ARRH,Arua,Arua,1-Mar-2017,plasma,7780,F,16,1 - Follow-up,14/04/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,111 - Undetectable,Yes,SAMBA
+UGV21505-69,1703-008,ARRH,Arua,Arua,1-Mar-2017,plasma,8584,F,39,1 - Follow-up,25/05/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,105 - Undetectable,Yes,SAMBA
+UGV21506-70,1703-009,ARRH,Arua,Arua,1-Mar-2017,plasma,8792,F,12,1 - Follow-up,18/07/2014,AZT-3TC-NVP,ABC-3TC-NVP,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,106 - Undetectable,Yes,SAMBA
+UGV21508-72,1703-011,ARRH,Arua,Arua,1-Mar-2017,plasma,9015,M,12,1 - Follow-up,16/04/2007,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,108 - Undetectable,Yes,SAMBA
+UGV21503-67,1703-006,ARRH,Arua,Arua,1-Mar-2017,plasma,9017,M,14,1 - Follow-up,16/01/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,103 - Undetectable,Yes,SAMBA
+UGV21507-71,1703-010,ARRH,Arua,Arua,1-Mar-2017,plasma,9251,M,42,1 - Follow-up,23/09/2009,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,107 - Undetectable,Yes,SAMBA
+UGV21498-62,1703-001,ARRH,Arua,Arua,1-Mar-2017,plasma,10824,M,16,1 - Follow-up,02/10/2007,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,98 - Undetectable,Yes,SAMBA
+UGV21500-64,1703-003,ARRH,Arua,Arua,1-Mar-2017,plasma,11730,F,18,1 - Follow-up,08/04/2013,TDF-3TC-ATV/r,tdf/3tc/atv,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21517-81,1703-020,ARRH,Arua,Arua,1-Mar-2017,plasma,11882,M,41,1 - Follow-up,12/02/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,117 - Undetectable,Yes,SAMBA
+UGV21512-76,1703-015,ARRH,Arua,Arua,1-Mar-2017,plasma,14756,F,36,1 - Follow-up,03/08/2010,TDF-3TC-ATV/r,ABC-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,112 - Undetectable,Yes,SAMBA
+UGV21509-73,1703-012,ARRH,Arua,Arua,1-Mar-2017,plasma,19552,F,31,1 - Follow-up,23/07/2012,AZT-3TC-NVP,ABC-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,109 - Undetectable,Yes,SAMBA
+UGV21501-65,1703-004,ARRH,Arua,Arua,1-Mar-2017,plasma,20167,M,11,1 - Follow-up,03/10/2011,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,101 - Undetectable,Yes,SAMBA
+UGV21510-74,1703-013,ARRH,Arua,Arua,1-Mar-2017,plasma,20335,F,9,1 - Follow-up,07/05/2012,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,110 - Undetectable,Yes,SAMBA
+UGV21502-66,1703-005,ARRH,Arua,Arua,1-Mar-2017,plasma,22953,M,58,1 - Follow-up,26/08/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,102 - Undetectable,Yes,SAMBA
+UGV21513-77,1703-016,ARRH,Arua,Arua,1-Mar-2017,plasma,23004,M,59,1 - Follow-up,05/09/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,113 - Undetectable,Yes,SAMBA
+UGV21499-63,1703-002,ARRH,Arua,Arua,1-Mar-2017,plasma,24018,M,5,1 - Follow-up,26/06/2014,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,99 - Undetectable,Yes,SAMBA
+UGV21518-82,1703-021,ARRH,Arua,Arua,1-Mar-2017,plasma,24944,F,25,0 - New,23/07/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21543-10,1703-045,ARRH,Arua,Arua,2-Mar-2017,plasma,5126,F,41,0 - New,02/10/2013,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,142 - Undetectable,Yes,SAMBA
+UGV21532-96,1703-034,ARRH,Arua,Arua,2-Mar-2017,plasma,5746,M,56,1 - Follow-up,25/07/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,131 - Undetectable,Yes,SAMBA
+UGV21544-11,1703-046,ARRH,Arua,Arua,2-Mar-2017,plasma,8005,F,39,1 - Follow-up,12/06/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,FAIR ADHERENCE,2 - Routine FU,,143 - Undetectable,Yes,SAMBA
+UGV21534-1,1703-036,ARRH,Arua,Arua,2-Mar-2017,plasma,9280,M,50,1 - Follow-up,21/05/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,133 - Undetectable,Yes,SAMBA
+UGV21521-85,1703-023,ARRH,Arua,Arua,2-Mar-2017,plasma,10890,F,10,1 - Follow-up,16/04/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,120 - Undetectable,Yes,SAMBA
+UGV21528-92,1703-030,ARRH,Arua,Arua,2-Mar-2017,plasma,12426,F,33,1 - Follow-up,17/05/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,127 - Undetectable,Yes,SAMBA
+UGV21527-91,1703-029,ARRH,Arua,Arua,2-Mar-2017,plasma,12978,M,40,1 - Follow-up,01/03/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,126 - Undetectable,Yes,SAMBA
+UGV21529-93,1703-031,ARRH,Arua,Arua,2-Mar-2017,plasma,13018,M,16,1 - Follow-up,27/06/2008,OTHER SPECIFY,TDF-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,128 - Undetectable,Yes,SAMBA
+UGV21531-95,1703-033,ARRH,Arua,Arua,2-Mar-2017,plasma,13564,F,42,1 - Follow-up,22/09/2008,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,130 - Undetectable,Yes,SAMBA
+UGV21536-3,1703-038,ARRH,Arua,Arua,2-Mar-2017,plasma,14894,F,32,0 - New,15/03/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,135 - Undetectable,Yes,SAMBA
+UGV21533-0,1703-035,ARRH,Arua,Arua,2-Mar-2017,plasma,16352,F,37,1 - Follow-up,19/12/2011,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,132 - Undetectable,Yes,SAMBA
+UGV21530-94,1703-032,ARRH,Arua,Arua,2-Mar-2017,plasma,16674,F,37,1 - Follow-up,29/09/2010,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,129 - Undetectable,Yes,SAMBA
+UGV21520-84,1703-022,ARRH,Arua,Arua,2-Mar-2017,plasma,17046,F,33,1 - Follow-up,15/07/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,119 - Undetectable,Yes,SAMBA
+UGV21516-80,1703-019,ARRH,Arua,Arua,2-Mar-2017,plasma,17231,F,31,0 - New,14/11/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,116 - Undetectable,Yes,SAMBA
+UGV21525-89,1703-027,ARRH,Arua,Arua,2-Mar-2017,plasma,18490,M,44,1 - Follow-up,09/05/2011,TDF-3TC-ATV/r,TDF-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,124 - Undetectable,Yes,SAMBA
+UGV21537-4,1703-039,ARRH,Arua,Arua,2-Mar-2017,plasma,18916,M,10,1 - Follow-up,04/09/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,136 - Undetectable,Yes,SAMBA
+UGV21540-7,1703-042,ARRH,Arua,Arua,2-Mar-2017,plasma,19953,F,30,1 - Follow-up,12/10/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,139 - Undetectable,Yes,SAMBA
+UGV21539-6,1703-041,ARRH,Arua,Arua,2-Mar-2017,plasma,21639,M,39,1 - Follow-up,18/10/2012,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,138 - Undetectable,Yes,SAMBA
+UGV21535-2,1703-037,ARRH,Arua,Arua,2-Mar-2017,plasma,22095,M,34,0 - New,28/04/2014,OTHER SPECIFY,AZT-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21523-87,1703-025,ARRH,Arua,Arua,2-Mar-2017,plasma,24234,M,38,1 - Follow-up,23/11/2010,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,122 - Undetectable,Yes,SAMBA
+UGV21524-88,1703-026,ARRH,Arua,Arua,2-Mar-2017,plasma,24660,F,29,1 - Follow-up,,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,123 - Undetectable,Yes,SAMBA
+UGV21538-5,1703-040,ARRH,Arua,Arua,2-Mar-2017,plasma,25333,F,35,1 - Follow-up,01/09/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,137 - Undetectable,Yes,SAMBA
+UGV21545-12,1703-047,ARRH,Arua,Arua,2-Mar-2017,plasma,25833,F,31,1 - Follow-up,05/02/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,N/A,144 - Undetectable,Yes,SAMBA
+UGV21522-86,1703-024,ARRH,Arua,Arua,2-Mar-2017,plasma,25974,M,37,0 - New,21/06/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,121 - Undetectable,Yes,SAMBA
+UGV21541-8,1703-043,ARRH,Arua,Arua,2-Mar-2017,plasma,26036,M,43,0 - New,19/07/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,140 - Undetectable,Yes,SAMBA
+UGV21542-9,1703-044,ARRH,Arua,Arua,2-Mar-2017,plasma,26237,F,27,0 - New,18/07/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,141 - Undetectable,Yes,SAMBA
+UGV21526-90,1703-028,ARRH,Arua,Arua,2-Mar-2017,plasma,26406,F,55,1 - Follow-up,20/09/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,125 - Undetectable,Yes,SAMBA
+UGV21567-34,1703-068,ARRH,Arua,Arua,6-Mar-2017,plasma,17,M,65,1 - Follow-up,15/05/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,165 - Undetectable,Yes,SAMBA
+UGV21556-23,1703-057,ARRH,Arua,Arua,6-Mar-2017,plasma,536,F,46,1 - Follow-up,03/04/2003,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,154 - Undetectable,Yes,SAMBA
+UGV21555-22,1703-056,ARRH,Arua,Arua,6-Mar-2017,plasma,2873,F,49,1 - Follow-up,04/02/2006,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,153 - Undetectable,Yes,SAMBA
+UGV21557-24,1703-058,ARRH,Arua,Arua,6-Mar-2017,plasma,2900,M,50,1 - Follow-up,09/08/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,155 - Undetectable,Yes,SAMBA
+UGV21564-31,1703-065,ARRH,Arua,Arua,6-Mar-2017,plasma,2995,M,13,1 - Follow-up,23/07/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,162 - Undetectable,Yes,SAMBA
+UGV21569-36,1703-070,ARRH,Arua,Arua,6-Mar-2017,plasma,4304,F,38,1 - Follow-up,19/05/2015,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,167 - Undetectable,Yes,SAMBA
+UGV21568-35,1703-069,ARRH,Arua,Arua,6-Mar-2017,plasma,7349,M,41,1 - Follow-up,10/10/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,166 - Undetectable,Yes,SAMBA
+UGV21552-19,1703-053,ARRH,Arua,Arua,6-Mar-2017,plasma,8243,M,13,1 - Follow-up,30/10/2006,OTHER SPECIFY,AZT-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21565-32,1703-066,ARRH,Arua,Arua,6-Mar-2017,plasma,9489,M,47,1 - Follow-up,30/05/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,163 - Undetectable,Yes,SAMBA
+UGV21559-26,1703-060,ARRH,Arua,Arua,6-Mar-2017,plasma,9633,M,63,1 - Follow-up,04/11/2011,TDF-3TC-LPV/r,TDF-3TC-LPVr,2,CD4<500,virological,No,POOR ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21554-21,1703-055,ARRH,Arua,Arua,6-Mar-2017,plasma,15536,F,33,1 - Follow-up,26/08/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,152 - Undetectable,Yes,SAMBA
+UGV21550-17,1703-051,ARRH,Arua,Arua,6-Mar-2017,plasma,16153,M,11,1 - Follow-up,20/01/2010,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21566-33,1703-067,ARRH,Arua,Arua,6-Mar-2017,plasma,16729,F,37,1 - Follow-up,27/04/2010,OTHER SPECIFY,ABC-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,164 - Undetectable,Yes,SAMBA
+UGV21561-28,1703-062,ARRH,Arua,Arua,6-Mar-2017,plasma,17207,F,40,1 - Follow-up,22/10/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,1 - 6m-ART,,1 - Detectable,Yes,SAMBA
+UGV21562-29,1703-063,ARRH,Arua,Arua,6-Mar-2017,plasma,21660,F,28,1 - Follow-up,28/11/2010,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,160 - Undetectable,Yes,SAMBA
+UGV21548-15,1703-049,ARRH,Arua,Arua,6-Mar-2017,plasma,21698,F,36,1 - Follow-up,29/08/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,146 - Undetectable,Yes,SAMBA
+UGV21560-27,1703-061,ARRH,Arua,Arua,6-Mar-2017,plasma,21986,F,34,1 - Follow-up,13/11/2013,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,158 - Undetectable,Yes,SAMBA
+UGV21549-16,1703-050,ARRH,Arua,Arua,6-Mar-2017,plasma,23929,F,35,1 - Follow-up,27/06/2014,TDF-3TC-ATV/r,TDF-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21551-18,1703-052,ARRH,Arua,Arua,6-Mar-2017,plasma,24313,F,33,1 - Follow-up,16/10/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,149 - Undetectable,Yes,SAMBA
+UGV21571-38,1703-072,ARRH,Arua,Arua,6-Mar-2017,plasma,24598,F,35,0 - New,29/12/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,169 - Undetectable,Yes,SAMBA
+UGV21553-20,1703-054,ARRH,Arua,Arua,6-Mar-2017,plasma,24836,M,44,1 - Follow-up,16/02/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,151 - Undetectable,Yes,SAMBA
+UGV21558-25,1703-059,ARRH,Arua,Arua,6-Mar-2017,plasma,26326,F,28,0 - New,24/08/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,156 - Undetectable,Yes,SAMBA
+UGV21563-30,1703-064,ARRH,Arua,Arua,6-Mar-2017,plasma,26454,F,22,0 - New,20/09/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,FAIR ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21570-37,1703-071,ARRH,Arua,Arua,6-Mar-2017,plasma,26600,F,20,1 - Follow-up,03/01/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,168 - Undetectable,Yes,SAMBA
+UGV21604-71,1703-105,ARRH,Arua,Arua,7-Mar-2017,plasma,103,F,48,1 - Follow-up,27/09/2007,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,202 - Undetectable,Yes,SAMBA
+UGV21598-65,1703-099,ARRH,Arua,Arua,7-Mar-2017,plasma,501,F,41,1 - Follow-up,26/06/2005,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,196 - Undetectable,Yes,SAMBA
+UGV21595-62,1703-096,ARRH,Arua,Arua,7-Mar-2017,plasma,851,M,24,1 - Follow-up,21/08/2006,OTHER SPECIFY,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,193 - Undetectable,Yes,SAMBA
+UGV21601-68,1703-102,ARRH,Arua,Arua,7-Mar-2017,plasma,1017,F,38,1 - Follow-up,07/07/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,199 - Undetectable,Yes,SAMBA
+UGV21586-53,1703-087,ARRH,Arua,Arua,7-Mar-2017,plasma,1300,M,63,1 - Follow-up,08/09/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,184 - Undetectable,Yes,SAMBA
+UGV21614-81,1703-114,ARRH,Arua,Arua,7-Mar-2017,plasma,1649,M,22,1 - Follow-up,04/01/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,211 - Undetectable,Yes,SAMBA
+UGV21605-72,1703-106,ARRH,Arua,Arua,7-Mar-2017,plasma,1787,F,43,1 - Follow-up,05/06/2009,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,203 - Undetectable,Yes,SAMBA
+UGV21594-61,1703-095,ARRH,Arua,Arua,7-Mar-2017,plasma,2236,F,45,1 - Follow-up,26/03/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,192 - Undetectable,Yes,SAMBA
+UGV21599-66,1703-100,ARRH,Arua,Arua,7-Mar-2017,plasma,2487,F,42,1 - Follow-up,01/03/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,197 - Undetectable,Yes,SAMBA
+UGV21587-54,1703-088,ARRH,Arua,Arua,7-Mar-2017,plasma,2986,M,51,1 - Follow-up,29/07/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,185 - Undetectable,Yes,SAMBA
+UGV21585-52,1703-086,ARRH,Arua,Arua,7-Mar-2017,plasma,4162,M,33,1 - Follow-up,07/07/2005,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,183 - Undetectable,Yes,SAMBA
+UGV21597-64,1703-098,ARRH,Arua,Arua,7-Mar-2017,plasma,5159,F,40,1 - Follow-up,07/04/2011,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,195 - Undetectable,Yes,SAMBA
+UGV21602-69,1703-103,ARRH,Arua,Arua,7-Mar-2017,plasma,6180,F,42,1 - Follow-up,01/11/2011,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,200 - Undetectable,Yes,SAMBA
+UGV21609-76,1703-109,ARRH,Arua,Arua,7-Mar-2017,plasma,6189,F,59,1 - Follow-up,28/03/2006,OTHER SPECIFY,AZT-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,206 - Undetectable,Yes,SAMBA
+UGV21592-59,1703-093,ARRH,Arua,Arua,7-Mar-2017,plasma,6642,F,36,1 - Follow-up,05/03/2007,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21619-86,1703-117,ARRH,Arua,Arua,7-Mar-2017,plasma,6679,M,42,0 - New,16/01/2006,TDF-3TC-ATV/r,TDF-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,214 - Undetectable,Yes,SAMBA
+UGV21610-77,1703-110,ARRH,Arua,Arua,7-Mar-2017,plasma,6696,F,43,1 - Follow-up,17/01/2006,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,207 - Undetectable,Yes,SAMBA
+UGV21596-63,1703-097,ARRH,Arua,Arua,7-Mar-2017,plasma,8477,F,45,1 - Follow-up,04/09/2006,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,194 - Undetectable,Yes,SAMBA
+UGV21606-73,1703-107,ARRH,Arua,Arua,7-Mar-2017,plasma,8751,F,47,1 - Follow-up,10/06/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,204 - Undetectable,Yes,SAMBA
+UGV21584-51,1703-085,ARRH,Arua,Arua,7-Mar-2017,plasma,8788,F,47,1 - Follow-up,27/10/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,182 - Undetectable,Yes,SAMBA
+UGV21612-79,1703-112,ARRH,Arua,Arua,7-Mar-2017,plasma,10760,M,37,1 - Follow-up,14/02/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,209 - Undetectable,Yes,SAMBA
+UGV21583-50,1703-084,ARRH,Arua,Arua,7-Mar-2017,plasma,11650,M,59,1 - Follow-up,14/01/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,181 - Undetectable,Yes,SAMBA
+UGV21573-40,1703-074,ARRH,Arua,Arua,7-Mar-2017,plasma,11964,F,29,1 - Follow-up,01/07/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,1 - 6m-ART,,171 - Undetectable,Yes,SAMBA
+UGV21579-46,1703-080,ARRH,Arua,Arua,7-Mar-2017,plasma,12074,F,35,1 - Follow-up,26/02/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,177 - Undetectable,Yes,SAMBA
+UGV21577-44,1703-078,ARRH,Arua,Arua,7-Mar-2017,plasma,12829,F,51,1 - Follow-up,25/02/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,175 - Undetectable,Yes,SAMBA
+UGV21613-80,1703-113,ARRH,Arua,Arua,7-Mar-2017,plasma,13521,F,46,1 - Follow-up,23/09/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,210 - Undetectable,Yes,SAMBA
+UGV21611-78,1703-111,ARRH,Arua,Arua,7-Mar-2017,plasma,14502,M,36,1 - Follow-up,19/02/2009,TDF-3TC-ATV/r,TDF-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,208 - Undetectable,Yes,SAMBA
+UGV21589-56,1703-090,ARRH,Arua,Arua,7-Mar-2017,plasma,16353,F,49,1 - Follow-up,18/02/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,187 - Undetectable,Yes,SAMBA
+UGV21580-47,1703-081,ARRH,Arua,Arua,7-Mar-2017,plasma,17382,F,32,1 - Follow-up,21/03/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,178 - Undetectable,Yes,SAMBA
+UGV21582-49,1703-083,ARRH,Arua,Arua,7-Mar-2017,plasma,17572,F,46,1 - Follow-up,24/09/2010,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,180 - Undetectable,Yes,SAMBA
+UGV21618-85,1703-116,ARRH,Arua,Arua,7-Mar-2017,plasma,19392,M,52,1 - Follow-up,28/06/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21591-58,1703-092,ARRH,Arua,Arua,7-Mar-2017,plasma,20018,F,44,1 - Follow-up,18/10/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,189 - Undetectable,Yes,SAMBA
+UGV21578-45,1703-079,ARRH,Arua,Arua,7-Mar-2017,plasma,20751,F,40,1 - Follow-up,04/06/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,176 - Undetectable,Yes,SAMBA
+UGV21590-57,1703-091,ARRH,Arua,Arua,7-Mar-2017,plasma,22057,M,32,1 - Follow-up,28/01/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,188 - Undetectable,Yes,SAMBA
+UGV21581-48,1703-082,ARRH,Arua,Arua,7-Mar-2017,plasma,22118,M,38,1 - Follow-up,13/09/2012,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,179 - Undetectable,Yes,SAMBA
+UGV21576-43,1703-077,ARRH,Arua,Arua,7-Mar-2017,plasma,22702,M,36,1 - Follow-up,26/07/2013,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,174 - Undetectable,Yes,SAMBA
+UGV21593-60,1703-094,ARRH,Arua,Arua,7-Mar-2017,plasma,23365,F,39,1 - Follow-up,25/04/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,191 - Undetectable,Yes,SAMBA
+UGV21572-39,1703-073,ARRH,Arua,Arua,7-Mar-2017,plasma,24083,F,37,1 - Follow-up,30/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,170 - Undetectable,Yes,SAMBA
+UGV21588-55,1703-089,ARRH,Arua,Arua,7-Mar-2017,plasma,24158,M,28,1 - Follow-up,13/08/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,186 - Undetectable,Yes,SAMBA
+UGV21574-41,1703-075,ARRH,Arua,Arua,7-Mar-2017,plasma,24264,M,50,1 - Follow-up,29/01/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,POOR ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21607-74,1703-108,ARRH,Arua,Arua,7-Mar-2017,plasma,24408,F,6,1 - Follow-up,24/11/2014,OTHER SPECIFY,ABC-3TC-NVP,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,205 - Undetectable,Yes,SAMBA
+UGV21514-78,1703-017,ARRH,Arua,Arua,7-Mar-2017,plasma,24625,M,32,1 - Follow-up,21/01/2015,OTHER SPECIFY,AZT-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,114 - Undetectable,Yes,SAMBA
+UGV21603-70,1703-104,ARRH,Arua,Arua,7-Mar-2017,plasma,25037,M,23,0 - New,29/06/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21600-67,1703-101,ARRH,Arua,Arua,7-Mar-2017,plasma,26131,F,31,0 - New,15/06/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,198 - Undetectable,Yes,SAMBA
+UGV21575-42,1703-076,ARRH,Arua,Arua,7-Mar-2017,plasma,26365,F,51,0 - New,25/08/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,173 - Undetectable,Yes,SAMBA
+UGV21615-82,1703-115,ARRH,Arua,Arua,7-Mar-2017,plasma,257803,#N/A,#N/A,1 - Follow-up,06/10/2014,#N/A,#N/A,NA,CD4<500,n/a,No,#N/A,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21663-33,1703-160,ARRH,Arua,Arua,9-Mar-2017,plasma,108,F,52,1 - Follow-up,24/10/2002,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,257 - Undetectable,Yes,SAMBA
+UGV21635-5,1703-132,ARRH,Arua,Arua,9-Mar-2017,plasma,375,F,44,1 - Follow-up,26/12/2002,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,229 - Undetectable,Yes,SAMBA
+UGV21633-3,1703-130,ARRH,Arua,Arua,9-Mar-2017,plasma,433,M,18,1 - Follow-up,05/03/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,227 - Undetectable,Yes,SAMBA
+UGV21637-7,1703-134,ARRH,Arua,Arua,9-Mar-2017,plasma,787,F,47,1 - Follow-up,31/07/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,231 - Undetectable,Yes,SAMBA
+UGV21620-87,1703-118,ARRH,Arua,Arua,9-Mar-2017,plasma,1632,F,45,1 - Follow-up,04/06/2004,OTHER SPECIFY,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,215 - Undetectable,Yes,SAMBA
+UGV21654-24,1703-151,ARRH,Arua,Arua,9-Mar-2017,plasma,1804,F,59,1 - Follow-up,25/11/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,248 - Undetectable,Yes,SAMBA
+UGV21659-29,1703-156,ARRH,Arua,Arua,9-Mar-2017,plasma,2170,F,17,1 - Follow-up,21/10/2004,OTHER SPECIFY,AZT-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21674-44,1703-171,ARRH,Arua,Arua,9-Mar-2017,plasma,3042,M,60,1 - Follow-up,20/05/2004,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,268 - Undetectable,Yes,SAMBA
+UGV21640-10,1703-137,ARRH,Arua,Arua,9-Mar-2017,plasma,3179,M,43,1 - Follow-up,23/10/2003,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,234 - Undetectable,Yes,SAMBA
+UGV21644-14,1703-141,ARRH,Arua,Arua,9-Mar-2017,plasma,3513,F,15,1 - Follow-up,03/03/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,238 - Undetectable,Yes,SAMBA
+UGV21670-40,1703-167,ARRH,Arua,Arua,9-Mar-2017,plasma,3788,F,60,1 - Follow-up,05/06/2006,OTHER SPECIFY,AZT-3TC-LPV/r,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,264 - Undetectable,Yes,SAMBA
+UGV21626-93,1703-124,ARRH,Arua,Arua,9-Mar-2017,plasma,5103,F,40,1 - Follow-up,28/07/2005,TDF-3TC-LPV/r,TDF-3TC-LPV/r,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,221 - Undetectable,Yes,SAMBA
+UGV21655-25,1703-152,ARRH,Arua,Arua,9-Mar-2017,plasma,5112,M,45,1 - Follow-up,04/06/2004,D4T-3TC-NVP,0,1,CD4<500,n/a,No,0,4 - After enhanced adherence counseling,,249 - Undetectable,Yes,SAMBA
+UGV21660-30,1703-157,ARRH,Arua,Arua,9-Mar-2017,plasma,5987,F,43,1 - Follow-up,22/12/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,254 - Undetectable,Yes,SAMBA
+UGV21651-21,1703-148,ARRH,Arua,Arua,9-Mar-2017,plasma,6293,F,46,1 - Follow-up,04/09/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,245 - Undetectable,Yes,SAMBA
+UGV21673-43,1703-170,ARRH,Arua,Arua,9-Mar-2017,plasma,6771,F,43,0 - New,10/12/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,267 - Undetectable,Yes,SAMBA
+UGV21658-28,1703-155,ARRH,Arua,Arua,9-Mar-2017,plasma,7287,F,41,1 - Follow-up,02/06/2006,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,252 - Undetectable,Yes,SAMBA
+UGV21664-34,1703-161,ARRH,Arua,Arua,9-Mar-2017,plasma,7402,F,53,1 - Follow-up,06/03/2015,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,258 - Undetectable,Yes,SAMBA
+UGV21656-26,1703-153,ARRH,Arua,Arua,9-Mar-2017,plasma,9203,M,11,1 - Follow-up,14/02/2007,OTHER SPECIFY,ABC-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,250 - Undetectable,Yes,SAMBA
+UGV21649-19,1703-146,ARRH,Arua,Arua,9-Mar-2017,plasma,9313,F,60,1 - Follow-up,07/02/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,243 - Undetectable,Yes,SAMBA
+UGV21642-12,1703-139,ARRH,Arua,Arua,9-Mar-2017,plasma,11426,F,51,1 - Follow-up,19/12/2002,AZT-3TC-NVP,AZT-3TC-NVP,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,236 - Undetectable,Yes,SAMBA
+UGV21632-2,1703-129,ARRH,Arua,Arua,9-Mar-2017,plasma,11439,F,39,1 - Follow-up,20/03/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,226 - Undetectable,Yes,SAMBA
+UGV21653-23,1703-150,ARRH,Arua,Arua,9-Mar-2017,plasma,11798,F,44,1 - Follow-up,14/08/2009,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,247 - Undetectable,Yes,SAMBA
+UGV21645-15,1703-142,ARRH,Arua,Arua,9-Mar-2017,plasma,13047,F,46,1 - Follow-up,10/12/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,239 - Undetectable,Yes,SAMBA
+UGV21636-6,1703-133,ARRH,Arua,Arua,9-Mar-2017,plasma,14738,F,53,1 - Follow-up,24/02/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,230 - Undetectable,Yes,SAMBA
+UGV21622-89,1703-120,ARRH,Arua,Arua,9-Mar-2017,plasma,15009,M,8,1 - Follow-up,04/05/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,217 - Undetectable,Yes,SAMBA
+UGV21662-32,1703-159,ARRH,Arua,Arua,9-Mar-2017,plasma,15110,F,43,1 - Follow-up,30/03/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,256 - Undetectable,Yes,SAMBA
+UGV21666-36,1703-163,ARRH,Arua,Arua,9-Mar-2017,plasma,15113,F,35,1 - Follow-up,31/07/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,260 - Undetectable,Yes,SAMBA
+UGV21671-41,1703-168,ARRH,Arua,Arua,9-Mar-2017,plasma,15155,M,42,1 - Follow-up,11/06/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,265 - Undetectable,Yes,SAMBA
+UGV21624-91,1703-122,ARRH,Arua,Arua,9-Mar-2017,plasma,15556,M,36,1 - Follow-up,03/08/2009,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,219 - Undetectable,Yes,SAMBA
+UGV21650-20,1703-147,ARRH,Arua,Arua,9-Mar-2017,plasma,15955,F,32,1 - Follow-up,04/05/2011,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,244 - Undetectable,Yes,SAMBA
+UGV21669-39,1703-166,ARRH,Arua,Arua,9-Mar-2017,plasma,16265,M,50,1 - Follow-up,28/01/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,263 - Undetectable,Yes,SAMBA
+UGV21668-38,1703-165,ARRH,Arua,Arua,9-Mar-2017,plasma,16332,F,30,1 - Follow-up,15/06/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,262 - Undetectable,Yes,SAMBA
+UGV21625-92,1703-123,ARRH,Arua,Arua,9-Mar-2017,plasma,19252,M,45,1 - Follow-up,29/06/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,220 - Undetectable,Yes,SAMBA
+UGV21641-11,1703-138,ARRH,Arua,Arua,9-Mar-2017,plasma,19290,F,35,1 - Follow-up,12/07/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,235 - Undetectable,Yes,SAMBA
+UGV21657-27,1703-154,ARRH,Arua,Arua,9-Mar-2017,plasma,20177,M,45,1 - Follow-up,17/05/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,251 - Undetectable,Yes,SAMBA
+UGV21646-16,1703-143,ARRH,Arua,Arua,9-Mar-2017,plasma,20685,F,38,1 - Follow-up,20/03/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,240 - Undetectable,Yes,SAMBA
+UGV21665-35,1703-162,ARRH,Arua,Arua,9-Mar-2017,plasma,20790,M,46,1 - Follow-up,17/08/2011,TDF-3TC-ATV/r,TDF-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,259 - Undetectable,Yes,SAMBA
+UGV21661-31,1703-158,ARRH,Arua,Arua,9-Mar-2017,plasma,22446,F,36,1 - Follow-up,11/03/2013,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,255 - Undetectable,Yes,SAMBA
+UGV21647-17,1703-144,ARRH,Arua,Arua,9-Mar-2017,plasma,22868,F,28,1 - Follow-up,27/08/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,241 - Undetectable,Yes,SAMBA
+UGV21621-88,1703-119,ARRH,Arua,Arua,9-Mar-2017,plasma,23263,F,47,1 - Follow-up,13/11/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,216 - Undetectable,Yes,SAMBA
+UGV21634-4,1703-131,ARRH,Arua,Arua,9-Mar-2017,plasma,23579,F,32,1 - Follow-up,03/01/2004,TDF-3TC-ATV/r,TDF-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,228 - Undetectable,Yes,SAMBA
+UGV21623-90,1703-121,ARRH,Arua,Arua,9-Mar-2017,plasma,23771,F,53,1 - Follow-up,12/09/2012,TDF-3TC-ATV/r,TDF-3TC-EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,218 - Undetectable,Yes,SAMBA
+UGV21639-9,1703-136,ARRH,Arua,Arua,9-Mar-2017,plasma,24172,M,50,1 - Follow-up,08/09/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,233 - Undetectable,Yes,SAMBA
+UGV21638-8,1703-135,ARRH,Arua,Arua,9-Mar-2017,plasma,24242,F,28,1 - Follow-up,28/08/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,232 - Undetectable,Yes,SAMBA
+UGV21667-37,1703-164,ARRH,Arua,Arua,9-Mar-2017,plasma,24737,F,4,1 - Follow-up,13/02/2015,OTHER SPECIFY,AZT-3TC-LPV/r,2,child <15yrs,virological,No,GOOD ADHERENCE,2 - Routine FU,,261 - Undetectable,Yes,SAMBA
+UGV21643-13,1703-140,ARRH,Arua,Arua,9-Mar-2017,plasma,24777,M,40,1 - Follow-up,23/06/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,237 - Undetectable,Yes,SAMBA
+UGV21629-96,1703-126,ARRH,Arua,Arua,9-Mar-2017,plasma,24982,F,3,1 - Follow-up,24/06/2015,AZT-3TC-NVP,ABC/3TC/NVP,1,CD4<500,n/a,No,GOOD ADHERENCE,1 - 6m-ART,,223 - Undetectable,Yes,SAMBA
+UGV21652-22,1703-149,ARRH,Arua,Arua,9-Mar-2017,plasma,25229,M,45,1 - Follow-up,27/08/2015,TDF-3TC-EFV,tdf/3tc/atv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,246 - Undetectable,Yes,SAMBA
+UGV21648-18,1703-145,ARRH,Arua,Arua,9-Mar-2017,plasma,25443,F,30,1 - Follow-up,26/11/2015,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,242 - Undetectable,Yes,SAMBA
+UGV21630-0,1703-127,ARRH,Arua,Arua,9-Mar-2017,plasma,25970,M,45,0 - New,03/05/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,224 - Undetectable,Yes,SAMBA
+UGV21672-42,1703-169,ARRH,Arua,Arua,9-Mar-2017,plasma,26198,M,39,0 - New,17/08/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,266 - Undetectable,Yes,SAMBA
+UGV21627-94,1703-125,ARRH,Arua,Arua,9-Mar-2017,plasma,26225,F,57,1 - Follow-up,06/01/2012,0,0,1,CD4<500,n/a,No,0,2 - Routine FU,,222 - Undetectable,Yes,SAMBA
+UGV21631-1,1703-128,ARRH,Arua,Arua,9-Mar-2017,plasma,26426,F,51,0 - New,22/09/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,225 - Undetectable,Yes,SAMBA
+UGV21676-46,1703-172,ARRH,Arua,Arua,10-Mar-2017,plasma,18174,F,29,1 - Follow-up,20/09/2011,,TDF/3TC/EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,20/12/2013,269 - Undetectable,Yes,SAMBA
+UGV21701-71,1703-196,ARRH,Arua,Arua,13-Mar-2017,plasma,337,F,70,1 - Follow-up,12/12/2002,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,293 - Undetectable,Yes,SAMBA
+UGV21696-66,1703-191,ARRH,Arua,Arua,13-Mar-2017,plasma,1173,M,57,1 - Follow-up,11/09/2003,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,288 - Undetectable,Yes,SAMBA
+UGV21716-86,1703-211,ARRH,Arua,Arua,13-Mar-2017,plasma,1173,M,57,1 - Follow-up,02/03/2012,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,308 - Undetectable,Yes,SAMBA
+UGV21703-73,1703-198,ARRH,Arua,Arua,13-Mar-2017,plasma,1251,M,50,1 - Follow-up,03/02/2015,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,295 - Undetectable,Yes,SAMBA
+UGV21728-1,1703-223,ARRH,Arua,Arua,13-Mar-2017,plasma,1398,F,43,1 - Follow-up,30/12/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,320 - Undetectable,Yes,SAMBA
+UGV21717-87,1703-212,ARRH,Arua,Arua,13-Mar-2017,plasma,1563,F,17,1 - Follow-up,07/03/2006,OTHER SPECIFY,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21729-2,1703-224,ARRH,Arua,Arua,13-Mar-2017,plasma,2119,F,53,1 - Follow-up,11/09/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,321 - Undetectable,Yes,SAMBA
+UGV21679-49,1703-174,ARRH,Arua,Arua,13-Mar-2017,plasma,2196,F,16,1 - Follow-up,11/11/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,271 - Undetectable,Yes,SAMBA
+UGV21727-0,1703-222,ARRH,Arua,Arua,13-Mar-2017,plasma,3100,F,52,1 - Follow-up,18/09/2003,OTHER SPECIFY,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,319 - Undetectable,Yes,SAMBA
+UGV21711-81,1703-206,ARRH,Arua,Arua,13-Mar-2017,plasma,3325,F,17,1 - Follow-up,12/05/2005,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,303 - Undetectable,Yes,SAMBA
+UGV21684-54,1703-179,ARRH,Arua,Arua,13-Mar-2017,plasma,3497,F,54,1 - Follow-up,14/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,276 - Undetectable,Yes,SAMBA
+UGV21710-80,1703-205,ARRH,Arua,Arua,13-Mar-2017,plasma,4101,M,47,1 - Follow-up,17/01/2008,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,302 - Undetectable,Yes,SAMBA
+UGV21702-72,1703-197,ARRH,Arua,Arua,13-Mar-2017,plasma,5493,F,37,1 - Follow-up,13/10/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,294 - Undetectable,Yes,SAMBA
+UGV21690-60,1703-185,ARRH,Arua,Arua,13-Mar-2017,plasma,6505,F,36,1 - Follow-up,19/03/2010,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,282 - Undetectable,Yes,SAMBA
+UGV21692-62,1703-187,ARRH,Arua,Arua,13-Mar-2017,plasma,6525,M,47,1 - Follow-up,24/04/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,284 - Undetectable,Yes,SAMBA
+UGV21724-94,1703-219,ARRH,Arua,Arua,13-Mar-2017,plasma,6730,F,67,1 - Follow-up,31/10/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,316 - Undetectable,Yes,SAMBA
+UGV21682-52,1703-177,ARRH,Arua,Arua,13-Mar-2017,plasma,7344,F,41,1 - Follow-up,11/11/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,274 - Undetectable,Yes,SAMBA
+UGV21713-83,1703-208,ARRH,Arua,Arua,13-Mar-2017,plasma,9592,F,45,1 - Follow-up,06/08/2007,TDF-3TC-EFV,TDF-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,305 - Undetectable,Yes,SAMBA
+UGV21700-70,1703-195,ARRH,Arua,Arua,13-Mar-2017,plasma,9877,M,42,1 - Follow-up,01/07/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,292 - Undetectable,Yes,SAMBA
+UGV21686-56,1703-181,ARRH,Arua,Arua,13-Mar-2017,plasma,12038,M,39,1 - Follow-up,28/03/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,278 - Undetectable,Yes,SAMBA
+UGV21719-89,1703-214,ARRH,Arua,Arua,13-Mar-2017,plasma,12487,M,11,1 - Follow-up,10/02/2008,OTHER SPECIFY,ABC-3TC-LPV/r,2,child <15yrs,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21705-75,1703-200,ARRH,Arua,Arua,13-Mar-2017,plasma,14218,M,32,1 - Follow-up,03/03/2009,OTHER SPECIFY,ABC-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,297 - Undetectable,Yes,SAMBA
+UGV21721-91,1703-216,ARRH,Arua,Arua,13-Mar-2017,plasma,15432,F,16,1 - Follow-up,28/08/2009,TDF-3TC-ATV/r,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,313 - Undetectable,Yes,SAMBA
+UGV21707-77,1703-202,ARRH,Arua,Arua,13-Mar-2017,plasma,15767,M,9,1 - Follow-up,01/12/2009,OTHER SPECIFY,AZT-3TC-LPV/r,2,child <15yrs,virological,No,GOOD ADHERENCE,2 - Routine FU,,299 - Undetectable,Yes,SAMBA
+UGV21693-63,1703-188,ARRH,Arua,Arua,13-Mar-2017,plasma,15962,M,8,1 - Follow-up,13/11/2009,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,285 - Undetectable,Yes,SAMBA
+UGV21689-59,1703-184,ARRH,Arua,Arua,13-Mar-2017,plasma,16026,M,41,1 - Follow-up,30/11/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,281 - Undetectable,Yes,SAMBA
+UGV21718-88,1703-213,ARRH,Arua,Arua,13-Mar-2017,plasma,16897,F,34,1 - Follow-up,11/05/2011,OTHER SPECIFY,ABC-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,310 - Undetectable,Yes,SAMBA
+UGV21722-92,1703-217,ARRH,Arua,Arua,13-Mar-2017,plasma,17192,M,40,1 - Follow-up,29/06/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,314 - Undetectable,Yes,SAMBA
+UGV21704-74,1703-199,ARRH,Arua,Arua,13-Mar-2017,plasma,17211,M,8,1 - Follow-up,25/10/2010,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,296 - Undetectable,Yes,SAMBA
+UGV21709-79,1703-204,ARRH,Arua,Arua,13-Mar-2017,plasma,17415,F,41,1 - Follow-up,13/04/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,301 - Undetectable,Yes,SAMBA
+UGV21720-90,1703-215,ARRH,Arua,Arua,13-Mar-2017,plasma,17675,F,33,1 - Follow-up,14/03/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,312 - Undetectable,Yes,SAMBA
+UGV21694-64,1703-189,ARRH,Arua,Arua,13-Mar-2017,plasma,18615,F,27,1 - Follow-up,11/04/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,286 - Undetectable,Yes,SAMBA
+UGV21723-93,1703-218,ARRH,Arua,Arua,13-Mar-2017,plasma,18638,F,35,1 - Follow-up,15/02/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,315 - Undetectable,Yes,SAMBA
+UGV21730-3,1703-225,ARRH,Arua,Arua,13-Mar-2017,plasma,18688,M,15,1 - Follow-up,07/08/2014,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21691-61,1703-186,ARRH,Arua,Arua,13-Mar-2017,plasma,19014,F,8,1 - Follow-up,15/09/2014,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,283 - Undetectable,Yes,SAMBA
+UGV21712-82,1703-207,ARRH,Arua,Arua,13-Mar-2017,plasma,19087,M,63,1 - Follow-up,08/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,304 - Undetectable,Yes,SAMBA
+UGV21714-84,1703-209,ARRH,Arua,Arua,13-Mar-2017,plasma,19224,F,41,1 - Follow-up,01/07/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,306 - Undetectable,Yes,SAMBA
+UGV21681-51,1703-176,ARRH,Arua,Arua,13-Mar-2017,plasma,19358,F,37,1 - Follow-up,11/07/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,273 - Undetectable,Yes,SAMBA
+UGV21715-85,1703-210,ARRH,Arua,Arua,13-Mar-2017,plasma,19391,F,37,1 - Follow-up,31/01/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,307 - Undetectable,Yes,SAMBA
+UGV21708-78,1703-203,ARRH,Arua,Arua,13-Mar-2017,plasma,19512,F,35,1 - Follow-up,15/07/2011,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,300 - Undetectable,Yes,SAMBA
+UGV21726-96,1703-221,ARRH,Arua,Arua,13-Mar-2017,plasma,19623,M,45,1 - Follow-up,15/08/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21697-67,1703-192,ARRH,Arua,Arua,13-Mar-2017,plasma,20384,F,7,1 - Follow-up,10/09/2012,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,289 - Undetectable,Yes,SAMBA
+UGV21683-53,1703-178,ARRH,Arua,Arua,13-Mar-2017,plasma,20459,M,35,1 - Follow-up,23/04/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,275 - Undetectable,Yes,SAMBA
+UGV21725-95,1703-220,ARRH,Arua,Arua,13-Mar-2017,plasma,21008,M,42,1 - Follow-up,11/06/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,317 - Undetectable,Yes,SAMBA
+UGV21706-76,1703-201,ARRH,Arua,Arua,13-Mar-2017,plasma,21736,F,34,1 - Follow-up,28/08/2008,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,298 - Undetectable,Yes,SAMBA
+UGV21688-58,1703-183,ARRH,Arua,Arua,13-Mar-2017,plasma,23286,M,40,1 - Follow-up,03/09/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,280 - Undetectable,Yes,SAMBA
+UGV21699-69,1703-194,ARRH,Arua,Arua,13-Mar-2017,plasma,24647,M,37,1 - Follow-up,05/08/2015,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,291 - Undetectable,Yes,SAMBA
+UGV21695-65,1703-190,ARRH,Arua,Arua,13-Mar-2017,plasma,25257,M,40,1 - Follow-up,22/03/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,287 - Undetectable,Yes,SAMBA
+UGV21687-57,1703-182,ARRH,Arua,Arua,13-Mar-2017,plasma,25594,M,34,1 - Follow-up,18/12/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,279 - Undetectable,Yes,SAMBA
+UGV21685-55,1703-180,ARRH,Arua,Arua,13-Mar-2017,plasma,25645,F,40,1 - Follow-up,01/08/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,277 - Undetectable,Yes,SAMBA
+UGV21680-50,1703-175,ARRH,Arua,Arua,13-Mar-2017,plasma,26158,F,49,0 - New,27/06/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,272 - Undetectable,Yes,SAMBA
+UGV21698-68,1703-193,ARRH,Arua,Arua,13-Mar-2017,plasma,26252,F,35,0 - New,27/06/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,POOR ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21758-31,1703-250,ARRH,Arua,Arua,14-Mar-2017,plasma,367,M,64,1 - Follow-up,26/12/2002,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,347 - Undetectable,Yes,SAMBA
+UGV21760-33,1703-252,ARRH,Arua,Arua,14-Mar-2017,plasma,577,F,36,1 - Follow-up,27/02/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,349 - Undetectable,Yes,SAMBA
+UGV21734-7,1703-229,ARRH,Arua,Arua,14-Mar-2017,plasma,630,M,44,1 - Follow-up,24/04/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,326 - Undetectable,Yes,SAMBA
+UGV21782-55,1703-273,ARRH,Arua,Arua,14-Mar-2017,plasma,957,F,43,1 - Follow-up,17/02/2015,OTHER SPECIFY,ABC-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21751-24,1703-244,ARRH,Arua,Arua,14-Mar-2017,plasma,1372,F,42,1 - Follow-up,04/06/2004,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,341 - Undetectable,Yes,SAMBA
+UGV21763-36,1703-255,ARRH,Arua,Arua,14-Mar-2017,plasma,1415,F,37,1 - Follow-up,08/12/2004,OTHER SPECIFY,3TC/AZT/LPV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,352 - Undetectable,Yes,SAMBA
+UGV21786-59,1703-277,ARRH,Arua,Arua,14-Mar-2017,plasma,1675,F,50,1 - Follow-up,14/01/2005,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,374 - Undetectable,Yes,SAMBA
+UGV21762-35,1703-254,ARRH,Arua,Arua,14-Mar-2017,plasma,2495,F,42,1 - Follow-up,29/05/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,351 - Undetectable,Yes,SAMBA
+UGV21735-8,1703-230,ARRH,Arua,Arua,14-Mar-2017,plasma,2500,F,40,1 - Follow-up,18/12/2004,OTHER SPECIFY,ABC-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21738-11,1703-232,ARRH,Arua,Arua,14-Mar-2017,plasma,2558,F,53,1 - Follow-up,20/09/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,329 - Undetectable,Yes,SAMBA
+UGV21781-54,1703-272,ARRH,Arua,Arua,14-Mar-2017,plasma,4626,M,59,1 - Follow-up,31/03/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,369 - Undetectable,Yes,SAMBA
+UGV21732-5,1703-227,ARRH,Arua,Arua,14-Mar-2017,plasma,4685,M,42,1 - Follow-up,11/08/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,324 - Undetectable,Yes,SAMBA
+UGV21744-17,1703-238,ARRH,Arua,Arua,14-Mar-2017,plasma,4943,F,53,1 - Follow-up,05/05/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,335 - Undetectable,Yes,SAMBA
+UGV21790-63,1703-281,ARRH,Arua,Arua,14-Mar-2017,plasma,5166,F,47,1 - Follow-up,23/06/2005,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,378 - Undetectable,Yes,SAMBA
+UGV21765-38,1703-257,ARRH,Arua,Arua,14-Mar-2017,plasma,5564,F,46,1 - Follow-up,27/02/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,354 - Undetectable,Yes,SAMBA
+UGV21769-42,1703-261,ARRH,Arua,Arua,14-Mar-2017,plasma,6120,F,37,1 - Follow-up,29/09/2008,TDF-3TC-ATV/r,D,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21759-32,1703-251,ARRH,Arua,Arua,14-Mar-2017,plasma,6197,M,40,1 - Follow-up,13/10/2005,TDF-3TC-LPV/r,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,348 - Undetectable,Yes,SAMBA
+UGV21768-41,1703-260,ARRH,Arua,Arua,14-Mar-2017,plasma,6213,F,39,1 - Follow-up,19/12/2012,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,357 - Undetectable,Yes,SAMBA
+UGV21764-37,1703-256,ARRH,Arua,Arua,14-Mar-2017,plasma,6407,M,53,1 - Follow-up,10/02/2006,TDF-3TC-LPV/r,TDF-3TC-LPV/r,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,353 - Undetectable,Yes,SAMBA
+UGV21770-43,1703-262,ARRH,Arua,Arua,14-Mar-2017,plasma,6662,M,47,1 - Follow-up,06/04/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,359 - Undetectable,Yes,SAMBA
+UGV21745-18,1703-239,ARRH,Arua,Arua,14-Mar-2017,plasma,7078,M,46,1 - Follow-up,09/01/2007,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,336 - Undetectable,Yes,SAMBA
+UGV21731-4,1703-226,ARRH,Arua,Arua,14-Mar-2017,plasma,8181,F,51,1 - Follow-up,27/11/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,323 - Undetectable,Yes,SAMBA
+UGV21767-40,1703-259,ARRH,Arua,Arua,14-Mar-2017,plasma,8220,F,50,1 - Follow-up,12/10/2006,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21796-69,1703-287,ARRH,Arua,Arua,14-Mar-2017,plasma,8777,F,45,1 - Follow-up,03/01/2007,OTHER SPECIFY,3TC/AZT/LPV,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,384 - Undetectable,Yes,SAMBA
+UGV21780-53,1703-271,ARRH,Arua,Arua,14-Mar-2017,plasma,9328,M,58,1 - Follow-up,17/01/2008,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21797-70,1703-288,ARRH,Arua,Arua,14-Mar-2017,plasma,9644,F,47,1 - Follow-up,12/07/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21733-6,1703-228,ARRH,Arua,Arua,14-Mar-2017,plasma,9905,M,45,1 - Follow-up,29/05/2007,TDF-3TC-ATV/r,tdf/3tc/atv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21792-65,1703-283,ARRH,Arua,Arua,14-Mar-2017,plasma,9952,M,51,1 - Follow-up,05/06/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,380 - Undetectable,Yes,SAMBA
+UGV21757-30,1703-249,ARRH,Arua,Arua,14-Mar-2017,plasma,9964,F,34,1 - Follow-up,21/05/2007,AZT-3TC-NVP,D/EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,346 - Undetectable,Yes,SAMBA
+UGV21739-12,1703-233,ARRH,Arua,Arua,14-Mar-2017,plasma,9969,M,33,1 - Follow-up,08/06/2007,TDF-3TC-ATV/r,azt/3tc/lpv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,330 - Undetectable,Yes,SAMBA
+UGV21761-34,1703-253,ARRH,Arua,Arua,14-Mar-2017,plasma,10265,F,47,1 - Follow-up,28/03/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,350 - Undetectable,Yes,SAMBA
+UGV21753-26,1703-246,ARRH,Arua,Arua,14-Mar-2017,plasma,11011,F,18,1 - Follow-up,11/09/2007,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,343 - Undetectable,Yes,SAMBA
+UGV21740-13,1703-234,ARRH,Arua,Arua,14-Mar-2017,plasma,12141,M,49,1 - Follow-up,11/05/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,331 - Undetectable,Yes,SAMBA
+UGV21785-58,1703-276,ARRH,Arua,Arua,14-Mar-2017,plasma,12271,F,67,1 - Follow-up,30/04/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,373 - Undetectable,Yes,SAMBA
+UGV21791-64,1703-282,ARRH,Arua,Arua,14-Mar-2017,plasma,12282,F,31,1 - Follow-up,01/02/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,379 - Undetectable,Yes,SAMBA
+UGV21772-45,1703-264,ARRH,Arua,Arua,14-Mar-2017,plasma,13604,F,56,1 - Follow-up,29/09/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,361 - Undetectable,Yes,SAMBA
+UGV21787-60,1703-278,ARRH,Arua,Arua,14-Mar-2017,plasma,13635,F,36,1 - Follow-up,30/03/2009,TDF-3TC-ATV/r,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21779-52,1703-270,ARRH,Arua,Arua,14-Mar-2017,plasma,13758,M,59,1 - Follow-up,17/02/2009,AZT-3TC-ATV/r,TDF-3TC-ATR/v,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,367 - Undetectable,Yes,SAMBA
+UGV21789-62,1703-280,ARRH,Arua,Arua,14-Mar-2017,plasma,13830,M,46,1 - Follow-up,07/06/2013,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,377 - Undetectable,Yes,SAMBA
+UGV21771-44,1703-263,ARRH,Arua,Arua,14-Mar-2017,plasma,14257,M,19,1 - Follow-up,27/01/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,360 - Undetectable,Yes,SAMBA
+UGV21793-66,1703-284,ARRH,Arua,Arua,14-Mar-2017,plasma,14400,F,56,1 - Follow-up,24/12/2010,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,381 - Undetectable,Yes,SAMBA
+UGV21741-14,1703-235,ARRH,Arua,Arua,14-Mar-2017,plasma,15283,M,18,1 - Follow-up,27/04/2010,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21755-28,1703-247,ARRH,Arua,Arua,14-Mar-2017,plasma,15627,M,39,1 - Follow-up,02/09/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,344 - Undetectable,Yes,SAMBA
+UGV21750-23,1703-243,ARRH,Arua,Arua,14-Mar-2017,plasma,15913,F,25,1 - Follow-up,18/07/2014,OTHER SPECIFY,AZT-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,340 - Undetectable,Yes,SAMBA
+UGV21777-50,1703-268,ARRH,Arua,Arua,14-Mar-2017,plasma,16993,M,36,1 - Follow-up,08/07/2010,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21788-61,1703-279,ARRH,Arua,Arua,14-Mar-2017,plasma,17191,M,25,1 - Follow-up,05/07/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,376 - Undetectable,Yes,SAMBA
+UGV21737-10,1703-231,ARRH,Arua,Arua,14-Mar-2017,plasma,17455,F,35,1 - Follow-up,20/10/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,328 - Undetectable,Yes,SAMBA
+UGV21743-16,1703-237,ARRH,Arua,Arua,14-Mar-2017,plasma,17933,F,52,1 - Follow-up,25/11/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,334 - Undetectable,Yes,SAMBA
+UGV21742-15,1703-236,ARRH,Arua,Arua,14-Mar-2017,plasma,20413,M,44,1 - Follow-up,28/03/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,1 - 6m-ART,,333 - Undetectable,Yes,SAMBA
+UGV21756-29,1703-248,ARRH,Arua,Arua,14-Mar-2017,plasma,20661,M,50,1 - Follow-up,13/07/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,345 - Undetectable,Yes,SAMBA
+UGV21778-51,1703-269,ARRH,Arua,Arua,14-Mar-2017,plasma,22765,M,8,1 - Follow-up,24/11/2014,OTHER SPECIFY,ABC-3TC-EFV,1,child <15yrs,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,366 - Undetectable,Yes,SAMBA
+UGV21795-68,1703-286,ARRH,Arua,Arua,14-Mar-2017,plasma,22842,F,22,1 - Follow-up,17/06/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,383 - Undetectable,Yes,SAMBA
+UGV21783-56,1703-274,ARRH,Arua,Arua,14-Mar-2017,plasma,23099,M,46,1 - Follow-up,18/10/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,371 - Undetectable,Yes,SAMBA
+UGV21784-57,1703-275,ARRH,Arua,Arua,14-Mar-2017,plasma,23225,M,31,1 - Follow-up,11/11/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,372 - Undetectable,Yes,SAMBA
+UGV21747-20,1703-241,ARRH,Arua,Arua,14-Mar-2017,plasma,23336,M,40,1 - Follow-up,28/05/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,338 - Undetectable,Yes,SAMBA
+UGV21752-25,1703-245,ARRH,Arua,Arua,14-Mar-2017,plasma,23819,F,48,1 - Follow-up,,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,342 - Undetectable,Yes,SAMBA
+UGV21794-67,1703-285,ARRH,Arua,Arua,14-Mar-2017,plasma,24071,F,46,1 - Follow-up,20/06/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,382 - Undetectable,Yes,SAMBA
+UGV21773-46,1703-265,ARRH,Arua,Arua,14-Mar-2017,plasma,24916,F,26,0 - New,08/04/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,362 - Undetectable,Yes,SAMBA
+UGV21766-39,1703-258,ARRH,Arua,Arua,14-Mar-2017,plasma,25221,F,38,0 - New,07/07/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,355 - Undetectable,Yes,SAMBA
+UGV21775-48,1703-266,ARRH,Arua,Arua,14-Mar-2017,plasma,25302,F,29,1 - Follow-up,16/09/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,363 - Undetectable,Yes,SAMBA
+UGV21776-49,1703-267,ARRH,Arua,Arua,14-Mar-2017,plasma,25303,M,39,1 - Follow-up,,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,364 - Undetectable,Yes,SAMBA
+UGV21746-19,1703-240,ARRH,Arua,Arua,14-Mar-2017,plasma,26407,F,28,0 - New,20/09/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,337 - Undetectable,Yes,SAMBA
+UGV21749-22,1703-242,ARRH,Arua,Arua,14-Mar-2017,plasma,15913 B1,#N/A,#N/A,0 - New,26/11/2009,#N/A,#N/A,NA,CD4<500,n/a,No,#N/A,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21823-96,1703-313,ARRH,Arua,Arua,15-Mar-2017,plasma,12,M,65,1 - Follow-up,01/01/2011,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21832-8,1703-322,ARRH,Arua,Arua,15-Mar-2017,plasma,81,F,46,1 - Follow-up,04/09/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,419 - Undetectable,Yes,SAMBA
+UGV21805-78,1703-295,ARRH,Arua,Arua,15-Mar-2017,plasma,463,M,20,1 - Follow-up,28/12/2004,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,392 - Undetectable,Yes,SAMBA
+UGV21815-88,1703-305,ARRH,Arua,Arua,15-Mar-2017,plasma,2921,F,62,1 - Follow-up,30/09/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,402 - Undetectable,Yes,SAMBA
+UGV21874-50,1703-363,ARRH,Arua,Arua,15-Mar-2017,plasma,3099,F,,1 - Follow-up,05/05/2012,,,,CD4<500,,No,,2 - Routine FU,,460 - Undetectable,Yes,SAMBA
+UGV21820-93,1703-310,ARRH,Arua,Arua,15-Mar-2017,plasma,3828,F,17,1 - Follow-up,15/04/2009,TDF-3TC-ATV/r,tdf/3tc/atv,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,407 - Undetectable,Yes,SAMBA
+UGV21831-7,1703-321,ARRH,Arua,Arua,15-Mar-2017,plasma,5251,F,44,1 - Follow-up,28/07/2006,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,418 - Undetectable,Yes,SAMBA
+UGV21802-75,1703-292,ARRH,Arua,Arua,15-Mar-2017,plasma,6605,F,59,1 - Follow-up,27/12/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,389 - Undetectable,Yes,SAMBA
+UGV21830-6,1703-320,ARRH,Arua,Arua,15-Mar-2017,plasma,6909,F,56,1 - Follow-up,02/05/2006,TDF-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21804-77,1703-294,ARRH,Arua,Arua,15-Mar-2017,plasma,7781,M,18,1 - Follow-up,02/11/2011,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,391 - Undetectable,Yes,SAMBA
+UGV21799-72,1703-290,ARRH,Arua,Arua,15-Mar-2017,plasma,7882,F,48,1 - Follow-up,07/09/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,387 - Undetectable,Yes,SAMBA
+UGV21813-86,1703-303,ARRH,Arua,Arua,15-Mar-2017,plasma,8469,M,60,1 - Follow-up,21/10/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,400 - Undetectable,Yes,SAMBA
+UGV21814-87,1703-304,ARRH,Arua,Arua,15-Mar-2017,plasma,9734,F,31,1 - Follow-up,15/06/2007,TDF-3TC-ATV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,401 - Undetectable,Yes,SAMBA
+UGV21825-1,1703-315,ARRH,Arua,Arua,15-Mar-2017,plasma,11761,F,59,1 - Follow-up,23/01/2009,TDF-3TC-ATV/r,tdf/3tc/atv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,412 - Undetectable,Yes,SAMBA
+UGV21819-92,1703-309,ARRH,Arua,Arua,15-Mar-2017,plasma,12369,F,39,1 - Follow-up,28/03/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,406 - Undetectable,Yes,SAMBA
+UGV21817-90,1703-307,ARRH,Arua,Arua,15-Mar-2017,plasma,13928,F,49,1 - Follow-up,03/04/2008,OTHER SPECIFY,TDF/3TC/DRV/RAL,3,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,404 - Undetectable,Yes,SAMBA
+UGV21800-73,1703-291,ARRH,Arua,Arua,15-Mar-2017,plasma,14030,M,52,1 - Follow-up,06/11/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,388 - Undetectable,Yes,SAMBA
+UGV21816-89,1703-306,ARRH,Arua,Arua,15-Mar-2017,plasma,15621,M,43,1 - Follow-up,16/01/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,403 - Undetectable,Yes,SAMBA
+UGV21803-76,1703-293,ARRH,Arua,Arua,15-Mar-2017,plasma,17500,F,27,1 - Follow-up,20/10/2010,TDF-3TC-ATV/r,TDF-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,390 - Undetectable,Yes,SAMBA
+UGV21821-94,1703-311,ARRH,Arua,Arua,15-Mar-2017,plasma,18701,M,10,1 - Follow-up,20/05/2011,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,408 - Undetectable,Yes,SAMBA
+UGV21834-10,1703-324,ARRH,Arua,Arua,15-Mar-2017,plasma,19670,F,10,1 - Follow-up,13/09/2011,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,421 - Undetectable,Yes,SAMBA
+UGV21826-2,1703-316,ARRH,Arua,Arua,15-Mar-2017,plasma,19742,F,36,1 - Follow-up,18/12/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,413 - Undetectable,Yes,SAMBA
+UGV21833-9,1703-323,ARRH,Arua,Arua,15-Mar-2017,plasma,21444,M,34,1 - Follow-up,23/07/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,420 - Undetectable,Yes,SAMBA
+UGV21818-91,1703-308,ARRH,Arua,Arua,15-Mar-2017,plasma,21820,F,44,1 - Follow-up,28/09/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,405 - Undetectable,Yes,SAMBA
+UGV21808-81,1703-298,ARRH,Arua,Arua,15-Mar-2017,plasma,22170,M,51,1 - Follow-up,07/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,395 - Undetectable,Yes,SAMBA
+UGV21835-11,1703-325,ARRH,Arua,Arua,15-Mar-2017,plasma,23293,F,33,0 - New,,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,422 - Undetectable,Yes,SAMBA
+UGV21827-3,1703-317,ARRH,Arua,Arua,15-Mar-2017,plasma,23503,F,18,1 - Follow-up,04/02/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21798-71,1703-289,ARRH,Arua,Arua,15-Mar-2017,plasma,23770,F,35,1 - Follow-up,10/03/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,386 - Undetectable,Yes,SAMBA
+UGV21822-95,1703-312,ARRH,Arua,Arua,15-Mar-2017,plasma,23827,F,6,1 - Follow-up,20/05/2014,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,409 - Undetectable,Yes,SAMBA
+UGV21806-79,1703-296,ARRH,Arua,Arua,15-Mar-2017,plasma,24001,M,39,1 - Follow-up,27/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,393 - Undetectable,Yes,SAMBA
+UGV21811-84,1703-301,ARRH,Arua,Arua,15-Mar-2017,plasma,24054,M,14,1 - Follow-up,23/07/2014,OTHER SPECIFY,ABC-3TC-EFV,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,398 - Undetectable,Yes,SAMBA
+UGV21836-12,1703-326,ARRH,Arua,Arua,15-Mar-2017,plasma,24597,F,47,1 - Follow-up,05/01/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,423 - Undetectable,Yes,SAMBA
+UGV21809-82,1703-299,ARRH,Arua,Arua,15-Mar-2017,plasma,24658,F,30,1 - Follow-up,04/03/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,396 - Undetectable,Yes,SAMBA
+UGV21810-83,1703-300,ARRH,Arua,Arua,15-Mar-2017,plasma,24901,M,47,1 - Follow-up,08/04/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,397 - Undetectable,Yes,SAMBA
+UGV21829-5,1703-319,ARRH,Arua,Arua,15-Mar-2017,plasma,24934,F,34,1 - Follow-up,07/09/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,416 - Undetectable,Yes,SAMBA
+UGV21824-0,1703-314,ARRH,Arua,Arua,15-Mar-2017,plasma,24951,F,6,0 - New,02/03/2015,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,411 - Undetectable,Yes,SAMBA
+UGV21828-4,1703-318,ARRH,Arua,Arua,15-Mar-2017,plasma,25028,F,42,1 - Follow-up,22/06/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,415 - Undetectable,Yes,SAMBA
+UGV21812-85,1703-302,ARRH,Arua,Arua,15-Mar-2017,plasma,25691,M,41,1 - Follow-up,04/07/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,399 - Undetectable,Yes,SAMBA
+UGV21807-80,1703-297,ARRH,Arua,Arua,15-Mar-2017,plasma,25963,M,41,0 - New,10/05/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,394 - Undetectable,Yes,SAMBA
+UGV21837-13,1703-327,ARRH,Arua,Arua,16-Mar-2017,plasma,34,F,52,1 - Follow-up,03/03/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,424 - Undetectable,Yes,SAMBA
+UGV21873-49,1703-362,ARRH,Arua,Arua,16-Mar-2017,plasma,1000,F,41,1 - Follow-up,08/01/2004,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,459 - Undetectable,Yes,SAMBA
+UGV21870-46,1703-359,ARRH,Arua,Arua,16-Mar-2017,plasma,1066,F,56,1 - Follow-up,29/03/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,456 - Undetectable,Yes,SAMBA
+UGV21839-15,1703-329,ARRH,Arua,Arua,16-Mar-2017,plasma,1810,F,40,1 - Follow-up,27/01/2006,AZT-3TC-NVP,AZT-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,426 - Undetectable,Yes,SAMBA
+UGV21860-36,1703-349,ARRH,Arua,Arua,16-Mar-2017,plasma,2538,M,55,1 - Follow-up,26/07/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,446 - Undetectable,Yes,SAMBA
+UGV21840-16,1703-330,ARRH,Arua,Arua,16-Mar-2017,plasma,3951,F,60,1 - Follow-up,13/02/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,427 - Undetectable,Yes,SAMBA
+UGV21838-14,1703-328,ARRH,Arua,Arua,16-Mar-2017,plasma,5075,F,47,1 - Follow-up,18/02/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,425 - Undetectable,Yes,SAMBA
+UGV21867-43,1703-356,ARRH,Arua,Arua,16-Mar-2017,plasma,5465,M,56,1 - Follow-up,16/06/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,453 - Undetectable,Yes,SAMBA
+UGV21851-27,1703-340,ARRH,Arua,Arua,16-Mar-2017,plasma,5768,F,20,1 - Follow-up,19/05/2005,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,437 - Undetectable,Yes,SAMBA
+UGV21847-23,1703-336,ARRH,Arua,Arua,16-Mar-2017,plasma,6421,F,40,1 - Follow-up,30/05/2007,OTHER SPECIFY,3TC/AZT/LPV,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,433 - Undetectable,Yes,SAMBA
+UGV21854-30,1703-343,ARRH,Arua,Arua,16-Mar-2017,plasma,8623,F,43,1 - Follow-up,20/02/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,440 - Undetectable,Yes,SAMBA
+UGV21857-33,1703-346,ARRH,Arua,Arua,16-Mar-2017,plasma,9136,F,28,1 - Follow-up,03/08/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,443 - Undetectable,Yes,SAMBA
+UGV21841-17,1703-331,ARRH,Arua,Arua,16-Mar-2017,plasma,9218,F,59,1 - Follow-up,24/11/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,428 - Undetectable,Yes,SAMBA
+UGV21846-22,1703-335,ARRH,Arua,Arua,16-Mar-2017,plasma,9759,F,52,1 - Follow-up,16/05/2007,OTHER SPECIFY,ABC-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21864-40,1703-353,ARRH,Arua,Arua,16-Mar-2017,plasma,9866,M,55,1 - Follow-up,30/09/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,450 - Undetectable,Yes,SAMBA
+UGV21869-45,1703-358,ARRH,Arua,Arua,16-Mar-2017,plasma,11805,F,31,1 - Follow-up,10/01/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,455 - Undetectable,Yes,SAMBA
+UGV21868-44,1703-357,ARRH,Arua,Arua,16-Mar-2017,plasma,11879,M,10,1 - Follow-up,21/01/2008,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,454 - Undetectable,Yes,SAMBA
+UGV21842-18,1703-332,ARRH,Arua,Arua,16-Mar-2017,plasma,13195,M,43,1 - Follow-up,22/07/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,429 - Undetectable,Yes,SAMBA
+UGV21852-28,1703-341,ARRH,Arua,Arua,16-Mar-2017,plasma,13298,M,42,1 - Follow-up,02/07/2013,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,438 - Undetectable,Yes,SAMBA
+UGV21858-34,1703-347,ARRH,Arua,Arua,16-Mar-2017,plasma,14538,F,43,1 - Follow-up,,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,444 - Undetectable,Yes,SAMBA
+UGV21855-31,1703-344,ARRH,Arua,Arua,16-Mar-2017,plasma,14683,F,34,1 - Follow-up,11/08/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,441 - Undetectable,Yes,SAMBA
+UGV21866-42,1703-355,ARRH,Arua,Arua,16-Mar-2017,plasma,14743,M,15,1 - Follow-up,05/09/2014,OTHER SPECIFY,ABC-3TC-NVP,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,452 - Undetectable,Yes,SAMBA
+UGV21871-47,1703-360,ARRH,Arua,Arua,16-Mar-2017,plasma,17244,M,37,1 - Follow-up,03/03/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,457 - Undetectable,Yes,SAMBA
+UGV21853-29,1703-342,ARRH,Arua,Arua,16-Mar-2017,plasma,19022,F,46,1 - Follow-up,03/07/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,439 - Undetectable,Yes,SAMBA
+UGV21850-26,1703-339,ARRH,Arua,Arua,16-Mar-2017,plasma,19286,F,28,1 - Follow-up,30/01/2012,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,436 - Undetectable,Yes,SAMBA
+UGV21848-24,1703-337,ARRH,Arua,Arua,16-Mar-2017,plasma,19376,M,35,1 - Follow-up,09/02/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,434 - Undetectable,Yes,SAMBA
+UGV21861-37,1703-350,ARRH,Arua,Arua,16-Mar-2017,plasma,19598,F,35,1 - Follow-up,17/10/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,447 - Undetectable,Yes,SAMBA
+UGV21872-48,1703-361,ARRH,Arua,Arua,16-Mar-2017,plasma,20643,F,32,1 - Follow-up,06/07/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,458 - Undetectable,Yes,SAMBA
+UGV21863-39,1703-352,ARRH,Arua,Arua,16-Mar-2017,plasma,20646,M,45,1 - Follow-up,01/03/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,449 - Undetectable,Yes,SAMBA
+UGV21862-38,1703-351,ARRH,Arua,Arua,16-Mar-2017,plasma,21415,F,32,1 - Follow-up,27/06/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,448 - Undetectable,Yes,SAMBA
+UGV21843-19,1703-333,ARRH,Arua,Arua,16-Mar-2017,plasma,21799,M,40,1 - Follow-up,18/07/2014,TDF-3TC-ATV/r,TDF-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,430 - Undetectable,Yes,SAMBA
+UGV21856-32,1703-345,ARRH,Arua,Arua,16-Mar-2017,plasma,25040,F,37,1 - Follow-up,24/06/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,442 - Undetectable,Yes,SAMBA
+UGV21849-25,1703-338,ARRH,Arua,Arua,16-Mar-2017,plasma,25660,M,43,0 - New,10/07/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,435 - Undetectable,Yes,SAMBA
+UGV21845-21,1703-334,ARRH,Arua,Arua,16-Mar-2017,plasma,26201,M,59,1 - Follow-up,30/11/2012,TDF-3TC-ATV/r,TDF-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21865-41,1703-354,ARRH,Arua,Arua,16-Mar-2017,plasma,26301,F,36,,25/08/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,451 - Undetectable,Yes,SAMBA
+UGV21859-35,1703-348,ARRH,Arua,Arua,16-Mar-2017,plasma,26316,M,34,1 - Follow-up,03/08/2016,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,445 - Undetectable,Yes,SAMBA
+UGV21875-51,1703-364,ARRH,Arua,Arua,17-Mar-2017,plasma,24761,F,,1 - Follow-up,23/02/2015,,,,CD4<500,,No,GOOD ADHERENCE,2 - Routine FU,,461 - Undetectable,Yes,SAMBA
+UGV21909-85,1703-396,ARRH,Arua,Arua,20-Mar-2017,plasma,334,F,34,1 - Follow-up,13/02/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,493 - Undetectable,Yes,SAMBA
+UGV21921-0,1703-408,ARRH,Arua,Arua,20-Mar-2017,plasma,535,F,57,1 - Follow-up,06/02/2003,TDF-3TC-ATV/r,TDF-3TC-AVR,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,505 - Undetectable,Yes,SAMBA
+UGV21892-68,1703-380,ARRH,Arua,Arua,20-Mar-2017,plasma,2280,F,43,1 - Follow-up,19/03/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,477 - Undetectable,Yes,SAMBA
+UGV21915-91,1703-402,ARRH,Arua,Arua,20-Mar-2017,plasma,2470,F,38,1 - Follow-up,11/08/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,499 - Undetectable,Yes,SAMBA
+UGV21914-90,1703-401,ARRH,Arua,Arua,20-Mar-2017,plasma,2752,F,38,1 - Follow-up,09/03/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,498 - Undetectable,Yes,SAMBA
+UGV21908-84,1703-395,ARRH,Arua,Arua,20-Mar-2017,plasma,3509,F,40,1 - Follow-up,24/03/2005,OTHER SPECIFY,AZT-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,492 - Undetectable,Yes,SAMBA
+UGV21887-63,1703-376,ARRH,Arua,Arua,20-Mar-2017,plasma,3617,F,59,1 - Follow-up,10/03/2006,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,473 - Undetectable,Yes,SAMBA
+UGV21918-94,1703-405,ARRH,Arua,Arua,20-Mar-2017,plasma,4396,F,41,1 - Follow-up,06/01/2005,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,502 - Undetectable,Yes,SAMBA
+UGV21883-59,1703-372,ARRH,Arua,Arua,20-Mar-2017,plasma,5024,M,53,1 - Follow-up,07/07/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,469 - Undetectable,Yes,SAMBA
+UGV21917-93,1703-404,ARRH,Arua,Arua,20-Mar-2017,plasma,5565,M,45,1 - Follow-up,24/09/2014,OTHER SPECIFY,AZT-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21882-58,1703-371,ARRH,Arua,Arua,20-Mar-2017,plasma,6156,F,43,1 - Follow-up,16/06/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,468 - Undetectable,Yes,SAMBA
+UGV21899-75,1703-386,ARRH,Arua,Arua,20-Mar-2017,plasma,6470,F,50,1 - Follow-up,07/09/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,483 - Undetectable,Yes,SAMBA
+UGV21903-79,1703-390,ARRH,Arua,Arua,20-Mar-2017,plasma,6947,F,44,1 - Follow-up,06/06/2006,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,487 - Undetectable,Yes,SAMBA
+UGV21889-65,1703-378,ARRH,Arua,Arua,20-Mar-2017,plasma,7149,M,58,1 - Follow-up,19/09/2006,TDF-3TC-ATV/r,tdf/3tc/atv/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,475 - Undetectable,Yes,SAMBA
+UGV21897-73,1703-384,ARRH,Arua,Arua,20-Mar-2017,plasma,7192,F,17,1 - Follow-up,12/12/2014,OTHER SPECIFY,ABC-3TC-EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21911-87,1703-398,ARRH,Arua,Arua,20-Mar-2017,plasma,8407,F,13,1 - Follow-up,24/08/2015,OTHER SPECIFY,ABC-3TC-NVP,1,child <15yrs,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,495 - Undetectable,Yes,SAMBA
+UGV21888-64,1703-377,ARRH,Arua,Arua,20-Mar-2017,plasma,8730,F,41,1 - Follow-up,11/12/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,474 - Undetectable,Yes,SAMBA
+UGV21906-82,1703-393,ARRH,Arua,Arua,20-Mar-2017,plasma,9622,M,12,1 - Follow-up,02/10/2014,OTHER SPECIFY,ABC-3TC-EFV,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,490 - Undetectable,Yes,SAMBA
+UGV21919-95,1703-406,ARRH,Arua,Arua,20-Mar-2017,plasma,10679,M,43,1 - Follow-up,21/01/2009,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,503 - Undetectable,Yes,SAMBA
+UGV21881-57,1703-370,ARRH,Arua,Arua,20-Mar-2017,plasma,10714,F,44,1 - Follow-up,25/10/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,467 - Undetectable,Yes,SAMBA
+UGV21916-92,1703-403,ARRH,Arua,Arua,20-Mar-2017,plasma,11770,F,55,1 - Follow-up,05/01/2009,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,500 - Undetectable,Yes,SAMBA
+UGV21920-96,1703-407,ARRH,Arua,Arua,20-Mar-2017,plasma,12705,M,52,1 - Follow-up,22/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,504 - Undetectable,Yes,SAMBA
+UGV21895-71,1703-382,ARRH,Arua,Arua,20-Mar-2017,plasma,14205,F,52,1 - Follow-up,18/02/2009,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,479 - Undetectable,Yes,SAMBA
+UGV21893-69,1703-381,ARRH,Arua,Arua,20-Mar-2017,plasma,14244,M,38,1 - Follow-up,,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,478 - Undetectable,Yes,SAMBA
+UGV21886-62,1703-375,ARRH,Arua,Arua,20-Mar-2017,plasma,16148,F,54,1 - Follow-up,11/12/2009,AZT-3TC-EFV,D/EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,472 - Undetectable,Yes,SAMBA
+UGV21879-55,1703-368,ARRH,Arua,Arua,20-Mar-2017,plasma,17918,F,36,1 - Follow-up,14/06/2011,OTHER SPECIFY,ABC-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21898-74,1703-385,ARRH,Arua,Arua,20-Mar-2017,plasma,18521,M,38,1 - Follow-up,07/01/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,482 - Undetectable,Yes,SAMBA
+UGV21884-60,1703-373,ARRH,Arua,Arua,20-Mar-2017,plasma,18868,M,43,1 - Follow-up,18/04/2011,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,470 - Undetectable,Yes,SAMBA
+UGV21885-61,1703-374,ARRH,Arua,Arua,20-Mar-2017,plasma,19257,F,62,1 - Follow-up,16/09/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,471 - Undetectable,Yes,SAMBA
+UGV21922-1,1703-409,ARRH,Arua,Arua,20-Mar-2017,plasma,19579,F,54,1 - Follow-up,19/08/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,506 - Undetectable,Yes,SAMBA
+UGV21905-81,1703-392,ARRH,Arua,Arua,20-Mar-2017,plasma,19616,F,47,1 - Follow-up,02/09/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,489 - Undetectable,Yes,SAMBA
+UGV21910-86,1703-397,ARRH,Arua,Arua,20-Mar-2017,plasma,19651,M,8,1 - Follow-up,11/06/2015,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,494 - Undetectable,Yes,SAMBA
+UGV21891-67,1703-379,ARRH,Arua,Arua,20-Mar-2017,plasma,21483,M,19,1 - Follow-up,05/07/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,476 - Undetectable,Yes,SAMBA
+UGV21880-56,1703-369,ARRH,Arua,Arua,20-Mar-2017,plasma,22185,M,57,1 - Follow-up,30/01/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,466 - Undetectable,Yes,SAMBA
+UGV21902-78,1703-389,ARRH,Arua,Arua,20-Mar-2017,plasma,22452,F,41,1 - Follow-up,29/04/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,486 - Undetectable,Yes,SAMBA
+UGV21913-89,1703-400,ARRH,Arua,Arua,20-Mar-2017,plasma,22696,F,32,1 - Follow-up,20/08/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,497 - Undetectable,Yes,SAMBA
+UGV21896-72,1703-383,ARRH,Arua,Arua,20-Mar-2017,plasma,22873,F,10,1 - Follow-up,23/07/2014,OTHER SPECIFY,ABC-3TC-LPV/r,2,child <15yrs,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,480 - Undetectable,Yes,SAMBA
+UGV21876-52,1703-365,ARRH,Arua,Arua,20-Mar-2017,plasma,23674,M,33,1 - Follow-up,16/05/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,462 - Undetectable,Yes,SAMBA
+UGV21900-76,1703-387,ARRH,Arua,Arua,20-Mar-2017,plasma,24014,F,31,1 - Follow-up,09/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,484 - Undetectable,Yes,SAMBA
+UGV21904-80,1703-391,ARRH,Arua,Arua,20-Mar-2017,plasma,24133,F,68,1 - Follow-up,18/09/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,488 - Undetectable,Yes,SAMBA
+UGV21901-77,1703-388,ARRH,Arua,Arua,20-Mar-2017,plasma,24721,M,4,1 - Follow-up,17/09/2015,OTHER SPECIFY,ABC-3TC-LPVr,2,child <15yrs,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21912-88,1703-399,ARRH,Arua,Arua,20-Mar-2017,plasma,25427,M,54,0 - New,09/05/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,496 - Undetectable,Yes,SAMBA
+UGV21907-83,1703-394,ARRH,Arua,Arua,20-Mar-2017,plasma,26127,F,28,0 - New,19/05/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,491 - Undetectable,Yes,SAMBA
+UGV21877-53,1703-366,ARRH,Arua,Arua,20-Mar-2017,plasma,26645,M,40,0 - New,14/08/2012,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,463 - Undetectable,Yes,SAMBA
+UGV21878-54,1703-367,ARRH,Arua,Arua,20-Mar-2017,plasma,20035 B1,#N/A,#N/A,1 - Follow-up,24/10/2011,#N/A,#N/A,NA,CD4<500,n/a,No,#N/A,2 - Routine FU,,464 - Undetectable,Yes,SAMBA
+UGV21933-12,1703-419,ARRH,Arua,Arua,21-Mar-2017,plasma,1619,M,46,1 - Follow-up,05/07/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,516 - Undetectable,Yes,SAMBA
+UGV21928-7,1703-414,ARRH,Arua,Arua,21-Mar-2017,plasma,1935,F,46,1 - Follow-up,05/01/2006,OTHER SPECIFY,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,511 - Undetectable,Yes,SAMBA
+UGV21944-23,1703-430,ARRH,Arua,Arua,21-Mar-2017,plasma,3053,M,42,1 - Follow-up,19/06/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21924-3,1703-411,ARRH,Arua,Arua,21-Mar-2017,plasma,5764,F,52,1 - Follow-up,22/12/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,508 - Undetectable,Yes,SAMBA
+UGV21935-14,1703-421,ARRH,Arua,Arua,21-Mar-2017,plasma,6168,M,38,1 - Follow-up,03/07/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,518 - Undetectable,Yes,SAMBA
+UGV21925-4,1703-412,ARRH,Arua,Arua,21-Mar-2017,plasma,6681,M,16,1 - Follow-up,04/01/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21930-9,1703-416,ARRH,Arua,Arua,21-Mar-2017,plasma,7528,F,15,1 - Follow-up,20/08/2014,TDF-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,513 - Undetectable,Yes,SAMBA
+UGV21943-22,1703-429,ARRH,Arua,Arua,21-Mar-2017,plasma,8351,M,60,1 - Follow-up,29/11/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,526 - Undetectable,Yes,SAMBA
+UGV21948-27,1703-434,ARRH,Arua,Arua,21-Mar-2017,plasma,11176,M,41,1 - Follow-up,17/08/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,531 - Undetectable,Yes,SAMBA
+UGV21949-28,1703-435,ARRH,Arua,Arua,21-Mar-2017,plasma,11748,F,49,1 - Follow-up,11/01/2008,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV21932-11,1703-418,ARRH,Arua,Arua,21-Mar-2017,plasma,12291,F,29,1 - Follow-up,29/04/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,515 - Undetectable,Yes,SAMBA
+UGV21942-21,1703-428,ARRH,Arua,Arua,21-Mar-2017,plasma,12667,F,41,1 - Follow-up,23/03/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,525 - Undetectable,Yes,SAMBA
+UGV21946-25,1703-432,ARRH,Arua,Arua,21-Mar-2017,plasma,12821,M,50,1 - Follow-up,04/06/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,529 - Undetectable,Yes,SAMBA
+UGV21952-31,1703-438,ARRH,Arua,Arua,21-Mar-2017,plasma,14053,F,40,1 - Follow-up,28/01/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21950-29,1703-436,ARRH,Arua,Arua,21-Mar-2017,plasma,14054,M,10,1 - Follow-up,31/12/2003,OTHER SPECIFY,AZT-3TC-LPV/r,2,child <15yrs,virological,No,GOOD ADHERENCE,2 - Routine FU,,533 - Undetectable,Yes,SAMBA
+UGV21931-10,1703-417,ARRH,Arua,Arua,21-Mar-2017,plasma,15166,F,30,1 - Follow-up,03/05/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,514 - Undetectable,Yes,SAMBA
+UGV21941-20,1703-427,ARRH,Arua,Arua,21-Mar-2017,plasma,15248,F,46,1 - Follow-up,18/06/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,524 - Undetectable,Yes,SAMBA
+UGV21934-13,1703-420,ARRH,Arua,Arua,21-Mar-2017,plasma,16745,F,45,1 - Follow-up,18/09/2014,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,517 - Undetectable,Yes,SAMBA
+UGV21940-19,1703-426,ARRH,Arua,Arua,21-Mar-2017,plasma,16803,F,46,1 - Follow-up,04/05/2010,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,523 - Undetectable,Yes,SAMBA
+UGV21923-2,1703-410,ARRH,Arua,Arua,21-Mar-2017,plasma,16947,F,45,1 - Follow-up,16/09/2010,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,507 - Undetectable,Yes,SAMBA
+UGV21936-15,1703-422,ARRH,Arua,Arua,21-Mar-2017,plasma,17519,M,12,1 - Follow-up,31/08/2010,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21951-30,1703-437,ARRH,Arua,Arua,21-Mar-2017,plasma,21253,F,29,1 - Follow-up,08/12/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,534 - Undetectable,Yes,SAMBA
+UGV21927-6,1703-413,ARRH,Arua,Arua,21-Mar-2017,plasma,21546,M,29,1 - Follow-up,31/07/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,510 - Undetectable,Yes,SAMBA
+UGV21954-33,1703-440,ARRH,Arua,Arua,21-Mar-2017,plasma,21637,M,29,1 - Follow-up,06/09/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,537 - Undetectable,Yes,SAMBA
+UGV21953-32,1703-439,ARRH,Arua,Arua,21-Mar-2017,plasma,21802,M,48,1 - Follow-up,07/01/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,536 - Undetectable,Yes,SAMBA
+UGV21929-8,1703-415,ARRH,Arua,Arua,21-Mar-2017,plasma,22665,F,34,1 - Follow-up,08/07/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,512 - Undetectable,Yes,SAMBA
+UGV21947-26,1703-433,ARRH,Arua,Arua,21-Mar-2017,plasma,23073,F,39,1 - Follow-up,07/10/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,530 - Undetectable,Yes,SAMBA
+UGV21937-16,1703-423,ARRH,Arua,Arua,21-Mar-2017,plasma,23663,M,46,1 - Follow-up,30/10/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,520 - Undetectable,Yes,SAMBA
+UGV21939-18,1703-425,ARRH,Arua,Arua,21-Mar-2017,plasma,23856,F,52,1 - Follow-up,29/04/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,522 - Undetectable,Yes,SAMBA
+UGV21945-24,1703-431,ARRH,Arua,Arua,21-Mar-2017,plasma,25059,M,38,0 - New,20/05/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,528 - Undetectable,Yes,SAMBA
+UGV21938-17,1703-424,ARRH,Arua,Arua,21-Mar-2017,plasma,25656,F,41,0 - New,18/12/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,521 - Undetectable,Yes,SAMBA
+UGV21961-40,1703-446,ARRH,Arua,Arua,22-Mar-2017,plasma,823,F,54,1 - Follow-up,20/02/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,543 - Undetectable,Yes,SAMBA
+UGV21967-46,1703-452,ARRH,Arua,Arua,22-Mar-2017,plasma,964,F,46,1 - Follow-up,16/08/2012,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,549 - Undetectable,Yes,SAMBA
+UGV21957-36,1703-443,ARRH,Arua,Arua,22-Mar-2017,plasma,4085,F,49,1 - Follow-up,10/03/2005,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,540 - Undetectable,Yes,SAMBA
+UGV21956-35,1703-442,ARRH,Arua,Arua,22-Mar-2017,plasma,7801,F,51,1 - Follow-up,28/08/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,539 - Undetectable,Yes,SAMBA
+UGV21962-41,1703-447,ARRH,Arua,Arua,22-Mar-2017,plasma,8059,F,54,1 - Follow-up,20/10/2006,TDF-3TC-ATV/r,0,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,544 - Undetectable,Yes,SAMBA
+UGV21955-34,1703-441,ARRH,Arua,Arua,22-Mar-2017,plasma,9567,M,56,1 - Follow-up,30/03/2007,TDF-3TC-ATV/r,TDF-3TC-ATVr/ral,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,538 - Undetectable,Yes,SAMBA
+UGV21964-43,1703-449,ARRH,Arua,Arua,22-Mar-2017,plasma,14604,F,48,1 - Follow-up,29/07/2010,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,546 - Undetectable,Yes,SAMBA
+UGV21965-44,1703-450,ARRH,Arua,Arua,22-Mar-2017,plasma,15103,M,15,1 - Follow-up,24/07/2014,TDF-3TC-ATV/r,ABC-3TC-NVP,1,child <15yrs,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,547 - Undetectable,Yes,SAMBA
+UGV21960-39,1703-445,ARRH,Arua,Arua,22-Mar-2017,plasma,15824,F,42,1 - Follow-up,01/09/2009,TDF-3TC-LPV/r,TDF-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,542 - Undetectable,Yes,SAMBA
+UGV21959-38,1703-444,ARRH,Arua,Arua,22-Mar-2017,plasma,16812,F,36,1 - Follow-up,21/11/2013,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,541 - Undetectable,Yes,SAMBA
+UGV21969-48,1703-454,ARRH,Arua,Arua,22-Mar-2017,plasma,17551,M,7,1 - Follow-up,25/08/2010,OTHER SPECIFY,ABC-3TC-LPV/r,2,child <15yrs,virological,No,GOOD ADHERENCE,2 - Routine FU,,551 - Undetectable,Yes,SAMBA
+UGV21971-50,1703-456,ARRH,Arua,Arua,22-Mar-2017,plasma,18921,F,44,1 - Follow-up,23/12/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,31/03/2015,553 - Undetectable,Yes,SAMBA
+UGV21963-42,1703-448,ARRH,Arua,Arua,22-Mar-2017,plasma,23165,F,45,1 - Follow-up,16/01/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,545 - Undetectable,Yes,SAMBA
+UGV21966-45,1703-451,ARRH,Arua,Arua,22-Mar-2017,plasma,24896,M,50,1 - Follow-up,22/07/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,548 - Undetectable,Yes,SAMBA
+UGV21970-49,1703-455,ARRH,Arua,Arua,22-Mar-2017,plasma,25231,F,3,1 - Follow-up,30/07/2015,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,22/09/2016,1 - Detectable,Yes,SAMBA
+UGV21968-47,1703-453,ARRH,Arua,Arua,22-Mar-2017,plasma,25830,M,42,0 - New,20/07/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,550 - Undetectable,Yes,SAMBA
+UGV21990-69,1703-474,ARRH,Arua,Arua,23-Mar-2017,plasma,1886,F,45,1 - Follow-up,16/12/2004,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,571 - Undetectable,Yes,SAMBA
+UGV21979-58,1703-463,ARRH,Arua,Arua,23-Mar-2017,plasma,2019,F,52,1 - Follow-up,14/08/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,560 - Undetectable,Yes,SAMBA
+UGV21982-61,1703-466,ARRH,Arua,Arua,23-Mar-2017,plasma,3976,F,47,1 - Follow-up,07/06/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,563 - Undetectable,Yes,SAMBA
+UGV21976-55,1703-461,ARRH,Arua,Arua,23-Mar-2017,plasma,4155,F,51,1 - Follow-up,04/07/2006,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,558 - Undetectable,Yes,SAMBA
+UGV21981-60,1703-465,ARRH,Arua,Arua,23-Mar-2017,plasma,5817,F,52,1 - Follow-up,29/09/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21996-75,1703-480,ARRH,Arua,Arua,23-Mar-2017,plasma,6406,F,37,1 - Follow-up,28/11/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,577 - Undetectable,Yes,SAMBA
+UGV21977-56,1703-462,ARRH,Arua,Arua,23-Mar-2017,plasma,7598,M,56,1 - Follow-up,05/09/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,559 - Undetectable,Yes,SAMBA
+UGV21987-66,1703-471,ARRH,Arua,Arua,23-Mar-2017,plasma,9802,F,43,1 - Follow-up,05/05/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,568 - Undetectable,Yes,SAMBA
+UGV21974-53,1703-459,ARRH,Arua,Arua,23-Mar-2017,plasma,10150,M,13,1 - Follow-up,29/09/2014,OTHER SPECIFY,ABC-3TC-EFV,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21985-64,1703-469,ARRH,Arua,Arua,23-Mar-2017,plasma,10152,F,39,1 - Follow-up,21/06/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,566 - Undetectable,Yes,SAMBA
+UGV21973-52,1703-458,ARRH,Arua,Arua,23-Mar-2017,plasma,12018,F,61,1 - Follow-up,10/03/2008,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,555 - Undetectable,Yes,SAMBA
+UGV21983-62,1703-467,ARRH,Arua,Arua,23-Mar-2017,plasma,12233,F,36,1 - Follow-up,04/10/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,564 - Undetectable,Yes,SAMBA
+UGV21997-76,1703-481,ARRH,Arua,Arua,23-Mar-2017,plasma,12564,M,36,1 - Follow-up,05/06/2008,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,578 - Undetectable,Yes,SAMBA
+UGV21986-65,1703-470,ARRH,Arua,Arua,23-Mar-2017,plasma,13701,F,43,1 - Follow-up,03/10/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,567 - Undetectable,Yes,SAMBA
+UGV21984-63,1703-468,ARRH,Arua,Arua,23-Mar-2017,plasma,17990,M,54,1 - Follow-up,02/12/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,565 - Undetectable,Yes,SAMBA
+UGV21995-74,1703-479,ARRH,Arua,Arua,23-Mar-2017,plasma,19652,F,33,1 - Follow-up,18/07/2012,OTHER SPECIFY,AZT-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,576 - Undetectable,Yes,SAMBA
+UGV21994-73,1703-478,ARRH,Arua,Arua,23-Mar-2017,plasma,20697,M,57,1 - Follow-up,12/04/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,575 - Undetectable,Yes,SAMBA
+UGV21980-59,1703-464,ARRH,Arua,Arua,23-Mar-2017,plasma,22865,M,26,1 - Follow-up,07/03/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,561 - Undetectable,Yes,SAMBA
+UGV21991-70,1703-475,ARRH,Arua,Arua,23-Mar-2017,plasma,23761,F,36,1 - Follow-up,28/01/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,572 - Undetectable,Yes,SAMBA
+UGV21972-51,1703-457,ARRH,Arua,Arua,23-Mar-2017,plasma,24443,F,32,1 - Follow-up,08/08/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,554 - Undetectable,Yes,SAMBA
+UGV21975-54,1703-460,ARRH,Arua,Arua,23-Mar-2017,plasma,24890,F,11,1 - Follow-up,14/08/2013,TDF-3TC-ATV/r,0,2,child <15yrs,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV21988-67,1703-472,ARRH,Arua,Arua,23-Mar-2017,plasma,25243,M,30,1 - Follow-up,08/06/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,569 - Undetectable,Yes,SAMBA
+UGV21993-72,1703-477,ARRH,Arua,Arua,23-Mar-2017,plasma,25571,F,31,0 - New,30/11/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,574 - Undetectable,Yes,SAMBA
+UGV21992-71,1703-476,ARRH,Arua,Arua,23-Mar-2017,plasma,25862,M,32,0 - New,13/05/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,573 - Undetectable,Yes,SAMBA
+UGV22036-18,1703-510,ARRH,Arua,Arua,23-Mar-2017,plasma,26150,M,46,0 - New,04/07/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,607 - Undetectable,Yes,SAMBA
+UGV21989-68,1703-473,ARRH,Arua,Arua,23-Mar-2017,plasma,26263,F,59,0 - New,17/07/2016,TDF-3TC-EFV,ABC/3TC/EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,570 - Undetectable,Yes,SAMBA
+UGV22000-79,1703-482,ARRH,Arua,Arua,24-Mar-2017,plasma,22445,M,7,1 - Follow-up,25/10/2013,AZT-3TC-EFV,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,,579 - Undetectable,Yes,SAMBA
+UGV22024-6,1703-500,ARRH,Arua,Arua,27-Mar-2017,plasma,22,F,46,1 - Follow-up,16/01/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,597 - Undetectable,Yes,SAMBA
+UGV22023-5,1703-499,ARRH,Arua,Arua,27-Mar-2017,plasma,426,F,44,1 - Follow-up,03/10/2002,TDF-3TC-LPV/r,TDF-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,596 - Undetectable,Yes,SAMBA
+UGV22022-4,1703-498,ARRH,Arua,Arua,27-Mar-2017,plasma,1107,F,50,1 - Follow-up,25/09/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,595 - Undetectable,Yes,SAMBA
+UGV22003-82,1703-485,ARRH,Arua,Arua,27-Mar-2017,plasma,2183,F,47,1 - Follow-up,16/06/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,582 - Undetectable,Yes,SAMBA
+UGV22006-85,1703-487,ARRH,Arua,Arua,27-Mar-2017,plasma,2433,F,53,1 - Follow-up,13/01/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,584 - Undetectable,Yes,SAMBA
+UGV22029-11,1703-505,ARRH,Arua,Arua,27-Mar-2017,plasma,2871,F,41,1 - Follow-up,12/08/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,602 - Undetectable,Yes,SAMBA
+UGV22018-0,1703-494,ARRH,Arua,Arua,27-Mar-2017,plasma,3680,F,51,1 - Follow-up,10/03/2005,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,591 - Undetectable,Yes,SAMBA
+UGV22028-10,1703-504,ARRH,Arua,Arua,27-Mar-2017,plasma,3895,F,42,1 - Follow-up,14/10/2004,TDF-3TC-ATV/r,TDF-3TC-ATV/r,2,CD4<500,virological,No,FAIR ADHERENCE,2 - Routine FU,,601 - Undetectable,Yes,SAMBA
+UGV22004-83,1703-486,ARRH,Arua,Arua,27-Mar-2017,plasma,5415,F,16,1 - Follow-up,08/06/2005,TDF-3TC-ATV/r,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,1 - Detectable,Yes,SAMBA
+UGV22034-16,1703-509,ARRH,Arua,Arua,27-Mar-2017,plasma,6182,F,16,1 - Follow-up,08/08/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,606 - Undetectable,Yes,SAMBA
+UGV22027-9,1703-503,ARRH,Arua,Arua,27-Mar-2017,plasma,7158,F,38,1 - Follow-up,20/02/2006,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,600 - Undetectable,Yes,SAMBA
+UGV22032-14,1703-507,ARRH,Arua,Arua,27-Mar-2017,plasma,7976,F,36,1 - Follow-up,04/04/2014,,TDF/3TC/EFV,1,CD4<500,,No,GOOD ADHERENCE,2 - Routine FU,N/A,604 - Undetectable,Yes,SAMBA
+UGV22021-3,1703-497,ARRH,Arua,Arua,27-Mar-2017,plasma,9187,F,44,1 - Follow-up,24/03/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV22014-93,1703-490,ARRH,Arua,Arua,27-Mar-2017,plasma,12706,M,54,1 - Follow-up,18/03/2011,TDF-3TC-LPV/r,TDF-3TC-ATR/v,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,587 - Undetectable,Yes,SAMBA
+UGV22016-95,1703-492,ARRH,Arua,Arua,27-Mar-2017,plasma,12748,F,36,1 - Follow-up,20/05/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,589 - Undetectable,Yes,SAMBA
+UGV22042-24,1703-516,ARRH,Arua,Arua,27-Mar-2017,plasma,16293,M,42,1 - Follow-up,21/10/2011,TDF-3TC-ATV/r,TDF-3TC-ATVr,2,CD4<500,virological,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,613 - Undetectable,Yes,SAMBA
+UGV22012-91,1703-488,ARRH,Arua,Arua,27-Mar-2017,plasma,17299,F,36,1 - Follow-up,01/03/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,585 - Undetectable,Yes,SAMBA
+UGV22017-96,1703-493,ARRH,Arua,Arua,27-Mar-2017,plasma,18281,F,44,1 - Follow-up,06/06/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,590 - Undetectable,Yes,SAMBA
+UGV22002-81,1703-484,ARRH,Arua,Arua,27-Mar-2017,plasma,18452,F,48,1 - Follow-up,14/02/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,581 - Undetectable,Yes,SAMBA
+UGV22025-7,1703-501,ARRH,Arua,Arua,27-Mar-2017,plasma,19332,F,37,1 - Follow-up,13/07/2014,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,598 - Undetectable,Yes,SAMBA
+UGV22019-1,1703-495,ARRH,Arua,Arua,27-Mar-2017,plasma,20014,F,40,1 - Follow-up,18/01/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,592 - Undetectable,Yes,SAMBA
+UGV22020-2,1703-496,ARRH,Arua,Arua,27-Mar-2017,plasma,20103,M,41,1 - Follow-up,16/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,593 - Undetectable,Yes,SAMBA
+UGV22013-92,1703-489,ARRH,Arua,Arua,27-Mar-2017,plasma,20208,M,53,1 - Follow-up,06/12/2011,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,586 - Undetectable,Yes,SAMBA
+UGV22001-80,1703-483,ARRH,Arua,Arua,27-Mar-2017,plasma,20960,M,34,1 - Follow-up,02/04/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,580 - Undetectable,Yes,SAMBA
+UGV22031-13,1703-506,ARRH,Arua,Arua,27-Mar-2017,plasma,21108,F,31,1 - Follow-up,18/07/2012,,TDF/3TC/EFV,1,CD4<500,,No,GOOD ADHERENCE,2 - Routine FU,09/05/2014,603 - Undetectable,Yes,SAMBA
+UGV22015-94,1703-491,ARRH,Arua,Arua,27-Mar-2017,plasma,23810,M,47,1 - Follow-up,17/04/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,588 - Undetectable,Yes,SAMBA
+UGV22033-15,1703-508,ARRH,Arua,Arua,27-Mar-2017,plasma,25164,M,4,1 - Follow-up,24/04/2015,AZT-3TC-NVP,0,1,child <15yrs,n/a,No,GOOD ADHERENCE,2 - Routine FU,N/A,605 - Undetectable,Yes,SAMBA
+UGV22026-8,1703-502,ARRH,Arua,Arua,27-Mar-2017,plasma,25615,M,63,0 - New,16/12/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,599 - Undetectable,Yes,SAMBA
+UGV22047-29,1703-521,ARRH,Arua,Arua,28-Mar-2017,plasma,968,F,50,1 - Follow-up,06/05/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,618 - Undetectable,Yes,SAMBA
+UGV22045-27,1703-519,ARRH,Arua,Arua,28-Mar-2017,plasma,2532,M,59,1 - Follow-up,27/05/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,616 - Undetectable,Yes,SAMBA
+UGV22041-23,1703-515,ARRH,Arua,Arua,28-Mar-2017,plasma,8989,F,37,1 - Follow-up,10/04/2007,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,612 - Undetectable,Yes,SAMBA
+UGV22092-74,1703-565,ARRH,Arua,Arua,28-Mar-2017,plasma,9475,F,35,1 - Follow-up,16/06/2014,TDF/3TC/EFV,,1,CD4<500,,No,GOOD ADHERENCE,2 - Routine FU,27/07/2016,662 - Undetectable,Yes,SAMBA
+UGV22048-30,1703-522,ARRH,Arua,Arua,28-Mar-2017,plasma,11524,M,47,1 - Follow-up,11/12/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,619 - Undetectable,Yes,SAMBA
+UGV22050-32,1703-524,ARRH,Arua,Arua,28-Mar-2017,plasma,12962,F,30,1 - Follow-up,29/07/2008,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,621 - Undetectable,Yes,SAMBA
+UGV22039-21,1703-513,ARRH,Arua,Arua,28-Mar-2017,plasma,15446,F,50,1 - Follow-up,22/03/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,610 - Undetectable,Yes,SAMBA
+UGV22052-34,1703-526,ARRH,Arua,Arua,28-Mar-2017,plasma,15546,F,39,1 - Follow-up,03/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,623 - Undetectable,Yes,SAMBA
+UGV22055-37,1703-529,ARRH,Arua,Arua,28-Mar-2017,plasma,15596,F,52,1 - Follow-up,14/12/2010,TDF-3TC-LPV/r,TDF-3TC-LPV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,626 - Undetectable,Yes,SAMBA
+UGV22040-22,1703-514,ARRH,Arua,Arua,28-Mar-2017,plasma,15729,M,64,1 - Follow-up,14/10/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,611 - Undetectable,Yes,SAMBA
+UGV22054-36,1703-528,ARRH,Arua,Arua,28-Mar-2017,plasma,17238,F,44,1 - Follow-up,23/09/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,625 - Undetectable,Yes,SAMBA
+UGV22049-31,1703-523,ARRH,Arua,Arua,28-Mar-2017,plasma,17506,F,10,1 - Follow-up,20/07/2010,OTHER SPECIFY,ABC-3TC-LPVr,2,child <15yrs,virological,No,GOOD ADHERENCE,2 - Routine FU,,620 - Undetectable,Yes,SAMBA
+UGV22053-35,1703-527,ARRH,Arua,Arua,28-Mar-2017,plasma,17507,F,36,1 - Follow-up,20/07/2010,TDF-3TC-ATV/r,TDF-3TC-ATV/r,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV22056-38,1703-530,ARRH,Arua,Arua,28-Mar-2017,plasma,17785,F,31,1 - Follow-up,21/10/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,627 - Undetectable,Yes,SAMBA
+UGV22038-20,1703-512,ARRH,Arua,Arua,28-Mar-2017,plasma,17899,F,48,1 - Follow-up,15/06/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,609 - Undetectable,Yes,SAMBA
+UGV22037-19,1703-511,ARRH,Arua,Arua,28-Mar-2017,plasma,19126,F,48,1 - Follow-up,13/03/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,608 - Undetectable,Yes,SAMBA
+UGV22043-25,1703-517,ARRH,Arua,Arua,28-Mar-2017,plasma,20028,F,35,1 - Follow-up,13/10/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,614 - Undetectable,Yes,SAMBA
+UGV22046-28,1703-520,ARRH,Arua,Arua,28-Mar-2017,plasma,24095,M,31,1 - Follow-up,18/08/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,617 - Undetectable,Yes,SAMBA
+UGV22044-26,1703-518,ARRH,Arua,Arua,28-Mar-2017,plasma,26325,F,34,0 - New,23/08/2016,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,615 - Undetectable,Yes,SAMBA
+UGV22096-78,1703-569,ARRH,Arua,Arua,29-Mar-2017,plasma,1289,M,46,1 - Follow-up,15/01/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,666 - Undetectable,Yes,SAMBA
+UGV22095-77,1703-568,ARRH,Arua,Arua,29-Mar-2017,plasma,1550,F,43,1 - Follow-up,12/02/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,665 - Undetectable,Yes,SAMBA
+UGV22101-83,1703-574,ARRH,Arua,Arua,29-Mar-2017,plasma,2364,M,51,1 - Follow-up,15/01/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,671 - Undetectable,Yes,SAMBA
+UGV22114-96,1703-587,ARRH,Arua,Arua,29-Mar-2017,plasma,3250,M,51,1 - Follow-up,13/02/2004,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,684 - Undetectable,Yes,SAMBA
+UGV22077-59,1703-550,ARRH,Arua,Arua,29-Mar-2017,plasma,4069,M,60,1 - Follow-up,29/03/2006,OTHER SPECIFY,ABC-3TC-EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,647 - Undetectable,Yes,SAMBA
+UGV22078-60,1703-551,ARRH,Arua,Arua,29-Mar-2017,plasma,4184,F,47,1 - Follow-up,20/01/2005,AZT-3TC-NVP,ABC/3TC/NVP,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,648 - Undetectable,Yes,SAMBA
+UGV22111-93,1703-584,ARRH,Arua,Arua,29-Mar-2017,plasma,4200,F,37,1 - Follow-up,06/10/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,681 - Undetectable,Yes,SAMBA
+UGV22079-61,1703-552,ARRH,Arua,Arua,29-Mar-2017,plasma,4545,M,52,1 - Follow-up,14/11/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,649 - Undetectable,Yes,SAMBA
+UGV22106-88,1703-579,ARRH,Arua,Arua,29-Mar-2017,plasma,5440,M,67,1 - Follow-up,09/12/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,676 - Undetectable,Yes,SAMBA
+UGV22057-39,1703-531,ARRH,Arua,Arua,29-Mar-2017,plasma,5481,M,53,1 - Follow-up,27/04/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,628 - Undetectable,Yes,SAMBA
+UGV22112-94,1703-585,ARRH,Arua,Arua,29-Mar-2017,plasma,5617,M,60,1 - Follow-up,02/07/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,FAIR ADHERENCE,2 - Routine FU,,682 - Undetectable,Yes,SAMBA
+UGV22110-92,1703-583,ARRH,Arua,Arua,29-Mar-2017,plasma,5656,F,44,1 - Follow-up,05/12/2005,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,680 - Undetectable,Yes,SAMBA
+UGV22083-65,1703-556,ARRH,Arua,Arua,29-Mar-2017,plasma,5658,F,35,1 - Follow-up,18/12/2007,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,653 - Undetectable,Yes,SAMBA
+UGV22060-42,1703-534,ARRH,Arua,Arua,29-Mar-2017,plasma,5733,M,42,1 - Follow-up,28/02/2011,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,631 - Undetectable,Yes,SAMBA
+UGV22115-0,1703-588,ARRH,Arua,Arua,29-Mar-2017,plasma,6439,F,55,1 - Follow-up,07/04/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,685 - Undetectable,Yes,SAMBA
+UGV22097-79,1703-570,ARRH,Arua,Arua,29-Mar-2017,plasma,6650,F,37,1 - Follow-up,31/08/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,667 - Undetectable,Yes,SAMBA
+UGV22075-57,1703-548,ARRH,Arua,Arua,29-Mar-2017,plasma,6728,M,53,1 - Follow-up,10/01/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV22107-89,1703-580,ARRH,Arua,Arua,29-Mar-2017,plasma,7168,F,40,1 - Follow-up,09/01/2007,TDF-3TC-ATV/r,tdf/3tc/atv,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,677 - Undetectable,Yes,SAMBA
+UGV22080-62,1703-553,ARRH,Arua,Arua,29-Mar-2017,plasma,7919,M,64,1 - Follow-up,04/09/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,650 - Undetectable,Yes,SAMBA
+UGV22082-64,1703-555,ARRH,Arua,Arua,29-Mar-2017,plasma,7972,M,39,1 - Follow-up,28/12/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,652 - Undetectable,Yes,SAMBA
+UGV22065-47,1703-539,ARRH,Arua,Arua,29-Mar-2017,plasma,8150,M,47,1 - Follow-up,10/10/2006,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,636 - Undetectable,Yes,SAMBA
+UGV22076-58,1703-549,ARRH,Arua,Arua,29-Mar-2017,plasma,9903,F,34,1 - Follow-up,02/06/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,646 - Undetectable,Yes,SAMBA
+UGV22051-33,1703-525,ARRH,Arua,Arua,29-Mar-2017,plasma,10450,M,10,1 - Follow-up,24/08/2007,TDF/3TC/EFV,,1,child <15yrs,,No,,2 - Routine FU,23/01/2014,622 - Undetectable,Yes,SAMBA
+UGV22058-40,1703-532,ARRH,Arua,Arua,29-Mar-2017,plasma,10817,F,39,1 - Follow-up,19/11/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,629 - Undetectable,Yes,SAMBA
+UGV22073-55,1703-546,ARRH,Arua,Arua,29-Mar-2017,plasma,11621,M,39,1 - Follow-up,07/02/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,643 - Undetectable,Yes,SAMBA
+UGV22113-95,1703-586,ARRH,Arua,Arua,29-Mar-2017,plasma,13332,F,40,1 - Follow-up,20/02/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,683 - Undetectable,Yes,SAMBA
+UGV22069-51,1703-542,ARRH,Arua,Arua,29-Mar-2017,plasma,13822,F,42,1 - Follow-up,03/11/2008,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,639 - Undetectable,Yes,SAMBA
+UGV22098-80,1703-571,ARRH,Arua,Arua,29-Mar-2017,plasma,14276,F,48,1 - Follow-up,18/03/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,668 - Undetectable,Yes,SAMBA
+UGV22090-72,1703-563,ARRH,Arua,Arua,29-Mar-2017,plasma,14579,M,31,1 - Follow-up,18/03/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,15/03/2016,660 - Undetectable,Yes,SAMBA
+UGV22089-71,1703-562,ARRH,Arua,Arua,29-Mar-2017,plasma,14800,F,46,1 - Follow-up,12/03/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,659 - Undetectable,Yes,SAMBA
+UGV22104-86,1703-577,ARRH,Arua,Arua,29-Mar-2017,plasma,16165,M,56,1 - Follow-up,05/11/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,674 - Undetectable,Yes,SAMBA
+UGV22105-87,1703-578,ARRH,Arua,Arua,29-Mar-2017,plasma,16166,F,45,1 - Follow-up,27/07/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,675 - Undetectable,Yes,SAMBA
+UGV22068-50,1703-541,ARRH,Arua,Arua,29-Mar-2017,plasma,16408,M,50,1 - Follow-up,29/11/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,638 - Undetectable,Yes,SAMBA
+UGV22059-41,1703-533,ARRH,Arua,Arua,29-Mar-2017,plasma,16575,F,45,0 - New,25/09/2014,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,630 - Undetectable,Yes,SAMBA
+UGV22072-54,1703-545,ARRH,Arua,Arua,29-Mar-2017,plasma,17820,M,34,1 - Follow-up,20/02/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,642 - Undetectable,Yes,SAMBA
+UGV22116-1,1703-589,ARRH,Arua,Arua,29-Mar-2017,plasma,18414,F,35,1 - Follow-up,18/03/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,686 - Undetectable,Yes,SAMBA
+UGV22063-45,1703-537,ARRH,Arua,Arua,29-Mar-2017,plasma,19207,F,36,1 - Follow-up,22/06/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,634 - Undetectable,Yes,SAMBA
+UGV22093-75,1703-566,ARRH,Arua,Arua,29-Mar-2017,plasma,19594,M,50,1 - Follow-up,04/08/2011,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,663 - Undetectable,Yes,SAMBA
+UGV22066-48,1703-540,ARRH,Arua,Arua,29-Mar-2017,plasma,19683,M,43,1 - Follow-up,28/09/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,637 - Undetectable,Yes,SAMBA
+UGV22091-73,1703-564,ARRH,Arua,Arua,29-Mar-2017,plasma,20073,F,17,1 - Follow-up,29/12/2014,TDF/3TC/EFV,,1,CD4<500,,No,GOOD ADHERENCE,2 - Routine FU,12/01/2016,661 - Undetectable,Yes,SAMBA
+UGV22094-76,1703-567,ARRH,Arua,Arua,29-Mar-2017,plasma,20551,M,40,1 - Follow-up,21/11/2013,TDF-3TC-EFV,ABC-3TC-EFV,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,664 - Undetectable,Yes,SAMBA
+UGV22064-46,1703-538,ARRH,Arua,Arua,29-Mar-2017,plasma,21414,F,38,1 - Follow-up,14/11/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,635 - Undetectable,Yes,SAMBA
+UGV22061-43,1703-535,ARRH,Arua,Arua,29-Mar-2017,plasma,22014,F,60,1 - Follow-up,12/12/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,632 - Undetectable,Yes,SAMBA
+UGV22074-56,1703-547,ARRH,Arua,Arua,29-Mar-2017,plasma,22218,F,42,1 - Follow-up,07/02/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,644 - Undetectable,Yes,SAMBA
+UGV22084-66,1703-557,ARRH,Arua,Arua,29-Mar-2017,plasma,22383,F,40,1 - Follow-up,21/03/2013,AZT-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,654 - Undetectable,Yes,SAMBA
+UGV22100-82,1703-573,ARRH,Arua,Arua,29-Mar-2017,plasma,22412,F,57,1 - Follow-up,28/03/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,670 - Undetectable,Yes,SAMBA
+UGV22071-53,1703-544,ARRH,Arua,Arua,29-Mar-2017,plasma,22413,M,64,1 - Follow-up,25/05/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,641 - Undetectable,Yes,SAMBA
+UGV22086-68,1703-559,ARRH,Arua,Arua,29-Mar-2017,plasma,22533,F,60,1 - Follow-up,29/05/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,656 - Undetectable,Yes,SAMBA
+UGV22087-69,1703-560,ARRH,Arua,Arua,29-Mar-2017,plasma,22584,F,73,1 - Follow-up,25/02/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,657 - Undetectable,Yes,SAMBA
+UGV22103-85,1703-576,ARRH,Arua,Arua,29-Mar-2017,plasma,22611,M,43,1 - Follow-up,06/06/2012,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,673 - Undetectable,Yes,SAMBA
+UGV22088-70,1703-561,ARRH,Arua,Arua,29-Mar-2017,plasma,22774,F,34,1 - Follow-up,30/07/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,658 - Undetectable,Yes,SAMBA
+UGV22102-84,1703-575,ARRH,Arua,Arua,29-Mar-2017,plasma,22889,F,23,1 - Follow-up,18/07/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,672 - Undetectable,Yes,SAMBA
+UGV22108-90,1703-581,ARRH,Arua,Arua,29-Mar-2017,plasma,23057,F,39,1 - Follow-up,10/10/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,678 - Undetectable,Yes,SAMBA
+UGV22070-52,1703-543,ARRH,Arua,Arua,29-Mar-2017,plasma,23134,F,45,1 - Follow-up,04/11/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,1 - Detectable,Yes,SAMBA
+UGV22117-2,1703-590,ARRH,Arua,Arua,29-Mar-2017,plasma,23596,M,31,1 - Follow-up,27/01/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,687 - Undetectable,Yes,SAMBA
+UGV22085-67,1703-558,ARRH,Arua,Arua,29-Mar-2017,plasma,23886,F,28,1 - Follow-up,15/06/2014,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,655 - Undetectable,Yes,SAMBA
+UGV22081-63,1703-554,ARRH,Arua,Arua,29-Mar-2017,plasma,24862,M,42,0 - New,24/03/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,651 - Undetectable,Yes,SAMBA
+UGV22099-81,1703-572,ARRH,Arua,Arua,29-Mar-2017,plasma,25047,M,39,1 - Follow-up,08/06/2015,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,669 - Undetectable,Yes,SAMBA
+UGV22062-44,1703-536,ARRH,Arua,Arua,29-Mar-2017,plasma,25666,M,4,1 - Follow-up,24/01/2013,azt/3tc/lpv/r,azt/3tc/lpv/r,2,child <15yrs,virological,No,GOOD ADHERENCE,2 - Routine FU,,633 - Undetectable,Yes,SAMBA
+UGV22109-91,1703-582,ARRH,Arua,Arua,29-Mar-2017,plasma,26038,M,45,0 - New,03/05/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,679 - Undetectable,Yes,SAMBA
+UGV22128-13,1703-601,ARRH,Arua,Arua,30-Mar-2017,plasma,2185,F,47,1 - Follow-up,31/07/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,698 - Undetectable,Yes,SAMBA
+UGV22125-10,1703-598,ARRH,Arua,Arua,30-Mar-2017,plasma,3090,F,45,1 - Follow-up,28/03/2003,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,8 - Routine FU,,695 - Undetectable,Yes,SAMBA
+UGV22123-8,1703-596,ARRH,Arua,Arua,30-Mar-2017,plasma,9593,F,40,1 - Follow-up,03/10/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,6 - Routine FU,,693 - Undetectable,Yes,SAMBA
+UGV22119-4,1703-592,ARRH,Arua,Arua,30-Mar-2017,plasma,10650,M,39,1 - Follow-up,07/05/2009,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,689 - Undetectable,Yes,SAMBA
+UGV22122-7,1703-595,ARRH,Arua,Arua,30-Mar-2017,plasma,10666,F,44,1 - Follow-up,11/09/2009,AZT-3TC-NVP,D/N,1,CD4<500,n/a,No,GOOD ADHERENCE,5 - Routine FU,,692 - Undetectable,Yes,SAMBA
+UGV22120-5,1703-593,ARRH,Arua,Arua,30-Mar-2017,plasma,20021,M,34,1 - Follow-up,18/11/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,3 - Routine FU,,690 - Undetectable,Yes,SAMBA
+UGV22124-9,1703-597,ARRH,Arua,Arua,30-Mar-2017,plasma,20714,M,42,1 - Follow-up,12/04/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,7 - Routine FU,,694 - Undetectable,Yes,SAMBA
+UGV22121-6,1703-594,ARRH,Arua,Arua,30-Mar-2017,plasma,21355,M,29,1 - Follow-up,16/07/2012,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - Routine FU,,691 - Undetectable,Yes,SAMBA
+UGV22126-11,1703-599,ARRH,Arua,Arua,30-Mar-2017,plasma,22575,M,31,1 - Follow-up,26/12/2013,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,9 - Routine FU,,696 - Undetectable,Yes,SAMBA
+UGV22118-3,1703-591,ARRH,Arua,Arua,30-Mar-2017,plasma,24363,M,8,1 - Follow-up,28/10/2014,OTHER SPECIFY,ABC-3TC-NVP,1,child <15yrs,n/a,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,,688 - Undetectable,Yes,SAMBA
+UGV22127-12,1703-600,ARRH,Arua,Arua,30-Mar-2017,plasma,26002,M,43,0 - New,10/10/2016,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,10 - Routine FU,,697 - Undetectable,Yes,SAMBA
+UGV02996-87,,ARRH,Arua,Arua,,plasma,3101,M,62,0 - New, 4/19/2006,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,0 - Undetectable,Yes,SAMBA
+UGV02789-74,,ARRH,Arua,Arua,,plasma,4878,M,58,0 - New,  6/2/2005,OTHER SPECIFY,ABC-3TC-LPVr,2,CD4<500,virological,No,GOOD ADHERENCE,2 - Routine FU,,0 - Undetectable,Yes,SAMBA
+UGV02110-74,,ARRH,Arua,Arua,,plasma,8349,M,42,0 - New,  5/9/2011,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,2 - Routine FU,,0 - Undetectable,Yes,SAMBA
+UGV00146-50,,ARRH,Arua,Arua,,plasma,9353,M,53,,,TDF-3TC-EFV,0,1,CD4<500,n/a,No,GOOD ADHERENCE,,,,Yes,SAMBA
+UGV03772-87,,ARRH,Arua,Arua,,plasma,10740,,,0 - New,19/10/2007,,,1,CD4<500,n/a,No,,2 - Routine FU,,0 - Undetectable,Yes,SAMBA
+UGV04136-63,,ARRH,Arua,Arua,,plasma,10846,F,33,0 - New, 9/24/2013,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,1 - 6m-ART,,0 - Undetectable,Yes,SAMBA
+UGV00512-28,,ARRH,Arua,Arua,,plasma,14432,,,0 - New, 3/13/2009,,,1,CD4<500,n/a,No,,2 - Routine FU,,0 - Undetectable,Yes,SAMBA
+UGV02367-40,,ARRH,Arua,Arua,,plasma,15637,F,24,1 - Follow-up, 5/27/2010,AZT-3TC-NVP,0,1,CD4<500,n/a,No,GOOD ADHERENCE,4 - After enhanced a,,0 - Undetectable,Yes,SAMBA
+UGV02963-54,,ARRH,Arua,Arua,,plasma,16376,M,59,0 - New, 3/10/2010,AZT-3TC-NVP,0,1,CD4<500,,No,GOOD ADHERENCE,2 - Routine FU,,0 - Undetectable,Yes,SAMBA
+UGV00145-49,,ARRH,Arua,Arua,,plasma,20562,,,,,,,,CD4<500,,No,,,,,Yes,
+UGV21547-14,1703-048,ARRH,Arua,Arua,,plasma,25258,F,26,0 - New,15/04/2015,,,,CD4<500,,No,GOOD ADHERENCE,4 - After enhanced adherence counseling,N/A,145 - Undetectable,Yes,SAMBA
+UGV21678-48,1703-173,ARRH,Arua,Arua,,plasma,25412,F,,0 - New,29/03/2016,,,,CD4<500,,No,GOOD ADHERENCE,2 - Routine FU,,270 - Undetectable,Yes,SAMBA
+,,,,,,,,,,,,,,1,CD4<500,n/a,No,GOOD ADHERENCE,12 - Routine FU,,699 - Undetectable,Yes,SAMBA

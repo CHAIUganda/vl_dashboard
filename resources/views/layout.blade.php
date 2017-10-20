@@ -120,15 +120,10 @@
                         @permission('lab_qc')<li id='lab_qc' >{!! link_to("/lab_qc/index","RESULTS AUTH",['class'=>'hdr']) !!}</li>@endpermission       
                         @permission('print_results')
                         <li id='results' >{!! link_to("/results","RESULTS",['class'=>'hdr']) !!}</li>
-                        @endpermission
-
-                        @permission('view_reports_as_facility')
                         <li id='suppression_trends' >{!! link_to("/suppression_trends/index","REPORTS",['class'=>'hdr']) !!}</li>
                         @endpermission
 
-                        @permission('view_reports_as_hub')
-                        <li id='suppression_trends' >{!! link_to("/suppression_trends/index","REPORTS",['class'=>'hdr']) !!}</li>
-                        @endpermission
+                        
 
                         @permission('monitoring')<li id='monitor'>{!! link_to("/monitor", "MONITOR") !!}</li> @endpermission
 

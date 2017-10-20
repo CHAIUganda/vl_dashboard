@@ -50,10 +50,14 @@ class Engine extends Command
      */
     public function handle()
     {
-        ini_set('memory_limit', '2500M');
+        ini_set('memory_limit', '2900M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
-        //
+        
+
+  
+       
+
         
         $this->mongo->drop(); 
         $this->_loadHubs();
@@ -63,163 +67,110 @@ class Engine extends Command
         $this->_loadRegimens();
         
         $this->_loadData();
-
+        
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
 
     }
 
     private function _loadData(){
-        $this->mongo->dashboard_data_refined->drop();
+        $this->mongo->dashboard_new_backend->drop();
         $year=2014;
         $current_year=date('Y');
-        $facilities_arr=LiveData::getFacilities2();
-        try{
+        //$current_year=2014;
 
-        }catch(Exception $e){
-
-        }
+        $facilities=$this->_getFacilities();
+       
         while($year<=$current_year){
-            $samples=LiveData::getSamples($year);
-            //$dbs_samples=LiveData::getSamples($year," sampleTypeID=1 ");
+            $samples_records = LiveData::getSamplesRecords($year);
+            $counter=0;
             
-            $dbs_number_of_patients_received = LiveData::getNumberOfPatients($year, " sampleTypeID=1");
-
-                      
-            $number_of_patients_received = LiveData::getNumberOfPatients($year);
-            
-            $rjctn_rsns=LiveData::getRejects($year);
-           
-            $rjctn_rsns2=LiveData::getRejects2($year);
-            $t_rslts=LiveData::getResults($year);
-            $v_rslts=LiveData::getResults($year,$this->_validCases());
-            
-            $sprsd_cond=$this->_validCases()." AND ".$this->_suppressedCases();
-            
-            $sprsd=LiveData::getResults($year,$sprsd_cond); 
-            $i=0;
-           
             try {
-                 foreach($samples AS $s){
-                $key=$s->mth.$s->age_group.$s->facilityID.$s->sex;
-                $key.=$s->regimen.$s->reg_line.$s->reg_time.$s->trt;
+                foreach($samples_records AS $s){
+                    $data=[];
+                    $year_month = $year.str_pad($s->monthOfYear,2,0,STR_PAD_LEFT);
+            
+                    $data["sample_id"]=isset($s->id)? (int)$s->id: 0;
+                    $data["vl_sample_id"]=isset($s->vlSampleID)? $s->vlSampleID: 0;
+                    $data["patient_unique_id"]=isset($s->patientUniqueID)? $s->patientUniqueID: "UNKNOWN";//
+                    $data["year_month"] = (int)$year_month;
+                    
+                        if(array_key_exists(intval($s->facilityID), $facilities)){
+                            $facility= $facilities[$s->facilityID];
+                            $data['district_id']=isset($facility->districtID)?$facility->districtID:0;
+                            $data['hub_id']=isset($facility->hubID)?(int)$facility->hubID:0;
+                        }else{
+                            echo "facilityID: ". $s->facilityID ."not known \n";
+                            continue;
+                        }
 
-                $data=[];
-                //filter params
-                $y_m = $year.str_pad($s->mth,2,0,STR_PAD_LEFT);
-                $data["year_month"] = (int)$y_m;
-                $data["age_group_id"] = isset($s->age_group)?(int)$s->age_group:-1;
-                $data["facility_id"] = isset($s->facilityID)?(int)$s->facilityID:0;
-                if(isset($s->facilityID)){
-                    $f_obj=isset($facilities_arr[$s->facilityID])?$facilities_arr[$s->facilityID]:new \stdClass;
-                    $data['district_id']=isset($f_obj->districtID)?(int)$f_obj->districtID:0;
-                    $data['hub_id']=isset($f_obj->hubID)?(int)$f_obj->hubID:0;
-                    $data['ip_id']=isset($f_obj->ipID)?(int)$f_obj->ipID:0;
-                }else{ 
-                    $data['district_id']=0;
-                    $data['hub_id']=0;
-                    $data['ip_id']=0;
-                }
-                $data["gender"] = isset($s->sex)?$s->sex:0; 
-                $data["treatment_indication_id"] = isset($s->trt)?(int)$s->trt:0;
-                //$data["regimen_group_id"] = isset($s->reg_type)?(int)$s->reg_type:0;
-                $data["regimen"] = isset($s->regimen)?(int)$s->regimen:0;
-                $data["regimen_line"] = isset($s->reg_line)?(int)$s->reg_line:0;
-                $data["regimen_time_id"] = isset($s->reg_time)?(int)$s->reg_time:0;
+                    
 
-                //numbers
-                $data["samples_received"] = isset($s->num)?(int)$s->num:0;
-                $data["dbs_samples"] = ((int)$s->sampleTypeID == 1)?(int)$s->num:0;
-                $data["rejected_samples"] = isset($rjctn_rsns[$key])?(int)$rjctn_rsns[$key]:0;
+                    $data["facility_id"] = isset($s->facilityID)?(int)$s->facilityID:0;
+                    $data["age"] = isset($s->age)?(int)$s->age:-1;
+                    $data["age_group_id"] = isset($s->age)?(int)$s->age:-1;
+                    $data["gender"] = isset($s->sex)?$s->sex:0;
+                    $data["treatment_indication_id"] = isset($s->trt)?(int)$s->trt:0;//treatment_initiation
 
-                #$data["patients_tested"] = isset($s->numberOfPatientsTested)?(int)$s->numberOfPatientsTested:0;
-                $data["dbs_patients_received"] = isset($dbs_number_of_patients_received[$key])?(int)$dbs_number_of_patients_received[$key]:0;
-                $data["patients_received"] = isset($s->number_patients_received)?(int)$s->number_patients_received:0;
+                    $data["regimen"] = isset($s->currentRegimenID)?(int)$s->currentRegimenID:0;//current regimen
+                    $data["regimen_line"] = isset($s->position)?(int)$s->position:0;
+                    $data["regimen_time_id"] = isset($s->reg_time)?(int)$s->reg_time:0;
+                    $data["pregnancy_status"] = isset($s->pregnant)? $s->pregnant : "UNKNOWN";
+                    $data["breastfeeding_status"] = isset($s->breastfeeding)? $s->breastfeeding : "UNKNOWN";
+                    $data["active_tb_status"] = isset($s->activeTBStatus)? $s->activeTBStatus : "UNKNOWN";
 
-                $data["sample_quality_rejections"]=isset($rjctn_rsns2[$key.'quality_of_sample'])?(int)$rjctn_rsns2[$key.'quality_of_sample']:0;
-                $data["incomplete_form_rejections"]=isset($rjctn_rsns2[$key.'incomplete_form'])?(int)$rjctn_rsns2[$key.'incomplete_form']:0;
-                $data["eligibility_rejections"]=isset($rjctn_rsns2[$key.'eligibility'])?(int)$rjctn_rsns2[$key.'eligibility']:0;
+                    $data["sample_type_id"] = isset($s->sampleTypeID)?(int)$s->sampleTypeID:0;
+                    $data["sample_result_validity"] = isset($s->sampleResultValidity)? $s->sampleResultValidity : "UNKNOWN";
+                    $data["suppression_status"] = $this->_getSuppressionStatus($s);
+                    $data["tested"]=isset($s->resultsSampleID)?"yes":"no";
+                    $data["rejection_reason"]=isset($s->rejectionReason)? $s->rejectionReason : "UNKNOWN";
 
-                $data["total_results"] = isset($s->samples_tested)?(int)$s->samples_tested:0;
-                $data["valid_results"] = ($s->validity == 'valid')?(int)$s->samples_tested:0;
-                $data["suppressed"]= $this->_getSuppressedNumbers($s);
+                    //
 
-                //eMTCT
-                $data["pregnancy_status"] = isset($s->pregnancyStatus)?$s->pregnancyStatus:0; 
-                $data["number_pregnant"] = isset($s->numberPregant)?$s->numberPregant:0; 
-
-                $data["breast_feeding_status"] = isset($s->breastFeedingStatus)?$s->breastFeedingStatus:0;
-                $data["number_breast_feeding"] = isset($s->numberBreastFeeding)?$s->numberBreastFeeding:0;
-
-                $data["active_tb_status"] = isset($s->activeTBStatus)?$s->activeTBStatus:0;
-                $data["number_active_on_tb"] = isset($s->numberActiveOnTB)?$s->numberActiveOnTB:0;
-
-                $this->mongo->dashboard_data_refined->insert($data);
-                $i++;
-
-                
-                //echo "$i\n";                
-              }//end of for loop
-              echo " inserted $i records for $year\n";
+                   $this->mongo->dashboard_new_backend->insert($data);
+                   $counter ++;
+                }//end of for loop
+              echo " inserted $counter records for $year\n";
               $year++;
             } catch (Exception $e) {
                 var_dump($e);
             }//end catch
-            
-            
+
         }//end of while loop
     }
-/*
-    private function _loadHubs(){
-        $hubs=LiveData::getHubs();
-        $sql="";
-        foreach ($hubs as $hub) {
-            $h=new \stdClass;
-            $h->hub_id=$hub->id;
-            $h->name=$hub->hub;
-            $sql.=$this->_insertSQL($h,"hubs");
+
+    private function _getFacilities(){
+        $sql = "SELECT id,districtID,hubID FROM vl_facilities";
+        $facilities =  \DB::connection('live_db')->select($sql);
+        $facilities_map = [];
+        foreach ($facilities as $key => $value) {
+            $facilities_map[$value->id]=$value;
         }
-        \DB::unprepared($sql);
+        return $facilities_map;
     }
 
-    private function _loadFacilities(){
-        $res=LiveData::getFacilities();
-        $sql="";
-        foreach ($res as $row) {
-            $f=new \stdClass;
-            $f->facility_id=$row->id;         
-            $f->name=$row->facility;
-            $f->district_id=$row->districtID;
-            $f->hub_id=$row->hubID;
-            $f->ip_id=$row->ipID;
-            $sql.=$this->_insertSQL($f,"facilities");
+    private function _getLocationIDs($facilities,$facility_id){
+        foreach ($facilities as $key => $facility) {
+            if($facility->id == $facility_id){
+                return $facility;
+             }
+                
         }
-        \DB::unprepared($sql);
+        return false;
     }
+    private function _getSuppressionStatus($samplesRecord){
+        $suppression_status = "no";
+        if($samplesRecord->sampleResultValidity == 'valid'){
+            if((int)$samplesRecord->sampleTypeID == 1 && (int)$samplesRecord->resultNumeric < 1000)
+                $suppression_status = "yes";
+           
+                
+            else if((int)$samplesRecord->sampleTypeID == 2 && (int)$samplesRecord->resultNumeric < 5000)
+                $suppression_status = "yes";
+            
+        }
 
-    private function _loadDistricts(){
-        $res=LiveData::getDistricts();
-        $sql="";
-        foreach ($res as $row) {
-            $d=new \stdClass;
-            $d->district_id=$row->id;         
-            $d->name=$row->district;            
-            $sql.=$this->_insertSQL($d,"districts");
-        }
-        \DB::unprepared($sql);
+        return $suppression_status; 
     }
-
-    private function _loadIPs(){
-        $res=LiveData::getIPs();
-        $sql="";
-        foreach ($res as $row) {
-            $p=new \stdClass;
-            $p->ip_id=$row->id;         
-            $p->name=$row->ip;            
-            $sql.=$this->_insertSQL($p,"ips");
-        }
-        \DB::unprepared($sql);
-    }
-*/
     private function _getSuppressedNumbers($samplesArray){
         if($samplesArray->validity == 'valid'){
             if((int)$samplesArray->sampleTypeID == 1 && (int)$samplesArray->resultNumeric < 1000)
