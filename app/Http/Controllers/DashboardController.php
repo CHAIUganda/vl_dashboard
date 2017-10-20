@@ -898,7 +898,7 @@ class DashboardController extends Controller {
  	}
  	private function _getDbsSamplesByDurationNumbers(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [2]] ];
+		$extendedConditions['$and'][]=[ 'sample_type_id'=>  ['$in'=> [1]] ];
 		$grp=[];
 		$grp['_id']='$year_month';
 		$grp['dbs_samples']=['$sum'=>1];
