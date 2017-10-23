@@ -16,21 +16,21 @@ use EID\RegimenData;
 use EID\Mongo;
 
 
-class Engine extends Command
+class InitialDashboardEngine extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'engine:run';
+    protected $signature = 'initial:run';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Engine to help generate data for the dashboard';
+    protected $description = 'Engine to help initialize the Dashboard';
 
     /**
      * Create a new command instance.
@@ -50,12 +50,21 @@ class Engine extends Command
      */
     public function handle()
     {
-        ini_set('memory_limit', '2500M');
+        ini_set('memory_limit', '2900M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
+        
+
+  
+       
 
         
-    
+        $this->mongo->drop(); 
+        $this->_loadHubs();
+        $this->_loadDistricts();
+        $this->_loadFacilities();
+        $this->_loadIPs();
+        $this->_loadRegimens();
         
         $this->_loadData();
         
@@ -64,23 +73,21 @@ class Engine extends Command
     }
 
     private function _loadData(){
-        
-        
-        $facilities=$this->_getFacilities();
-        $turnAroundTimeInMonths=3;//Number of Months to consider for worst turn -around-time
-       
-        for ($month=0; $month < $turnAroundTimeInMonths; $month++) { 
-            $turnAroundYear=intval(date("Y",strtotime("-$month month")));
-            $turnAroundMonth=intval(date("m",strtotime("-$month month")));
+        $this->mongo->dashboard_new_backend->drop();
+        $year=2014;
+        $current_year=date('Y');
+        //$current_year=2014;
 
-            $samples_records = LiveData::getSamplesRecordsByMonth($turnAroundYear,$turnAroundMonth);
-            $recordsInserted=0;
-            $recordsRemoved=0;
+        $facilities=$this->_getFacilities();
+       
+        while($year<=$current_year){
+            $samples_records = LiveData::getSamplesRecords($year);
+            $counter=0;
             
             try {
                 foreach($samples_records AS $s){
                     $data=[];
-                    $year_month = $turnAroundYear.str_pad($s->monthOfYear,2,0,STR_PAD_LEFT);
+                    $year_month = $year.str_pad($s->monthOfYear,2,0,STR_PAD_LEFT);
             
                     $data["sample_id"]=isset($s->id)? (int)$s->id: 0;
                     $data["vl_sample_id"]=isset($s->vlSampleID)? $s->vlSampleID: 0;
@@ -118,31 +125,19 @@ class Engine extends Command
                     $data["rejection_reason"]=isset($s->rejectionReason)? $s->rejectionReason : "UNKNOWN";
 
                     //
-                   $sampleID=(int)$s->id;
-                   $recordsRemoved = $recordsRemoved + $this->removeSample($sampleID);
 
                    $this->mongo->dashboard_new_backend->insert($data);
-                   $recordsInserted ++;
+                   $counter ++;
                 }//end of for loop
-              echo " Removed $recordsRemoved records for $turnAroundYear-$turnAroundMonth\n";
-              echo " Inserted $recordsInserted records for $turnAroundYear-$turnAroundMonth\n";
-              
+              echo " inserted $counter records for $year\n";
+              $year++;
             } catch (Exception $e) {
                 var_dump($e);
             }//end catch
 
         }//end of while loop
     }
-   
-    /*
-    * return 1 for when a record has been successfully removed,0 when nothing has been found.
-    */
-    private function removeSample($numberSampleID){
-        $options=[];
-        $options['justOne']=false;
-        $result=$this->mongo->dashboard_new_backend->remove(array('sample_id' => $numberSampleID), $options);
-        return $result['n'];//return 1 for when a record has been successfully removed,0 when nothing has been found.
-    }
+
     private function _getFacilities(){
         $sql = "SELECT id,districtID,hubID FROM vl_facilities";
         $facilities =  \DB::connection('live_db')->select($sql);

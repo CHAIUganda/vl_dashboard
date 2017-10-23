@@ -44,7 +44,7 @@
                         <th width='50%'>Facility</th>
                         <th width='5%'>Valid Results</th>
                         <th width='5%'>Suppressed Results</th>
-                        <th width='5%'>Suppressed Results</th>
+                        <th width='5%'>Non Suppressed Results</th>
                         <th width='5%'>Suppression rate (%)</th>
                     </tr>
                 </thead>

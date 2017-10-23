@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \EID\Console\Commands\Inspire::class,
         \EID\Console\Commands\MyName::class,
+        \EID\Console\Commands\InitialDashboardEngine::class,
         \EID\Console\Commands\Engine::class,
         \EID\Console\Commands\DHIS2::class,
         \EID\Console\Commands\Essai::class,
