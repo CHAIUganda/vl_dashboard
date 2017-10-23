@@ -358,6 +358,15 @@ class MyHTML{
 		$rec_suppressed_adults="Below 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 12 months.";
 		$rec_suppressed_kids="Below 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 6 months.";
 		$rec_unsuppressed="Above 1,000 copies/mL: Patient has elevated viral load. <br>Please initiate intensive adherence counseling and conduct a repeat viral load test within 4-6 months.";
+		//$rec_unsuppressed="&ge; 1,000 copies/mL. Patient has unsuppressed viral load.";
+		/*$rec_unsuppressed.="<ul>";
+		$rec_unsuppressed.="<li>Please screen/test  for OI- crag and ";
+		$rec_unsuppressed.="initiate intensive adherence counseling</li> ";
+		$rec_unsuppressed.="<li>Repeat viral load test within 4­ - 6 months. </li>";
+		$rec_unsuppressed.="<li>Next VL test Expected in Oct, 2016. Send 2 samples. One for VL test. One for HIVDR test</li>";
+		$rec_unsuppressed.="</ul>";
+		$ret = $rec_unsuppressed;*/
+
 		$msg = "Expected in ";
 		if($suppressed=='NO'){
 			$ret = $rec_unsuppressed;
@@ -426,8 +435,9 @@ class MyHTML{
         return $ret;
     }
 
-    public static function interpretCobas8800($result){
+    public static function interpretCobas8800($result, $worksheet_factor){
 		$ret = array();
+		$start_char = substr($result, 0, 1);
 		if($result == 'Target Not Detected'){
 			$numerical_result = 0;
 			$suppressed = 'YES';
@@ -444,10 +454,16 @@ class MyHTML{
 			$numerical_result = 10000000;
 			$suppressed = 'NO';
 			$alpha_numerical_result = substr($result, 0,1)." 10,000,000 Copies / mL";
+		}elseif($start_char == '<' || $start_char == '>'){
+			$numerical_result = number_format((float) substr($result, 1) );
+			$suppressed = $start_char=='<'?'YES':'NO';
+			$alpha_numerical_result = "$start_char $numerical_result Copies / mL";
 		}else{
 			$numerical_result = number_format((float)$result);
 			$n_result =  str_replace(",", "", $numerical_result)+0;
+			$n_result *= $worksheet_factor; 
 			$suppressed = $n_result>1000?'NO':'YES';
+			$numerical_result = number_format($n_result);			
 			$alpha_numerical_result = "$numerical_result Copies / mL";
 		}
 

@@ -84,33 +84,50 @@ class LiveData extends Model
 
     }
 
-    public static function getResultsList($printed=''){
-      $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'sample_id')
+    public static function getResultsList($printed='', $count=0){
+      $ret = LiveData::leftjoin('vl_samples AS s', 's.id', '=', 'pr.sample_id')
                       ->leftjoin('vl_patients As p', 'p.id', '=', 'patientID')
                       ->leftjoin('vl_facilities AS f', 'f.id', '=', 's.facilityID')
                       ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
-                      ->leftjoin('vl_results_released AS rr', 'rr.sample_id', '=', 'pr.sample_id')
                       ->select('pr.sample_id','formNumber','collectionDate', 'receiptDate', 'hub', 'facility', 
                                'artNumber', 'otherID', 'qc_at','printed','printed_at','printed_by')
                       ->from('vl_facility_printing AS pr');
+      $count_cond = ' ';
       if($printed=='NO'){
         //this to be interpreted as pending
         $ret = $ret->where('printed','=','NO')->where('downloaded','=','NO')->where('ready', '=', 'YES');
+        $count_cond = "WHERE printed = 'NO' AND downloaded='NO' AND ready = 'YES'";
       }elseif($printed=='YES'){
         //this to be interpreted as printed or downloaded
         $ret = $ret->where(function($query){
                     $query->where('printed','=','YES')->orWhere('downloaded','=','YES');
               }); 
+        $count_cond = "WHERE (printed = 'YES' OR downloaded='YES')";
       }
 
       $hub_id = \Auth::user()->hub_id;
       $facility_id = \Auth::user()->facility_id;
        if(\Request::has('f')){
-         $ret = $ret->where('f.id','=', \Request::get('f'));
+        $xxxf = \Request::get('f');
+         $ret = $ret->where('f.id','=', $xxxf);
+         $count_cond .= " AND f.id=$xxxf";
       }elseif(!empty($hub_id)){
         $ret = $ret->where('f.hubID', $hub_id);
+        $count_cond .= " AND f.hubID=$hub_id";
       }elseif(!empty($facility_id)){
          $ret = $ret->where('f.id', $facility_id);
+         $count_cond .=" AND f.id=$facility_id";
+      }
+
+      $count_sql = "SELECT count(pr.id) AS num 
+                    FROM vl_facility_printing AS pr
+                    LEFT JOIN vl_samples AS s ON pr.sample_id=s.id
+                    LEFT JOIN vl_facilities AS f ON s.facilityID=f.id
+                    $count_cond";
+
+      if($count==1){
+        $count_arr = \DB::connection('live_db')->select($count_sql);
+        return $count_arr[0]->num;
       }
 
       $ret = $printed=='YES'?$ret->orderby('printed_at', 'DESC'):$ret->orderby('qc_at', 'DESC');
@@ -198,11 +215,10 @@ class LiveData extends Model
 
             right JOIN vl_samples AS s ON r.vlSampleID=s.vlSampleID
 		        LEFT JOIN vl_patients AS p ON s.patientID=p.id
-            LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id 
-            
-		        WHERE YEAR(s.created)='$year'  		  
-		        GROUP BY mth,r.validity,age_group,facilityID,sex,regimen,reg_line,reg_time,trt,pregnant,
-            breastfeeding,activeTBStatus,s.sampleTypeID";
+
+            LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
+		        WHERE YEAR(s.created)='$year' AND $cond		  
+		        GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt";
 
 		  $res=\DB::connection('live_db')->select($sql);
       /*if($cond==1) return $res;
