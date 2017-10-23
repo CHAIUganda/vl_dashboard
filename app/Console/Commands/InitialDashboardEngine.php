@@ -160,12 +160,16 @@ class InitialDashboardEngine extends Command
     private function _getSuppressionStatus($samplesRecord){
         $suppression_status = "no";
         if($samplesRecord->sampleResultValidity == 'valid'){
-            if((int)$samplesRecord->sampleTypeID == 1 && (int)$samplesRecord->resultNumeric < 1000)
+            if((int)$samplesRecord->resultNumeric < 1000){
+                 $suppression_status = "yes";
+            }
+
+           /* if((int)$samplesRecord->sampleTypeID == 1 && (int)$samplesRecord->resultNumeric < 1000)
                 $suppression_status = "yes";
            
                 
             else if((int)$samplesRecord->sampleTypeID == 2 && (int)$samplesRecord->resultNumeric < 5000)
-                $suppression_status = "yes";
+                $suppression_status = "yes";*/
             
         }
 
@@ -173,10 +177,14 @@ class InitialDashboardEngine extends Command
     }
     private function _getSuppressedNumbers($samplesArray){
         if($samplesArray->validity == 'valid'){
-            if((int)$samplesArray->sampleTypeID == 1 && (int)$samplesArray->resultNumeric < 1000)
+            if((int)$samplesArray->resultNumeric < 1000){
+                 return (int)$samplesArray->samples_tested;
+            }               
+
+           /* if((int)$samplesArray->sampleTypeID == 1 && (int)$samplesArray->resultNumeric < 1000)
                 return (int)$samplesArray->samples_tested;
             else if((int)$samplesArray->sampleTypeID == 2 && (int)$samplesArray->resultNumeric < 5000)
-                return (int)$samplesArray->samples_tested;
+                return (int)$samplesArray->samples_tested;*/
         }
 
         return 0; 
