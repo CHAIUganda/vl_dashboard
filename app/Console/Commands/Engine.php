@@ -67,7 +67,7 @@ class Engine extends Command
         
         
         $facilities=$this->_getFacilities();
-        $turnAroundTimeInMonths=3;//Number of Months to consider for worst turn -around-time
+        $turnAroundTimeInMonths=env('TAT_MONTHS', 3);//Number of Months to consider for worst turn -around-time
        
         for ($month=0; $month < $turnAroundTimeInMonths; $month++) { 
             $turnAroundYear=intval(date("Y",strtotime("-$month month")));
