@@ -67,7 +67,7 @@ class Engine extends Command
         
         
         $facilities=$this->_getFacilities();
-        $turnAroundTimeInMonths=env('TAT_MONTHS', 1);//Number of Months to consider for worst turn -around-time
+        $turnAroundTimeInMonths=env('TAT_MONTHS', 3);//Number of Months to consider for worst turn -around-time
         
        
         for ($month=0; $month < $turnAroundTimeInMonths; $month++) { 
@@ -153,10 +153,6 @@ class Engine extends Command
         $options=[];
         $options['justOne']=false;
         $result=$this->mongo->dashboard_new_backend->remove(array('year_month' => $yearMonth), $options);
-        echo "---0---\n";
-       var_dump($result);
-        echo "---2---\n";
-
         return $result['n'];//return 1 for when a record has been successfully removed,0 when nothing has been found.
     }
     private function _getFacilities(){
