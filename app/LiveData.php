@@ -252,6 +252,34 @@ class LiveData extends Model
       $results=\DB::connection('live_db')->select($sql);
       return $results;
     }
+    public static function getSamplesRecordsByMonth($year,$month){
+      $age_grp_case=self::ageGroupCase();
+      $reg_time_case=self::regimenTimeCase();
+      $rjctn_rsn_case=self::rjctnRsnCase();
+
+      $sql="select DISTINCT s.vlSampleID,s.id,month(s.created) as monthOfYear,s.districtID,s.hubID,s.facilityID,
+              TIMESTAMPDIFF(YEAR,p.dateOfBirth,s.created) as age,
+                s.patientUniqueID,
+              s.created,".self::SEX_CASE." AS sex,s.currentRegimenID,ts.position,s.pregnant,s.breastfeeding,
+              s.activeTBStatus,s.sampleTypeID, $reg_time_case AS reg_time,s.treatmentInitiationID AS trt,
+              results.vlSampleID as resultsSampleID,results.resultAlphanumeric,results.resultNumeric,
+              " .self::RESULT_VALIDITY_CASE." AS sampleResultValidity,
+              $rjctn_rsn_case as rejectionReason
+
+            from 
+                vl_samples s left join (SELECT vlSampleID, count(vlSampleID) as num, max(ID),resultNumeric,
+                                        resultAlphanumeric,suppressed 
+                            FROM vl_results_merged group by vlSampleID) results on s.vlSampleID=results.vlSampleID 
+               left join (select distinct sampleID,id,outcomeReasonsID from vl_samples_verify) v on s.id=v.sampleID
+
+                inner join vl_patients p on s.patientID =p.id 
+                inner join vl_appendix_regimen r on s.currentRegimenID = r.id
+                inner join vl_appendix_treatmentstatus ts on ts.id = r.treatmentStatusID
+                
+            where year(s.created)=$year and MONTH(s.created)=$month";
+      $results=\DB::connection('live_db')->select($sql);
+      return $results;
+    }
     public static function getNumberOfPatients($year,$cond=1){
       $age_grp_case=self::ageGroupCase();
       #$reg_type_case=self::regimenTypeCase();
