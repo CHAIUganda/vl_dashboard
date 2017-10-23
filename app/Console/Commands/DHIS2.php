@@ -358,7 +358,7 @@ class DHIS2 extends Command
                 $counter++;
                 
             }catch(Exception $e){
-                 echo "\n ".$ex->getMessage()." \n";
+                 echo "\n ".$e->getMessage()." \n";
            }
         }//end foreach loop
         echo "\n ----inserted facility: $counter-------";
