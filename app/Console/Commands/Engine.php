@@ -67,15 +67,21 @@ class Engine extends Command
         
         
         $facilities=$this->_getFacilities();
-        $turnAroundTimeInMonths=env('TAT_MONTHS', 3);//Number of Months to consider for worst turn -around-time
+        $turnAroundTimeInMonths=env('TAT_MONTHS', 1);//Number of Months to consider for worst turn -around-time
+        
        
         for ($month=0; $month < $turnAroundTimeInMonths; $month++) { 
             $turnAroundYear=intval(date("Y",strtotime("-$month month")));
             $turnAroundMonth=intval(date("m",strtotime("-$month month")));
 
+            $dummyYearMonthString=$turnAroundYear.str_pad($turnAroundMonth,2,0,STR_PAD_LEFT);
+            $dummyYearMonth = intval($dummyYearMonthString);
+
+            $recordsRemoved =  $this->removeSamples($dummyYearMonth);
+
             $samples_records = LiveData::getSamplesRecordsByMonth($turnAroundYear,$turnAroundMonth);
             $recordsInserted=0;
-            $recordsRemoved=0;
+            
             
             try {
                 foreach($samples_records AS $s){
@@ -119,7 +125,7 @@ class Engine extends Command
 
                     //
                    $sampleID=(int)$s->id;
-                   $recordsRemoved = $recordsRemoved + $this->removeSample($sampleID);
+                   
 
                    $this->mongo->dashboard_new_backend->insert($data);
                    $recordsInserted ++;
@@ -141,6 +147,16 @@ class Engine extends Command
         $options=[];
         $options['justOne']=false;
         $result=$this->mongo->dashboard_new_backend->remove(array('sample_id' => $numberSampleID), $options);
+        return $result['n'];//return 1 for when a record has been successfully removed,0 when nothing has been found.
+    }
+     private function removeSamples($yearMonth){
+        $options=[];
+        $options['justOne']=false;
+        $result=$this->mongo->dashboard_new_backend->remove(array('year_month' => $yearMonth), $options);
+        echo "---0---\n";
+       var_dump($result);
+        echo "---2---\n";
+
         return $result['n'];//return 1 for when a record has been successfully removed,0 when nothing has been found.
     }
     private function _getFacilities(){
@@ -165,16 +181,12 @@ class Engine extends Command
     private function _getSuppressionStatus($samplesRecord){
         $suppression_status = "no";
         if($samplesRecord->sampleResultValidity == 'valid'){
-             if((int)$samplesRecord->resultNumeric < 1000){
-                 $suppression_status = "yes";
-             }
-               
-            /*if((int)$samplesRecord->sampleTypeID == 1 && (int)$samplesRecord->resultNumeric < 1000)
+            if((int)$samplesRecord->sampleTypeID == 1 && (int)$samplesRecord->resultNumeric < 1000)
                 $suppression_status = "yes";
            
                 
             else if((int)$samplesRecord->sampleTypeID == 2 && (int)$samplesRecord->resultNumeric < 5000)
-                $suppression_status = "yes";*/
+                $suppression_status = "yes";
             
         }
 
@@ -182,14 +194,10 @@ class Engine extends Command
     }
     private function _getSuppressedNumbers($samplesArray){
         if($samplesArray->validity == 'valid'){
-            if((int)$samplesArray->resultNumeric < 1000){
-               return (int)$samplesArray->samples_tested; 
-            }
-                
-           /* if((int)$samplesArray->sampleTypeID == 1 && (int)$samplesArray->resultNumeric < 1000)
+            if((int)$samplesArray->sampleTypeID == 1 && (int)$samplesArray->resultNumeric < 1000)
                 return (int)$samplesArray->samples_tested;
             else if((int)$samplesArray->sampleTypeID == 2 && (int)$samplesArray->resultNumeric < 5000)
-                return (int)$samplesArray->samples_tested;*/
+                return (int)$samplesArray->samples_tested;
         }
 
         return 0; 
