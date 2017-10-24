@@ -136,7 +136,7 @@
                         
                 </ul>
                
-                 <ul class="nav navbar-nav navbar-right">
+                 <!-- <ul class="nav navbar-nav navbar-right">
                      <li id='notifications' class="dropdown">
                             <a href="#" cclass="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <span class="glyphicon glyphicon-bell"></span> 
@@ -157,7 +157,7 @@
                                </a></li>
                            </ul>
                      </li>
-                </ul>
+                </ul> -->
                 @if(Auth::check())
                  <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
