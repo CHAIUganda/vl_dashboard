@@ -29,7 +29,10 @@
         
     </script>
 
-    <br>
+    <span style="
+    font-size: 10px;
+    color: #F44336;
+">{{ env('UPDATE_MESSAGE')}}</span>
     <?php //if(!isset($filter_val)) $filter_val="National Metrics, ".$time." thus far" ?>
 <!--       
       <span style="font-size:20px">eid</span>
