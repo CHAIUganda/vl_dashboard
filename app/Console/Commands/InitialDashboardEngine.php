@@ -96,7 +96,7 @@ class InitialDashboardEngine extends Command
                     
                         if(array_key_exists(intval($s->facilityID), $facilities)){
                             $facility= $facilities[$s->facilityID];
-                            $data['district_id']=isset($facility->districtID)?$facility->districtID:0;
+                            $data['district_id']=isset($facility->districtID)?(int)$facility->districtID:0;
                             $data['hub_id']=isset($facility->hubID)?(int)$facility->hubID:0;
                         }else{
                             echo "facilityID: ". $s->facilityID ."not known \n";
