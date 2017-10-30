@@ -24,7 +24,7 @@ class LiveData extends Model
  )  then 'invalid' else 'valid' end as validity FROM vl_results_merged";
 
 
-  const RESULT_VALIDITY_CASE ="case when results.resultAlphanumeric in ('Failed','Failed.',
+  const RESULT_VALIDITY_CASE ="case when resultAlphanumeric in ('Failed','Failed.',
                 'Invalid',
                 'Invalid test result. There is insufficient sample to repeat the assay.',
                 'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.',
@@ -245,19 +245,19 @@ class LiveData extends Model
       $reg_time_case=self::regimenTimeCase();
       $rjctn_rsn_case=self::rjctnRsnCase();
 
-      $sql="select DISTINCT s.vlSampleID,s.id,month(s.created) as monthOfYear,s.districtID,s.hubID,s.facilityID,
+      $sql="select Distinct s.vlSampleID,s.id,month(s.created) as monthOfYear,s.districtID,s.hubID,s.facilityID,
               TIMESTAMPDIFF(YEAR,p.dateOfBirth,s.created) as age,
                 s.patientUniqueID,
               s.created,".self::SEX_CASE." AS sex,s.currentRegimenID,ts.position,s.pregnant,s.breastfeeding,
               s.activeTBStatus,s.sampleTypeID, $reg_time_case AS reg_time,s.treatmentInitiationID AS trt,
-              results.vlSampleID as resultsSampleID,results.resultAlphanumeric,results.resultNumeric,
-              " .self::RESULT_VALIDITY_CASE." AS sampleResultValidity,
+              results.vlSampleID as resultsSampleID, results.concatinated_results,
+              
               $rjctn_rsn_case as rejectionReason
 
             from 
-                vl_samples s left join (SELECT vlSampleID, count(vlSampleID) as num, max(ID),resultNumeric,
-                                        resultAlphanumeric,suppressed 
-                            FROM vl_results_merged group by vlSampleID) results on s.vlSampleID=results.vlSampleID 
+                vl_samples s left join (select id,vlSampleID, created,
+                  GROUP_CONCAT(resultNumeric,':',".self::RESULT_VALIDITY_CASE.") AS concatinated_results
+                  from vl_results_merged group by vlSampleID) results on s.vlSampleID=results.vlSampleID 
                left join (select distinct sampleID,id,outcomeReasonsID from vl_samples_verify) v on s.id=v.sampleID
 
                 inner join vl_patients p on s.patientID =p.id 
@@ -273,19 +273,19 @@ class LiveData extends Model
       $reg_time_case=self::regimenTimeCase();
       $rjctn_rsn_case=self::rjctnRsnCase();
 
-      $sql="select DISTINCT s.vlSampleID,s.id,month(s.created) as monthOfYear,s.districtID,s.hubID,s.facilityID,
+      $sql="select Distinct s.vlSampleID,s.id,month(s.created) as monthOfYear,s.districtID,s.hubID,s.facilityID,
               TIMESTAMPDIFF(YEAR,p.dateOfBirth,s.created) as age,
                 s.patientUniqueID,
               s.created,".self::SEX_CASE." AS sex,s.currentRegimenID,ts.position,s.pregnant,s.breastfeeding,
               s.activeTBStatus,s.sampleTypeID, $reg_time_case AS reg_time,s.treatmentInitiationID AS trt,
-              results.vlSampleID as resultsSampleID,results.resultAlphanumeric,results.resultNumeric,
-              " .self::RESULT_VALIDITY_CASE." AS sampleResultValidity,
+              results.vlSampleID as resultsSampleID, results.concatinated_results,
+              
               $rjctn_rsn_case as rejectionReason
 
             from 
-                vl_samples s left join (SELECT vlSampleID, count(vlSampleID) as num, max(ID),resultNumeric,
-                                        resultAlphanumeric,suppressed 
-                            FROM vl_results_merged group by vlSampleID) results on s.vlSampleID=results.vlSampleID 
+                vl_samples s left join (select id,vlSampleID, created,
+                  GROUP_CONCAT(resultNumeric,':',".self::RESULT_VALIDITY_CASE.") AS concatinated_results
+                  from vl_results_merged group by vlSampleID) results on s.vlSampleID=results.vlSampleID 
                left join (select distinct sampleID,id,outcomeReasonsID from vl_samples_verify) v on s.id=v.sampleID
 
                 inner join vl_patients p on s.patientID =p.id 
