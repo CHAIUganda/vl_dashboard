@@ -65,10 +65,7 @@ class MyName extends Command{
     }
 
   private function removeSample($numberSampleID){
-    $options=[];
-    $options['justOne']=false;
-    $result=$this->mongo->dashboard_new_backend->remove(array('sample_id' => $numberSampleID), $options);
-    return $result['n'];
+    
   }
   
 

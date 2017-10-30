@@ -99,7 +99,7 @@ class InitialDashboardEngine extends Command
                             $data['district_id']=isset($facility->districtID)?(int)$facility->districtID:0;
                             $data['hub_id']=isset($facility->hubID)?(int)$facility->hubID:0;
                         }else{
-                            echo "facilityID: ". $s->facilityID ."not known \n";
+                            echo "facilityID: ". $s->facilityID ." not known \n";
                             continue;
                         }
 
@@ -119,8 +119,14 @@ class InitialDashboardEngine extends Command
                     $data["active_tb_status"] = isset($s->activeTBStatus)? $s->activeTBStatus : "UNKNOWN";
 
                     $data["sample_type_id"] = isset($s->sampleTypeID)?(int)$s->sampleTypeID:0;
-                    $data["sample_result_validity"] = isset($s->sampleResultValidity)? $s->sampleResultValidity : "UNKNOWN";
-                    $data["suppression_status"] = $this->_getSuppressionStatus($s);
+
+                    //UNKNOWN is the default to represent NULL
+                    $sample_results=[]; 
+                    $sample_results = $this->_getResults($s);
+                    $data["sample_result_validity"] = $sample_results["sample_result_validity"];
+                    $data["suppression_status"] = $sample_results["suppression_status"];
+                    
+
                     $data["tested"]=isset($s->resultsSampleID)?"yes":"no";
                     $data["rejection_reason"]=isset($s->rejectionReason)? $s->rejectionReason : "UNKNOWN";
 
@@ -157,38 +163,45 @@ class InitialDashboardEngine extends Command
         }
         return false;
     }
-    private function _getSuppressionStatus($samplesRecord){
-        $suppression_status = "no";
-        if($samplesRecord->sampleResultValidity == 'valid'){
-            if((int)$samplesRecord->resultNumeric < 1000){
+    private function _getSuppressionStatus($resultNumeric,$sampleResultValidity){
+        $suppression_status = "UNKNOWN";
+       
+        if($sampleResultValidity == 'valid'){
+            if($resultNumeric < 1000){
                  $suppression_status = "yes";
+            }else{
+                $suppression_status = "no";
             }
 
-           /* if((int)$samplesRecord->sampleTypeID == 1 && (int)$samplesRecord->resultNumeric < 1000)
-                $suppression_status = "yes";
-           
-                
-            else if((int)$samplesRecord->sampleTypeID == 2 && (int)$samplesRecord->resultNumeric < 5000)
-                $suppression_status = "yes";*/
-            
         }
 
         return $suppression_status; 
     }
-    private function _getSuppressedNumbers($samplesArray){
-        if($samplesArray->validity == 'valid'){
-            if((int)$samplesArray->resultNumeric < 1000){
-                 return (int)$samplesArray->samples_tested;
-            }               
+    private function _getResults($samplesRecord){
+       
+        $sampleResultValidity='UNKNOWN';
+        $suppressionStatus='UNKNOWN';
 
-           /* if((int)$samplesArray->sampleTypeID == 1 && (int)$samplesArray->resultNumeric < 1000)
-                return (int)$samplesArray->samples_tested;
-            else if((int)$samplesArray->sampleTypeID == 2 && (int)$samplesArray->resultNumeric < 5000)
-                return (int)$samplesArray->samples_tested;*/
+        if($samplesRecord->concatinated_results != NULL){
+            $exploded_results = explode(',', $samplesRecord->concatinated_results);
+            $array_size = count($exploded_results);
+            $last_index = $array_size - 1;
+        
+            $last_results = $exploded_results[$last_index];
+            $exploded_last_results=explode(':', $last_results );
+
+            $sampleResultValidity =$exploded_last_results[1];
+            $suppressionStatus = $this->_getSuppressionStatus(intval($exploded_last_results[0]),$sampleResultValidity);
         }
+        
+        $results=[];
+        $results["suppression_status"]=$suppressionStatus;
+        $results["sample_result_validity"]=$sampleResultValidity;
 
-        return 0; 
+        return $results;
+
     }
+    
     private function _loadHubs(){
         $this->mongo->hubs->drop();
         $res=LiveData::getHubs();

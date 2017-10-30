@@ -54,7 +54,7 @@ class DashboardController extends Controller {
 	}
 	private function _setConditions(){
 		extract(\Request::all());
-		//Log::info(\Request::all());
+	
 		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){
 			$to_date=date("Ym");
 			$fro_date=$this->_dateNMonthsBack();
@@ -95,23 +95,27 @@ class DashboardController extends Controller {
 		if( !empty($emtct) && $emtct!='[]') {
 			
 			$emtct_array =json_decode($emtct);
-			if (sizeof($emtct_array) == 1) {
+			
+			if (count($emtct_array) == 1) {
+		
 				$emtct_value = $emtct_array[0];
+				
 				if($emtct_value  == 'pregnancy_status'){
-					$pregancy_status_array = array(0 => 'Yes');
-					$conds['$and'][]=[ 'pregnancy_status'=>  ['$in'=> $pregancy_status_array] ];
+					
+					$conds['$and'][]=[ 'pregnancy_status'=>  'Yes' ];
+					
 				}else if($emtct_value == 'breast_feeding_status'){
-					$breast_feeding_status_array = array(0 => 'Yes');
-					$conds['$and'][]=[ 'breast_feeding_status'=>  ['$in'=> $breast_feeding_status_array] ];
+					
+					$conds['$and'][]=[ 'breastfeeding_status'=> 'Yes' ];
+					
 				}
 			}else{
 				foreach ($emtct_array as $value) {
 					if($value == 'pregnancy_status'){
 						$pregancy_status_array = array(0 => 'Yes' );
-						$conds['$or'][]=[ 'pregnancy_status'=>  ['$in'=> $pregancy_status_array] ];
+						$conds['$or'][]=[ 'pregnancy_status'=>  'Yes' ];
 					}else if($value == 'breast_feeding_status'){
-						$breast_feeding_status_array = array(0 => 'Yes');
-						$conds['$or'][]=[ 'breast_feeding_status'=>  ['$in'=> $breast_feeding_status_array ] ];
+						$conds['$or'][]=[ 'breastfeeding_status'=>  'Yes' ];
 					}else if($value == 'initiated_art_because_pmtct'){
 						$pmtct_option_B_plus_id_in_DB_array= array(0 =>1);
 						$conds['$or'][]=[ 'treatment_indication_id'=>  ['$in'=> $pmtct_option_B_plus_id_in_DB_array] ];
@@ -120,7 +124,18 @@ class DashboardController extends Controller {
 			}
 		}//end emtct if
 
-		if(!empty($tb_status)&&$tb_status!='[]')$conds['$and'][]=[ 'active_tb_status'=>  ['$in'=> json_decode($tb_status)] ];
+		if(!empty($tb_status)&&$tb_status!='[]'){
+			$tb_status_array = json_decode($tb_status);
+			foreach ($tb_status_array as $key => $value) {
+				if($value == 'y')
+					$conds['$and'][]=[ 'active_tb_status'=> 'Yes'];
+				elseif($value == 'n')
+					$conds['$and'][]=[ 'active_tb_status'=> 'No'];
+				elseif($value == 'x')
+					$conds['$and'][]=[ 'active_tb_status'=> 'UNKNOWN'];
+			}
+		}
+		
 	  	
 		return $conds;
 	}
@@ -170,35 +185,6 @@ class DashboardController extends Controller {
         }
         return $ret;
     }
-
-
-	/*public function live(){
-		extract(\Request::all());
-		if(empty($fro_date) && empty($to_date)){
-			$n_months=$this->_latestNMonths(12);
-			$fro_date=$n_months[0];
-			$to_date=end($n_months);
-		}
-		$conds=" `year_month`>=$fro_date AND `year_month`<=$to_date";
-		$conds.=!empty($districts)?" AND f.district_id in ($districts) ":"";
-		$conds.=!empty($hubs)?" AND f.hub_id in ($hubs) ":"";
-		$conds.=!empty($age_ids)?" AND s.age_group_id in ($age_ids) ":"";
-
-		$ret=[];
-
-		$sd_numbers=$this->_wholeNumbers($conds);
-		$ret["samples_received"]=$sd_numbers->samples_received; 
-		$ret["suppressed"]=$sd_numbers->suppressed;
-		$ret["valid_results"]=$sd_numbers->valid_results;
-		$ret["rejected_samples"]=$sd_numbers->rejected_samples;
-
-		$ret["facility_numbers"]=$this->_facilityNumbers($conds);
-		$ret["district_numbers"]=$this->_districtNumbers($conds);
-		$ret["duration_numbers"]=$this->_durationNumbers($conds);
-
-		$ret["treatment_indication"]=$this->_treatmentIndicationNumbers($conds);
-		return json_encode($ret);
-	}*/
 
 	public function live(){
 
