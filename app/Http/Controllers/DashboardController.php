@@ -175,12 +175,14 @@ class DashboardController extends Controller {
         $m=date('m');
         $y=date('Y');
         for($i=1;$i<=$n;$i++){
-        	if($i==$n) $ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
-
+        	
             if($m==0){
                 $m=12;
                 $y--;
             }
+            if($i==$n){
+        		$ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
+        	} 
             $m--;
         }
         return $ret;
