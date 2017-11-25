@@ -56,7 +56,10 @@ Route::group(['middleware' => 'auth'], function()
 
 		//API stuff
 		Route::get('/api/facility_list/', ['uses' => 'APIResultsController@facility_list']);
-		Route::get('/api/facility_list_data/', ['uses' => 'APIResultsController@facility_list_data']);
+		Route::get('/api/facility_list/data/', ['uses' => 'APIResultsController@facility_list_data']);
+		Route::get('/api/results/{facility_id}', ['uses'=>'APIResultsController@results']);
+		Route::get('/api/results/data/{facility_id}', ['uses'=>'APIResultsController@results_data']);
+		Route::get('/api/result/{id?}', ['uses'=>'APIResultsController@result']);
 	
 	});
 

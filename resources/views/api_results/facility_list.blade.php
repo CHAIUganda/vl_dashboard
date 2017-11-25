@@ -102,7 +102,7 @@ $(function() {
         processing: true,
         serverSide: true,
         pageLength: 10,
-        ajax: '/api/facility_list_data/',
+        ajax: '/api/facility_list/data/',
        /* ajax: '{!! url("$url/data$limit") !!}',
         columns: [    
              @if(empty(Auth::user()->hub_id)) {data: 'hub', name: 'h.hub'},@endif

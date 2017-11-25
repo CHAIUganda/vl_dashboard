@@ -22,48 +22,17 @@ class APIResultsController extends Controller {
 		return view('api_results.facility_list', ['sect'=>'results']);
 	}
 
-	/*public function facility_list_data(){
-		$cols = ['facility', 'coordinator_name', 'coordinator_contact', 'coordinator_email'];
-		if(!empty(\Auth::user()->hub_id)) $hub = \Auth::user()->hub_id;
-		if(\Request::has('order')) $orderby = VLAPI::get_orderby($cols);
-		if(!empty(\Request::get('search')['value'])) $search = \Request::get('search')['value'];
-		if(\Request::has('start')) $start = \Request::get('start');
-		if(\Request::has('length')) $length = \Request::get('length');
-
-		$vlapi_results = VLAPI::get('facilities', compact('hub','orderby','search', 'start', 'length'));
-		$vlapi_results = json_decode($vlapi_results, true);
-
-		$data = [];
-		if(isset($vlapi_results['data'])){
-			foreach ($vlapi_results['data'] as $record) {
-				extract($record);
-				$data[] = [$facility, $coordinator_name, $coordinator_contact, $coordinator_email];
-			}
-		}
-		
-
-		return [
-			"draw" => \Request::get('draw'),
-			"recordsTotal" => isset($vlapi_results['recordsTotal'])?$vlapi_results['recordsTotal']:0 ,
-			"recordsFiltered" => isset($vlapi_results['recordsFiltered'])?$vlapi_results['recordsFiltered']:0, 
-			"data"=> $data
-			];
-	}*/
-
 	public function facility_list_data(){
 		$cols = ['facility', 'coordinator_name', 'coordinator_contact', 'coordinator_email'];
-		$hub = \Auth::user()->hub_id;
-		$orderby = $this->get_orderby($cols);
-		$search = \Request::has('search')?\Request::get('search')['value']:"";
-		$start = \Request::get('start');
-		$length = \Request::get('length');
-
-		$facilities = $this->getFacilities(compact('hub','orderby','search', 'start', 'length'));
+		$params = $this->get_params($cols);
+		$params['hub'] = \Auth::user()->hub_id;
+		$facilities = $this->getFacilities($params);
 
 		$data = [];
 		foreach ($facilities['data'] as $record) {
 			extract($record);
-			$data[] = [$facility, $coordinator_name, $coordinator_contact, $coordinator_email];
+			$facility_str = "<a href='/api/results/$pk'>$facility</a>";
+			$data[] = [$facility_str, $coordinator_name, $coordinator_contact, $coordinator_email];
 		}
 		
 		return [
@@ -74,15 +43,62 @@ class APIResultsController extends Controller {
 			];
 	}
 
-	private function get_orderby($cols){
+	public function results($facility_id){
+		return view('api_results.results', compact('facility_id'));
+	}
+
+	public function results_data($facility_id){
+		$cols = ['select','form_number', 'patient.art_number', 'patient.other_id', 'date_collected', 'date_received', 'result.resultsqc.released_at', 'options'];
+		$params = $this->get_params($cols);
+		$params['facility_id'] = $facility_id;
+		$samples = $this->getSamples($params);
+
+		$data = [];
+		foreach ($samples['data'] as $sample) {
+			extract($sample);
+			$select_str = "<input type='checkbox' >";
+			$url = "/api/result/$pk";
+			$links = ['Print preview' => "javascript:windPop('$url')",'Download' => "$url&pdf=1"];
+			$data[] = [
+				$select_str, 
+				$form_number, 
+				$patient['art_number'], 
+				$patient['other_id'], 
+				$date_collected, 
+				$date_received, 
+				$result['resultsqc']['released_at']?$result['resultsqc']['released_at']:$rejectedsamplesrelease['released_at'],
+				\MyHTML::dropdownLinks($links)];
+		}
+
+		return [
+			"draw" => \Request::get('draw'),
+			"recordsTotal" => $samples['recordsTotal'],
+			"recordsFiltered" => $samples['recordsFiltered'], 
+			"data"=> $data
+			];
+	}
+
+	public function result($id){
+		$vldbresult = $this->mongo->api_samples->find(['pk'=>(int)$id]);
+		return view('api_results.result_slip', compact('vldbresult'));
+	}
+
+
+
+	private function get_params($cols){
     	$order = \Request::get('order');
-    	$order_by = [$cols[0]=>1];		
+    	$orderby = [$cols[0]=>1];		
 		if(isset($order[0])){
 			$col = $cols[$order[0]['column']];
 			$dir = $order[0]['dir'];
-			$order_by = $dir=='asc'?[$col=>1]:[$col=>-1];
+			$orderby = $dir=='asc'?[$col=>1]:[$col=>-1];
 		}
-		return $order_by;
+
+		$search = \Request::has('search')?\Request::get('search')['value']:"";
+		$start = \Request::get('start');
+		$length = \Request::get('length');
+
+		return compact('orderby','search', 'start', 'length');
     }
 
 
@@ -94,8 +110,26 @@ class APIResultsController extends Controller {
 		if(!empty($hub)) $cond['$and'][]=["hub"=>$hub];
 		$ret['recordsTotal'] = $this->mongo->api_facilities->find($cond)->count();
 		if(!empty($search)) $cond['$and'][] = ['facility'=>new \MongoRegex("/$search/i")];
+
 		$ret['data'] = $this->mongo->api_facilities->find($cond)->sort($orderby)->skip($start)->limit($length);
 		$ret['recordsFiltered'] = $this->mongo->api_facilities->find($cond)->count();
+
+		return $ret;
+	}
+
+	private function getSamples($params){
+		$ret=[];
+		extract($params);
+		$cond=[];
+		$cond['$and'][] = ['$or'=>[['result.resultsqc.released'=>true], ['rejectedsamplesrelease.released'=>true]]];
+		//if(!empty($facility_id)) $cond['$and'][]=["facility"=>$facility_id];
+		$ret['recordsTotal'] = $this->mongo->api_samples->find($cond)->count();
+		if(!empty($search)){
+			$mongo_search = new \MongoRegex("/$search/i");
+			$cond['$and'][] = ['form_number' => $mongo_search];
+		} 
+		$ret['data'] = $this->mongo->api_samples->find($cond)->sort($orderby)->skip($start)->limit($length);
+		$ret['recordsFiltered'] = $this->mongo->api_samples->find($cond)->count();
 
 		return $ret;
 	}

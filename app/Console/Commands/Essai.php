@@ -46,12 +46,13 @@ class Essai extends Command
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //
-        $this->comment($this->_get('facilities'));
-        $facilities = $this->_get('facilities');
-        $this->mongo->api_facilities->drop();
-        $this->mongo->api_facilities->batchInsert(json_decode($facilities));
-        // $results = $this->_get('results');
-        // $this->mongo->api_results->batchInsert(json_decode($results));
+        //$this->comment($this->_get('facilities'));
+        //$facilities = $this->_get('facilities');
+        //$this->mongo->api_facilities->drop();
+        //$this->mongo->api_facilities->batchInsert(json_decode($facilities));
+        $samples = $this->_get('samples');
+        $this->mongo->api_samples->drop();
+        $this->mongo->api_samples->batchInsert(json_decode($samples));
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
 

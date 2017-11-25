@@ -155,9 +155,38 @@ $phones = implode(", ", $phones_arr);
 				</table>				
 			</div>
 		</div>
-
 		<div class="col-xs-6" >	
-			<div class="print-ttl">sample test information</div>
+			<div class="print-ttl">treatment information</div>
+			<div class="print-sect">			
+				<table>
+					<tr>
+						<td>Treatment&nbsp;Initiation&nbsp;date:</td>
+						<td class="print-val">31-Jun-2005</td>
+					</tr>
+					<tr>
+						<td>Pregnant?:</td>
+						<td class="print-val-check"><?=MyHTML::boolean_draw(['NO','YES'], 1)?>  ANC #: <u>8900</u></td>
+					</tr>
+					<tr>
+						<td>Breastfeeding? :</td>
+						<td class="print-val-check"><?=MyHTML::boolean_draw(['NO','YES'], 0)?></td>
+					</tr>
+					<tr>
+						<td>Treatment&nbsp;Line:</td>
+						<td class="print-val-check"><?=MyHTML::boolean_draw($tx_lines, 2)?></td>
+					</tr>
+				</table>				
+			</div>
+		</div>
+
+	</div>
+
+	
+		
+	<div class="print-ttl">sample test information</div>
+	<div class="print-sect">
+		<div class="row">
+			<div class="col-xs-6" >				
 			<div class="print-sect" style="height:156px;">			
 				<table>
 					<tr>
@@ -178,29 +207,6 @@ $phones = implode(", ", $phones_arr);
 				<?php if($rejected==1){ ?>If rejected Reason: <?=$result_obj->rejection_reason ?><?php } ?>	
 			</div>
 		</div>
-	</div>
-
-	
-		
-	<div class="print-ttl">treatment information</div>
-	<div class="print-sect">
-		<div class="row">
-			<div class="col-xs-6">
-				<table>
-					<tr>
-						<td>Treatment&nbsp;Initiation&nbsp;date:</td>
-						<td class="print-val">31-Jun-2005</td>
-					</tr>
-					<tr>
-						<td>Pregnant?:</td>
-						<td class="print-val-check"><?=MyHTML::boolean_draw(['NO','YES'], 1)?>  ANC #: <u>8900</u></td>
-					</tr>
-					<tr>
-						<td>Breastfeeding? :</td>
-						<td class="print-val-check"><?=MyHTML::boolean_draw(['NO','YES'], 0)?></td>
-					</tr>
-				</table>	
-			</div>
 			<div class="col-xs-6">
 				<table>
 					<tr>
