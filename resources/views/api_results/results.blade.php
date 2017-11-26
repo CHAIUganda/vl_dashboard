@@ -57,7 +57,6 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 $('#results').addClass('active');
 $(function() {
     $('#results-table').DataTable({
-
         processing: true,
         serverSide: true,
         pageLength: 10,

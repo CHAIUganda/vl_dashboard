@@ -57,8 +57,8 @@ class APIResultsController extends Controller {
 		foreach ($samples['data'] as $sample) {
 			extract($sample);
 			$select_str = "<input type='checkbox' >";
-			$url = "/api/result/$pk";
-			$links = ['Print preview' => "javascript:windPop('$url')",'Download' => "$url&pdf=1"];
+			$url = "/api/result/$_id";
+			$links = ['Print' => "javascript:windPop('$url')",'Download' => "$url?&pdf=1"];
 			$data[] = [
 				$select_str, 
 				$form_number, 
@@ -79,8 +79,16 @@ class APIResultsController extends Controller {
 	}
 
 	public function result($id){
-		$vldbresult = $this->mongo->api_samples->find(['pk'=>(int)$id]);
+		$vldbresult = $this->mongo->api_samples->find(['_id'=>$this->_id($id)]);
+		if(\Request::has('pdf')){
+			$pdf = \PDF::loadView('api_results.result_slip', compact("vldbresult"));
+			return $pdf->download('vl_results_July_2017.pdf');
+		}
 		return view('api_results.result_slip', compact('vldbresult'));
+	}
+
+	private function _id($id){
+		return new \MongoId($id);
 	}
 
 

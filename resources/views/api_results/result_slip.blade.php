@@ -86,13 +86,13 @@
      position: absolute;
      margin-top: 55px;
      margin-left: -145px;
-     font-size: 16px;
+     font-size: 14px;
      font-weight: bold;
      color: #F01319;
     }
 
     .date-released{
-      font-size:12px;color:#000;
+      font-size:11px;color:#000;
       border-top:dotted 1px;
       font-weight: lighter;
     }
@@ -111,5 +111,15 @@ $local_today = strtoupper($local_today);
  @include('api_results._result_slip')     
 @endforeach
 </body>
+<script type="text/javascript">
+ window.print(); 
+   
+    /*$('#print-btn').click(function(){
+        $('#print-btn-div').hide();
+        $.get("/log_printing?printed=yes&s="+$('#ss').val(), function(data){     });
+        window.print(); 
+        setTimeout(window.close, 0);          
+    });*/
+</script>
 
 </html>
