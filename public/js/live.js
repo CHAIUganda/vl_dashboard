@@ -291,6 +291,7 @@ ctrllers.DashController = function($scope,$http){
             prms.tb_status = JSON.stringify(convertTbStatusIdsToMongoKeys($scope.params.tb_status));
             prms.fro_date = $scope.fro_date;
             prms.to_date = $scope.to_date;
+           
             $http({method:'GET',url:"/live/",params:prms}).success(function(data) {
                 
                 //console.log("we rrrr"+JSON.stringify($scope.params));
@@ -495,9 +496,9 @@ ctrllers.DashController = function($scope,$http){
     $scope.testClick = function(){
         $scope.getArray = [{a: 1, b:2}, {a:3, b:4}];
     }
-    
 
     $scope.dateFilter=function(){
+        
         if($scope.fro_date!="all" && $scope.to_date!="all"){
             var fro_nr=Number($scope.fro_date);//numberise the fro date
             var to_nr=Number($scope.to_date);//numberise the to date
