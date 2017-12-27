@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/api/facility_list/data/', ['uses' => 'APIResultsController@facility_list_data']);
 		Route::get('/api/results/{facility_id}', ['uses'=>'APIResultsController@results']);
 		Route::get('/api/results/data/{facility_id}', ['uses'=>'APIResultsController@results_data']);
-		Route::get('/api/result/{id?}', ['uses'=>'APIResultsController@result']);
+		Route::match(['GET', 'POST'], '/api/result/{id?}', ['uses'=>'APIResultsController@result']);
 	
 	});
 

@@ -37,7 +37,7 @@
         font-size: 14px;
         padding: 5px;
         border: 1px solid #a9a6a6;
-        min-height: 75px;
+        min-height: 110px;
     }
 
     .print-sect2{
@@ -112,7 +112,7 @@ $local_today = strtoupper($local_today);
 @endforeach
 </body>
 <script type="text/javascript">
- window.print(); 
+ // window.print(); 
    
     /*$('#print-btn').click(function(){
         $('#print-btn-div').hide();

@@ -10,19 +10,23 @@ use EID\Mongo;
 
 class Essai extends Command
 {
+    /*
+    Initial api pick - year(y) and month(m)  - when sample was created
+    New samples today or results released today - today(t)
+    */
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'essai:run';
+    protected $signature = 'essai:run {--t|today} {--m|month=} {--y|year=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Get data from the Viral Load API';
+    protected $description = 'Get data from the Viral Load 2 API';
 
     /**
      * Create a new command instance.
@@ -50,9 +54,13 @@ class Essai extends Command
         //$facilities = $this->_get('facilities');
         //$this->mongo->api_facilities->drop();
         //$this->mongo->api_facilities->batchInsert(json_decode($facilities));
-        $samples = $this->_get('samples');
-        $this->mongo->api_samples->drop();
-        $this->mongo->api_samples->batchInsert(json_decode($samples));
+        // $samples = $this->_get('samples');
+        // $this->mongo->api_samples->drop();
+        // $this->mongo->api_samples->batchInsert(json_decode($samples));
+
+        // $this->comment("today is ".$this->option('today'));
+        // $this->comment("month is ".$this->option('month'));
+        // $this->comment("year is ".$this->argument('year'));
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
 

@@ -60,9 +60,11 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 					</tr>
 					<tr>
 						<td>District:</td>
-						<td class="print-val">
-							<?=$result_obj->facility['district']['district']?>
-							| <?=$result_obj->facility['hub']['hub'] ?></td>
+						<td class="print-val"><?=$result_obj->facility['district']['district']?></td>
+					</tr>
+					<tr>
+						<td>Hub:</td>
+						<td class="print-val"><?=$result_obj->facility['hub']['hub'] ?></td>
 					</tr>
 				</table>
 			</div>
@@ -82,6 +84,14 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 						<td class="print-val-check"> 
 							&nbsp; <?=MyHTML::boolean_draw(['D'=>'DBS','P'=>'Plasma'], $result_obj->sample_type)?>
 						</td>
+					</tr>
+					<tr>
+						<td >Collection&nbsp;Date: &nbsp; </td>
+						<td class="print-val"><?=MyHTML::localiseDate($result_obj->date_collected, 'd-M-Y') ?></td>
+					</tr>
+					<tr>
+						<td>Reception Date: &nbsp; </td>
+						<td class="print-val"><?=MyHTML::localiseDate($result_obj->date_received, 'd-M-Y') ?></td>
 					</tr>
 				</table>
 			</div>
@@ -144,38 +154,13 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 		</div>
 
 	</div>
-
+	<?php if($rejected==1){ ?>
 	<div class="row">
-		<div style="width:100%;float:left" >	
-			<div class="print-ttl" >sample test information</div>
-			<div class="print-sect">				
-				<table cellspacing="3" >
-					<tr>
-						<td width="25%">Sample&nbsp;Collection&nbsp;Date: &nbsp; </td>
-						<td class="print-val"><?=MyHTML::localiseDate($result_obj->date_collected, 'd-M-Y') ?></td>
-					</tr>
-					<tr>
-						<td>Reception Date: &nbsp; </td>
-						<td class="print-val"><?=MyHTML::localiseDate($result_obj->date_received, 'd-M-Y') ?></td>
-					</tr>
-					<?php if($rejected!=1){ ?>
-					<tr>
-						<td>Test Date: &nbsp; </td>
-						<td class="print-val"><?=MyHTML::localiseDate($result_obj->result['test_date'], 'd-M-Y') ?></td>
-					</tr>
-					<?php } ?>
-
-					<?php if($rejected==1){ ?>
-					<tr>
-						<td>Rejection Reason: &nbsp; </td>
-						<td style="font-size:12px"><?=$result_obj->verification['rejection_reason']['appendix']?></td>
-					</tr>
-					<?php } ?>
-
-				</table>
-			</div>	
+		<div style="width:100%;float:left" >
+			<br><b>Rejection Reason:</b> &nbsp; <?=$result_obj->verification['rejection_reason']['appendix']?>			
 		</div>			
 	</div>
+	<?php } ?>
 
 	<?php if ($rejected!=1){ ?>
 	<div class="row">
@@ -185,6 +170,10 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 				<div class="row">
 					<div style="width:79%;float:left">
 						<table cellspacing="4">
+							<tr>
+								<td>Test Date: &nbsp; </td>
+								<td ><?=MyHTML::localiseDate($result_obj->result['test_date'], 'd-M-Y') ?></td>
+							</tr>
 							<tr>
 								<td width="40%">Method Used: </td>
 								<td ><?=MyHTML::methodUsed($result_obj->result['method'])?></td>

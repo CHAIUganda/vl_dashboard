@@ -25,7 +25,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 @if($sect == 'results')
 <ul class="breadcrumb">
     <li><a href="/">HOME</a></li>
-    <li action="active">RESULTS</li>
+    <li action="active">FACILITIES</li>
 </ul>
 @endif
 <h2 style="text-align:center;text-transform:uppercase">{{ Auth::user()->hub_name }}</h2>
