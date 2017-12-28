@@ -74,31 +74,39 @@ class Essai extends Command
     }
 
     private function _loadData(){
+        $num_records = 0;
         if($this->today){
+
              $samples = $this->_get('samples', "changes_today=1");
-             $num_records = 0;
-             foreach ($samples as $sample) {
-                $data = $this->_getDashboardData($sample);
-                $year_month = date("Ym",strtotime($sample->created_at));
-                $data["year_month"] = (int)$year_month;
-                $this->_removeSamples(['sample_id'=>$sample->pk]);
-                $this->mongo->dashboard_new_backend->insert($data);
-                $num_records++;
-             }
+             if(is_array($samples)){
+                 foreach ($samples as $sample) {
+                    $data = $this->_getDashboardData($sample);
+                    $year_month = date("Ym",strtotime($sample->created_at));
+                    $data["year_month"] = (int)$year_month;
+                    $this->_removeSamples(['sample_id'=>$sample->pk]);
+                    $this->mongo->dashboard_new_backend->insert($data);
+                    $num_records++;
+                 }
+             }else{
+                var_dump($samples);
+             }            
              #$year_month = intval(date('Y').str_pad(date('m'),2,0,STR_PAD_LEFT));
             
         }elseif(!empty($this->month) and !empty($this->year)){
             $year_month = intval($this->year.str_pad($this->month,2,0,STR_PAD_LEFT));
-            $this->_removeSamples(['year_month'=>$year_month]);
             $samples = $this->_get('samples', "year=$this->year&month=$this->month");
-            $num_records = 0;
-            foreach ($samples as $sample) {
-                $data = $this->_getDashboardData($sample);
-                $data["year_month"] = $year_month;
-                //print_r($data);
-                $this->mongo->dashboard_new_backend->insert($data);
-                $num_records++;
-            }
+            if(is_array($samples)){
+                $this->_removeSamples(['year_month'=>$year_month]);
+                foreach ($samples as $sample) {
+                    $data = $this->_getDashboardData($sample);
+                    $data["year_month"] = $year_month;
+                    //print_r($data);
+                    $this->mongo->dashboard_new_backend->insert($data);
+                    $num_records++;
+                }
+            }else{
+                var_dump($samples);
+             }      
             //$this->mongo->api_results->batchInsert(json_decode($results));
         }else{
             $this->comment("You are missing some options essai:run {--t|today} {--m|month=} {--y|year=}");
