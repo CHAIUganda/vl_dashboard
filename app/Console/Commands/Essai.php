@@ -13,6 +13,7 @@ class Essai extends Command
     /*
     Initial api pick - year(y) and month(m)  - when sample was created
     New samples today or results released today - today(t)
+    Latest changes in lastest number of hours - hours(h)
     Get Facilities facilities(f)
     Get Districts districts(d)
     Get Hubs hubs(h)
@@ -22,7 +23,7 @@ class Essai extends Command
      *
      * @var string
      */
-    protected $signature = 'essai:run {--t|today} {--m|month=} {--y|year=}';
+    protected $signature = 'essai:run {--H|hours=} {--T|today} {--M|month=} {--Y|year=}';
 
     /**
      * The console command description.
@@ -52,9 +53,10 @@ class Essai extends Command
         ini_set('memory_limit', '2024M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
+        $this->hours = $this->option('hours');
         $this->today = $this->option('today');
         $this->month = $this->option('month');
-        $this->year = $this->option('year');
+        $this->year = $this->option('year');       
         $this->_loadData();
         //
         //$this->comment($this->_get('facilities'));
@@ -75,24 +77,24 @@ class Essai extends Command
 
     private function _loadData(){
         $num_records = 0;
-        if($this->today){
-
-             $samples = $this->_get('samples', "changes_today=1");
-             if(is_array($samples)){
-                 foreach ($samples as $sample) {
-                    $data = $this->_getDashboardData($sample);
-                    $year_month = date("Ym",strtotime($sample->created_at));
-                    $data["year_month"] = (int)$year_month;
-                    //$this->_removeSamples(['sample_id'=>$sample->pk]);
-                    //$this->mongo->dashboard_new_backend->insert($data);
-                    $this->mongo->dashboard_new_backend->update(['sample_id'=>$sample->pk],$data);
-                    $num_records++;
-                 }
-             }else{
-                var_dump($samples);
-             }            
-             #$year_month = intval(date('Y').str_pad(date('m'),2,0,STR_PAD_LEFT));
-            
+        if($this->hours){
+            $samples = $this->_get('samples', "latest_hours=$this->hours");
+            if(is_array($samples)){
+                foreach ($samples as $sample) {
+                   $data = $this->_getDashboardData($sample);
+                   $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
+                   $num_records++;
+                }
+            }
+        }elseif($this->today){
+            $samples = $this->_get('samples', "changes_today=1");
+            if(is_array($samples)){
+                foreach ($samples as $sample) {
+                   $data = $this->_getDashboardData($sample);
+                   $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
+                   $num_records++;
+                }
+            }            
         }elseif(!empty($this->month) and !empty($this->year)){
             $dates = $this->_getMonthDates($this->year, $this->month);
             $year_month = intval($this->year.str_pad($this->month,2,0,STR_PAD_LEFT));  
@@ -102,28 +104,12 @@ class Essai extends Command
                 $samples = $this->_get('samples', "date=$date");
                 if(is_array($samples)){
                     foreach ($samples as $sample) {
-                        $data = $this->_getDashboardData($sample);
-                        $data["year_month"] = $year_month;
-                        $this->mongo->dashboard_new_backend->insert($data);
-                        $num_records++;
+                       $data = $this->_getDashboardData($sample);
+                       $this->mongo->dashboard_new_backend->insert($data);
+                       $num_records++;
                     }
                 }               
             }
-            // $year_month = intval($this->year.str_pad($this->month,2,0,STR_PAD_LEFT));
-            // $samples = $this->_get('samples', "year=$this->year&month=$this->month");
-            // if(is_array($samples)){
-            //     $this->_removeSamples(['year_month'=>$year_month]);
-            //     foreach ($samples as $sample) {
-            //         $data = $this->_getDashboardData($sample);
-            //         $data["year_month"] = $year_month;
-            //         //print_r($data);
-            //         $this->mongo->dashboard_new_backend->insert($data);
-            //         $num_records++;
-            //     }
-            // }else{
-            //     var_dump($samples);
-            //  }      
-            //$this->mongo->api_results->batchInsert(json_decode($results));
         }else{
             $this->comment("You are missing some options essai:run {--t|today} {--m|month=} {--y|year=}");
         } 
@@ -132,7 +118,10 @@ class Essai extends Command
 
     private function _getDashboardData($sample){
         $data = [];
-        $data["sample_id"] = $sample->pk;
+
+        $year_month = date("Ym",strtotime($sample->created_at));
+        $data["year_month"] = (int)$year_month;
+        $data["sample_id"] = (int)$sample->pk;
         $data["vl_sample_id"] = $sample->vl_sample_id;
         $data["patient_unique_id"] = $sample->patient_unique_id;                 
 
