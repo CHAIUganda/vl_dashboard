@@ -13,6 +13,9 @@ class Essai extends Command
     /*
     Initial api pick - year(y) and month(m)  - when sample was created
     New samples today or results released today - today(t)
+    Get Facilities facilities(f)
+    Get Districts districts(d)
+    Get Hubs hubs(h)
     */
     /**
      * The name and signature of the console command.
@@ -49,6 +52,10 @@ class Essai extends Command
         ini_set('memory_limit', '2024M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
+        $this->today = $this->option('today');
+        $this->month = $this->option('month');
+        $this->year = $this->option('year');
+        $this->_loadData();
         //
         //$this->comment($this->_get('facilities'));
         //$facilities = $this->_get('facilities');
@@ -67,8 +74,69 @@ class Essai extends Command
     }
 
     private function _loadData(){
-        $this->mongo->dashboard_data_refined->drop();
-       
+        if($this->today){
+             $samples = $this->_get('samples', "changes_today=1");
+             $num_records = 0;
+             foreach ($samples as $sample) {
+                $data = $this->_getDashboardData($sample);
+                $year_month = date("Ym",strtotime($sample->created_at));
+                $data["year_month"] = (int)$year_month;
+                $this->_removeSamples(['sample_id'=>$sample->pk]);
+                $this->mongo->dashboard_new_backend->insert($data);
+                $num_records++;
+             }
+             #$year_month = intval(date('Y').str_pad(date('m'),2,0,STR_PAD_LEFT));
+            
+        }elseif(!empty($this->month) and !empty($this->year)){
+            $year_month = intval($this->year.str_pad($this->month,2,0,STR_PAD_LEFT));
+            $this->_removeSamples(['year_month'=>$year_month]);
+            $samples = $this->_get('samples', "year=$this->year&month=$this->month");
+            $num_records = 0;
+            foreach ($samples as $sample) {
+                $data = $this->_getDashboardData($sample);
+                $data["year_month"] = $year_month;
+                //print_r($data);
+                $this->mongo->dashboard_new_backend->insert($data);
+                $num_records++;
+            }
+            //$this->mongo->api_results->batchInsert(json_decode($results));
+        }else{
+            $this->comment("You are missing some options essai:run {--t|today} {--m|month=} {--y|year=}");
+        } 
+        $this->comment("$num_records Records updated");
+    }
+
+    private function _getDashboardData($sample){
+        $data = [];
+        $data["sample_id"] = $sample->pk;
+        $data["vl_sample_id"] = $sample->vl_sample_id;
+        $data["patient_unique_id"] = $sample->patient_unique_id;                 
+
+        $data["facility_id"] = (int)$sample->facility->pk;
+        $data['district_id'] = isset($sample->facility->district->pk)?(int)$sample->facility->district->pk:0;
+        $data['hub_id'] = isset($sample->facility->hub->pk)?(int)$sample->facility->hub->pk:0;
+        $age = $this->_getAge($sample->patient->dob, $sample->created_at);
+        $data["age"] = $age;
+        $data["age_group_id"] = $age;
+        $data["gender"] = $this->_getGender($sample->patient->gender);
+        $data["treatment_indication_id"] = isset($sample->treatment_indication->code)?(int)$sample->treatment_indication->code:0;//treatment_initiation
+
+        $data["regimen"] = isset($sample->current_regimen->code)?(int)$sample->current_regimen->code:0;//current regimen
+        $data["regimen_line"] = isset($sample->treatment_line->code)?(int)$sample->treatment_line->code:0;
+        $data["regimen_time_id"] = $this->_getRegTime($sample->treatment_initiation_date, $sample->created_at);
+
+        $data["pregnancy_status"] = $sample->get_pregnant_display?$sample->get_pregnant_display:"UNKNOWN";
+        $data["breastfeeding_status"] = $sample->get_breast_feeding_display?$sample->get_breast_feeding_display:"UNKNOWN";
+        $data["active_tb_status"] = $sample->get_active_tb_status_display?$sample->get_active_tb_status_display:"UNKNOWN";
+
+        $data["sample_type_id"] = $sample->sample_type=='D'?1:2;
+        $suppressed = isset($sample->result->get_suppressed_display)?$sample->result->get_suppressed_display:"UNKNOWN";
+        $data["sample_result_validity"] = $suppressed=='NO'||$suppressed=='YES'?'valid':'invalid';
+        $data["suppression_status"] = $suppressed!='UNKNOWN'?strtolower($suppressed):$suppressed;
+
+        $data["tested"]=!empty($sample->result)?"yes":"no";
+        $data["rejection_reason"] = isset($sample->verification->rejection_reason->code)?$this->_getRejectionCat($sample->verification->rejection_reason->code):"UNKNOWN";
+        return $data;
     }
 
     private function _loadHubs(){
@@ -80,11 +148,76 @@ class Essai extends Command
         }
     }
 
-    private function _get($resouce){
-        $api = env('API')."/api/$resouce/";
+    private function _removeSamples($cond=[], $justOne=false){
+        $result=$this->mongo->dashboard_new_backend->remove($cond, ['justOne'=>$justOne]);
+        return $result['n'];//return 1 for when a record has been successfully removed,0 when nothing has been found.
+    }
+
+    private function _getAge($dob, $date_then){
+        if(!empty($dob) && !empty($date_then)){
+            $diff = date_diff(date_create($dob),date_create($date_then));
+            return $diff->y;
+        }else{
+            return -1;
+        }        
+    }
+
+    private function _getGender($val){
+        return $val=='M'||$val=='F'?strtolower($val):"x";
+    }
+
+    private function _getRegTime($initiation_date, $created_at){
+        //2628000 is the number of seconds in a month
+        //{1:'6-12 months',2:'1-2 years',3:'2-3 years',4:'3-5 years',5:'5+ years'}
+        $time = round((strtotime($created_at) - strtotime($initiation_date))/2628000);
+        $code = 0;
+        switch ($time) {
+            case $time>=6 && $time<=12:
+               $code = 1;
+                break;
+            case$time>=13 && $time<=24:
+               $code = 2;
+                break;
+            case $time>=25 && $time<=36:
+               $code = 3;
+                break;
+            case $time>=35 && $time<=60:
+               $code = 4;
+                break;
+            case $time>=60:
+               $code = 5;
+                break;
+            
+            default:
+                return 0;
+                break;
+        }
+        return $code;
+    }
+
+    private static function _getRejectionCat($val){
+        $eligibility = [77,78,14,64,65,76];
+        $incomplete_form = [4,71,72,69,70,67,68,79,80,87,88,86, 61,81,82];
+        $quality_of_sample = [9,60,74,10,59,8,63,75,2,7,85,1,5,62 ,3,15,83,84];
+
+        if (in_array((int)$val, $eligibility)){
+            $ret = "eligibility";
+        }else if(in_array((int)$val, $incomplete_form)){
+            $ret = "incomplete_form";
+        }else if(in_array((int)$val, $quality_of_sample)){
+            $ret = "quality_of_sample";
+        }else{
+            $ret = "UNKNOWN";
+        }
+        return $ret;
+    }
+
+    private function _get($resouce, $params_str){
+        $api = env('API')."/api/$resouce/?$params_str";
         $api_key = env('API_KEY');
-        $results = exec("curl -X GET $api -H 'Authorization: Token $api_key'");
-        return $results;
+        $curl_command = "curl -X GET '$api' -H 'Authorization: Token $api_key'";
+        $results = exec($curl_command);
+        return json_decode($results);
     }
 
 
