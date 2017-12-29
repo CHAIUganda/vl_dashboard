@@ -161,11 +161,11 @@ class APIResultsController extends Controller {
 		$cond=[];
 		$cond['$and'][] = ['$or'=>[['result.resultsqc.released'=>true], ['rejectedsamplesrelease.released'=>true]]];
 		$cond['$and'][] = ["facility.pk"=>(int)$facility_id];
-		if($printed==false){
+		/*if($printed==false){
 			$cond['$and'][] = ['result.resultsqc.printed'=>false, 'result.resultsqc.downloaded'=>false];
 		}else{
 			$cond['$and'][] = ['$or'=>[['result.resultsqc.printed'=>true], ['rejectedsamplesrelease.downloaded'=>true]]];
-		} 
+		} */
 		$ret['recordsTotal'] = $this->mongo->api_samples->find($cond)->count();
 		if(!empty($search)){
 			$mongo_search = new \MongoRegex("/$search/i");

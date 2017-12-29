@@ -23,7 +23,7 @@ class Essai extends Command
      *
      * @var string
      */
-    protected $signature = 'essai:run {--H|hours=} {--T|today} {--M|month=} {--Y|year=}';
+    protected $signature = 'essai:run {--H|hours=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded}';
 
     /**
      * The console command description.
@@ -56,7 +56,8 @@ class Essai extends Command
         $this->hours = $this->option('hours');
         $this->today = $this->option('today');
         $this->month = $this->option('month');
-        $this->year = $this->option('year');       
+        $this->year = $this->option('year');
+        $this->expanded = $this->option('expanded');       
         $this->_loadData();
         //
         //$this->comment($this->_get('facilities'));
@@ -97,18 +98,31 @@ class Essai extends Command
             }            
         }elseif(!empty($this->month) and !empty($this->year)){
             $dates = $this->_getMonthDates($this->year, $this->month);
-            $year_month = intval($this->year.str_pad($this->month,2,0,STR_PAD_LEFT));  
-            $this->_removeSamples(['year_month'=>$year_month]);
-
-            foreach ($dates as $date) {
-                $samples = $this->_get('samples', "date=$date");
-                if(is_array($samples)){
-                    foreach ($samples as $sample) {
-                       $data = $this->_getDashboardData($sample);
-                       $this->mongo->dashboard_new_backend->insert($data);
-                       $num_records++;
+            $year_month = intval($this->year.str_pad($this->month,2,0,STR_PAD_LEFT));
+            
+            if($this->expanded){
+                $cond = ['created_at'=>['$gte'=>$dates[0], '$lte'=>end($dates)]];
+                $this->mongo->api_samples->remove($cond, ['justOne'=>false]);
+                foreach ($dates as $date) {                    
+                    $samples = $this->_get('samples', "date=$date");
+                    $num_samples = count($samples);
+                    if(is_array($samples) && $num_samples>0){
+                        $this->mongo->api_samples->batchInsert($samples);
+                        $num_records += $num_samples;
                     }
-                }               
+                }
+            }else{
+                $this->_removeSamples(['year_month'=>$year_month]);
+                foreach ($dates as $date) {
+                    $samples = $this->_get('samples', "date=$date");
+                    if(is_array($samples)){
+                        foreach ($samples as $sample) {
+                           $data = $this->_getDashboardData($sample);
+                           $this->mongo->dashboard_new_backend->insert($data);
+                           $num_records++;
+                        }
+                    }               
+                }
             }
         }else{
             $this->comment("You are missing some options essai:run {--t|today} {--m|month=} {--y|year=}");
@@ -237,7 +251,8 @@ class Essai extends Command
         $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $ret = [];
         for ($i=1; $i <= $days ; $i++) { 
-           $ret[] = "$year-$month-$i";
+           $date_str = "$year-$month-$i";
+           $ret[] = date("Y-m-d", strtotime($date_str));
         }
         return $ret;
     }
