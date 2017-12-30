@@ -161,9 +161,8 @@ class APIResultsController extends Controller {
 		$hub = \Auth::user()->hub_id;
 		$facility = \Auth::user()->facility_id;
 		$cond['$and'][] = ["created_at"=>['$gte'=>$this->mDate(env('QC_START_DATE'))]];
-		if(!empty($hub)) $cond['$and'][] = ["facility.hub.pk"=>$hub];
-		if(!empty($facility)) $cond['$and'][] = ["facility.pk"=>$facility];
-		if(!empty($search)) $cond['$and'][] = ['facility.facility'=>new \MongoRegex("/$search/i")];
+		if(!empty($hub)) $cond['$and'][] = ["facility.hub.pk"=>(int)$hub];
+		if(!empty($facility)) $cond['$and'][] = ["facility.pk"=>(int)$facility];
 
 		$project = ["_id"=>0, "facility"=>1];
 		$project['num_pending'] = ['$cond'=>['if'=>['$eq'=>['$resultsdispatch',null]], 'then'=>1, 'else'=>0]];
