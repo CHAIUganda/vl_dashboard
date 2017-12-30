@@ -174,15 +174,14 @@ class APIResultsController extends Controller {
 		$ret = [];
 		$cond = [];
 		$hub = \Auth::user()->hub_id;
+		$facility = \Auth::user()->facility_id;
 		$cond['$and'][] = ["created_at"=>['$gte'=>$this->mDate(env('QC_START_DATE'))]];
 		if(!empty($hub)) $cond['$and'][] = ["facility.hub.pk"=>(int)$hub];
-		$user_facilities = !empty(\Auth::user()->other_facilities)? unserialize(\Auth::user()->other_facilities):[];  
-        array_push($user_facilities, \Auth::user()->facility_id);
-		//if(!empty($facility)) $cond['$and'][] = ["facility.pk"=>(int)$facility];
-		if(count($user_facilities)>=1){
-			$cond['$and'][] = ["facility.pk"=>['$in'=>array_map(function($f){return (int)$f; }, $user_facilities)] ];
-		}
-		
+		if(!empty($facility)){
+			$user_facilities = !empty(\Auth::user()->other_facilities)? unserialize(\Auth::user()->other_facilities):[];
+			 array_push($user_facilities, $facility);
+			 $cond['$and'][] = ["facility.pk"=>['$in'=>array_map(function($f){return (int)$f; }, $user_facilities)] ];
+		}		
 
 		$project = ["_id"=>0, "facility"=>1];
 		$pending_conds['$and'][] = ['$eq'=>['$result.resultsqc.released',true]];
