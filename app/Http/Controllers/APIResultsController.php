@@ -99,18 +99,14 @@ class APIResultsController extends Controller {
 		}
 		
 		$vldbresult = $this->mongo->api_samples->find($cond);
-		$printed=$downloaded=false;
-		if( \Request::has('pdf')) $downloaded = true;
-		else $printed = true;
-
-		$log_update = [
-			'result.resultsqc.printed'=>$printed, 
-			'result.resultsqc.downloaded'=>$downloaded, 
-			'result.resultsqc.print_date'=>date('Y-m-d H:i:s'),
-			'result.resultsqc.printed_by'=>\Auth::user()->username, 
+		$dispatch_type =  \Request::has('pdf')? 'D':'P';
+		$log_update['resultsdispatch'] = [
+			'dispatch_type'=>$dispatch_type, 
+			'dispatch_date'=>date("Y-m-d").'T'.date("H:i:s"),
+			'dispatched_by'=>\Auth::user()->username, 
 			];
 			
-		//$this->mongo->api_samples->update($cond,['$set'=>$log_update], ['multiple'=>true]);
+		$this->mongo->api_samples->update($cond,['$set'=>$log_update], ['multiple'=>true]);
 
 		if(\Request::has('pdf')){
 			$pdf = \PDF::loadView('api_results.result_slip', compact("vldbresult"));
@@ -118,6 +114,24 @@ class APIResultsController extends Controller {
 		}
 		return view('api_results.result_slip', compact('vldbresult'));
 	}
+
+	public function search_result($txt){
+    	$txt = str_replace(' ', '', $txt);
+    	$cond = [];
+    	if(\Request::has('f')) $cond['$and'][] = ['facility.pk'=>(int)\Request::get('f')];
+    	$mongo_search = new \MongoRegex("/$txt/i");
+		$cond['$and'][] = ['$or'=>[['form_number' => $mongo_search], ['patient.art_number' => $mongo_search]]];
+		$results = $this->mongo->api_samples->find($cond);
+    	$ret = "<table class='table table-striped table-condensed table-bordered'>
+    			<tr><th>Form Number</th><th>Art Number</th><th /></tr>";
+    	foreach ($results AS $result){
+    		$url = "/api/result/".$result['_id'];
+    		$print_url = "<a href='javascript:windPop(\"$url\")'>print</a>";
+    		$download_url = "<a href='$url?pdf=1'>download</a>";
+    		$ret .= "<tr><td>$result[form_number]</td><td>".$result['patient']['art_number']."</td><td>$print_url | $download_url</td></tr>";	
+    	}
+    	return $ret."</table>";
+    }
 
 	private function _id($id){
 		return new \MongoId($id);
@@ -134,6 +148,7 @@ class APIResultsController extends Controller {
 		}
 
 		$search = \Request::has('search')?\Request::get('search')['value']:"";
+		$search = trim($search);
 		$start = \Request::get('start');
 		$length = \Request::get('length');
 		$printed = $tab=='completed'?true:false;
@@ -159,13 +174,20 @@ class APIResultsController extends Controller {
 		$ret = [];
 		$cond = [];
 		$hub = \Auth::user()->hub_id;
-		$facility = \Auth::user()->facility_id;
 		$cond['$and'][] = ["created_at"=>['$gte'=>$this->mDate(env('QC_START_DATE'))]];
 		if(!empty($hub)) $cond['$and'][] = ["facility.hub.pk"=>(int)$hub];
-		if(!empty($facility)) $cond['$and'][] = ["facility.pk"=>(int)$facility];
+		$user_facilities = !empty(\Auth::user()->other_facilities)? unserialize(\Auth::user()->other_facilities):[];  
+        array_push($user_facilities, \Auth::user()->facility_id);
+		//if(!empty($facility)) $cond['$and'][] = ["facility.pk"=>(int)$facility];
+		if(count($user_facilities)>=1){
+			$cond['$and'][] = ["facility.pk"=>['$in'=>array_map(function($f){return (int)$f; }, $user_facilities)] ];
+		}
+		
 
 		$project = ["_id"=>0, "facility"=>1];
-		$project['num_pending'] = ['$cond'=>['if'=>['$eq'=>['$resultsdispatch',null]], 'then'=>1, 'else'=>0]];
+		$pending_conds['$and'][] = ['$eq'=>['$result.resultsqc.released',true]];
+		$pending_conds['$and'][] = ['$eq'=>['$resultsdispatch',null]];
+		$project['num_pending'] = ['$cond'=>['if'=>$pending_conds, 'then'=>1, 'else'=>0]];
 		$project['num_dispatched'] = ['$cond'=>['if'=>['$ne'=>['$resultsdispatch',null]], 'then'=>1, 'else'=>0]];
 		$group =  ['_id'=> '$facility','num_pending' => ['$sum'=> '$num_pending'],'num_dispatched'=> ['$sum'=> '$num_dispatched'] ];
 		
@@ -181,31 +203,17 @@ class APIResultsController extends Controller {
 		return $mresult['result'];
 	}
 
-	// db.api_samples.aggregate(
-	// 	{$match:{created_at:{$gte:ISODate("2017-03-01")}}},
-	// 	{ $project: {
-	// 			_id: 0, 
-	// 			"facility.facility": 1,
-	// 			pending: {$cond: { if: { $eq:["$resultsdispatch",null] }, then: 1, else: 0 }},         
-	// 			dispatched: {$cond: { if: { $ne:["$resultsdispatch",null ]}, then: 1, else: 0 }}     
-	// 	}},     
-	// 	{ $group: {         
-	// 			_id: "$facility.facility",
-	// 			pending: {$sum: '$pending'},
-	// 			dispatched: {$sum: '$dispatched'}     
-	// 	}})
-
 	private function getSamples($params){
 		$ret=[];
 		extract($params);
 		$cond=[];
 		$cond['$and'][] = ['$or'=>[['result.resultsqc.released'=>true], ['rejectedsamplesrelease.released'=>true]]];
 		$cond['$and'][] = ["facility.pk"=>(int)$facility_id];
-		/*if($printed==false){
-			$cond['$and'][] = ['result.resultsqc.printed'=>false, 'result.resultsqc.downloaded'=>false];
+		if($printed==false){
+			$cond['$and'][] = ['resultsdispatch'=>null];
 		}else{
-			$cond['$and'][] = ['$or'=>[['result.resultsqc.printed'=>true], ['rejectedsamplesrelease.downloaded'=>true]]];
-		} */
+			$cond['$and'][] = ['resultsdispatch'=>['$ne'=>null]];
+		} 
 		$ret['recordsTotal'] = $this->mongo->api_samples->find($cond)->count();
 		if(!empty($search)){
 			$mongo_search = new \MongoRegex("/$search/i");

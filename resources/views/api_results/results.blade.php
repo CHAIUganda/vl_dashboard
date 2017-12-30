@@ -8,8 +8,11 @@ if(\Request::has('h')) $limit .= "h=". \Request::get('h');
 
 $pending_actv="";
 $completed_actv="";
+$search_actv="";
 
-if($tab=='completed'){
+if(\Request::has('search')){
+    $search_actv="class=active";
+}elseif($tab=='completed'){
     $completed_actv="class=active"; 
 }else{
     $pending_actv="class=active";
@@ -24,11 +27,17 @@ if($tab=='completed'){
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li {{$pending_actv}} ><a href="/api/results/{{ $facility_id }}/?tab=pending">Print</a></li>
     <li {{$completed_actv}}><a href="/api/results/{{ $facility_id }}/?tab=completed" >Printed/Downloaded</a></li>
+    <li {{ $search_actv }} title='Search'><a href="/api/results/{{ $facility_id }}/?search=1" >Search</a></li>
 </ul>
 
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="print"> 
+        @if(\Request::has('search'))
+        Search using ART Number or Form Number:
+          {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search..."] ) !!}
+          <div class='live_drpdwn' id="id-dropdown" style='display:none'></div>
+        @else
         {!! Form::open(array('url'=>'/api/result/','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
         <a href="#" class='btn btn-xs btn-danger' id="select_all" >Select all visible</a>
         {!! MyHTML::submit('Download selected','btn  btn-xs btn-danger','pdf') !!}
@@ -49,6 +58,7 @@ if($tab=='completed'){
         </thead>
         </table> 
        {!! Form::close() !!}
+       @endif
     </div>
 </div>  
 
@@ -56,12 +66,14 @@ if($tab=='completed'){
 
 $(function() {
     $('#results').addClass('active');
+    @if(!\Request::has('search'))
     $('#results-table').DataTable({
         processing: true,
         serverSide: true,
-        pageLength: 10,
+        pageLength: 50,
         ajax: '/api/results/data/{{ $facility_id }}/?tab={{ $tab }}',
     });
+    @endif
 
     $('#select_all').click(function(){
         var status = $(this).html();
@@ -76,6 +88,7 @@ $(function() {
 
 });
 
+
 function printSelected() {     
    var mapForm = document.getElementById("view_form");
    map = window.open("","Map","width=1100,height=1000,menubar=no,resizable=yes,scrollbars=yes");
@@ -87,6 +100,27 @@ function printSelected() {
       alert('You must allow popups for this map to work.');
    }
 }
+
+var drpdwn= $(".live_drpdwn");
+
+function get_data(q,drpdwn,link){
+    if(q && q.length>=3){   
+        //console.log("this is what you have just typed:"+ q+"link"+link);      
+        $.get(link+q+"?f="+{{ $facility_id }}, function(data){
+            drpdwn.show();
+            drpdwn.html(data);
+        });
+    }else{
+        drpdwn.hide();
+        drpdwn.html("");
+    }
+}
+
+$("#id-search").keyup(function(){
+    var q = $(this).val();
+    var dd = $("#id-dropdown");
+    get_data(q, dd, "/api/search_result/");
+});
 
 
 </script>

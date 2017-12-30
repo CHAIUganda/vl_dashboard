@@ -1,16 +1,18 @@
-<?php 
-
+<?php
 $genders = ['F'=>'Female', 'M'=>'Male', 'L'=>'Left Blank'];
-$suppressed = $result_obj->result['suppressed'];
+$suppressed_vals = ['YES'=>1, 'NO'=>2, 'UNKNOWN'=>3];
+$suppressed = isset($result_obj->result['get_suppressed_display'])?$suppressed_vals[$result_obj->result['get_suppressed_display']]:"";
+
+$date_collected = !empty($result_obj->date_collected)?$result_obj->date_collected:$result_obj->result['test_date'];
 switch ($suppressed) {
 	case 1: // patient suppressed, according to the guidlines at that time
 		$smiley="smiley.smile.gif";
-		$recommendation = MyHTML::getRecommendation2(1, $result_obj->date_collected, $result_obj->patient['dob']);
+		$recommendation = MyHTML::getRecommendation2(1, $date_collected, $result_obj->patient['dob']);
 		break;
 
 	case 2: // patient suppressed, according to the guidlines at that time
 		$smiley="smiley.sad.gif";
-		$recommendation = MyHTML::getRecommendation2(2, $result_obj->date_collected, $result_obj->patient['dob']);					
+		$recommendation = MyHTML::getRecommendation2(2, $date_collected, $result_obj->patient['dob'], $result_obj->treatment_line['code']);					
 		break;
 	
 	default:
@@ -20,12 +22,12 @@ switch ($suppressed) {
 }
 
 $location_id = $result_obj->locator_category.$result_obj->envelope['envelope_number']."/".$result_obj->locator_position;
-$rejected = $result_obj->rejectedsamplesrelease!=null?1:2;
+$rejected = $result_obj->verification['accepted']==false?1:2;
 $now_s = strtotime(date("Y-m-d"));
 $signature_url = $result_obj->result['test_by']['userprofile']['signature'];
 $signature_arr = explode("/",$signature_url);
 $signature = end($signature_arr);
-$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
+//$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
  ?>
 <page size="A4">
 	<div style="height:95%">
@@ -121,10 +123,7 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 						<td>Date of Birth:</td>
 						<td class="print-val"><?=MyHTML::localiseDate($result_obj->patient['dob'], 'd-M-Y') ?></td>
 					</tr>
-					<tr>
-						<td>Phone&nbsp;Number:</td>
-						<td class="print-val-"><?=$phone ?></td>
-					</tr>
+					
 				</table>				
 			</div>
 		</div>
@@ -141,12 +140,12 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 						<td class="print-val"><?=MyHTML::localiseDate($result_obj->treatment_initiation_date, 'd-M-Y') ?></td>
 					</tr>
 					<tr>
-						<td>Pregnant?:<?=MyHTML::boolean_draw(['N'=>'NO','Y'=>'YES'], $result_obj->pregnant)?></td>
+						<td>Pregnant?:<?=MyHTML::boolean_draw(['No'=>'No','Yes'=>'Yes'], $result_obj->get_pregnant_display)?></td>
 						<td class="print-val-check">  ANC #: <u><?=$result_obj->anc_number?></u></td>
 					</tr>
 					<tr>
 						<td>Breastfeeding? :</td>
-						<td class="print-val-check"><?=MyHTML::boolean_draw(['N'=>'NO','Y'=>'YES'], $result_obj->breast_feeding)?></td>
+						<td class="print-val-check"><?=MyHTML::boolean_draw(['No'=>'No','Yes'=>'Yes'], $result_obj->get_breast_feeding_display)?></td>
 					</tr>
 					
 				</table>				
@@ -155,11 +154,19 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 
 	</div>
 	<?php if($rejected==1){ ?>
+
 	<div class="row">
-		<div style="width:100%;float:left" >
-			<br><b>Rejection Reason:</b> &nbsp; <?=$result_obj->verification['rejection_reason']['appendix']?>			
-		</div>			
+		<div style="width:100%;float:left" >	
+			<div class="print-ttl">Rejected sample</div>
+			<div class="print-sect" style="width:80%;float:left">
+				<br><b>Rejection Reason:</b> &nbsp; <?=$result_obj->verification['rejection_reason']['appendix']?>	
+			</div>
+			<div style="width:16%;float:right">
+				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,'yes',$now_s") !!}
+			</div>
+		</div>	
 	</div>
+
 	<?php } ?>
 
 	<?php if ($rejected!=1){ ?>
@@ -175,7 +182,7 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 								<td ><?=MyHTML::localiseDate($result_obj->result['test_date'], 'd-M-Y') ?></td>
 							</tr>
 							<tr>
-								<td width="40%">Method Used: </td>
+								<td width="50%">Method Used: </td>
 								<td ><?=MyHTML::methodUsed($result_obj->result['method'])?></td>
 							</tr>
 
@@ -198,7 +205,7 @@ $phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj
 					</div>
 					<div style="width:20%;float:right">
 
-						@if($result_obj->result['suppressed']!='3') 
+						@if($suppressed!='3') 
 						 <img src= "{{ MyHTML::getImageData('images/'.$smiley) }}" height="150" width="150">
 						@endif
 					</div>

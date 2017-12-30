@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/api/results/{facility_id}', ['uses'=>'APIResultsController@results']);
 		Route::get('/api/results/data/{facility_id}', ['uses'=>'APIResultsController@results_data']);
 		Route::match(['GET', 'POST'], '/api/result/{id?}', ['uses'=>'APIResultsController@result']);
+		Route::get('/api/search_result/{txt}', ['uses' => 'APIResultsController@search_result']);
 	
 	});
 

@@ -112,14 +112,8 @@ $local_today = strtoupper($local_today);
 @endforeach
 </body>
 <script type="text/javascript">
- // window.print(); 
-   
-    /*$('#print-btn').click(function(){
-        $('#print-btn-div').hide();
-        $.get("/log_printing?printed=yes&s="+$('#ss').val(), function(data){     });
-        window.print(); 
-        setTimeout(window.close, 0);          
-    });*/
+  window.print(); 
+  setTimeout(window.close, 0);
 </script>
 
 </html>
