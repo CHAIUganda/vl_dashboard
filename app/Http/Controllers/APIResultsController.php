@@ -19,23 +19,22 @@ class APIResultsController extends Controller {
     }
 
 	public function facility_list(){
-		return view('api_results.facility_list', ['sect'=>'results']);
+		$facilities = $this->getFacilities();
+		return view('api_results.facility_list', ['sect'=>'results', 'facilities'=>$facilities]);
 	}
 
 	public function facility_list_data(){
-		//$cols = ['facility', 'coordinator_name', 'coordinator_contact', 'coordinator_email'];
-		$cols = ['_id', 'num_pending', 'num_dispatched'];
+		$cols = ['facility', 'coordinator_name', 'coordinator_contact', 'coordinator_email'];
 		$params = $this->get_params($cols);
 		$params['hub'] = \Auth::user()->hub_id;
 		$params['facility'] = \Auth::user()->facility_id;
-		$facilities = $this->getFacilities($params);
+		$facilities = $this->getFacilities1($params);
 
 		$data = [];
 		foreach ($facilities['data'] as $record) {
 			extract($record);
-			$facility_str = "<a href='/api/results/$_id[pk]'>$_id[facility]</a>";
-			//$data[] = [$facility_str, $coordinator_name, $coordinator_contact, $coordinator_email];
-			$data[] = [$facility_str, $num_pending, $num_dispatched];
+			$facility_str = "<a href='/api/results/$pk'>$facility</a>";
+			$data[] = [$facility_str, $coordinator_name, $coordinator_contact, $coordinator_email];
 		}
 		
 		return [
@@ -153,21 +152,18 @@ class APIResultsController extends Controller {
 		if(!empty($search)) $cond['$and'][] = ['facility'=>new \MongoRegex("/$search/i")];
 		$ret['data'] = $this->mongo->api_facilities->find($cond)->sort($orderby)->skip($start)->limit($length);
 		$ret['recordsFiltered'] = $this->mongo->api_facilities->find($cond)->count();
-
 		return $ret;
 	}
 
-	private function getFacilities($params){
+	private function getFacilities(){
 		$ret = [];
-		extract($params);
 		$cond = [];
+		$hub = \Auth::user()->hub_id;
+		$facility = \Auth::user()->facility_id;
 		$cond['$and'][] = ["created_at"=>['$gte'=>$this->mDate(env('QC_START_DATE'))]];
 		if(!empty($hub)) $cond['$and'][] = ["facility.hub.pk"=>$hub];
 		if(!empty($facility)) $cond['$and'][] = ["facility.pk"=>$facility];
-		$ret['recordsTotal'] = count($this->mongo->api_samples->distinct('facility.pk',$cond));
-
 		if(!empty($search)) $cond['$and'][] = ['facility.facility'=>new \MongoRegex("/$search/i")];
-		$ret['recordsFiltered'] = count($this->mongo->api_samples->distinct('facility.pk',$cond));
 
 		$project = ["_id"=>0, "facility"=>1];
 		$project['num_pending'] = ['$cond'=>['if'=>['$eq'=>['$resultsdispatch',null]], 'then'=>1, 'else'=>0]];
@@ -177,13 +173,13 @@ class APIResultsController extends Controller {
 		$mresult = $this->mongo->api_samples->aggregate(
 			['$match'=>$cond], 
 			['$project'=>$project], 
-			['$group'=>$group],
-			['$sort'=>$orderby],
-			['$skip'=>(int)$start],
-			['$limit'=>(int)$length]
+			['$group'=>$group]
+			// ['$sort'=>$orderby],
+			// ['$skip'=>(int)$start],
+			// ['$limit'=>(int)$length]
 			);
-		$ret['data'] = $mresult['result'];
-		return $ret;
+		//$ret['data'] = $mresult['result'];
+		return $mresult['result'];
 	}
 
 	// db.api_samples.aggregate(
