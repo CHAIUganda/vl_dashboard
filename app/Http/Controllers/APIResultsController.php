@@ -184,7 +184,8 @@ class APIResultsController extends Controller {
 		}		
 
 		$project = ["_id"=>0, "facility"=>1];
-		$pending_conds['$and'][] = ['$eq'=>['$result.resultsqc.released',true]];
+		#['$eq'=>['$result.resultsqc.released',true]];
+		$pending_conds['$and'][] = ['$or'=>[['$eq'=>['$result.resultsqc.released',true]], ['$eq'=>['$rejectedsamplesrelease.released',true]]]];
 		$pending_conds['$and'][] = ['$eq'=>['$resultsdispatch',null]];
 		$project['num_pending'] = ['$cond'=>['if'=>$pending_conds, 'then'=>1, 'else'=>0]];
 		$project['num_dispatched'] = ['$cond'=>['if'=>['$ne'=>['$resultsdispatch',null]], 'then'=>1, 'else'=>0]];

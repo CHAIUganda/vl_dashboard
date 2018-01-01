@@ -23,7 +23,7 @@ class Essai extends Command
      *
      * @var string
      */
-    protected $signature = 'essai:run {--H|hours=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded}';
+    protected $signature = 'essai:run {--F|facilities} {--H|hours=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded}';
 
     /**
      * The console command description.
@@ -53,6 +53,7 @@ class Essai extends Command
         ini_set('memory_limit', '2024M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
+        $this->facilities = $this->option('facilities');
         $this->hours = $this->option('hours');
         $this->today = $this->option('today');
         $this->month = $this->option('month');
@@ -78,12 +79,26 @@ class Essai extends Command
 
     private function _loadData(){
         $num_records = 0;
-        if($this->hours){
+        if($this->facilities){
+            $facilities =  $this->_get('facilities');
+            $this->mongo->api_facilities->drop();
+            $this->mongo->api_facilities->batchInsert($facilities);
+
+        }elseif($this->hours){
             $samples = $this->_get('samples', "latest_hours=$this->hours");
             if(is_array($samples)){
                 foreach ($samples as $sample) {
                    $data = $this->_getDashboardData($sample);
                    $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
+                   $existing_sample = $this->mongo->api_samples->findOne(['pk'=>(int)$sample->pk]);
+                   $sample->created_at = Mongo::mDate($sample->created_at);
+                   if($existing_sample){
+                    $sample->resultsdispatch = $existing_sample->resultsdispatch;
+                    $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],$sample, ["upsert"=>true]);
+                   }else{
+                    $this->mongo->api_samples->insert($sample);
+                   }
+                   #$this->mongo->api_samples->update(['pk'=>(int)$sample->pk],["upsert"=>true]);
                    $num_records++;
                 }
             }
@@ -239,7 +254,7 @@ class Essai extends Command
         return $ret;
     }
 
-    private function _get($resouce, $params_str){
+    private function _get($resouce, $params_str=""){
         $api = env('API')."/api/$resouce/?$params_str";
         $api_key = env('API_KEY');
         $curl_command = "curl -X GET '$api' -H 'Authorization: Token $api_key'";
