@@ -27,7 +27,8 @@ $now_s = strtotime(date("Y-m-d"));
 $signature_url = $result_obj->result['test_by']['userprofile']['signature'];
 $signature_arr = explode("/",$signature_url);
 $signature = end($signature_arr);
-$signature = empty($signature)?"":$signature;
+$signature_img = MyHTML::getImageData("images/signatures/$signature");
+$signature_img = !empty($signature_img)?$signature_img: MyHTML::getImageData('images/signatures/signature.14.gif');
 
 //$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
  ?>
@@ -234,7 +235,7 @@ $signature = empty($signature)?"":$signature;
 				Lab Technologist: 
 			</div>
 			<div style="width:15%;float:left">
-				<img src= "{{ MyHTML::getImageData('images/signatures/'.$signature ) }}" height="50" width="100">
+				<img src= "{{ $signature_img }}" height="50" width="100">
 				<hr>
 			</div>
 			<?php } ?>

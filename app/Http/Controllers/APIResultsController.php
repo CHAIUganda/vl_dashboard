@@ -85,7 +85,7 @@ class APIResultsController extends Controller {
 			];
 	}
 
-	public function result($id=""){
+	/*public function result($id=""){
 		if(!empty($id)){
 			$cond = ['_id'=>$this->_id($id)];
 		}else{
@@ -109,6 +109,36 @@ class APIResultsController extends Controller {
 				];
 			$this->mongo->api_samples->update($cond,['$set'=>$log_update], ['multiple'=>true]);
 		}		
+
+		if(\Request::has('pdf')){
+			$pdf = \PDF::loadView('api_results.result_slip', compact("vldbresult"));
+			return $pdf->download('vl_results_'.\Request::get('facility').'.pdf');
+		}
+		return view('api_results.result_slip', compact('vldbresult'));
+	}*/
+
+	public function result($id=""){
+		if(!empty($id)){
+			$samples = [$id];
+		}else{
+			$samples = \Request::get("samples");
+			if(count($samples)==0){
+				return "please select at least one sample";
+			}
+		}
+		$vldbresult = [];
+		$tab = \Request::get('tab');
+		$dispatch_type =  \Request::has('pdf')? 'D':'P';
+		$log_update['resultsdispatch'] = [
+			'dispatch_type'=>$dispatch_type, 
+			'dispatch_date'=>date("Y-m-d").'T'.date("H:i:s"),
+			'dispatched_by'=>\Auth::user()->username, 
+			];
+		foreach ($samples as $sample) {
+			$cond = ["_id"=>$this->_id($sample)];
+			$vldbresult[] = $this->mongo->api_samples->findOne($cond);
+			if($tab=='pending')	$this->mongo->api_samples->update($cond,['$set'=>$log_update], ['multiple'=>false]);
+		}
 
 		if(\Request::has('pdf')){
 			$pdf = \PDF::loadView('api_results.result_slip', compact("vldbresult"));
