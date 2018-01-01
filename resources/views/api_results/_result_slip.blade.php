@@ -78,7 +78,7 @@ $signature = end($signature_arr);
 			<div class="print-sect">
 				<table>
 					<tr>
-						<td width="40%">Form #: </td>
+						<td>Form #: </td>
 						<td class="print-val"><?=$result_obj->form_number?></td>
 					</tr>
 					<tr>
@@ -90,7 +90,7 @@ $signature = end($signature_arr);
 						<td class="print-val"><?=MyHTML::localiseDate($result_obj->date_collected, 'd-M-Y') ?></td>
 					</tr>
 					<tr>
-						<td>Reception Date:</td>
+						<td>Reception&nbsp;Date:</td>
 						<td class="print-val"><?=MyHTML::localiseDate($result_obj->date_received, 'd-M-Y') ?></td>
 					</tr>
 				</table>
