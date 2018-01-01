@@ -83,16 +83,14 @@ $signature = end($signature_arr);
 					</tr>
 					<tr>
 						<td>Sample Type: </td>
-						<td class="print-val-check"> 
-							&nbsp; <?=MyHTML::boolean_draw(['D'=>'DBS','P'=>'Plasma'], $result_obj->sample_type)?>
-						</td>
+						<td class="print-val-check"><?=MyHTML::boolean_draw(['D'=>'DBS','P'=>'Plasma'], $result_obj->sample_type)?></td>
 					</tr>
 					<tr>
-						<td >Collection&nbsp;Date: &nbsp; </td>
+						<td >Collection&nbsp;Date:</td>
 						<td class="print-val"><?=MyHTML::localiseDate($result_obj->date_collected, 'd-M-Y') ?></td>
 					</tr>
 					<tr>
-						<td>Reception Date: &nbsp; </td>
+						<td>Reception Date:</td>
 						<td class="print-val"><?=MyHTML::localiseDate($result_obj->date_received, 'd-M-Y') ?></td>
 					</tr>
 				</table>
