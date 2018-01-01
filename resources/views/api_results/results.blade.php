@@ -75,7 +75,7 @@ $(function() {
     $('#results-table').DataTable({
         processing: true,
         serverSide: true,
-        pageLength: 50,
+        pageLength: 25,
         ajax: '/api/results/data/{{ $facility_id }}/?tab={{ $tab }}',
     });
     @endif

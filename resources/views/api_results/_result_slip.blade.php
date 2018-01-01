@@ -27,6 +27,8 @@ $now_s = strtotime(date("Y-m-d"));
 $signature_url = $result_obj->result['test_by']['userprofile']['signature'];
 $signature_arr = explode("/",$signature_url);
 $signature = end($signature_arr);
+$signature = empty($signature)?"":$signature;
+
 //$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
  ?>
 <page size="A4">
@@ -78,11 +80,11 @@ $signature = end($signature_arr);
 			<div class="print-sect">
 				<table>
 					<tr>
-						<td>Form #: </td>
+						<td>Form #:</td>
 						<td class="print-val"><?=$result_obj->form_number?></td>
 					</tr>
 					<tr>
-						<td>Sample Type: </td>
+						<td>Sample Type:</td>
 						<td class="print-val-check"><?=MyHTML::boolean_draw(['D'=>'DBS','P'=>'Plasma'], $result_obj->sample_type)?></td>
 					</tr>
 					<tr>

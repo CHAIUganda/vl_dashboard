@@ -178,9 +178,10 @@ class MyHTML{
 		$unchecked = "<img src='".MyHTML::getImageData("images/chkbox_blk.gif")."'>";
 		foreach ($arr as $x => $label) {
 			$prefix = $x==$val?$checked:$unchecked;
-			$ret .= "$prefix $label &nbsp;&nbsp; ";		
+			$ret .= "$prefix $label&nbsp;&nbsp;";		
 		}
-		return $ret;
+
+		return substr($ret,0,-12);
 	}
 
 
