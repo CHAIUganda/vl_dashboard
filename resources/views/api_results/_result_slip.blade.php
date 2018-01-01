@@ -78,7 +78,7 @@ $signature = end($signature_arr);
 			<div class="print-sect">
 				<table>
 					<tr>
-						<td>Form #: </td>
+						<td width="40%">Form #: </td>
 						<td class="print-val"><?=$result_obj->form_number?></td>
 					</tr>
 					<tr>
@@ -136,7 +136,7 @@ $signature = end($signature_arr);
 						<td class="print-val"><?=$result_obj->current_regimen['appendix']?></td>
 					</tr>
 					<tr>
-						<td>Treatment&nbsp;Initiation&nbsp;date:</td>
+						<td width="30%">Treatment&nbsp;Initiation&nbsp;date:</td>
 						<td class="print-val"><?=MyHTML::localiseDate($result_obj->treatment_initiation_date, 'd-M-Y') ?></td>
 					</tr>
 					<tr>

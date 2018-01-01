@@ -17,6 +17,9 @@ if(\Request::has('search')){
 }else{
     $pending_actv="class=active";
 }
+$facility_str = str_replace(" ", "_", $facility_name);
+$facility_str = str_replace("/", "", $facility_str);
+$facility_str = str_replace("'", "", $facility_str);
 ?>
 <ul class="breadcrumb">
     <li><a href="/">HOME</a></li>
@@ -39,6 +42,8 @@ if(\Request::has('search')){
           <div class='live_drpdwn' id="id-dropdown" style='display:none'></div>
         @else
         {!! Form::open(array('url'=>'/api/result/','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
+        <input type="hidden" name="facility" value="{{ $facility_str }}">
+        <input type="hidden" name="tab" value="{{ $tab }}">
         <a href="#" class='btn btn-xs btn-danger' id="select_all" >Select all visible</a>
         {!! MyHTML::submit('Download selected','btn  btn-xs btn-danger','pdf') !!}
         <input type="button" class='btn btn-xs btn-danger' value="Print selected" onclick="printSelected();"   /> 

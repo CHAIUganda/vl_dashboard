@@ -99,18 +99,20 @@ class APIResultsController extends Controller {
 		}
 		
 		$vldbresult = $this->mongo->api_samples->find($cond);
-		$dispatch_type =  \Request::has('pdf')? 'D':'P';
-		$log_update['resultsdispatch'] = [
-			'dispatch_type'=>$dispatch_type, 
-			'dispatch_date'=>date("Y-m-d").'T'.date("H:i:s"),
-			'dispatched_by'=>\Auth::user()->username, 
-			];
-			
-		$this->mongo->api_samples->update($cond,['$set'=>$log_update], ['multiple'=>true]);
+		$tab = \Request::get('tab');
+		if($tab=='pending'){
+			$dispatch_type =  \Request::has('pdf')? 'D':'P';
+			$log_update['resultsdispatch'] = [
+				'dispatch_type'=>$dispatch_type, 
+				'dispatch_date'=>date("Y-m-d").'T'.date("H:i:s"),
+				'dispatched_by'=>\Auth::user()->username, 
+				];
+			$this->mongo->api_samples->update($cond,['$set'=>$log_update], ['multiple'=>true]);
+		}		
 
 		if(\Request::has('pdf')){
 			$pdf = \PDF::loadView('api_results.result_slip', compact("vldbresult"));
-			return $pdf->download('vl_results_'.session('facility').'.pdf');
+			return $pdf->download('vl_results_'.\Request::get('facility').'.pdf');
 		}
 		return view('api_results.result_slip', compact('vldbresult'));
 	}
