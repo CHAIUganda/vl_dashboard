@@ -118,6 +118,7 @@ class APIResultsController extends Controller {
 	public function search_result($txt){
     	$txt = str_replace(' ', '', $txt);
     	$cond = [];
+    	$cond['$and'][] = ["created_at"=>['$gte'=>$this->mDate(env('QC_START_DATE'))]];
     	if(\Request::has('f')) $cond['$and'][] = ['facility.pk'=>(int)\Request::get('f')];
     	$mongo_search = new \MongoRegex("/$txt/i");
 		$cond['$and'][] = ['$or'=>[['form_number' => $mongo_search], ['patient.art_number' => $mongo_search]]];
@@ -209,6 +210,7 @@ class APIResultsController extends Controller {
 		$cond=[];
 		$cond['$and'][] = ['$or'=>[['result.resultsqc.released'=>true], ['rejectedsamplesrelease.released'=>true]]];
 		$cond['$and'][] = ["facility.pk"=>(int)$facility_id];
+		$cond['$and'][] = ["created_at"=>['$gte'=>$this->mDate(env('QC_START_DATE'))]];
 		if($printed==false){
 			$cond['$and'][] = ['resultsdispatch'=>null];
 		}else{
