@@ -93,7 +93,7 @@ class Essai extends Command
                    $existing_sample = $this->mongo->api_samples->findOne(['pk'=>(int)$sample->pk]);
                    $sample->created_at = Mongo::mDate($sample->created_at);
                    if($existing_sample){
-                    $sample->resultsdispatch = $existing_sample->resultsdispatch;
+                    $sample->resultsdispatch = $existing_sample['resultsdispatch'];
                     $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],$sample, ["upsert"=>true]);
                    }else{
                     $this->mongo->api_samples->insert($sample);
