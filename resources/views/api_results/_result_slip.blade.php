@@ -154,7 +154,7 @@ $signature_img = !empty($signature_img)?$signature_img: MyHTML::getImageData('im
 		</div>
 
 	</div>
-	<?php if($rejected==1){ ?>
+	<?php if($result_obj->rejectedsamplesrelease!=null){ ?>
 
 	<div class="row">
 		<div style="width:100%;float:left" >	
@@ -168,9 +168,7 @@ $signature_img = !empty($signature_img)?$signature_img: MyHTML::getImageData('im
 		</div>	
 	</div>
 
-	<?php } ?>
-
-	<?php if ($rejected!=1){ ?>
+	<?php } else { ?>
 	<div class="row">
 		<div style="width:100%;float:left" >	
 			<div class="print-ttl">viral load results</div>
@@ -230,7 +228,7 @@ $signature_img = !empty($signature_img)?$signature_img: MyHTML::getImageData('im
 	<?php } ?>
 	<div class="row">
 		<div style="width:100%;float:left; margin-top:15px;" >
-			<?php if ($rejected!=1){ ?>
+			<?php if ($result_obj->rejectedsamplesrelease==null){ ?>
 			<div style="width:15%;float:left">
 				Lab Technologist: 
 			</div>
