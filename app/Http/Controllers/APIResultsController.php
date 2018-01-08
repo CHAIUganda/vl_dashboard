@@ -153,6 +153,7 @@ class APIResultsController extends Controller {
     	$cond['$and'][] = ["created_at"=>['$gte'=>$this->mDate(env('QC_START_DATE'))]];
     	if(\Request::has('f')) $cond['$and'][] = ['facility.pk'=>(int)\Request::get('f')];
     	$mongo_search = new \MongoRegex("/$txt/i");
+    	$cond['$and'][] = ['$or'=>[['result.resultsqc.released'=>true], ['rejectedsamplesrelease.released'=>true]]];
 		$cond['$and'][] = ['$or'=>[['form_number' => $mongo_search], ['patient.art_number' => $mongo_search]]];
 		$results = $this->mongo->api_samples->find($cond);
     	$ret = "<table class='table table-striped table-condensed table-bordered'>
