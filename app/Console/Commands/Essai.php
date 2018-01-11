@@ -90,16 +90,12 @@ class Essai extends Command
                 foreach ($samples as $sample) {
                     $data = $this->_getDashboardData($sample);
                     $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
-                  /* $existing_sample = $this->mongo->api_samples->findOne(['pk'=>(int)$sample->pk]);
-                   $sample->created_at = Mongo::mDate($sample->created_at);
-                   if($existing_sample){
-                    $sample->resultsdispatch = $existing_sample['resultsdispatch'];
-                    $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],$sample, ["upsert"=>true]);
-                   }else{
-                    $this->mongo->api_samples->insert($sample);
-                   }*/
-                   #$this->mongo->api_samples->update(['pk'=>(int)$sample->pk],["upsert"=>true]);
-                   $num_records++;
+
+                    unset($sample->resultsdispatch);
+                    $sample->created_at = Mongo::mDate($sample->created_at);
+                    $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
+                    $this->comment($sample->pk);
+                    $num_records++;
                 }
             }
         }elseif($this->today){
