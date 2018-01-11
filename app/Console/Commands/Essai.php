@@ -94,7 +94,7 @@ class Essai extends Command
                     unset($sample->resultsdispatch);
                     $sample->created_at = Mongo::mDate($sample->created_at);
                     $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
-                    $this->comment($sample->pk);
+                    //$this->comment($sample->pk);
                     $num_records++;
                 }
             }
