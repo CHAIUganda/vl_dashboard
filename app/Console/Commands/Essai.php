@@ -88,8 +88,8 @@ class Essai extends Command
             $samples = $this->_get('samples', "latest_hours=$this->hours");
             if(is_array($samples)){
                 foreach ($samples as $sample) {
-                   $data = $this->_getDashboardData($sample);
-                   $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
+                    $data = $this->_getDashboardData($sample);
+                    $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
                   /* $existing_sample = $this->mongo->api_samples->findOne(['pk'=>(int)$sample->pk]);
                    $sample->created_at = Mongo::mDate($sample->created_at);
                    if($existing_sample){
@@ -116,7 +116,7 @@ class Essai extends Command
             $year_month = intval($this->year.str_pad($this->month,2,0,STR_PAD_LEFT));
             
             if($this->expanded){
-                $cond = ['created_at'=>['$gte'=>$dates[0], '$lte'=>end($dates)]];
+                /*$cond = ['created_at'=>['$gte'=>$dates[0], '$lte'=>end($dates)]];
                 $this->mongo->api_samples->remove($cond, ['justOne'=>false]);
                 foreach ($dates as $date) {                    
                     $samples = $this->_get('samples', "date=$date");
@@ -125,7 +125,19 @@ class Essai extends Command
                         $this->mongo->api_samples->batchInsert($samples);
                         $num_records += $num_samples;
                     }
+                }*/
+                foreach ($dates as $date) {
+                    $samples = $this->_get('samples', "date=$date");
+                    if(is_array($samples)){
+                        foreach ($samples as $sample) {
+                            unset($sample->resultsdispatch);
+                            $sample->created_at = Mongo::mDate($sample->created_at);
+                            $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
+                            $num_records++;
+                        }
+                    }               
                 }
+
             }else{
                 $this->_removeSamples(['year_month'=>$year_month]);
                 foreach ($dates as $date) {
