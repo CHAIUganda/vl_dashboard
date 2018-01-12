@@ -210,8 +210,9 @@ class APIResultsController extends Controller {
 		$hub = \Auth::user()->hub_id;
 		$facility = \Auth::user()->facility_id;
 		$cond['$and'][] = ["created_at"=>['$gte'=>$this->mDate(env('QC_START_DATE'))]];
-		if(!empty($hub)) $cond['$and'][] = ["facility.hub.pk"=>(int)$hub];
-		if(!empty($facility)){
+		if(!empty($hub)){
+			$cond['$and'][] = ["facility.hub.pk"=>(int)$hub];
+		}elseif(!empty($facility)){
 			$user_facilities = !empty(\Auth::user()->other_facilities)? unserialize(\Auth::user()->other_facilities):[];
 			 array_push($user_facilities, $facility);
 			 $cond['$and'][] = ["facility.pk"=>['$in'=>array_map(function($f){return (int)$f; }, $user_facilities)] ];
