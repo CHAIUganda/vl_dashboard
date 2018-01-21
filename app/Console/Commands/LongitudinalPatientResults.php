@@ -109,7 +109,7 @@ class LongitudinalPatientResults extends Command{
 
         //make csv
         echo ".... generating csv...\n";
-        $fp = fopen('/Users/simon/temp/results'.date('YmdHis').'.csv', 'w');
+        $fp = fopen('/tmp/results'.date('YmdHis').'.csv', 'w');
         foreach ($list_results as $fields) {
              fputcsv($fp, $fields);
         }
