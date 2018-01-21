@@ -21,7 +21,8 @@ class Kernel extends ConsoleKernel
         \EID\Console\Commands\Essai::class,
         \EID\Console\Commands\Arua::class,
         \EID\Console\Commands\FacilityEngine::class,
-        \EID\Console\Commands\AruaNewFormat::class
+        \EID\Console\Commands\AruaNewFormat::class,
+        \EID\Console\Commands\LongitudinalPatientResults::class
         
         
     ];
