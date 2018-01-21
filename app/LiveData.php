@@ -296,6 +296,27 @@ class LiveData extends Model
       $results=\DB::connection('live_db')->select($sql);
       return $results;
     }
+    public static function getPatientSamplesRecords($patientUniqueID){ 
+      $rjctn_rsn_case=self::rjctnRsnCase();
+
+      $sql="select Distinct s.vlSampleID,s.id,s.districtID,s.hubID,s.facilityID,
+                s.patientUniqueID,s.collectionDate,s.receiptDate,s.treatmentInitiationDate,s.currentRegimenID,ts.position,s.pregnant,s.breastfeeding,
+              s.activeTBStatus,s.sampleTypeID,s.treatmentInitiationID AS trt,
+              results.vlSampleID as resultsSampleID,r.appendix as regimen, results.resultNumeric,results.created AS date_tested
+
+            from 
+                vl_samples s left join (select id,vlSampleID, created,resultNumeric
+                  from vl_results_merged group by vlSampleID) results on s.vlSampleID=results.vlSampleID 
+               left join (select distinct sampleID,id,outcomeReasonsID from vl_samples_verify) v on s.id=v.sampleID
+
+                inner join vl_patients p on s.patientID =p.id 
+                inner join vl_appendix_regimen r on s.currentRegimenID = r.id
+                inner join vl_appendix_treatmentstatus ts on ts.id = r.treatmentStatusID
+                
+            where s.patientUniqueID like '$patientUniqueID'";
+      $results=\DB::connection('live_db')->select($sql);
+      return $results;
+    }
     public static function getNumberOfPatients($year,$cond=1){
       $age_grp_case=self::ageGroupCase();
       #$reg_type_case=self::regimenTypeCase();
