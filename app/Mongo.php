@@ -14,6 +14,11 @@ class Mongo{
 		return $client->$db;
 	}
 
+	public static function mDate($date_str){
+		if(empty($date_str)) $date_str = date("Y-m-d");
+		return new \MongoDate(strtotime($date_str));
+	}
+
 
 }
 

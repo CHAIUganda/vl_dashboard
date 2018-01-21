@@ -42,7 +42,8 @@ Route::group(['middleware' => 'auth'], function()
 	});
 
 	Route::group(['middleware'=>['permission:print_results']], function() { 
-		Route::controllers(['results' => 'FacilityListController']);
+		#Route::controllers(['results' => 'FacilityListController']);
+		Route::get("/results", function(){ return redirect('/api/facility_list');	});
 		Route::controllers(['results_list' => 'ResultsController']);
 		#Route::get('/results', ['as' => 'facilities', 'uses' => 'ResultsController@facilities']);
 		Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'as' => 'result', 'uses' => 'ResultsController@getResult']);
@@ -53,6 +54,14 @@ Route::group(['middleware' => 'auth'], function()
 
 		Route::get('/suppression_trends/index', ['uses' => function(){ return view('suppression_trends.index'); }]);
 		Route::get('/suppression_trends/reports', ['uses' => 'ResultsController@getPatientResults']);
+
+		//API stuff
+		Route::get('/api/facility_list/', ['uses' => 'APIResultsController@facility_list']);
+		Route::get('/api/facility_list/data/', ['uses' => 'APIResultsController@facility_list_data']);
+		Route::get('/api/results/{facility_id}', ['uses'=>'APIResultsController@results']);
+		Route::get('/api/results/data/{facility_id}', ['uses'=>'APIResultsController@results_data']);
+		Route::match(['GET', 'POST'], '/api/result/{id?}', ['uses'=>'APIResultsController@result']);
+		Route::get('/api/search_result/{txt}', ['uses' => 'APIResultsController@search_result']);
 	
 	});
 

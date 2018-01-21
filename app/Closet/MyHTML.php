@@ -172,13 +172,16 @@ class MyHTML{
 		$ret="";
 		// $checked="<span class='glyphicon glyphicon-check print-check'></span>";
 		// $unchecked="<span class='glyphicon glyphicon-unchecked print-uncheck'></span>";
-		$checked="<input type='checkbox' checked disabled readonly>";
-		$unchecked="<input type='checkbox' disabled readonly>";
+		// $checked="<input type='checkbox' checked disabled readonly>";
+		// $unchecked="<input type='checkbox' disabled readonly>";
+		$checked = "<img src='".MyHTML::getImageData("images/chkbox_chk.gif")."'>";
+		$unchecked = "<img src='".MyHTML::getImageData("images/chkbox_blk.gif")."'>";
 		foreach ($arr as $x => $label) {
 			$prefix = $x==$val?$checked:$unchecked;
-			$ret .= "$prefix $label &nbsp;&nbsp; ";		
+			$ret .= "$prefix $label&nbsp;&nbsp;";		
 		}
-		return $ret;
+
+		return substr($ret,0,-12);
 	}
 
 
@@ -388,6 +391,44 @@ class MyHTML{
 		return $ret.$nxt_date;
 	}
 
+	public static function unsuppressedRecomm($next_date, $tx_line=""){
+		$rec_unsuppressed="&ge; 1,000 copies/mL. Patient has unsuppressed viral load.";	
+		$rec_unsuppressed.="<ul>";
+		if ($tx_line==2){
+			$rec_unsuppressed.="<li>Screen for OIs - Do CrAg screening if client has a new WHO stage III or IV event";
+			$rec_unsuppressed.=" and initiate intensive adherence counseling</li> ";
+			$two_samples = "Send 2 venous samples. One for VL test. One for HIVDR test";
+		}else{
+			$rec_unsuppressed.="<li>Please initiate intensive adherence counseling</li> ";
+			$two_samples = "";
+		}
+		
+		$rec_unsuppressed.="<li>Repeat viral load test within 4­ - 6 months. </li>";
+		$rec_unsuppressed.="<li>Next VL test Expected in $next_date. $two_samples</li>";
+		$rec_unsuppressed.="</ul>";
+		return $rec_unsuppressed;
+	}
+
+	public static function getRecommendation2($suppressed, $date_collected, $dob, $tx_line=""){
+		$today = date('Y-m-d');
+		$rec_suppressed_adults="< 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 12 months.";
+		$rec_suppressed_kids="< 1,000 copies/mL: Patient is suppressing their viral load. <br>Please continue adherence counseling. Do another viral load after 6 months.";	
+
+		$date_collected = empty($date_collected)?$today:$date_collected;
+		if($suppressed==1){
+			$yrs = (strtotime($date_collected)-strtotime($dob))/(3600*24*365);
+			if($yrs<20){
+				$ret =  "$rec_suppressed_kids (Expected in ".date('M, Y', strtotime($date_collected)+(182*24*3600)).")";
+			}else{
+				$ret =  "$rec_suppressed_adults (Expected in ".date('M, Y', strtotime($date_collected)+(365*24*3600)).")";
+			}
+		}elseif($suppressed==2){
+			$nxt_date =  date('M, Y', strtotime($date_collected)+(121*24*3600));
+			$ret = MyHTML::unsuppressedRecomm($nxt_date, $tx_line);
+		}
+		return $ret;
+	}
+
 	public static function get_arr_pair($result, $name=''){
 		$ret = [];
 		foreach ($result as $res) {
@@ -468,6 +509,11 @@ class MyHTML{
 		}
 
 		return compact("numerical_result", "suppressed", "alpha_numerical_result");
+	}
+
+	public static function methodUsed($type){
+		$types = ['A'=> 'Abbott Real time HIV-1 PCR', 'R'=> 'HIV-1 RNA PCR Roche', 'C'=> 'HIV-1 RNA PCR Roche'];
+		return isset($types[$type])?$types[$type]:"";
 	}
 
 }
