@@ -23,7 +23,7 @@ class Essai extends Command
      *
      * @var string
      */
-    protected $signature = 'essai:run {--F|facilities} {--H|hours=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded}';
+    protected $signature = 'essai:run {--F|facilities} {--S|sample=} {--I|minutes=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded}';
 
     /**
      * The console command description.
@@ -54,11 +54,13 @@ class Essai extends Command
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         $this->facilities = $this->option('facilities');
-        $this->hours = $this->option('hours');
+        //$this->hours = $this->option('hours');
+        $this->pk = $this->option('sample');
         $this->today = $this->option('today');
         $this->month = $this->option('month');
         $this->year = $this->option('year');
-        $this->expanded = $this->option('expanded');       
+        $this->expanded = $this->option('expanded'); 
+        $this->minutes = $this->option('minutes');      
         $this->_loadData();
         //
         //$this->comment($this->_get('facilities'));
@@ -79,13 +81,28 @@ class Essai extends Command
 
     private function _loadData(){
         $num_records = 0;
+
         if($this->facilities){
             $facilities =  $this->_get('facilities');
             $this->mongo->api_facilities->drop();
             $this->mongo->api_facilities->batchInsert($facilities);
 
-        }elseif($this->hours){
-            $samples = $this->_get('samples', "latest_hours=$this->hours");
+        }elseif($this->pk){
+            $samples = $this->_get('samples', "pk=$this->pk");
+            if(is_array($samples)){
+                foreach ($samples as $sample) {
+                    $data = $this->_getDashboardData($sample);
+                    $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
+
+                    unset($sample->resultsdispatch);
+                    $sample->created_at = Mongo::mDate($sample->created_at);
+                    $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
+                    //$this->comment($sample->pk);
+                    $num_records++;
+                }
+            }
+        }elseif($this->minutes){
+            $samples = $this->_get('samples', "latest_minutes=$this->minutes");
             if(is_array($samples)){
                 foreach ($samples as $sample) {
                     $data = $this->_getDashboardData($sample);
