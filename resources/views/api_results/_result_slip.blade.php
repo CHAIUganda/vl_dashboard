@@ -28,7 +28,7 @@ $signature_url = $result_obj->result['test_by']['userprofile']['signature'];
 $signature_arr = explode("/",$signature_url);
 $signature = end($signature_arr);
 $signature_img = MyHTML::getImageData("images/signatures/$signature");
-$signature_img = !empty($signature_img)||$signature_img=="data:image/;base64,"?$signature_img: MyHTML::getImageData('images/signatures/signature.148.png');
+$signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.148.png'):$signature_img;
 
 //$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
  ?>
