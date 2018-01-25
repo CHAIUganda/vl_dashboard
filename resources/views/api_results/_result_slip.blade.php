@@ -28,7 +28,7 @@ $signature_url = $result_obj->result['test_by']['userprofile']['signature'];
 $signature_arr = explode("/",$signature_url);
 $signature = end($signature_arr);
 $signature_img = MyHTML::getImageData("images/signatures/$signature");
-$signature_img = !empty($signature_img)?$signature_img: MyHTML::getImageData('images/signatures/signature.14.gif');
+$signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.148.png'):$signature_img;
 
 //$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
  ?>
@@ -248,7 +248,7 @@ $signature_img = !empty($signature_img)?$signature_img: MyHTML::getImageData('im
 			<div style="width:35%;float:right">
 				<img src="{{ MyHTML::getImageData('images/stamp.vl.png') }}" class="stamp" >
 				<?php
-				$released_at=$rejected==1?$result_obj->rejectedsamplesrelease['released_at']:$result_obj->result['resultsqc']['released_at'];
+				$released_at=$result_obj->rejectedsamplesrelease!=null?$result_obj->rejectedsamplesrelease['released_at']:$result_obj->result['resultsqc']['released_at'];
 				 ?>
 				<span class="stamp-date"><?=strtoupper(date('d M Y', strtotime($released_at))) ?><br><span class='date-released'>DATE RELEASED</span></span>
 
