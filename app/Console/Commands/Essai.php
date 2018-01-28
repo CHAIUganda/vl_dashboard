@@ -94,7 +94,6 @@ class Essai extends Command
         }else{
             $today = date("Y-m-d");
             $cond = ["resultsdispatch.dispatch_date"=>['$gte'=>"$today 00:00:00",'$lte'=>"$today 23:59:59"]];
-            $cursor = $this->mongo->api_samples->find([], ['pk'=>1])->sort(['pk'=>1])->skip(1)->limit(1);
             $this->_updateAPI($cond);
         }
     }
@@ -116,6 +115,7 @@ class Essai extends Command
             $this->_post("update_dispatch_details", "samples=".json_encode($arr));
             $skip+=$this->limit;
         }
+        $this->comment("$total_count Records updated");
 
     }
 
