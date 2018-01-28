@@ -197,10 +197,10 @@ class APIResultsController extends Controller {
 		extract($params);
 		$cond=[];
 		if(!empty($hub)) $cond['$and'][]=["hub"=>$hub];
-		$ret['recordsTotal'] = $this->mongo->api_facilities->find($cond)->count();
+		$ret['recordsTotal'] = $this->mongo->api_facilities->count($cond);
 		if(!empty($search)) $cond['$and'][] = ['facility'=>new \MongoRegex("/$search/i")];
 		$ret['data'] = $this->mongo->api_facilities->find($cond)->sort($orderby)->skip($start)->limit($length);
-		$ret['recordsFiltered'] = $this->mongo->api_facilities->find($cond)->count();
+		$ret['recordsFiltered'] = $this->mongo->api_facilities->count($cond);
 		return $ret;
 	}
 
@@ -250,13 +250,13 @@ class APIResultsController extends Controller {
 		}else{
 			$cond['$and'][] = ['resultsdispatch'=>['$ne'=>null]];
 		} 
-		$ret['recordsTotal'] = $this->mongo->api_samples->find($cond)->count();
+		$ret['recordsTotal'] = $this->mongo->api_samples->count($cond);
 		if(!empty($search)){
 			$mongo_search = new \MongoRegex("/$search/i");
 			$cond['$and'][] = ['form_number' => $mongo_search];
 		} 
 		$ret['data'] = $this->mongo->api_samples->find($cond)->sort($orderby)->skip($start)->limit($length);
-		$ret['recordsFiltered'] = $this->mongo->api_samples->find($cond)->count();
+		$ret['recordsFiltered'] = $this->mongo->api_samples->count($cond);
 
 		return $ret;
 	}
