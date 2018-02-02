@@ -242,7 +242,7 @@ class Essai extends Command
         $data["suppression_status"] = $suppressed!='UNKNOWN'?strtolower($suppressed):$suppressed;
 
         $data["tested"]=!empty($sample->result)?"yes":"no";
-        $data["rejection_reason"] = isset($sample->verification->rejection_reason->code)?$this->_getRejectionCat($sample->verification->rejection_reason->code):"UNKNOWN";
+        $data["rejection_reason"] = isset($sample->verification->rejection_reason->tag)?$this->_getRejectionCat($sample->verification->rejection_reason->tag):"UNKNOWN";
         return $data;
     }
 
@@ -302,7 +302,20 @@ class Essai extends Command
         return $code;
     }
 
-    private static function _getRejectionCat($val){
+    private static function _getRejectionCat($tag){
+        if(strpos($tag, 'eligibility')){
+            $ret = "eligibility";
+        }else if(strpos($tag, 'data_quality')){
+            $ret = "incomplete_form";
+        }else if(strpos($tag, 'sample_quality')){
+            $ret = "quality_of_sample";
+        }else{
+            $ret = "UNKNOWN";
+        }
+        return $ret;
+    }
+
+    /*private static function _getRejectionCat($val){
         $eligibility = [77,78,14,64,65,76];
         $incomplete_form = [4,71,72,69,70,67,68,79,80,87,88,86, 61,81,82];
         $quality_of_sample = [9,60,74,10,59,8,63,75,2,7,85,1,5,62 ,3,15,83,84];
@@ -317,7 +330,7 @@ class Essai extends Command
             $ret = "UNKNOWN";
         }
         return $ret;
-    }
+    }*/
 
     private function _get($resouce, $params_str=""){
         $api = env('API')."/api/$resouce/?$params_str";
