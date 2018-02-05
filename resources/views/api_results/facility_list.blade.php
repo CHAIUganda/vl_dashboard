@@ -55,9 +55,9 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
        <!--  @if(empty(Auth::user()->hub_id))<th>Hub</th> @endif  -->
         <th>Facility</th>  
         <th>Hub</th>                   
-        <!-- <th>Contact Person</th>
+        <th>Contact Person</th>
         <th>Phone</th>
-        <th>Email</th> -->
+        <th>Email</th>
 
         <th># Pending</th>
         <th># Printed/ Downloaded</th>
@@ -71,7 +71,6 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 <tbody>
     @foreach($facilities AS $facility)
     <?php 
-
     $f_id = $facility['_id']['pk'];
     $h_id = $facility['_id']['hub']['pk'];
      $pilot = "";
@@ -85,10 +84,18 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
         $pilot_facility_account = \EID\User::where('facility_id',  $f_id)->count();
         $pilot = $pilot_facility_account>=1? "background-color:#F5A9A9;":"";
     }
-    $url = "/api/results/$f_id/?" ?>
+    $url = "/api/results/$f_id/?";
+
+    $db = \EID\Mongo::connect();
+    $f_details = $db->api_facilities->findOne(['pk'=>$f_id]); 
+
+    ?>
     <tr style="{{$pilot}}">
         <td><a href="{{ $url }}">{{ $facility['_id']['facility'] }}</a></td>
         <td>{{ $facility['_id']['hub']['hub'] }}</td>
+        <td>{{ $f_details['coordinator_name'] }}</td>
+        <td>{{ $f_details['coordinator_contact'] }}</td>
+        <td>{{ $f_details['coordinator_email'] }}</td>
         <td><a href="{{ $url }}">{{ $facility['num_pending'] }}</a></td>
         <td>{{ $facility['num_dispatched'] }}</td>
         <td>
