@@ -23,7 +23,7 @@ class Essai extends Command
      *
      * @var string
      */
-    protected $signature = 'essai:run {--F|facilities} {--S|sample=} {--I|minutes=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded}';
+    protected $signature = 'essai:run {--F|facilities} {--S|sample=} {--I|minutes=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded} {--U|update} {--L|limit=}';
 
     /**
      * The console command description.
@@ -60,8 +60,14 @@ class Essai extends Command
         $this->month = $this->option('month');
         $this->year = $this->option('year');
         $this->expanded = $this->option('expanded'); 
-        $this->minutes = $this->option('minutes');      
-        $this->_loadData();
+        $this->minutes = $this->option('minutes');  
+        $this->update = $this->option('update');
+        $this->limit = $this->option('limit');
+        $this->limit = empty($this->limit)?10:$this->limit;
+        if(!empty($this->update)) $this->_updateDispatchDetails();
+        else $this->_loadData();
+
+
         //
         //$this->comment($this->_get('facilities'));
         //$facilities = $this->_get('facilities');
@@ -76,6 +82,40 @@ class Essai extends Command
         // $this->comment("year is ".$this->argument('year'));
 
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
+
+    }
+
+    private function _updateDispatchDetails(){
+        if(!empty($this->month) and !empty($this->year)){
+            $ym = $this->year."-".str_pad($this->month,2,0,STR_PAD_LEFT);
+            $ym_days = cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
+            $cond = ["resultsdispatch.dispatch_date"=>['$gte'=>"$ym-01 00:00:00",'$lte'=>"$ym-$ym_days 23:59:59"]];
+            $this->_updateAPI($cond);
+        }else{
+            $today = date("Y-m-d");
+            $cond = ["resultsdispatch.dispatch_date"=>['$gte'=>"$today 00:00:00",'$lte'=>"$today 23:59:59"]];
+            $this->_updateAPI($cond);
+        }
+    }
+
+    private function _updateAPI($cond){
+        $total_count = $this->mongo->api_samples->count($cond);
+        $skip = 0;
+        while ($skip < $total_count) {
+            $cursor = $this->mongo->api_samples->find($cond, ['pk'=>1, 'resultsdispatch'=>1])->skip($skip)->limit($this->limit);
+            $arr = [];
+            foreach ($cursor as $doc) {
+                $arr[]=[
+                    'pk'=>$doc['pk'],
+                    'dispatch_date'=>$doc['resultsdispatch']['dispatch_date'],
+                    'dispatch_type'=>$doc['resultsdispatch']['dispatch_type'],
+                    'dispatched_by'=>$doc['resultsdispatch']['dispatched_by']
+                    ];                    
+            }
+            $this->_post("update_dispatch_details", "samples=".json_encode($arr));
+            $skip+=$this->limit;
+        }
+        $this->comment("$total_count Records updated");
 
     }
 
@@ -202,7 +242,7 @@ class Essai extends Command
         $data["suppression_status"] = $suppressed!='UNKNOWN'?strtolower($suppressed):$suppressed;
 
         $data["tested"]=!empty($sample->result)?"yes":"no";
-        $data["rejection_reason"] = isset($sample->verification->rejection_reason->code)?$this->_getRejectionCat($sample->verification->rejection_reason->code):"UNKNOWN";
+        $data["rejection_reason"] = isset($sample->verification->rejection_reason->tag)?$this->_getRejectionCat($sample->verification->rejection_reason->tag):"UNKNOWN";
         return $data;
     }
 
@@ -262,7 +302,20 @@ class Essai extends Command
         return $code;
     }
 
-    private static function _getRejectionCat($val){
+    private static function _getRejectionCat($tag){
+        if(strpos($tag, 'eligibility')){
+            $ret = "eligibility";
+        }else if(strpos($tag, 'data_quality')){
+            $ret = "incomplete_form";
+        }else if(strpos($tag, 'sample_quality')){
+            $ret = "quality_of_sample";
+        }else{
+            $ret = "UNKNOWN";
+        }
+        return $ret;
+    }
+
+    /*private static function _getRejectionCat($val){
         $eligibility = [77,78,14,64,65,76];
         $incomplete_form = [4,71,72,69,70,67,68,79,80,87,88,86, 61,81,82];
         $quality_of_sample = [9,60,74,10,59,8,63,75,2,7,85,1,5,62 ,3,15,83,84];
@@ -277,12 +330,20 @@ class Essai extends Command
             $ret = "UNKNOWN";
         }
         return $ret;
-    }
+    }*/
 
     private function _get($resouce, $params_str=""){
         $api = env('API')."/api/$resouce/?$params_str";
         $api_key = env('API_KEY');
         $curl_command = "curl -X GET '$api' -H 'Authorization: Token $api_key'";
+        $results = exec($curl_command);
+        return json_decode($results);
+    }
+
+    private function _post($resouce, $params_str=""){
+        $api = env('API')."/api/$resouce/";
+        $api_key = env('API_KEY');
+        $curl_command = "curl -X POST '$api' -H 'Authorization: Token $api_key' -d '$params_str' ";
         $results = exec($curl_command);
         return json_decode($results);
     }

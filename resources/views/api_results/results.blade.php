@@ -57,7 +57,7 @@ $facility_str = str_replace("'", "", $facility_str);
                 <th>Other ID</th>
                 <th>Date Collected</th>
                 <th>Date Received</th>
-                <th>Date Released</th>
+                @if ($tab=='completed')<th>Date printed/downloaded</th>@else<th>Date Released</th>@endif
                 <th>Options</th>
             </tr>
         </thead>
@@ -77,6 +77,7 @@ $(function() {
         serverSide: true,
         pageLength: 25,
         ajax: '/api/results/data/{{ $facility_id }}/?tab={{ $tab }}',
+        order: [[ 6, "desc" ]],
     });
     @endif
 

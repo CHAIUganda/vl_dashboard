@@ -54,6 +54,8 @@ class APIResultsController extends Controller {
 
 	public function results_data($facility_id){
 		$cols = ['select','form_number', 'patient.art_number', 'patient.other_id', 'date_collected', 'date_received', 'result.resultsqc.released_at', 'options'];
+		$tab = \Request::has('tab')?\Request::get('tab'):'pending';
+		$cols[6] = $tab=='completed'?'resultsdispatch.dispatch_date':$cols[6];
 		$params = $this->get_params($cols);
 		$params['facility_id'] = $facility_id;
 
@@ -66,6 +68,7 @@ class APIResultsController extends Controller {
 			$url = "/api/result/$_id";
 			$links = ['Print' => "javascript:windPop('$url')",'Download' => "$url?&pdf=1"];
 			$released_at = $result['resultsqc']['released_at']?$result['resultsqc']['released_at']:$rejectedsamplesrelease['released_at'];
+			$dispatch_date = $resultsdispatch['dispatch_date']? $resultsdispatch['dispatch_date']:"";
 			$data[] = [
 				$select_str, 
 				$form_number, 
@@ -73,7 +76,7 @@ class APIResultsController extends Controller {
 				$patient['other_id'], 
 				\MyHTML::localiseDate($date_collected, 'd-M-Y'), 
 				\MyHTML::localiseDate($date_received, 'd-M-Y'), 
-				\MyHTML::localiseDate($released_at, 'd-M-Y'),
+				$tab=='completed'?\MyHTML::localiseDate($dispatch_date, 'd-M-Y'):\MyHTML::localiseDate($released_at, 'd-M-Y'),
 				\MyHTML::dropdownLinks($links)];
 		}
 
@@ -197,10 +200,10 @@ class APIResultsController extends Controller {
 		extract($params);
 		$cond=[];
 		if(!empty($hub)) $cond['$and'][]=["hub"=>$hub];
-		$ret['recordsTotal'] = $this->mongo->api_facilities->find($cond)->count();
+		$ret['recordsTotal'] = $this->mongo->api_facilities->count($cond);
 		if(!empty($search)) $cond['$and'][] = ['facility'=>new \MongoRegex("/$search/i")];
 		$ret['data'] = $this->mongo->api_facilities->find($cond)->sort($orderby)->skip($start)->limit($length);
-		$ret['recordsFiltered'] = $this->mongo->api_facilities->find($cond)->count();
+		$ret['recordsFiltered'] = $this->mongo->api_facilities->count($cond);
 		return $ret;
 	}
 
@@ -250,13 +253,13 @@ class APIResultsController extends Controller {
 		}else{
 			$cond['$and'][] = ['resultsdispatch'=>['$ne'=>null]];
 		} 
-		$ret['recordsTotal'] = $this->mongo->api_samples->find($cond)->count();
+		$ret['recordsTotal'] = $this->mongo->api_samples->count($cond);
 		if(!empty($search)){
 			$mongo_search = new \MongoRegex("/$search/i");
 			$cond['$and'][] = ['form_number' => $mongo_search];
 		} 
 		$ret['data'] = $this->mongo->api_samples->find($cond)->sort($orderby)->skip($start)->limit($length);
-		$ret['recordsFiltered'] = $this->mongo->api_samples->find($cond)->count();
+		$ret['recordsFiltered'] = $this->mongo->api_samples->count($cond);
 
 		return $ret;
 	}
