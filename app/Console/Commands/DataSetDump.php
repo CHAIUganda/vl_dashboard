@@ -73,7 +73,7 @@ class DataSetDump extends Command{
 
         $sampleTypes = LiveData::getSampleTypesInArrayForm();
 
-        $file_name = "/Users/simon/Desktop/CDC/dataset_".$year_month.".csv";
+        $file_name = "/tmp/dataset_".$year_month.".csv";
         $fp = fopen($file_name, 'w');
         
             //headers
