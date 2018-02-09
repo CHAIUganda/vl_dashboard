@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use EID\LiveData;
 use EID\Hub;
 use EID\Facility;
+use EID\HealthFacility;
 use EID\Ip;
 use EID\District;
 use EID\Dashboard;
@@ -57,6 +58,9 @@ class LongitudinalPatientResults extends Command{
         
         try {
             $this->_loadData();
+            
+           
+            //
         } catch (Exception $e) {
             echo 'Message: ' .$e->getMessage();
         }
@@ -68,23 +72,57 @@ class LongitudinalPatientResults extends Command{
     }
 
     private function _loadData(){
+        //get facilities
+        $facilities = $this->_getFacilities();
+
         //get patients
         $patients_records = $this->_getPatientsRecords();
         $list_results = array();
 
         $counter=0;
         //fetch patients results
+        //first row header
+                $result_array=array();
+                array_push($result_array,"patient_id");
+                array_push($result_array,"gender");
+                array_push($result_array,"date_of_birth");
+
+                array_push($result_array,"dhis2_facility_id");
+                array_push($result_array,"district_uid");
+
+                array_push($result_array," ");
+                array_push($result_array,"sample_id");
+                array_push($result_array,"collection_date");
+                array_push($result_array,"copies_ml");
+                array_push($result_array,"treatment_initiation_date");
+                array_push($result_array,"treatment_line");
+                array_push($result_array,"regimen");
+                array_push($result_array," ");
+                array_push($list_results, $result_array);
         foreach ($patients_records as $key => $patient_record) {
             $result_array=array();
+
 
             $patient_unique_number = $patient_record->patientUniqueID;
             $patient_gender = $patient_record->gender;
             $patient_date_of_birth = $patient_record->dateOfBirth;
+
+
+            $health_facility = $this->_getHealthFacility($patient_unique_number,$facilities);
+
+            $dhis2_uid = $health_facility != null? $health_facility->dhis2_uid: null;
+            $dhis2_district_uid = $health_facility != null? $health_facility->dhis2_district_uid: null;
+
             $samples_record = $patient_record->record;
 
-                array_push($result_array,$patient_unique_number);
+                $random_patient_id = rand(10, 30);
+                array_push($result_array,$random_patient_id);
                 array_push($result_array,$patient_gender);
                 array_push($result_array,$patient_date_of_birth);
+
+                array_push($result_array,$dhis2_uid);
+                array_push($result_array,$dhis2_district_uid);
+
                 array_push($result_array," ");
                 //array_push($result_array,$samples_record);
             
@@ -169,6 +207,47 @@ class LongitudinalPatientResults extends Command{
         $patients_records =  \DB::connection('live_db')->select($sql);
        
         return $patients_records;
+    }
+
+    private function _getFacilities(){
+        $sql = "select * from vl_facilities";
+        $facilities =  \DB::connection('live_db')->select($sql);
+       
+        $facilities_array = array();
+        foreach ($facilities as $key => $value) {
+            $id="".$value->id;
+
+            $health_facility = new HealthFacility();
+            $health_facility->dhis2_name = $value->dhis2_name;
+            $health_facility->dhis2_uid = $value->dhis2_uid;
+            $health_facility->cphl_name =  $value->facility;
+            $health_facility->dhis2_district_uid = $value->district_uid;
+
+            $facilities_array[$id]=$health_facility;
+        }
+        return $facilities_array;
+    }
+
+    private function _getCphlFacilityId($patientUniqueID){
+        $string_array= explode("-", $patientUniqueID);
+        $facility_id = $string_array[0];
+        return $facility_id;
+    }
+    private function _getHealthFacility($patientUniqueID,$facilities){
+       $facility_id = 0;
+       $health_facility = null;
+       try {
+           $facility_id = $this->_getCphlFacilityId($patientUniqueID);
+           $facility_id = intval($facility_id);
+           $health_facility= isset($facilities[$facility_id])? $facilities[$facility_id] : null;
+           //$health_facility= $facilities[$facility_id];
+       } catch (Exception $e) {
+        
+           $health_facility = "Unknown";
+       }
+       
+
+       return $health_facility;
     }
 }
     
