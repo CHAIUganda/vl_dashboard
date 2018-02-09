@@ -49,11 +49,11 @@ class MyName extends Command{
         //merge
         $merged_data=[];
         echo "-----1---\n";
-                    $dummy_facility['uid']="uid";
-                    $dummy_facility['cphl_facility_name']='cphl_facility_name';
+                    
+                    $dummy_facility['cphl_facility_name']='un_matched_name';
+                    $dummy_facility['un_matched_district']='un_matched_district';
                     $dummy_facility['dhis2_facility_name']="dhis2_facility_name";
                     $dummy_facility['dhis2_facility_uid']="dhis2_facility_uid";
-                    $dummy_facility['dhis2_district_uid']="dhis2_district_uid";
 
                     $dummy_facility['Level']="Level";
                     $dummy_facility['Ownership']="Ownership";
@@ -72,13 +72,18 @@ class MyName extends Command{
 
         foreach ($facilities as $key => $facility) {
             foreach ($dhis2_facilities as $index => $dhis2_facility) {
-                if($facility['dhis2_facility_uid'] == $dhis2_facility['Facility_uid']){
+                $un_matched_name=$facility['Facility'];
+                $dhis2_facility_name = $dhis2_facility['Facility_name'];
+
+                similar_text($un_matched_name, $dhis2_facility_name, $percent);
+                if( $percent >85 ){
                     
-                    $dummy_facility['uid']=$facility['uid'];
-                    $dummy_facility['cphl_facility_name']=$facility['cphl_facility_name'];
-                    $dummy_facility['dhis2_facility_name']=$facility['dhis2_facility_name'];
+                   
+                    $dummy_facility['cphl_facility_name']=$facility['Facility'];
+                    $dummy_facility['un_matched_district']=$facility['District'];
+
+                    $dummy_facility['dhis2_facility_name']=$dhis2_facility['Facility_name'];
                     $dummy_facility['dhis2_facility_uid']=$dhis2_facility['Facility_uid'];
-                    $dummy_facility['dhis2_district_uid']=$facility['dhis2_district_uid'];
 
                     $dummy_facility['Level']=$dhis2_facility['Level'];
                     $dummy_facility['Ownership']=$dhis2_facility['Ownership'];
@@ -100,7 +105,7 @@ class MyName extends Command{
 
         //make csv
         
-        $fp = fopen('/Users/simon/Desktop/consolidated_20171102.csv', 'w');
+        $fp = fopen('/Users/simon/Desktop/consolidated_20180130.csv', 'w');
         foreach ($merged_data as $fields) {
             fputcsv($fp, $fields);
         }
@@ -110,7 +115,7 @@ class MyName extends Command{
     }
 
     private function loadFacilities(){
-        $file = fopen("./docs/others/facilities_20171019.csv", "r");
+        $file = fopen("/Users/simon/Desktop/unmatched_cphl_dhis2.csv", "r");
         $data = array();
         //loading CSV entire data
        
@@ -121,12 +126,9 @@ class MyName extends Command{
             //print_r($array_instance);
 
                 
-                $facility['uid']=$array_instance[0];
-                $facility['cphl_facility_name']=$array_instance[1];
-                $facility['dhis2_facility_name']=$array_instance[2];
-                $facility['dhis2_facility_uid']=$array_instance[3];
-                $facility['dhis2_district_uid']=$array_instance[4];
-
+                $facility['Facility']=$array_instance[0];
+                $facility['District']=$array_instance[1];
+           
                 
                 array_push($data, $facility);
 
@@ -134,7 +136,7 @@ class MyName extends Command{
         }
         
         //remove duplicates
-        $facilities = $this->unique_multidim_array($data,'dhis2_facility_uid'); 
+        $facilities = $this->unique_multidim_array($data,'Facility'); 
 
         return $facilities;
     }
