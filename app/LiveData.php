@@ -32,6 +32,7 @@ class LiveData extends Model
               )  then 'invalid' else 'valid' end";
     //const TRTMT_IDCTN_CASE = "CASE WHEN `treatmentInitiationID`=1 THEN 'b_plus' WHEN `treatmentInitiationID`=4 THEN 'tb' ELSE 'x' END";
 
+    
     public static function getSample($id){
       return 'x';
     }
@@ -176,7 +177,22 @@ class LiveData extends Model
     }
 
     public static function getFacilities(){
-      return LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID')->from('vl_facilities')->get();
+      return LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID','dhis2_uid','district_uid')->from('vl_facilities')->get();
+    }
+    public static function getFacilitiesInAnArrayForm(){
+      $result_set = LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID','dhis2_uid','district_uid')->from('vl_facilities')->get();
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+     
+       $ret[$row->id] = array(
+                        'id' => $row->id,
+                        'facility'=>$row->facility, 
+                        'dhis2_name'=>$row->dhis2_name,
+                        'dhis2_uid'=>$row->dhis2_uid,
+                        'district_uid'=>$row->district_uid
+                      );
+      }
+      return $ret;
     }
 
     public static function getFacilities2(){
@@ -194,7 +210,56 @@ class LiveData extends Model
       return self::select('id', 'appendix')->from('vl_appendix_regimen')->get();
     }
 
+    public static function getRegimensInAnArrayForm(){
+      $result_set = self::select('id', 'appendix')->from('vl_appendix_regimen')->get();
+
+       foreach ($result_set as $key => $row) {
+     
+       $ret[$row->id] = array(
+                        'id' => $row->id,
+                        'appendix'=>$row->appendix
+                      );
+      }
+      return $ret;
+    }
+
+    public static function getRegimenLinesInAnArrayForm(){
+      $result_set = self::select('id', 'appendix')->from('vl_appendix_treatmentstatus')->get();
+
+       foreach ($result_set as $key => $row) {
+     
+       $ret[$row->id] = array(
+                        'id' => $row->id,
+                        'appendix'=>$row->appendix
+                      );
+      }
+      return $ret;
+    }
   
+    public static function getTreatmentInitiationInAnArrayForm(){
+      $result_set = self::select('id', 'appendix')->from('vl_appendix_treatmentinitiation')->get();
+
+       foreach ($result_set as $key => $row) {
+     
+       $ret[$row->id] = array(
+                        'id' => $row->id,
+                        'appendix'=>$row->appendix
+                      );
+      }
+      return $ret;
+    }
+    public static function getSampleTypesInArrayForm(){
+      $result_set = self::select('id', 'appendix')->from('vl_appendix_sampletype')->get();
+
+       foreach ($result_set as $key => $row) {
+     
+       $ret[$row->id] = array(
+                        'id' => $row->id,
+                        'appendix'=>$row->appendix
+                      );
+      }
+      return $ret;
+    }
     public static function getSamples($year){
     	$age_grp_case=self::ageGroupCase();
       
@@ -240,6 +305,50 @@ class LiveData extends Model
       return $res; 
     }
 
+    public static function getSamplesDataSetByMonth($year,$month){
+      $age_grp_case=self::ageGroupCase();
+      
+      #$reg_type_case=self::regimenTypeCase();
+      $reg_time_case=self::regimenTimeCase();
+      $sql="SELECT facilityID,month(s.created) AS mth,year(s.created) AS year_created,r.validity,count(distinct s.vlSampleID) AS num,
+                   count(distinct r.vlSampleID) AS samples_tested,r.suppressed as suppressed,
+                   $age_grp_case AS age_group,".self::SEX_CASE." AS sex,
+                   currentRegimenID AS regimen,
+                   reg_t.treatmentStatusID AS reg_line,
+                   $reg_time_case AS reg_time,
+                   treatmentInitiationID AS trt,
+                   count(distinct patientUniqueID) as number_patients_received,
+                   ".self::PREGNANT_CASE." as pregnancyStatus,count(pregnant) as numberPregant,
+                   ".self::BREAST_FEEDING_CASE." as breastFeedingStatus, count(breastfeeding) as numberBreastFeeding,
+                   ".self::TB_STATUS_CASE." as activeTBStatus,count(activeTBStatus) as numberActiveOnTB,
+                   s.sampleTypeID
+                
+            FROM 
+            (SELECT distinct r.vlSampleID,r.suppressed,case when r.resultAlphanumeric in ('Failed','Failed.',
+                'Invalid',
+                'Invalid test result. There is insufficient sample to repeat the assay.',
+                'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a a new sample.',
+                'There is No Result Given. The Test Failed the Quality Control Criteria. We advise you send a new sample.'
+              )  then 'invalid' else 'valid' end as validity
+           FROM vl_results_merged r inner join vl_samples s on s.vlSampleID=r.vlSampleID where YEAR(s.created)='$year' group by r.vlSampleID) AS r
+
+            right JOIN vl_samples AS s ON r.vlSampleID=s.vlSampleID
+            LEFT JOIN vl_patients AS p ON s.patientID=p.id
+
+            LEFT JOIN vl_appendix_regimen AS reg_t ON s.currentRegimenID=reg_t.id
+            WHERE YEAR(s.created)=$year and MONTH(s.created)=$month     
+            GROUP BY mth,age_group,facilityID,sex,regimen,reg_line,reg_time,trt,suppressed";
+
+      $res=\DB::connection('live_db')->select($sql);
+      /*if($cond==1) return $res;
+      $ret=[];
+      foreach ($res as $r) {
+        $k=$r->mth.$r->age_group.$r->facilityID.$r->sex;
+        $k.=$r->regimen.$r->reg_line.$r->reg_time.$r->trt;
+        $ret[$k]=$r->num;
+      }*/
+      return $res; 
+    }
     public static function getSamplesRecords($year){
       $age_grp_case=self::ageGroupCase();
       $reg_time_case=self::regimenTimeCase();
@@ -482,6 +591,16 @@ class LiveData extends Model
        return $ret;
     }
 
+    public static function regimenTimeInArrayForm(){
+
+      $regimen_time[1]= array('id'=>1,'appendix' => '6 to 12 months');
+      $regimen_time[2]= array('id'=>2,'appendix' => '12 to 24 months');
+      $regimen_time[3]= array('id'=>3,'appendix' => '25 to 36 months');
+      $regimen_time[4] = array('id'=>4,'appendix' => '37 to 60 months');
+      $regimen_time[5] = array('id'=>5,'appendix' => 'More than 60 months');
+
+      return $regimen_time;
+    }
     private static function regimenTypeCase(){
       //{1:'AZT' ,2:'TDF/XTC/EFV' ,3:'TDF/XTC/NVP', 4:'ABC',5:'TDF/XTC/LPV/r' , 6:'TDF/XTC/ATV/r', 7:'Other'}
       /* $arr=[
