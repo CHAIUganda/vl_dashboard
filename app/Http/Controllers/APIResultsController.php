@@ -308,9 +308,7 @@ class APIResultsController extends Controller {
         
             
             
-            $project_array = array('facility_id' =>1 , 
-                'year_month'=>1,'gender'=>1,'age' => 1,'sample_result_validity' => 1,
-                'suppression_status'=>1);
+          
 
             //match stage
             //--$match_array = array('year_month' => array('$gte'=>201501,'$lte'=>201512));
@@ -328,7 +326,7 @@ class APIResultsController extends Controller {
             $cond_number_suppressed = array($eq_number_suppressed,1,0);
 
             $group_array = array(
-                '_id' => array('facility_id'=>'$facility_id'), 
+                '_id' => array('facility_id'=>'$facility_id','year_month'=>'$year_month'), 
                 'sample_result_validity' => array('$sum'=>  
                                 array('$cond' => $cond_sample_result_validity )
                                 ),
@@ -338,11 +336,12 @@ class APIResultsController extends Controller {
                                 )
                 );
 
-            $mongo_query['$project'] = $project_array;
-            $mongo_query['$match'] = $match_array;
-            $mongo_query['$group'] = $group_array;
+            //sorting
+            $sort_array = array('facility_id' =>1 ,'year_month'=>-1);
 
-        $result_set=$mongo->dashboard_new_backend->aggregate(['$project'=>$project_array],['$match'=>$match_array],['$group'=>$group_array]);
+
+        $result_set=$mongo->dashboard_new_backend->aggregate(['$match'=>$match_array],['$group'=>$group_array],
+        	['$sort'=>$sort_array]);
         
 
         return $result_set['result'];
@@ -351,15 +350,16 @@ class APIResultsController extends Controller {
         $facilities = LiveData::getFacilitiesInAnArrayForm();
 
         $clean_result_set=array();
-        $clean_result_set['description']=$params;
+        //$clean_result_set['description']=$params;
+           
             //headers
             $header['facilityID']='facilityID';
             $header['facility_name']='facility_name';
             $header['facility_dhis2_code']='dhis2_facility_id';
             $header['district_dhis2_code']='dhis2_district_id';
             //$header['sex']='sex';
-            
-            $header['number_of_tests']='valid_tests';
+            $header['year_month']='year_month';
+            $header['number_of_valid_tests']='valid_tests';
             //$header['number_tested']='samples_tested';
             $header['number_suppressed']='suppressed';
             $fields['suppression_rate']='suppression_rate';
@@ -377,16 +377,21 @@ class APIResultsController extends Controller {
             $fields['facility_code'] = isset($facility) ? $facility['dhis2_uid']: 'Null';
             $fields['district_code']=isset($facility) ? $facility['district_uid']: 'Null';
            
+           	$year_month=$record['_id']['year_month'];
+           	$fields['year_month']=isset($year_month)?$year_month : 0;
      
             //$fields['sex']=$record['_id']['gender'];
-            $number_of_tests = isset($record['sample_result_validity'])?$record['sample_result_validity'] : 0;
-            $fields['number_of_tests']=$number_of_tests;
+            $number_of_valid_tests = isset($record['sample_result_validity'])?intval($record['sample_result_validity']) : 0;
+            $fields['number_of_valid_tests']=$number_of_valid_tests;
             //$fields['number_tested']=isset($record['number_tested'])?$record['number_tested'] : 0;
-            $number_suppressed = isset($record['number_suppressed'])?$record['number_suppressed'] : 0;
+            $number_suppressed = isset($record['number_suppressed'])? intval($record['number_suppressed']) : 0;
             $fields['number_suppressed']=$number_suppressed;
 
-            $fields['suppression_rate'] = ($number_suppressed>0)?
-            									round(($fields['number_suppressed']/$fields['number_of_tests'])/100): 0;
+            $suppression_rate=0.0;
+            if($number_suppressed>0){
+            	$suppression_rate = round(($number_suppressed /$number_of_valid_tests)*100);
+            }
+            $fields['suppression_rate'] = $suppression_rate;
                         
             array_push($clean_result_set, $fields);
         }
