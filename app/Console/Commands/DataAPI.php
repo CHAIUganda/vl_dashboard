@@ -141,8 +141,14 @@ class DataAPI extends Command{
             $facility_id=$record['_id']['facility_id'];
             $fields['facilityID']=$facility_id;
             
-            if(intval($facility_id) < 1 || intval($facility_id) == 3645)
-                break;
+            try{
+                if(intval($facility_id) < 1 || intval($facility_id) == 3645 ||intval($facility_id) == 2317 || 
+            intval($facility_id) == 1651 || intval($facility_id) == 461 || intval($facility_id) == 8363 || intval($facility_id) == 8362
+            || intval($facility_id) == 8366 || intval($facility_id) == 8365 || intval($facility_id) == 8364 )
+                    continue;
+             }catch(Exception $e){
+            continue;
+             }
             $fields['facility_name']=isset($facility) ? $facility['facility']: 'Null';
             $facility = $facilities[$facility_id];
             $fields['facility_code'] = isset($facility) ? $facility['dhis2_uid']: 'Null';
