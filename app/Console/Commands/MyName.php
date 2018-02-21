@@ -40,78 +40,16 @@ class MyName extends Command{
     }
 
     public function handle($x="p") {
-    	//read cphl facilities
-        $facilities = $this->loadFacilities();
-
-        //read dhis facilities
-        $dhis2_facilities = $this->loadDhis2Facilities();
+    	$number_of_valid_tests = 7;
+        $number_suppressed = 6;
         
-        //merge
-        $merged_data=[];
-        echo "-----1---\n";
-                    
-                    $dummy_facility['cphl_facility_name']='un_matched_name';
-                    $dummy_facility['un_matched_district']='un_matched_district';
-                    $dummy_facility['dhis2_facility_name']="dhis2_facility_name";
-                    $dummy_facility['dhis2_facility_uid']="dhis2_facility_uid";
 
-                    $dummy_facility['Level']="Level";
-                    $dummy_facility['Ownership']="Ownership";
-                    $dummy_facility['Authority']="Authority";
+            $suppression_rate=0.0;
+            if($number_suppressed>0){
+                $suppression_rate = round(($number_suppressed /$number_of_valid_tests)*100);
+            }
 
-                    $dummy_facility['Coordinates']="Coordinates";
-                    $dummy_facility['Subcounty_uid']="Subcounty_uid";
-                    $dummy_facility['Subcounty_name']="Subcounty_name";
-                    $dummy_facility['District_uid']="District_uid";
-                    $dummy_facility['District_name']="District_name";
-
-                    $dummy_facility['Region_uid']="Region_uid";
-                    $dummy_facility['Region_name']="Region_name";
-
-        array_push($merged_data, $dummy_facility);
-
-        foreach ($facilities as $key => $facility) {
-            foreach ($dhis2_facilities as $index => $dhis2_facility) {
-                $un_matched_name=$facility['Facility'];
-                $dhis2_facility_name = $dhis2_facility['Facility_name'];
-
-                similar_text($un_matched_name, $dhis2_facility_name, $percent);
-                if( $percent >85 ){
-                    
-                   
-                    $dummy_facility['cphl_facility_name']=$facility['Facility'];
-                    $dummy_facility['un_matched_district']=$facility['District'];
-
-                    $dummy_facility['dhis2_facility_name']=$dhis2_facility['Facility_name'];
-                    $dummy_facility['dhis2_facility_uid']=$dhis2_facility['Facility_uid'];
-
-                    $dummy_facility['Level']=$dhis2_facility['Level'];
-                    $dummy_facility['Ownership']=$dhis2_facility['Ownership'];
-                    $dummy_facility['Authority']=$dhis2_facility['Authority'];
-
-                    $dummy_facility['Coordinates']=$dhis2_facility['Coordinates'];
-                    $dummy_facility['Subcounty_uid']=$dhis2_facility['Subcounty_uid'];
-                    $dummy_facility['Subcounty_name']=$dhis2_facility['Subcounty_name'];
-                    $dummy_facility['District_uid']=$dhis2_facility['District_uid'];
-                    $dummy_facility['District_name']=$dhis2_facility['District_name'];
-
-                    $dummy_facility['Region_uid']=$dhis2_facility['Region_uid'];
-                    $dummy_facility['Region_name']=$dhis2_facility['Region_name'];
-
-                    array_push($merged_data, $dummy_facility);
-                }//end if
-            }//end inner foreach
-        }
-
-        //make csv
-        
-        $fp = fopen('/Users/simon/Desktop/consolidated_20180130.csv', 'w');
-        foreach ($merged_data as $fields) {
-            fputcsv($fp, $fields);
-        }
-        fclose($fp);
-        echo "-----2---\n";
-
+            echo "..... $suppression_rate \n";
     }
 
     private function loadFacilities(){

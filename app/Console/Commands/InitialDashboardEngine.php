@@ -50,7 +50,7 @@ class InitialDashboardEngine extends Command
      */
     public function handle()
     {
-        ini_set('memory_limit', '2900M');
+        //ini_set('memory_limit', '2900M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         

@@ -269,5 +269,187 @@ class APIResultsController extends Controller {
 		return new \MongoDate(strtotime($date_str));
 	}
 
+	public function getFacilitiesDataByAgeGroup($year_month,$gender,$from_age,$to_age){
+
+		$mongo=Mongo::connect();
+        
+        $params = array(
+                'year_month' => intval($year_month),
+                
+                'gender'=>$gender,
+                'start_age' =>intval($from_age),
+                'to_age'=>intval($to_age)//e.g. less than 15
+            );
+        
+        $mongo_result_set = $this->getMonthlyData($params);
+        $clean_result_set = $this->getCleanResultSet($mongo_result_set,$params);
+
+        return $clean_result_set;
+        
+        
+	}
+	private function getFromYearMonth($year){
+		$numeric_year = intval($year);
+		$from_yearmonth = "$numeric_year"."01";
+		$from_yearmonth = intval($from_yearmonth);
+
+		return $from_yearmonth;
+	}
+	private function getToYearMonth($year){
+		$numeric_year = intval($year);
+		$to_yearmonth = "$numeric_year"."12";
+		$to_yearmonth = intval($to_yearmonth);
+
+		return $to_yearmonth;
+	}
+	private function getMonthlyData($params){
+        
+        $mongo=Mongo::connect();
+        
+            
+            
+          
+
+            //match stage
+            //--$match_array = array('year_month' => array('$gte'=>201501,'$lte'=>201512));
+            $and_for_year_month=array('year_month' => array('$eq'=>$params['year_month']));
+            $and_for_age=array('age' => array('$gte'=>$params['start_age'],'$lt'=>$params['to_age']));
+            $and_for_gender=array('gender'=> array('$eq'=>$params['gender']));
+            $match_array=array('$and' => array($and_for_year_month,$and_for_age,$and_for_gender));
+
+          
+            $eq_sample_result_validity = array('$eq' => array('$sample_result_validity','valid'));
+            $cond_sample_result_validity = array($eq_sample_result_validity,1,0);
+
+
+            $eq_number_suppressed = array('$eq' => array('$suppression_status','yes'));
+            $cond_number_suppressed = array($eq_number_suppressed,1,0);
+
+            $group_array = array(
+                '_id' => array('facility_id'=>'$facility_id','year_month'=>'$year_month'), 
+                'sample_result_validity' => array('$sum'=>  
+                                array('$cond' => $cond_sample_result_validity )
+                                ),
+                
+                'number_suppressed' => array('$sum'=>  
+                                array('$cond' => $cond_number_suppressed )
+                                )
+                );
+
+            //sorting
+            $sort_array = array('facility_id' =>1 ,'year_month'=>-1);
+
+
+        $result_set=$mongo->dashboard_new_backend->aggregate(['$match'=>$match_array],['$group'=>$group_array],
+        	['$sort'=>$sort_array]);
+        
+
+        return $result_set['result'];
+    }
+    private function getAnnualData($params){
+        
+        $mongo=Mongo::connect();
+        
+            
+            
+          
+
+            //match stage
+            //--$match_array = array('year_month' => array('$gte'=>201501,'$lte'=>201512));
+            $and_for_year_month=array('year_month' => array('$gte'=>$params['from_yearmonth'],'$lte'=>$params['to_yearmonth']));
+            $and_for_age=array('age' => array('$gte'=>$params['start_age'],'$lt'=>$params['to_age']));
+            $and_for_gender=array('gender'=> array('$eq'=>$params['gender']));
+            $match_array=array('$and' => array($and_for_year_month,$and_for_age,$and_for_gender));
+
+          
+            $eq_sample_result_validity = array('$eq' => array('$sample_result_validity','valid'));
+            $cond_sample_result_validity = array($eq_sample_result_validity,1,0);
+
+
+            $eq_number_suppressed = array('$eq' => array('$suppression_status','yes'));
+            $cond_number_suppressed = array($eq_number_suppressed,1,0);
+
+            $group_array = array(
+                '_id' => array('facility_id'=>'$facility_id','year_month'=>'$year_month'), 
+                'sample_result_validity' => array('$sum'=>  
+                                array('$cond' => $cond_sample_result_validity )
+                                ),
+                
+                'number_suppressed' => array('$sum'=>  
+                                array('$cond' => $cond_number_suppressed )
+                                )
+                );
+
+            //sorting
+            $sort_array = array('facility_id' =>1 ,'year_month'=>-1);
+
+
+        $result_set=$mongo->dashboard_new_backend->aggregate(['$match'=>$match_array],['$group'=>$group_array],
+        	['$sort'=>$sort_array]);
+        
+
+        return $result_set['result'];
+    }
+    
+    private function getCleanResultSet($dataset,$params){
+        $facilities = LiveData::getFacilitiesInAnArrayForm();
+
+        $clean_result_set=array();
+        //$clean_result_set['description']=$params;
+           
+            //headers
+            $header['facilityID']='facilityID';
+            $header['facility_name']='facility_name';
+            $header['facility_dhis2_code']='dhis2_facility_id';
+            $header['district_dhis2_code']='dhis2_district_id';
+            //$header['sex']='sex';
+            $header['year_month']='year_month';
+            $header['number_of_valid_tests']='valid_tests';
+            //$header['number_tested']='samples_tested';
+            $header['number_suppressed']='suppressed';
+            $header['suppression_rate']='suppression_rate';
+        array_push($clean_result_set, $header);
+
+     
+        foreach ($dataset as $key => $record) {
+            $facility_id=$record['_id']['facility_id'];
+            $fields['facilityID']=$facility_id;
+            
+            
+            try{
+	            if(intval($facility_id) < 1 || intval($facility_id) == 3645 ||intval($facility_id) == 2317 || 
+				intval($facility_id) == 1651 || intval($facility_id) == 461 || intval($facility_id) == 8363 || intval($facility_id) == 8362
+				|| intval($facility_id) == 8366 || intval($facility_id) == 8365 || intval($facility_id) == 8364 )
+	                continue;
+		     }catch(Exception $e){
+				continue;
+		     }
+            $fields['facility_name']=isset($facility) ? $facility['facility']: 'Null';
+            $facility = $facilities[$facility_id];
+            $fields['facility_code'] = isset($facility) ? $facility['dhis2_uid']: 'Null';
+            $fields['district_code']=isset($facility) ? $facility['district_uid']: 'Null';
+           
+           	$year_month=$record['_id']['year_month'];
+           	$fields['year_month']=isset($year_month)?$year_month : 0;
+     
+            //$fields['sex']=$record['_id']['gender'];
+            $number_of_valid_tests = isset($record['sample_result_validity'])?intval($record['sample_result_validity']) : 0;
+            $fields['number_of_valid_tests']=$number_of_valid_tests;
+            //$fields['number_tested']=isset($record['number_tested'])?$record['number_tested'] : 0;
+            $number_suppressed = isset($record['number_suppressed'])? intval($record['number_suppressed']) : 0;
+            $fields['number_suppressed']=$number_suppressed;
+
+            $suppression_rate=0.0;
+            if($number_suppressed>0){
+            	$suppression_rate = round(($number_suppressed /$number_of_valid_tests)*100);
+            }
+            $fields['suppression_rate'] = $suppression_rate;
+                        
+            array_push($clean_result_set, $fields);
+        }
+        
+        return $clean_result_set;
+    }
+
 
 }
