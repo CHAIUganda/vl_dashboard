@@ -23,7 +23,7 @@ class Essai extends Command
      *
      * @var string
      */
-    protected $signature = 'essai:run {--F|facilities} {--S|sample=} {--I|minutes=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded} {--U|update} {--L|limit=}';
+    protected $signature = 'essai:run {--F|facilities} {--S|sample=} {--I|minutes=} {--T|today} {--M|month=} {--Y|year=} {--E|expanded} {--U|update} {--L|limit=} {--C|changes=}';
 
     /**
      * The console command description.
@@ -62,6 +62,7 @@ class Essai extends Command
         $this->expanded = $this->option('expanded'); 
         $this->minutes = $this->option('minutes');  
         $this->update = $this->option('update');
+        $this->changes = $this->option('changes');
         $this->limit = $this->option('limit');
         $this->limit = empty($this->limit)?10:$this->limit;
         if(!empty($this->update)) $this->_updateDispatchDetails();
@@ -141,6 +142,31 @@ class Essai extends Command
                     $num_records++;
                 }
             }
+        }elseif($this->changes){
+            $updated_date = $this->changes=='today'?date('Y-m-d'):$this->changes;
+            $i = 1000;
+            $start = 0;
+            $length = 20;
+            while($i>0){
+                //$this->comment("start: $start, length: $length, $updated_date");
+                $samples = $this->_get('samples', "start=$start&length=$length&updated_date=$updated_date");
+                if(is_array($samples)){
+                    foreach ($samples as $sample) {
+                        $data = $this->_getDashboardData($sample);
+                        $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
+
+                        unset($sample->resultsdispatch);
+                        $sample->created_at = Mongo::mDate($sample->created_at);
+                        $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
+                        //$this->comment($sample->form_number);
+                        $num_records++;
+                    }
+                }
+                $start +=$length;
+                $i--;
+            }
+           
+            
         }elseif($this->minutes){
             $samples = $this->_get('samples', "latest_minutes=$this->minutes");
             if(is_array($samples)){
