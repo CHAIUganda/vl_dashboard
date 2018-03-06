@@ -107,6 +107,8 @@ Route::get('/pdf_test', function(){
 	return $pdf->download('pdf_test.pdf');
 });
 
+Route::get('/api/facility_list/age_group/{year}/{gender}/{from}/{to}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
+
 //Route::post('/downloadCsv', 'DashboardController@downloadCsv');
 
 /*Route::get('/w',function(){
