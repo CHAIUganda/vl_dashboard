@@ -109,7 +109,10 @@ ctrllers.DashController = function($scope,$http){
     $scope.labels.genders = genders_json;
     $scope.labels.lines = lines_json;
     $scope.labels.districts = [];
+
     $scope.labels.facilities = [];
+    $scope.labels.facilities_details = [];
+
     $scope.labels.regimens = [];
     $scope.labels.regimens2 = [];
 
@@ -190,6 +193,8 @@ ctrllers.DashController = function($scope,$http){
             var obj = data.facilities[i];
             //facilities_json[f.id]={'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
             $scope.labels.facilities[obj.id] = obj.name||"no facility";
+            $scope.labels.facilities_details[obj.id] = obj||"no facility";
+            
         }
 
         for(var i in data.regimens){
@@ -598,7 +603,7 @@ ctrllers.DashController = function($scope,$http){
         //generalFilter(); //filter the results for each required event
     }
 
-     var isAgeRageValid=function(age_range_to_validate){
+    var isAgeRageValid=function(age_range_to_validate){
         var validated=true;
         var validate_from_age=parseInt(age_range_to_validate.from_age);
         var validate_to_age=parseInt(age_range_to_validate.to_age);
@@ -1162,6 +1167,8 @@ ctrllers.DashController = function($scope,$http){
         var export_facility_numbers = [];
         var district_labels = scopeInstance.labels.districts;
         var facility_labels = scopeInstance.labels.facilities;
+        var facility_details_labels = scopeInstance.labels.facilities_details;
+
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
@@ -1176,7 +1183,9 @@ ctrllers.DashController = function($scope,$http){
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_labels[facilityRecord.facility_id],
+                facility_name : facility_details_labels[facilityRecord.facility_id].name,
+                dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
+                dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
                 samples_received : facilityRecord.samples_received,
                 patients_received : facilityRecord.patients_received,
                 samples_tested : facilityRecord.total_results,
@@ -1219,6 +1228,8 @@ ctrllers.DashController = function($scope,$http){
         var export_facility_numbers = [];
         var district_labels = scopeInstance.labels.districts;
         var facility_labels = scopeInstance.labels.facilities;
+        var facility_details_labels = scopeInstance.labels.facilities_details;
+
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
@@ -1234,7 +1245,9 @@ ctrllers.DashController = function($scope,$http){
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_labels[facilityRecord.facility_id],
+                facility_name : facility_details_labels[facilityRecord.facility_id].name,
+                dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
+                dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
                 valid_results : facilityRecord.valid_results,
                 suppressed_results : facilityRecord.suppressed,
                 non_suppressed_results : (Number(facilityRecord.valid_results) - Number(facilityRecord.suppressed)),
@@ -1274,6 +1287,8 @@ ctrllers.DashController = function($scope,$http){
         var district_labels = scopeInstance.labels.districts;
         
         var facility_labels = scopeInstance.labels.facilities;
+        var facility_details_labels = scopeInstance.labels.facilities_details;
+
         var facility_numbers_from_scope = scopeInstance.facility_numbers;
 
         for( var index = 0; index < facility_numbers_from_scope.length; index++){
@@ -1289,7 +1304,9 @@ ctrllers.DashController = function($scope,$http){
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_labels[facilityRecord.facility_id],
+                facility_name : facility_details_labels[facilityRecord.facility_id].name,
+                dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
+                dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
                 samples_received : facilityRecord.samples_received,
                 rejected_samples:facilityRecord.rejected_samples,
                 rejection_rate : Math.round(((facilityRecord.rejected_samples/facilityRecord.samples_received)*100),1)

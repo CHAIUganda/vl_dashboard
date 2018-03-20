@@ -154,6 +154,7 @@ class DashboardController extends Controller {
         $hubs =  \DB::connection('live_db')->select($sql);
         return $hubs;
     }
+   
 	private function _latestNMonths($n=12){
         $ret=[];
         $m=date('m');
