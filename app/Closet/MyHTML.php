@@ -58,7 +58,7 @@ class MyHTML{
 	}
 
 	public static function localiseDate($date,$format='m/d/Y'){
-		return date($format,strtotime($date));
+		return !empty($date)?date($format,strtotime($date)):"";
 	}
 
 	public static function formatDate2STD($date){
