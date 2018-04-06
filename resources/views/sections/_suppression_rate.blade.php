@@ -41,7 +41,8 @@
                         
                         <th width='20%'>District</th>
                         <th width='20%'>Hub</th>
-                        <th width='50%'>Facility</th>
+                        <th width='25%'>CPHL Facility</th>
+                        <th width='25%'>DHIS2 Facility</th>
                         <th width='5%'>Valid Results</th>
                         <th width='5%'>Suppressed Results</th>
                         <th width='5%'>Non Suppressed Results</th>
@@ -53,7 +54,8 @@
                         
                         <td class="ng-cloak"><% labels.districts[f.district_id] %></td>
                         <td class="ng-cloak"><% getHubName(f.hub_id) %></td>
-                        <td class="ng-cloak"><% labels.facilities[f.facility_id] %></td>
+                        <td class="ng-cloak"><% labels.facilities_details[f.facility_id].name %></td>
+                        <td class="ng-cloak"><% labels.facilities_details[f.facility_id].dhis2_name %></td>
                         <td class="ng-cloak"><% f.valid_results|number %></td>
                         <td class="ng-cloak"><% f.suppressed|number %></td>
                         <td class="ng-cloak"><% (f.valid_results - f.suppressed)|number %></td>
@@ -68,7 +70,7 @@
 
          <br>
          <br>
-         <button ng-show="show_fclties2" id="exportFacilitiesSuppressionRate" type="button" ng-csv="export_facility_suppression_numbers" filename="facilities_suppression_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Hub','Facility','Valid Results','Suppressed Results','Non Suppressed Results','Suppression Rate (%)']">Download CSV</button>
+         <button ng-show="show_fclties2" id="exportFacilitiesSuppressionRate" type="button" ng-csv="export_facility_suppression_numbers" filename="facilities_suppression_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Hub','CPHL Facility','DHIS2 Facility','DHIS2 UID','Valid Results','Suppressed Results','Non Suppressed Results','Suppression Rate (%)']">Download CSV</button>
 
     </div>
 </div> 

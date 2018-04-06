@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
         \EID\Console\Commands\AruaNewFormat::class,
         \EID\Console\Commands\LongitudinalPatientResults::class,
         \EID\Console\Commands\DataSetDump::class,
-        \EID\Console\Commands\DataAPI::class
-        
+        \EID\Console\Commands\DataAPI::class,
+        \EID\Console\Commands\FacilityDhis2::class
         
     ];
 
