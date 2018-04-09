@@ -154,7 +154,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 		</div>
 
 	</div>
-	<?php if($result_obj->rejectedsamplesrelease!=null){ ?>
+	<?php if($rejected==1){ ?>
 
 	<div class="row">
 		<div style="width:100%;float:left" >	
@@ -228,7 +228,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 	<?php } ?>
 	<div class="row">
 		<div style="width:100%;float:left; margin-top:15px;" >
-			<?php if ($result_obj->rejectedsamplesrelease==null){ ?>
+			<?php if ($rejected!=1){ ?>
 			<div style="width:15%;float:left">
 				Lab Technologist: 
 			</div>
@@ -248,7 +248,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 			<div style="width:35%;float:right">
 				<img src="{{ MyHTML::getImageData('images/stamp.vl.png') }}" class="stamp" >
 				<?php
-				$released_at=$result_obj->rejectedsamplesrelease!=null?$result_obj->rejectedsamplesrelease['released_at']:$result_obj->result['resultsqc']['released_at'];
+				$released_at = $rejected==1?$result_obj->rejectedsamplesrelease['released_at']:$result_obj->result['resultsqc']['released_at'];
 				 ?>
 				<span class="stamp-date"><?=strtoupper(date('d M Y', strtotime($released_at))) ?><br><span class='date-released'>DATE RELEASED</span></span>
 
