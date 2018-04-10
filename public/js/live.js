@@ -1180,10 +1180,11 @@ ctrllers.DashController = function($scope,$http){
             }catch(err){
 
             }
+            var facility_details_lables_object = facility_details_labels[facilityRecord.facility_id];
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_details_labels[facilityRecord.facility_id].name,
+                facility_name : facility_details_lables_object.name,
                 dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
                 dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
                 samples_received : facilityRecord.samples_received,
