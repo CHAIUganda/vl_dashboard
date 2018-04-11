@@ -66,7 +66,7 @@
                         
                         <td class="ng-cloak"><% labels.districts[f.district_id] %></td>
                         <td class="ng-cloak"><% getHubName(f.hub_id) %></td>
-                        <td class="ng-cloak"><% labels.facilities_details[f.facility_id].name %></td>
+                        <td class="ng-cloak"><% labels.facilities_details[f.facility_id].cphl_name %></td>
                         <td class="ng-cloak"><% labels.facilities_details[f.facility_id].dhis2_name %></td>
                         <td class="ng-cloak"><% f.samples_received|number %></td>
                         <td class="ng-cloak"><% f.patients_received|number %></td>
