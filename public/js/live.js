@@ -193,7 +193,17 @@ ctrllers.DashController = function($scope,$http){
             var obj = data.facilities[i];
             //facilities_json[f.id]={'name':f.name,'district_id':f.district_id,'hub_id':f.hub_id};
             $scope.labels.facilities[obj.id] = obj.name||"no facility";
-            $scope.labels.facilities_details[obj.id] = obj||"no facility";
+            var facility_object = {
+                id:obj.id,
+                cphl_name:obj.name,
+                dhis2_name:obj.dhis2_name,
+                hub_id:obj.hub_id,
+                ip_id:obj.ip_id,
+                district_id:obj.district_id,
+                dhis2_uid:obj.dhis2_uid,
+                district_uid:obj.district_uid
+            };
+            $scope.labels.facilities_details[obj.id] = facility_object||"no facility";
             
         }
 
@@ -1184,7 +1194,7 @@ ctrllers.DashController = function($scope,$http){
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_details_lables_object.name,
+                facility_name : facility_details_lables_object.cphl_name,
                 dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
                 dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
                 samples_received : facilityRecord.samples_received,
@@ -1246,7 +1256,7 @@ ctrllers.DashController = function($scope,$http){
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_details_labels[facilityRecord.facility_id].name,
+                facility_name : facility_details_labels[facilityRecord.facility_id].cphl_name,
                 dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
                 dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
                 valid_results : facilityRecord.valid_results,
@@ -1305,7 +1315,7 @@ ctrllers.DashController = function($scope,$http){
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_details_labels[facilityRecord.facility_id].name,
+                facility_name : facility_details_labels[facilityRecord.facility_id].cphl_name,
                 dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
                 dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
                 samples_received : facilityRecord.samples_received,
