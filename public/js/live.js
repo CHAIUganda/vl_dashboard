@@ -1256,7 +1256,10 @@ ctrllers.DashController = function($scope,$http){
             }catch(err){
 
             }
-
+             var facility_details_lables_object = facility_details_labels[facilityRecord.facility_id];
+            if(typeof facility_details_lables_object === "undefined"){
+                continue;
+            }
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
@@ -1315,7 +1318,10 @@ ctrllers.DashController = function($scope,$http){
             }catch(err){
 
             }
-
+            var facility_details_lables_object = facility_details_labels[facilityRecord.facility_id];
+            if(typeof facility_details_lables_object === "undefined"){
+                continue;
+            }
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
