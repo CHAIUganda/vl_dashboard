@@ -1191,6 +1191,10 @@ ctrllers.DashController = function($scope,$http){
 
             }
             var facility_details_lables_object = facility_details_labels[facilityRecord.facility_id];
+            if(facility_details_lables_object === null){
+                console.log(facilityRecord.facility_id);
+                continue;
+            }
             var facility_instance = {
                 district_name : district_labels[facilityRecord.district_id],
                 hub_name: hub_name_value,
