@@ -1191,7 +1191,7 @@ ctrllers.DashController = function($scope,$http){
 
             }
             var facility_details_lables_object = facility_details_labels[facilityRecord.facility_id];
-            if(facility_details_lables_object === null){
+            if(typeof facility_details_lables_object === "undefined"){
                 console.log(facilityRecord.facility_id);
                 continue;
             }
