@@ -57,7 +57,8 @@ $facility_str = str_replace("'", "", $facility_str);
                 <th>Other ID</th>
                 <th>Date Collected</th>
                 <th>Date Received</th>
-                @if ($tab=='completed')<th>Date printed/downloaded</th>@else<th>Date Released</th>@endif
+                <th>Date Released</th>
+                <th>Date Printed</th>
                 <th>Options</th>
             </tr>
         </thead>

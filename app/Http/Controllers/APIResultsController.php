@@ -53,9 +53,9 @@ class APIResultsController extends Controller {
 	}
 
 	public function results_data($facility_id){
-		$cols = ['select','form_number', 'patient.art_number', 'patient.other_id', 'date_collected', 'date_received', 'result.resultsqc.released_at', 'options'];
+		$cols = ['select','form_number', 'patient.art_number', 'patient.other_id', 'date_collected', 'date_received', 'result.resultsqc.released_at','resultsdispatch.dispatch_date', 'options'];
 		$tab = \Request::has('tab')?\Request::get('tab'):'pending';
-		$cols[6] = $tab=='completed'?'resultsdispatch.dispatch_date':$cols[6];
+		//$cols[6] = $tab=='completed'?'resultsdispatch.dispatch_date':$cols[6];
 		$params = $this->get_params($cols);
 		$params['facility_id'] = $facility_id;
 
@@ -76,7 +76,9 @@ class APIResultsController extends Controller {
 				$patient['other_id'], 
 				\MyHTML::localiseDate($date_collected, 'd-M-Y'), 
 				\MyHTML::localiseDate($date_received, 'd-M-Y'), 
-				$tab=='completed'?\MyHTML::localiseDate($dispatch_date, 'd-M-Y'):\MyHTML::localiseDate($released_at, 'd-M-Y'),
+				\MyHTML::localiseDate($released_at, 'd-M-Y'),
+				\MyHTML::localiseDate($dispatch_date, 'd-M-Y'),
+				//$tab=='completed'?\MyHTML::localiseDate($dispatch_date, 'd-M-Y'):\MyHTML::localiseDate($released_at, 'd-M-Y'),
 				\MyHTML::dropdownLinks($links)];
 		}
 
@@ -121,15 +123,24 @@ class APIResultsController extends Controller {
 	}*/
 
 	public function result($id=""){
+		$vldbresult = [];
 		if(!empty($id)){
 			$samples = [$id];
+		}elseif(\Request::has("form_numbers")){
+			$forms = \Request::get('form_numbers');
+			$forms_arr = explode(",", $forms);
+			foreach($forms_arr as $form){
+				$cond = ["form_number"=>"$form"];
+				$vldbresult[] = $this->mongo->api_samples->findOne($cond);
+			}
+			$pdf = \PDF::loadView('api_results.result_slip', compact("vldbresult"));
+			return $pdf->download('vl_study_samples_'. date("YmdHis").'.pdf');
 		}else{
 			$samples = \Request::get("samples");
 			if(count($samples)==0){
 				return "please select at least one sample";
 			}
-		}
-		$vldbresult = [];
+		}		
 		$tab = \Request::get('tab');
 		$dispatch_type =  \Request::has('pdf')? 'D':'P';
 		$log_update['resultsdispatch'] = [
