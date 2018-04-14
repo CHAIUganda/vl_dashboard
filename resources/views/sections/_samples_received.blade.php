@@ -49,7 +49,8 @@
                     <tr>
                         <th >District&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <th >Hub&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                        <th >Facility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th >CPHL Facility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th >DHIS2 Facility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <th >Samples Received</th>
                         <th >Patients&nbsp;for samples&nbsp;received</th>
                         <th >Samples Tested</th>
@@ -65,7 +66,8 @@
                         
                         <td class="ng-cloak"><% labels.districts[f.district_id] %></td>
                         <td class="ng-cloak"><% getHubName(f.hub_id) %></td>
-                        <td class="ng-cloak"><% labels.facilities[f.facility_id] %></td>
+                        <td class="ng-cloak"><% labels.facilities_details[f.facility_id].cphl_name %></td>
+                        <td class="ng-cloak"><% labels.facilities_details[f.facility_id].dhis2_name %></td>
                         <td class="ng-cloak"><% f.samples_received|number %></td>
                         <td class="ng-cloak"><% f.patients_received|number %></td>
                         <td class="ng-cloak"><% f.total_results|number %></td>
@@ -86,7 +88,7 @@
 
             <br>
             <br>
-            <button ng-show="show_fclties1" id="exportFacilities" type="button" ng-csv="export_facility_numbers" filename="facilities_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Hub','Facility', 'Samples Received', 'Patients for Samples Received','Samples Tested','Samples Pending','Samples Rejected','DBS %','Plasma %']">Download CSV</button>
+            <button ng-show="show_fclties1" id="exportFacilities" type="button" ng-csv="export_facility_numbers" filename="facilities_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Hub','CPHL Facility','DHIS2 Facility','DHIS2 UID', 'Samples Received', 'Patients for Samples Received','Samples Tested','Samples Pending','Samples Rejected','DBS %','Plasma %']">Download CSV</button>
 
 
     </div>

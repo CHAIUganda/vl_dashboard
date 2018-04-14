@@ -39,7 +39,8 @@
                         
                         <th width='20%'>District</th>
                         <th width='20%'>Hub</th>
-                        <th width='60%'>Facility</th>
+                        <th width='30%'>CPHL Facility</th>
+                        <th width='30%'>DHIS2 Facility</th>
                         <th width='5%'>Samples Received</th>
                         <th width='5%'>Rejection rate (%)</th>
                     </tr>
@@ -49,8 +50,8 @@
 
                         <td class="ng-cloak"><% labels.districts[f.district_id] %></td>
                         <td class="ng-cloak"><% getHubName(f.hub_id) %></td>
-                        <td class="ng-cloak"><% labels.facilities[f.facility_id] %></td>
-                        <td class="ng-cloak"><% f.samples_received %></td>
+                        <td class="ng-cloak"><% labels.facilities_details[f.facility_id].cphl_name %></td>
+                        <td class="ng-cloak"><% labels.facilities_details[f.facility_id].dhis2_name %></td>                        <td class="ng-cloak"><% f.samples_received %></td>
                         <td class="ng-cloak"><% ((f.rejected_samples/f.samples_received)*100)|number:1 %> %</td>
                     </tr>                        
                  </tbody>
@@ -63,7 +64,7 @@
 
          <br>
          <br>
-         <button ng-show="show_fclties3" id="exportFacilitiesRejectionRate" type="button" ng-csv="export_facility_rejection_numbers" filename="facilities_rejection_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Hub','Facility', 'Received Samples','Rejected Samples', 'Rejection Rate (%)']">Download CSV</button>
+         <button ng-show="show_fclties3" id="exportFacilitiesRejectionRate" type="button" ng-csv="export_facility_rejection_numbers" filename="facilities_rejection_<%current_timestamp%>.csv" class="btn btn-success" csv-header="['District','Hub','CPHL Facility','DHIS2 Facility','DHIS2 UID', 'Received Samples','Rejected Samples', 'Rejection Rate (%)']">Download CSV</button>
 
     </div>
 </div>                
