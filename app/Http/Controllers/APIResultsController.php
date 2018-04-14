@@ -131,7 +131,10 @@ class APIResultsController extends Controller {
 			$forms_arr = explode(",", $forms);
 			foreach($forms_arr as $form){
 				$cond = ["form_number"=>"$form"];
-				$vldbresult[] = $this->mongo->api_samples->findOne($cond);
+				$res = $this->mongo->api_samples->findOne($cond);
+				if($res) $vldbresult[] = $res;
+				else $vldbresult[] = $form;
+				
 			}
 			$pdf = \PDF::loadView('api_results.result_slip', compact("vldbresult"));
 			return $pdf->download('vl_study_samples_'. date("YmdHis").'.pdf');
