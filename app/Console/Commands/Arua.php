@@ -110,7 +110,7 @@ class Arua extends Command
         return $data;
     }
 
-      private function unique_multidim_array($array, $key) { 
+    private function unique_multidim_array($array, $key) { 
         $temp_array = array(); 
         $i = 0; 
         $key_array = array(); 
@@ -183,7 +183,7 @@ class Arua extends Command
             $gender=$this->generateGender($dummy_patient["gender"]);
             $date_of_birth=$this->generateDateOfBirth(intval($dummy_patient["age"]),$date_of_collection);
             $created=date('Y-m-d H:m:s');
-            $created_by= 'smuwanga@musph.ac.ug';
+            $created_by= 'arua@data.cphl';
 
             //if exisitng, skip, else insert
             if (!$this->isPatientExisting($uniqueID)) {
