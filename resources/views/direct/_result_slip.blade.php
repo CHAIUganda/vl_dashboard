@@ -12,7 +12,7 @@ switch ($result_obj->suppressed) {
 
 	case 2: // patient suppressed, according to the guidlines at that time
 		$smiley="smiley.sad.gif";
-		$recommendation = MyHTML::getRecommendation2(2, $date_collected, $result_obj->dob, $result_obj->treatment_line['code']);					
+		$recommendation = MyHTML::getRecommendation2(2, $date_collected, $result_obj->dob, $result_obj->tx_line);					
 		break;
 	
 	default:
