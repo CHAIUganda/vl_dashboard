@@ -78,6 +78,19 @@ return [
             
         ],
 
+        'direct_db' => [
+            'driver'    => 'mysql',
+            'host'      => env('DIRECT_DB_HOST'),
+            'database'  => env('DIRECT_DB_DATABASE'),
+            'username'  => env('DIRECT_DB_USERNAME'),
+            'password'  => env('DIRECT_DB_PASSWORD'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+            
+        ],
+
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),

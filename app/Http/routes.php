@@ -62,6 +62,15 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/api/results/data/{facility_id}', ['uses'=>'APIResultsController@results_data']);
 		Route::match(['GET', 'POST'], '/api/result/{id?}', ['uses'=>'APIResultsController@result']);
 		Route::get('/api/search_result/{txt}', ['uses' => 'APIResultsController@search_result']);
+
+		//direct
+		Route::get('/direct/facility_list/', ['uses' => 'DirectResultsController@facility_list']);
+		Route::get('/direct/facility_data/', ['uses' => 'DirectResultsController@facility_data']);
+		Route::get('/direct/results/{facility_id}', ['uses'=>'DirectResultsController@results']);
+		Route::get('/direct/results/data/{facility_id}', ['uses'=>'DirectResultsController@results_data']);
+		Route::match(['GET', 'POST'], '/direct/result/{id?}', ['uses'=>'DirectResultsController@result']);
+		Route::get('/direct/search_result/{txt}', ['uses' => 'DirectResultsController@search_result']);
+
 	
 	});
 

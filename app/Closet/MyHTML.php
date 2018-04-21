@@ -516,5 +516,23 @@ class MyHTML{
 		return isset($types[$type])?$types[$type]:"";
 	}
 
+	public static function datatableParams($cols){
+    	$order = \Request::get('order');
+    	$orderby = "$cols[0] asc";	
+		if(isset($order[0])){
+			$col = $cols[$order[0]['column']];
+			$dir = $order[0]['dir'];
+			$orderby = "$col $dir";
+		}
+
+		$search = \Request::has('search')?\Request::get('search')['value']:"";
+		$search = trim($search);
+
+		$start = \Request::get('start');
+		$length = \Request::get('length');
+
+		return compact('orderby', 'start', 'length', 'search');
+    }
+
 }
 //{1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sept',10:'Oct',11:'Nov',12:'Dec'};
