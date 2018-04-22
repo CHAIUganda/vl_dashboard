@@ -223,7 +223,6 @@ class DirectResultsController extends Controller {
 		$samples_str = implode(",", $samples);
 		$sql = " SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line, rs.appendix AS rejection_reason
 				 FROM vl_samples AS s
-				 LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id
 				 LEFT JOIN vl_results AS r ON s.id=r.sample_id
 				 LEFT JOIN vl_results_qc AS q ON r.id=q.result_id
 				 LEFT JOIN vl_verifications AS v ON s.id=v.sample_id
@@ -237,7 +236,7 @@ class DirectResultsController extends Controller {
 				 LEFT JOIN vl_patients AS p ON s.patient_id=p.id
 				 LEFT JOIN auth_user AS u ON r.test_by_id=u.id
 				 LEFT JOIN backend_user_profiles AS up ON u.id=up.user_id
-				 WHERE s.created_at >='".env('QC_START_DATE')."' AND r.sample_id in ($samples_str) LIMIT 100		 
+				 WHERE s.created_at >='".env('QC_START_DATE')."' AND s.id in ($samples_str) LIMIT 100		 
 				 ";
 		return $this->db->select($sql);
 	}
