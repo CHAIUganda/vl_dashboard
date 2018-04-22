@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::group(['middleware'=>['permission:print_results']], function() { 
 		#Route::controllers(['results' => 'FacilityListController']);
-		Route::get("/results", function(){ return redirect('/api/facility_list');	});
+		Route::get("/results", function(){ return redirect('/direct/facility_list');	});
 		Route::controllers(['results_list' => 'ResultsController']);
 		#Route::get('/results', ['as' => 'facilities', 'uses' => 'ResultsController@facilities']);
 		Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'as' => 'result', 'uses' => 'ResultsController@getResult']);
