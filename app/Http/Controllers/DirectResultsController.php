@@ -269,7 +269,7 @@ class DirectResultsController extends Controller {
     		$released_cond = "released=1";
        	}else{
        		$type_tbls = "$res_tbls $rej_tbls";
-       		$released_cond = " (r.released=1 OR rj.released=1) ";
+       		$released_cond = " (q.released=1 OR rj.released=1) ";
        	}
     	$sql = "SELECT form_number, art_number, other_id, s.id
     			FROM vl_samples AS s LEFT JOIN vl_patients AS p ON s.patient_id=p.id
