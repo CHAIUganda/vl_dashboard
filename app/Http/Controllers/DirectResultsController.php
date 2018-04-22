@@ -221,20 +221,22 @@ class DirectResultsController extends Controller {
 
 	private function fetch_result($samples){
 		$samples_str = implode(",", $samples);
-		$sql = "SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line
-				 FROM vl_results_qc AS q
-				 INNER JOIN vl_results AS r ON q.result_id=r.id
-				 INNER JOIN vl_samples AS s ON r.sample_id=s.id
-				 INNER JOIN vl_verifications AS v ON s.id=v.sample_id
-				 INNER JOIN backend_appendices AS cr ON s.current_regimen_id=cr.id
-				 INNER JOIN backend_appendices AS tl ON s.treatment_line_id=tl.id
-				 INNER JOIN vl_envelopes AS e ON s.envelope_id=e.id
-				 INNER JOIN backend_facilities AS f ON s.facility_id=f.id
-				 INNER JOIN backend_hubs AS h ON f.hub_id=h.id
-				 INNER JOIN backend_districts AS d ON f.district_id=d.id
-				 INNER JOIN vl_patients AS p ON s.patient_id=p.id
-				 INNER JOIN auth_user AS u ON r.test_by_id=u.id
-				 INNER JOIN backend_user_profiles AS up ON u.id=up.user_id
+		$sql = " SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line, rs.appendix AS rejection_reason
+				 FROM vl_samples AS s
+				 LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id
+				 LEFT JOIN vl_results AS r ON s.id=r.sample_id
+				 LEFT JOIN vl_results_qc AS q ON r.id=q.result_id
+				 LEFT JOIN vl_verifications AS v ON s.id=v.sample_id
+				 LEFT JOIN backend_appendices AS cr ON s.current_regimen_id=cr.id
+				 LEFT JOIN backend_appendices AS tl ON s.treatment_line_id=tl.id
+				 LEFT JOIN backend_appendices AS rs ON v.rejection_reason_id=rs.id
+				 LEFT JOIN vl_envelopes AS e ON s.envelope_id=e.id
+				 LEFT JOIN backend_facilities AS f ON s.facility_id=f.id
+				 LEFT JOIN backend_hubs AS h ON f.hub_id=h.id
+				 LEFT JOIN backend_districts AS d ON f.district_id=d.id
+				 LEFT JOIN vl_patients AS p ON s.patient_id=p.id
+				 LEFT JOIN auth_user AS u ON r.test_by_id=u.id
+				 LEFT JOIN backend_user_profiles AS up ON u.id=up.user_id
 				 WHERE s.created_at >='".env('QC_START_DATE')."' AND r.sample_id in ($samples_str) LIMIT 100		 
 				 ";
 		return $this->db->select($sql);
