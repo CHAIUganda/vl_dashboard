@@ -266,7 +266,7 @@ class DirectResultsController extends Controller {
     	$sql = "SELECT form_number, art_number, other_id, s.id
     			FROM vl_samples AS s LEFT JOIN vl_patients AS p ON s.patient_id=p.id
     			$type_tbls    			
-    			WHERE $facility_cond AND released=1 AND (form_number='$txt' OR art_number='$txt')
+    			WHERE $facility_cond AND released=1 AND form_number='$txt'
     			LIMIT 5";
     	$results = $this->db->select($sql);
     	$ret = "<table class='table table-striped table-condensed table-bordered'>
