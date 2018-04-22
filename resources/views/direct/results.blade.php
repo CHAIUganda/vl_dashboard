@@ -17,9 +17,28 @@ if(\Request::has('search')){
 }else{
     $pending_actv="class=active";
 }
+
 $facility_str = str_replace(" ", "_", $facility_name);
 $facility_str = str_replace("/", "", $facility_str);
 $facility_str = str_replace("'", "", $facility_str);
+
+if(\Request::has('search')){
+    $valids_class = "btn-default";
+    $invalids_class = "btn-default";
+    $rejects_class = "btn-default"; 
+}elseif($type=='rejects'){
+    $valids_class = "btn-default";
+    $invalids_class = "btn-default";
+    $rejects_class = "btn-danger"; 
+}elseif ($type=='invalids') {
+    $valids_class = "btn-default";
+    $invalids_class = "btn-danger";
+    $rejects_class = "btn-default"; 
+}else{
+    $valids_class = "btn-danger";
+    $invalids_class = "btn-default";
+    $rejects_class = "btn-default"; 
+}
 ?>
 <ul class="breadcrumb">
     <li><a href="/">HOME</a></li>
@@ -27,10 +46,16 @@ $facility_str = str_replace("'", "", $facility_str);
     <li action="active">{{ $facility_name }}</li>
 </ul>
 
+<div style="margin-bottom:10px;">
+            <a href="?type=valids" class='btn {{ $valids_class }}' style='width:200px;'>VALID RESULTS</a>
+            <a href="?type=invalids" class='btn {{ $invalids_class }}' style='width:200px;'>INVALID RESULTS</a>
+            <a href="?type=rejects" class='btn {{ $rejects_class }}' style='width:200px;'>REJECTED SAMPLES</a>
+        </div>
+
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-    <li {{$pending_actv}} ><a href="/direct/results/{{ $facility_id }}/?tab=pending">Print</a></li>
-    <li {{$completed_actv}}><a href="/direct/results/{{ $facility_id }}/?tab=completed" >Printed/Downloaded</a></li>
-    <li {{ $search_actv }} title='Search'><a href="/direct/results/{{ $facility_id }}/?search=1" >Search</a></li>
+    <li {{$pending_actv}} ><a href="?tab=pending&type={{ $type }}">Print</a></li>
+    <li {{$completed_actv}}><a href="?tab=completed&type={{ $type }}" >Printed/Downloaded</a></li>
+    <li {{ $search_actv }} title='Search'><a href="?search=1&type={{ $type }}" >Search</a></li>
 </ul>
 
 
@@ -38,8 +63,17 @@ $facility_str = str_replace("'", "", $facility_str);
     <div class="tab-pane active" id="print"> 
         @if(\Request::has('search'))
         Search using ART Number or Form Number:
-          {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search..."] ) !!}
+        <div class="row">
+            <div class="col-md-4">
+            {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm  input_md', 'autocomplete'=>'off', 'placeholder'=>"Search..."] ) !!}
+            </div>
+            <div class="col-md-5">
+                <!-- <span id="id-search-button" class="btn btn-danger btn-sm">search</span> -->
+            </div>
+        </div>
+          
           <div class='live_drpdwn' id="id-dropdown" style='display:none'></div>
+          
         @else
         {!! Form::open(array('url'=>'/direct/result/','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
         <input type="hidden" name="facility" value="{{ $facility_str }}">
@@ -77,7 +111,7 @@ $(function() {
         processing: true,
         serverSide: true,
         pageLength: 25,
-        ajax: '/direct/results/data/{{ $facility_id }}/?tab={{ $tab }}',
+        ajax: '/direct/results/data/{{ $facility_id }}/?tab={{ $tab }}&type={{ $type }}',
         order: [[ 6, "desc" ]],
     });
     @endif
@@ -110,13 +144,12 @@ function printSelected() {
 
 var drpdwn= $(".live_drpdwn");
 
-function get_data(q,drpdwn,link){
-    if(q && q.length>=3){   
-        //console.log("this is what you have just typed:"+ q+"link"+link);      
+function get_data(q,drpdwn,link){  
+    if(q && q.length>=3){ 
         $.get(link+q+"?f="+{{ $facility_id }}, function(data){
             drpdwn.show();
             drpdwn.html(data);
-        });
+        });   
     }else{
         drpdwn.hide();
         drpdwn.html("");

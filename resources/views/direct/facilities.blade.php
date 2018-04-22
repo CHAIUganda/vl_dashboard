@@ -53,15 +53,15 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 <thead>
     <tr>
        <!--  @if(empty(Auth::user()->hub_id))<th>Hub</th> @endif  -->
-        <th>Facility</th>  
+        <th>Facddility</th>  
         <th>Hub</th>                   
         <th>Contact Person</th>
         <th>Phone</th>
         <th>Email</th>
 
-        <!-- <th># Pending</th>
+        <th># Pending</th>
         <th># Printed/ Downloaded</th>
- -->        <th>Action</th>
+        <th>Action</th>
        <!--  <th># Downloaded</th>
         @if($sect == 'admin')<th># Last Printed/ Downloaded</th>@endif 
         @if($sect == 'results')<th>Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>@endif
@@ -69,6 +69,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
     </tr>
 </thead>
 </table>  
+
 
 <script type="text/javascript">
 $(function() {
@@ -78,7 +79,11 @@ $(function() {
         serverSide: true,
         pageLength: 10,
         ajax: '/direct/facility_data/',
-    });
+        drawCallback: function( settings ) {
+           $(".has-account").parent().parent().attr("style","background-color:#F5A9A9");
+        },
+        
+    }); 
 
 });
 
@@ -106,8 +111,15 @@ $("#hub").keyup(function(){
 $("#id-search").keyup(function(){
     var q = $(this).val();
     var dd = $("#id-dropdown");
-    get_data(q, dd, "/api/search_result/");
+    get_data(q, dd, "/direct/search_result/");
 });
 
 </script>
+
+<style type="text/css">
+.has_account{
+    color: red;
+    background-color:#F5A9A9;
+}
+</style>
 @endsection()
