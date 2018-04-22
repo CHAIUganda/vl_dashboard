@@ -23,6 +23,7 @@ switch ($result_obj->suppressed) {
 
 $location_id = $result_obj->locator_category.$result_obj->envelope_number."/".$result_obj->locator_position;
 $rejected = $result_obj->accepted==0?1:2;
+$release_date = $rejected==1?$result_obj->rj_released_at:$result_obj->released_at;
 $now_s = strtotime(date("Y-m-d"));
 $signature_arr = explode("/",$result_obj->signature);
 $signature = end($signature_arr);
@@ -246,7 +247,8 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 
 			<div style="width:35%;float:right">
 				<img src="{{ MyHTML::getImageData('images/stamp.vl.png') }}" class="stamp" >
-				<span class="stamp-date"><?=strtoupper(date('d M Y', strtotime($result_obj->released_at))) ?><br><span class='date-released'>DATE RELEASED</span></span>
+
+				<span class="stamp-date"><?=strtoupper(MyHTML::localiseDate($release_date, 'd M Y')) ?> <br><span class='date-released'>DATE RELEASED</span></span>
 
 			</div>
 		</div>

@@ -221,8 +221,10 @@ class DirectResultsController extends Controller {
 
 	private function fetch_result($samples){
 		$samples_str = implode(",", $samples);
-		$sql = " SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line, rs.appendix AS rejection_reason
+		$sql = " SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line, rs.appendix AS rejection_reason,
+				 rj.released_at AS rj_released_at
 				 FROM vl_samples AS s
+				 LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id
 				 LEFT JOIN vl_results AS r ON s.id=r.sample_id
 				 LEFT JOIN vl_results_qc AS q ON r.id=q.result_id
 				 LEFT JOIN vl_verifications AS v ON s.id=v.sample_id
