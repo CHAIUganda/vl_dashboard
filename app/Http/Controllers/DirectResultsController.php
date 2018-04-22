@@ -258,15 +258,23 @@ class DirectResultsController extends Controller {
     	$txt = trim($txt);
     	$facility_cond = \Request::has('f')?'facility_id='.\Request::get('f'):1;
     	$type = \Request::get('type');
+    	$res_tbls = "LEFT JOIN vl_results AS r ON s.id=r.sample_id LEFT JOIN vl_results_qc AS q ON r.id=q.result_id";
+    	$rej_tbls = "LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id";
+
     	if($type=='rejects'){
-    		$type_tbls = "LEFT JOIN vl_rejected_samples_release AS r ON s.id=r.sample_id";
-    	}else{
-    		$type_tbls = "LEFT JOIN vl_results AS r ON s.id=r.sample_id LEFT JOIN vl_results_qc AS q ON r.id=q.result_id";
+    		$type_tbls = $rej_tbls;
+    		$released_cond = "released=1";
+    	}elseif($type=='valids'||$type=='invalids'){
+    		$type_tbls = $res_tbls;
+    		$released_cond = "released=1";
+       	}else{
+       		$type_tbls = "$res_tbls $rej_tbls";
+       		$released_cond = " (r.released=1 OR rj.released=1) ";
        	}
     	$sql = "SELECT form_number, art_number, other_id, s.id
     			FROM vl_samples AS s LEFT JOIN vl_patients AS p ON s.patient_id=p.id
     			$type_tbls    			
-    			WHERE $facility_cond AND released=1 AND form_number='$txt'
+    			WHERE $facility_cond AND $released_cond AND form_number='$txt'
     			LIMIT 5";
     	$results = $this->db->select($sql);
     	$ret = "<table class='table table-striped table-condensed table-bordered'>
