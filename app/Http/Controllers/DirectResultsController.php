@@ -156,7 +156,7 @@ class DirectResultsController extends Controller {
 		$params = \MyHTML::datatableParams($cols);
 		extract($params);
 		$tab = \Request::has('tab')?\Request::get('tab'):'pending';		
-		$cond = " released=1 AND facility_id=$facility_id";		
+		$cond = " released=1 AND facility_id=$facility_id AND s.created_at >='".env('QC_START_DATE')."' ";		
 		$cond = $tab == 'pending'? "$cond AND d.id IS NULL":"$cond AND d.id IS NOT NULL";
 		$cond2 = !empty($search)?" $cond AND form_number='$search'":$cond;
 
