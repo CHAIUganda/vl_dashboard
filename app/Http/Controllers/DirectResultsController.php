@@ -155,8 +155,10 @@ class DirectResultsController extends Controller {
 	private function fetch_results($cols, $facility_id){
 		$params = \MyHTML::datatableParams($cols);
 		extract($params);
-		$tab = \Request::has('tab')?\Request::get('tab'):'pending';		
-		$cond = " released=1 AND facility_id=$facility_id AND s.created_at >='".env('QC_START_DATE')."' ";		
+		$tab = \Request::has('tab')?\Request::get('tab'):'pending';
+		$crtd_at = $tab=='pending'?env('PENDING_DATE'):env('QC_START_DATE');
+
+		$cond = " released=1 AND facility_id=$facility_id AND s.created_at >='$crtd_at' ";		
 		$cond = $tab == 'pending'? "$cond AND d.id IS NULL":"$cond AND d.id IS NOT NULL";
 		$cond2 = !empty($search)?" $cond AND form_number='$search'":$cond;
 
