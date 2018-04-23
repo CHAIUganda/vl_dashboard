@@ -134,12 +134,13 @@ class DirectResultsController extends Controller {
 				 num_pending_dispatch, num_dispatched
 				 FROM backend_facilities AS f
 				 LEFT JOIN backend_hubs AS h ON f.hub_id=h.id
-				 LEFT JOIN backend_facility_stats AS fs ON f.id=fs.facility_id
+				 INNER JOIN backend_facility_stats AS fs ON f.id=fs.facility_id
 				 WHERE $cond ORDER BY $orderby LIMIT $start, $length";
 		$facilities = $this->db->select($sql0);
 
 		$sql1 = "SELECT count(f.id) AS num  FROM backend_facilities f 
-				 LEFT JOIN backend_hubs h ON f.hub_id=h.id";
+				 LEFT JOIN backend_hubs h ON f.hub_id=h.id
+				 INNER JOIN backend_facility_stats AS fs ON f.id=fs.facility_id";
 		$recordsTotal = collect($this->db->select("$sql1 WHERE $facility_cond AND $hub_cond"))->first()->num;
 
 		$sql2 = "$sql1 WHERE $cond";
