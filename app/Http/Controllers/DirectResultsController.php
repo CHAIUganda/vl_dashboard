@@ -128,14 +128,29 @@ class DirectResultsController extends Controller {
 		}
 
 		$such_cond = !empty($search)?" (facility LIKE '$search%' OR hub LIKE '$search%')":"1";
-		$cond = "$such_cond AND $facility_cond AND $hub_cond";
+		$cond = "$such_cond AND $facility_cond AND $hub_cond AND (rj.released=1 OR q.released=1) ";
 
-		$sql0 = "SELECT f.id,facility, hub, f.coordinator_name, f.coordinator_contact, f.coordinator_email, 
+		$pending_date = env('PENDING_DATE');
+		$qc_start_date = env('QC_START_DATE');
+
+		$sql0 = "SELECT SUM(CASE WHEN d.id IS NULL AND s.created_at>='$pending_date' THEN 1 ELSE 0 END) AS num_pending_dispatch, 
+		SUM(CASE WHEN d.id IS NOT NULL AND s.created_at>='$qc_start_date' THEN 1 ELSE 0 END) AS num_dispatched, 
+		f.id, facility, hub, f.coordinator_name, f.coordinator_contact, f.coordinator_email
+		FROM vl_samples AS s 
+		LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id 
+		LEFT JOIN vl_results AS r ON s.id=r.sample_id 
+		LEFT JOIN vl_results_qc AS q ON r.id=q.result_id  
+		LEFT JOIN vl_results_dispatch AS d ON d.sample_id=s.id 
+		LEFT JOIN backend_facilities AS f ON s.facility_id=f.id 
+		LEFT JOIN backend_hubs AS h ON f.hub_id=h.id 
+		WHERE $cond GROUP BY facility_id ORDER BY $orderby LIMIT $start, $length";
+
+		/*$sql0 = "SELECT f.id,facility, hub, f.coordinator_name, f.coordinator_contact, f.coordinator_email, 
 				 num_pending_dispatch, num_dispatched
 				 FROM backend_facilities AS f
 				 LEFT JOIN backend_hubs AS h ON f.hub_id=h.id
 				 INNER JOIN backend_facility_stats AS fs ON f.id=fs.facility_id
-				 WHERE $cond ORDER BY $orderby LIMIT $start, $length";
+				 WHERE $cond ORDER BY $orderby LIMIT $start, $length";*/
 		$facilities = $this->db->select($sql0);
 
 		$sql1 = "SELECT count(f.id) AS num  FROM backend_facilities f 
