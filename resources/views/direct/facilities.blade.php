@@ -91,8 +91,8 @@ drpdwn= $(".live_drpdwn");
 
 function get_data(q,drpdwn,link){
     if(q && q.length>=3){   
-        //console.log("this is what you have just typed:"+ q+"link"+link);      
-        $.get(link+q+"/{{ $tab_limit }}", function(data){
+        //console.log("this is what you have just typed:"+ q+"link"+link);  
+        $.get(link+"?txt="+q, function(data){
             drpdwn.show();
             drpdwn.html(data);
         });
