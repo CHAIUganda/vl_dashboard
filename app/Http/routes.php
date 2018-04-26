@@ -69,7 +69,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/direct/results/{facility_id}', ['uses'=>'DirectResultsController@results']);
 		Route::get('/direct/results/data/{facility_id}', ['uses'=>'DirectResultsController@results_data']);
 		Route::match(['GET', 'POST'], '/direct/result/{id?}', ['uses'=>'DirectResultsController@result']);
-		Route::get('/direct/search_result/{txt}', ['uses' => 'DirectResultsController@search_result']);
+		Route::get('/direct/search_result/', ['uses' => 'DirectResultsController@search_result']);
 
 	
 	});

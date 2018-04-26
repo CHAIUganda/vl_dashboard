@@ -72,7 +72,7 @@ if(\Request::has('search')){
             </div>
         </div>
           
-          <div class='live_drpdwn' id="id-dropdown" style='display:none'></div>
+          <div class='live_drpdwn' id="id-dropdown" style='display:none;width:700px'></div>
           
         @else
         {!! Form::open(array('url'=>'/direct/result/','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
@@ -100,7 +100,12 @@ if(\Request::has('search')){
        {!! Form::close() !!}
        @endif
     </div>
-</div>  
+</div> 
+<style type="text/css">
+#id-search{
+    width: 700px;
+}
+</style> 
 
 <script type="text/javascript">
 
@@ -146,7 +151,7 @@ var drpdwn= $(".live_drpdwn");
 
 function get_data(q,drpdwn,link){  
     if(q && q.length>=3){ 
-        $.get(link+q+"?f="+{{ $facility_id }}, function(data){
+        $.get(link+"?txt="+q+"&f="+{{ $facility_id }}, function(data){
             drpdwn.show();
             drpdwn.html(data);
         });   

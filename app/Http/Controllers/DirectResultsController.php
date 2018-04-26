@@ -259,37 +259,41 @@ class DirectResultsController extends Controller {
 	}
 	
 
-	public function search_result($txt){
-    	//$txt = str_replace(' ', '', $txt);
+	public function search_result(){ 	
+    	$txt = \Request::get("txt");
     	$txt = trim($txt);
     	$facility_cond = \Request::has('f')?'facility_id='.\Request::get('f'):1;
     	$type = \Request::get('type');
     	$res_tbls = "LEFT JOIN vl_results AS r ON s.id=r.sample_id LEFT JOIN vl_results_qc AS q ON r.id=q.result_id";
     	$rej_tbls = "LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id";
 
-    	if($type=='rejects'){
-    		$type_tbls = $rej_tbls;
-    		$released_cond = "released=1";
-    	}elseif($type=='valids'||$type=='invalids'){
-    		$type_tbls = $res_tbls;
-    		$released_cond = "released=1";
-       	}else{
-       		$type_tbls = "$res_tbls $rej_tbls";
-       		$released_cond = " (q.released=1 OR rj.released=1) ";
-       	}
+       	$type_tbls = "$res_tbls $rej_tbls";
+       	$released_cond = " (q.released=1 OR rj.released=1) ";
     	$sql = "SELECT form_number, art_number, other_id, s.id
     			FROM vl_samples AS s LEFT JOIN vl_patients AS p ON s.patient_id=p.id
     			$type_tbls    			
-    			WHERE $facility_cond AND $released_cond AND form_number='$txt'
-    			LIMIT 5";
-    	$results = $this->db->select($sql);
+    			WHERE $facility_cond AND $released_cond";
+    	$results = $this->db->select("$sql AND form_number='$txt' LIMIT 5");
+
+    	if(count($results)==0){
+    		$results = $this->db->select("$sql AND (art_number='$txt' OR other_id='$txt') LIMIT 5");
+    		if(count($results)==0){
+    			$txt1 = str_replace(' ', '', $txt);
+    			$results = $this->db->select("$sql AND (unique_id LIKE '$txt1%' OR other_id LIKE '$txt%') LIMIT 5");
+    			if(count($results)==0){
+    				return "No match found in released results for $txt";
+    			}
+    		}
+    	}
+
+
     	$ret = "<table class='table table-striped table-condensed table-bordered'>
-    			<tr><th>Form Number</th><th>Art Number</th><th /></tr>";
+    			<tr><th>Form Number</th><th>Art Number</th><th>Other ID</th><th /></tr>";
     	foreach ($results AS $result){
     		$url = "/direct/result/".$result->id;
     		$print_url = "<a href='javascript:windPop(\"$url\")'>print</a>";
     		$download_url = "<a href='$url?pdf=1'>download</a>";
-    		$ret .= "<tr><td>$result->form_number</td><td>".$result->art_number."</td><td>$print_url | $download_url</td></tr>";	
+    		$ret .= "<tr><td>$result->form_number</td><td>".$result->art_number."</td><td>".$result->other_id."</td><td>$print_url | $download_url</td></tr>";
     	}
     	return $ret."</table>";
     }
