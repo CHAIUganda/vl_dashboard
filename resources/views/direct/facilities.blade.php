@@ -37,7 +37,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
     </div> -->
      <div class="col-md-6">
         {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search result..."] ) !!}
-        <div class='live_drpdwn' id="id-dropdown" style='display:none'></div>
+        <div class='live_drpdwn' id="id-dropdown" style='display:none;width:480px'></div>
      </div>
    </div>     
    
@@ -70,6 +70,11 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 </thead>
 </table>  
 
+<style type="text/css">
+#id-search{
+    width: 480px;
+}
+</style> 
 
 <script type="text/javascript">
 $(function() {
