@@ -256,6 +256,15 @@ class DirectResultsController extends Controller {
 		}
 		$sql = trim($sql, ',');
 		$this->db->unprepared($sql);
+		if(\Request::has('facility_id')){
+			$f_id = \Request::get('facility_id');
+			$n = count($samples);
+			$sql1 = "UPDATE backend_facility_stats SET num_pending_dispatch=(num_pending_dispatch-$n),
+					 num_dispatched=(num_dispatched+$n) 
+					 WHERE facility_id=$f_id";
+			$this->db->unprepared($sql1);
+		}
+		
 	}
 	
 

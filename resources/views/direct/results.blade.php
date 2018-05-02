@@ -76,6 +76,7 @@ if(\Request::has('search')){
           
         @else
         {!! Form::open(array('url'=>'/direct/result/','id'=>'view_form', 'name'=>'view_form', 'target' => 'Map' )) !!}
+        <input type="hidden" name="facility_id" value="{{ $facility_id }}">
         <input type="hidden" name="facility" value="{{ $facility_str }}">
         <input type="hidden" name="tab" value="{{ $tab }}">
         <a href="#" class='btn btn-xs btn-danger' id="select_all" >Select all visible</a>
