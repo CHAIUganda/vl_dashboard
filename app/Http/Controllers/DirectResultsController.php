@@ -250,7 +250,9 @@ class DirectResultsController extends Controller {
 		$now = date("Y-m-d H:i:s");
 		$by = addslashes(\Auth::user()->name);
 		$dispatch_type =  \Request::has('pdf')? 'D':'P';
-		$sql = "INSERT INTO vl_results_dispatch (dispatch_type, dispatch_date, dispatched_by, sample_id) VALUES"; 
+		$s_str = implode(",", $samples);
+		$this->db->unprepared("DELETE FROM vl_results_dispatch WHERE sample_id IN ($s_str)");
+		$sql = "INSERT INTO vl_results_dispatch (dispatch_type, dispatch_date, dispatched_by, sample_id) VALUES";
 		foreach($samples AS $sample_id){
 			$sql .= "('$dispatch_type', '$now', '$by', $sample_id),";
 		}
@@ -263,8 +265,7 @@ class DirectResultsController extends Controller {
 					 num_dispatched=(num_dispatched+$n) 
 					 WHERE facility_id=$f_id";
 			$this->db->unprepared($sql1);
-		}
-		
+		}		
 	}
 	
 
