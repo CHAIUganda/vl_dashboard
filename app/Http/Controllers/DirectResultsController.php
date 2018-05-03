@@ -42,7 +42,7 @@ class DirectResultsController extends Controller {
 			$env_url = "javascript:windPop(\"/print_envelope/$facility->id\")";
 			$has_account = (in_array($facility->id, $accounts) && empty(\Auth::User()->facility_id))?" $ha_clss ":"";
 			$data[]	= [
-						"<a title='view pending' href='$url' $has_account >$facility->facility</a>",
+						"<a title='view pending' href='$url' $has_account >".trim($facility->facility)."</a>",
 						$facility->hub,
 						$facility->coordinator_name,
 						$facility->coordinator_contact,
