@@ -231,6 +231,7 @@ class DashboardController extends Controller {
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
 		 ['$project'=>$projectArray]);
 	
+		
 
 		$samples_received= isset($res['result'])?$res['result']:[];
 		$suppressed=$this->_getSuppressedByWholeNumbers();
@@ -327,10 +328,16 @@ class DashboardController extends Controller {
 		//$projectArray['district_id']='$_id';
 		$projectArray['samples_received']=['$size'=>'$samples_received'];
 		$projectArray['patients_received']=['$size'=>'$patients_received'];
+
 		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
 			['$project'=>$projectArray]);
 	
-		
+		Log::info("-----grp-----");
+		Log::info($grp);
+
+		Log::info("---project----");
+		Log::info($projectArray);
+
 		$samples_patients_received= isset($res['result'])?$res['result']:[];
 		$suppressed=$this->_getSuppressedByDistrict();
 		$validResults=$this->_getValidResultsByDistrict();
