@@ -106,34 +106,8 @@
 $local_today = date('d M Y');
 $local_today = strtoupper($local_today);
 ?> 
-@foreach ($vldbresult AS $result_arr)
-<?php 
-if(is_array($result_arr)){
-  $result_obj = (object)$result_arr;
-?>
-@include('api_results._result_slip');
-<?php }else{ ?>
-
-<page size="A4">
-  <div style="height:95%">
-<!-- <div class="print-container"> -->
-  <div class="print-header">
-    <img src="{{ MyHTML::getImageData('images/uganda.emblem.gif') }}">
-    <div class="print-header-moh">
-      ministry of health uganda<br>
-      national aids control program<br>
-    </div>
-
-  central public health laboratories<br>
-  
-  <u>viral load test results</u><br>
-  </div>
-   <div>The form number <b><?=$result_arr?></b> is missing </div>
-</div>
-</page>
-<?php
-}
-?>    
+@foreach ($vldbresult AS $result_obj)
+  @include('direct._result_slip');
 @endforeach
 </body>
 <script type="text/javascript">

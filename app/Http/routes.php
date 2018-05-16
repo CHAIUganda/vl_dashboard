@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::group(['middleware'=>['permission:print_results']], function() { 
 		#Route::controllers(['results' => 'FacilityListController']);
-		Route::get("/results", function(){ return redirect('/api/facility_list');	});
+		Route::get("/results", function(){ return redirect('/direct/facility_list');	});
 		Route::controllers(['results_list' => 'ResultsController']);
 		#Route::get('/results', ['as' => 'facilities', 'uses' => 'ResultsController@facilities']);
 		Route::match(array('GET', 'POST'), '/result/{id?}/', [ 'as' => 'result', 'uses' => 'ResultsController@getResult']);
@@ -63,6 +63,15 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/api/results/data/{facility_id}', ['uses'=>'APIResultsController@results_data']);
 		Route::match(['GET', 'POST'], '/api/result/{id?}', ['uses'=>'APIResultsController@result']);
 		Route::get('/api/search_result/{txt}', ['uses' => 'APIResultsController@search_result']);
+
+		//direct
+		Route::get('/direct/facility_list/', ['uses' => 'DirectResultsController@facility_list']);
+		Route::get('/direct/facility_data/', ['uses' => 'DirectResultsController@facility_data']);
+		Route::get('/direct/results/{facility_id}', ['uses'=>'DirectResultsController@results']);
+		Route::get('/direct/results/data/{facility_id}', ['uses'=>'DirectResultsController@results_data']);
+		Route::match(['GET', 'POST'], '/direct/result/{id?}', ['uses'=>'DirectResultsController@result']);
+		Route::get('/direct/search_result/', ['uses' => 'DirectResultsController@search_result']);
+
 	
 	});
 
