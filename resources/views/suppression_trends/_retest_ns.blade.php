@@ -45,7 +45,7 @@
                             </table>
 </div>
 
-<div id="progressmap_restest_not_suppressed_id">
+<div id="progressmap_retest_not_suppressed_id">
     <h3>Progress Map for <% patientUniqueID %></h3>
     <svg></svg>
     <table class="table table-bordered table-condensed table-striped">

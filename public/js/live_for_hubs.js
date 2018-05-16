@@ -1300,9 +1300,9 @@ ctrllers.DashController = function($scope,$http){
 
             chart.yAxis.tickFormat(d3.format(',.0d'));
         if( progressMapType =="retestNonSuppressedMap"){
-             d3.select('#progressmap_restest_not_suppressed_id svg').datum(data).transition().duration(500).call(chart);
+             d3.select('#progressmap_retest_not_suppressed_id svg').datum(data).transition().duration(500).call(chart);
         }else if(progressMapType =="retestSuppressedMap"){
-             d3.select('#progressmap_restest_suppressed_id svg').datum(data).transition().duration(500).call(chart);
+             d3.select('#progressmap_retest_suppressed_id svg').datum(data).transition().duration(500).call(chart);
         }
             return chart;
         });
