@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth'], function()
 
 		Route::get('/suppression_trends/index', ['uses' => function(){ return view('suppression_trends.index'); }]);
 		Route::get('/suppression_trends/reports', ['uses' => 'ResultsController@getPatientResults']);
+		Route::get("/suppression_trends/patientviralloads","ResultsController@getPatientViralLoads");
 
 		//API stuff
 		Route::get('/api/facility_list/', ['uses' => 'APIResultsController@facility_list']);
