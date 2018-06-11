@@ -213,37 +213,36 @@ class DashboardController extends Controller {
 
 
 	private function _wholeNumbers(){
-		$grp=[];
-		/*$grp['_id']=null;
-		$grp['samples_received']=['$sum'=>'$samples_received'];
 		
-		$grp['suppressed']=['$sum'=>'$suppressed'];
-		$grp['valid_results']=['$sum'=>'$valid_results'];
-		$grp['rejected_samples']=['$sum'=>'$rejected_samples'];
-		
-		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp]);
-		$ret=isset($res['result'][0])?$res['result'][0]:[];
-		*/
-		$grp['_id']=null;
-		$grp['samples_received'] = ['$addToSet'=>'$vl_sample_id'];
-		$projectArray['_id']='$_id';
-		$projectArray['samples_received']=['$size'=>'$samples_received'];
-		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
-		 ['$project'=>$projectArray]);
-	
+		$match_stage['$match']=$this->conditions;
 
-		$samples_received= isset($res['result'])?$res['result']:[];
-		$suppressed=$this->_getSuppressedByWholeNumbers();
-		$validResults=$this->_getValidResultsByWholeNumbers();
-		$rejectedSamples=$this->_getRejectedSamplesByWholeNumbers();
+		$group_stage = array(
+			
+			'$group' => array(
+				'_id' => null, 
+				'samples_received' => array('$sum' => 1 ),
+				'valid_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_result_validity','valid')),1,0))),
+				'suppressed' => array('$sum' => array('$cond'=>array(array('$eq' => array('$suppression_status','yes')),1,0))),
+				'rejected_samples' => array(
+					'$sum' => array(
+						'$cond'=>array(
+							array('$or' => array(
+									'$eq' => array('$rejection_reason','eligibility'),
+									'$eq' => array('$rejection_reason','incomplete_form'),
+									'$eq' => array('$rejection_reason','quality_of_sample')
+								)
+								),1,0)
+						)
+					)
+				
+			 ));
 		
-		$sample_data=[];
-		$sample_data['samples_received']=$samples_received;
-		$sample_data['suppressed']=$suppressed;
-		$sample_data['validResults']=$validResults;
-		$sample_data['rejectedSamples']=$rejectedSamples;
-	
-		return $this->_getProcessedWholeNumbersAggregates($sample_data);
+		
+		
+		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage);
+		
+		
+		return isset($res['result'])?$res['result'][0]:[];
 
 
 	}
@@ -282,220 +281,86 @@ class DashboardController extends Controller {
 		return $ret;
 	}
 
-
 	private function _facilityNumbers(){
-		$grp=[];
-		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
-		$grp['samples_received'] = ['$addToSet'=>'$vl_sample_id'];
-		$grp['patients_received']=['$addToSet'=>'$patient_unique_id'];
+		$match_stage['$match']=$this->conditions;
 
-		$projectArray['_id']='$_id';
-		//$projectArray['district_id']='$_id';
+		$group_stage = array(
+			
+			'$group' => array(
+				'_id' => array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id'), 
+				'samples_received' => array('$sum' => 1 ),
+				'valid_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_result_validity','valid')),1,0))),
+				'dbs_samples' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_type_id',1)),1,0))),
+				'total_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$tested','yes')),1,0))),
+				'suppressed' => array('$sum' => array('$cond'=>array(array('$eq' => array('$suppression_status','yes')),1,0))),
+				'rejected_samples' => array(
+					'$sum' => array(
+						'$cond'=>array(
+							array('$or' => array(
+									'$eq' => array('$rejection_reason','eligibility'),
+									'$eq' => array('$rejection_reason','incomplete_form'),
+									'$eq' => array('$rejection_reason','quality_of_sample')
+								)
+								),1,0)
+						)
+					),
+				'unique_patient_count' =>array(
+						'$addToSet'=>'$patient_unique_id'
+					)
+			 ));
 		
-		$projectArray['samples_received']=['$size'=>'$samples_received'];
-		$projectArray['patients_received']=['$size'=>'$patients_received'];
-		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
-		 ['$project'=>$projectArray]);
-
-		$samples_patients_received= isset($res['result'])?$res['result']:[];
-		$suppressed=$this->_getSuppressedByFacility();
-		$validResults=$this->_getValidResultsByFacility();
-		$rejectedSamples=$this->_getRejectedSamplesByFacility();
-		$dbs_samples=$this->_getDbsSamplesByFacility();
-		$totalResults=$this->_getTotalResultsByFacility();
-
-		$sample_data=[];
-		$sample_data['samples_patients_received']=$samples_patients_received;
-		$sample_data['suppressed']=$suppressed;
-		$sample_data['validResults']=$validResults;
-		$sample_data['rejectedSamples']=$rejectedSamples;
-		$sample_data['dbs_samples']=$dbs_samples;
-		$sample_data['totalResults']=$totalResults;
+		$project_stage['$project']=array(
+			'samples_received'=>1,'valid_results'=>1,'dbs_samples'=>1,'total_results'=>1,'suppressed' => 1,'rejected_samples'=>1,
+			'patients_received'=>array('$size'=>'$unique_patient_count')
+			);
 		
-		return $this->_getProcessedFacilityAggregates($sample_data);
+		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage,$project_stage);
+		
+		
+		return isset($res['result'])?$res['result']:[];
 	}
-
-
-
-	private function _districtNumbers(){
-		$grp=[];
-		$grp['_id']='$district_id';
-		$grp['samples_received'] = ['$addToSet'=>'$vl_sample_id'];
-		$grp['patients_received']=['$addToSet'=>'$patient_unique_id'];
-
-		$projectArray['_id']='$_id';
-		//$projectArray['district_id']='$_id';
-		$projectArray['samples_received']=['$size'=>'$samples_received'];
-		$projectArray['patients_received']=['$size'=>'$patients_received'];
-		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
-			['$project'=>$projectArray]);
 	
-		
-		$samples_patients_received= isset($res['result'])?$res['result']:[];
-		$suppressed=$this->_getSuppressedByDistrict();
-		$validResults=$this->_getValidResultsByDistrict();
-		$rejectedSamples=$this->_getRejectedSamplesByDistrict();
-		$dbs_samples=$this->_getDbsSamplesByDistrict();
-		$totalResults=$this->_getTotalResultsByDistrict();
+	private function _districtNumbers(){
+		$match_stage['$match']=$this->conditions;
 
-		$sample_data=[];
-		$sample_data['samples_patients_received']=$samples_patients_received;
-		$sample_data['suppressed']=$suppressed;
-		$sample_data['validResults']=$validResults;
-		$sample_data['rejectedSamples']=$rejectedSamples;
-		$sample_data['dbs_samples']=$dbs_samples;
-		$sample_data['totalResults']=$totalResults;
-
-
+		$group_stage = array(
+			
+			'$group' => array(
+				'_id' => '$district_id', 
+				'samples_received' => array('$sum' => 1 ),
+				'valid_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_result_validity','valid')),1,0))),
+				'dbs_samples' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_type_id',1)),1,0))),
+				'total_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$tested','yes')),1,0))),
+				'suppressed' => array('$sum' => array('$cond'=>array(array('$eq' => array('$suppression_status','yes')),1,0))),
+				'rejected_samples' => array(
+					'$sum' => array(
+						'$cond'=>array(
+							array('$or' => array(
+									'$eq' => array('$rejection_reason','eligibility'),
+									'$eq' => array('$rejection_reason','incomplete_form'),
+									'$eq' => array('$rejection_reason','quality_of_sample')
+								)
+								),1,0)
+						)
+					),
+				'unique_patient_count' =>array(
+						'$addToSet'=>'$patient_unique_id'
+					)
+			 ));
 		
-		return $this->_getProcessedDistrictAggregates($sample_data);
+		$project_stage['$project']=array(
+			'samples_received'=>1,'valid_results'=>1,'dbs_samples'=>1,'total_results'=>1,'suppressed' => 1,'rejected_samples'=>1,
+			'patients_received'=>array('$size'=>'$unique_patient_count')
+			);
 		
+		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage,$project_stage);
+		
+		
+		return isset($res['result'])?$res['result']:[];
 	}
-	private function _getProcessedWholeNumbersAggregates($sample_data){
- 		$samples_received= $sample_data['samples_received'];
-		$suppressed=$sample_data['suppressed'];
-
-		$validResults=$sample_data['validResults'];
-		$rejectedSamples=$sample_data['rejectedSamples'];
-		
-		
-		$wholeNumbersAggregates=[];
-		foreach ($samples_received as $key => $value) {
-			$_id = intval($value['_id']);
-
-			$aggregates['_id']=null;
-			$aggregates['samples_received']=$value['samples_received'];
-			
-
-			
-			$dummySuppressed = $this->searchArray($suppressed, '_id',null);
-			$dummySuppressed != false ? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
-										$aggregates['suppressed']=0;
-			
-			$dummyValidResults = $this->searchArray($validResults, '_id',null);
-			$dummyValidResults != false ? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
-										$aggregates['valid_results']=0;	
-			
-			$dummyRejections = $this->searchArray($rejectedSamples, '_id',null);
-			$dummyRejections != false ? $aggregates['rejected_samples']=$dummyRejections['rejected_samples'] : 
-										$aggregates['rejected_samples']=0;
+	
 
 
-			$wholeNumbersAggregates[$key]=$aggregates;
-			
-		}
-		$ret=isset($wholeNumbersAggregates[0])?$wholeNumbersAggregates[0]:[];
-		
- 		return $ret;
- 	}
- 	private function _getProcessedDistrictAggregates($sample_data){
- 		$samples_patients_received= $sample_data['samples_patients_received'];
-		$suppressed=$sample_data['suppressed'];
-
-		$validResults=$sample_data['validResults'];
-		$rejectedSamples=$sample_data['rejectedSamples'];
-		
-		$dbs_samples=$sample_data['dbs_samples'];
-		$totalResults=$sample_data['totalResults'];
-
-		
-		$districtsAggregates=[];
-		foreach ($samples_patients_received as $key => $value) {
-			$district_id = intval($value['_id']);
-
-			$aggregates['_id']=$district_id;//district id
-			$aggregates['samples_received']=$value['samples_received'];
-			$aggregates['patients_received']=$value['patients_received'];
-
-			
-			$dummySuppressed = $this->searchArrayDistricts($suppressed, '_id',$district_id);
-			
-			isset($dummySuppressed)? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
-										$aggregates['suppressed']=0;
-			
-			$dummyValidResults = $this->searchArrayDistricts($validResults, '_id',$district_id);
-			 isset($dummyValidResults)? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
-										$aggregates['valid_results']=0;	
-			
-			
-			
-
-				$dummyRejections = $this->searchArrayDistricts($rejectedSamples, '_id',$district_id);
-			 	
-			 	isset($dummyRejections)?
-				$aggregates['rejected_samples']=$dummyRejections['rejected_samples'] 
-				:$aggregates['rejected_samples']=0;
-			
-			   
-			
-			    $dummyDbsSamples = $this->searchArrayDistricts($dbs_samples, '_id',$district_id);
-			    isset($dummyDbsSamples) ? $aggregates['dbs_samples']=$dummyDbsSamples['dbs_samples'] : 
-										$aggregates['dbs_samples']=0;
-			
-
-			
-				$dummyTotalResults = $this->searchArrayDistricts($totalResults, '_id',$district_id);
-			 	isset($dummyTotalResults) ? $aggregates['total_results']=$dummyTotalResults['total_results'] : 
-										$aggregates['total_results']=0;
-			
-			$districtsAggregates[$key]=$aggregates;
-
-			
-			
-		}
- 		return $districtsAggregates;
- 	}
- 	private function _getProcessedFacilityAggregates($sample_data){
- 		$samples_patients_received= $sample_data['samples_patients_received'];
-		$suppressed=$sample_data['suppressed'];
-
-		$validResults=$sample_data['validResults'];
-		$rejectedSamples=$sample_data['rejectedSamples'];
-		
-		$dbs_samples=$sample_data['dbs_samples'];
-		$totalResults=$sample_data['totalResults'];
-
-		
-		$districtsAggregates=[];
-		foreach ($samples_patients_received as $key => $value) {
-			
-			$_id = $value['_id'];
-			$facility_id = $_id['facility_id'];
-
-			$aggregates['_id']=$facility_id;//facility_id 
-			$aggregates['facility_id']=$facility_id;//facility_id
-			$aggregates['district_id']=intval($_id['district_id']);
-			$aggregates['hub_id']=intval($_id['hub_id']);
-			$aggregates['samples_received']=$value['samples_received'];
-			$aggregates['patients_received']=$value['patients_received'];
-
-			
-			$dummySuppressed = $this->searchArray($suppressed, '_id',$_id);
-			$dummySuppressed != false ? $aggregates['suppressed']=$dummySuppressed['suppressed'] : 
-										$aggregates['suppressed']=0;
-			
-			//$index = array_search(intval($value['_id']), array_column($validResults, '_id'));
-			$dummyValidResults = $this->searchArray($validResults, '_id',$_id);
-			$dummyValidResults != false ? $aggregates['valid_results']=$dummyValidResults['valid_results'] : 
-										$aggregates['valid_results']=0;	
-			
-			$dummyRejections = $this->searchArray($rejectedSamples, '_id',$_id);
-			$dummyRejections != false ? $aggregates['rejected_samples']=$dummyRejections['rejected_samples'] : 
-										$aggregates['rejected_samples']=0;
-
-			$dummyDbsSamples = $this->searchArray($dbs_samples, '_id',$_id);
-			$dummyDbsSamples != false ? $aggregates['dbs_samples']=$dummyDbsSamples['dbs_samples'] : 
-										$aggregates['dbs_samples']=0;
-
-			$dummyTotalResults = $this->searchArray($totalResults, '_id',$_id );
-			$dummyTotalResults != false ? $aggregates['total_results']=$dummyTotalResults['total_results'] : 
-										$aggregates['total_results']=0;
-
-			$districtsAggregates[$key]=$aggregates;
-			
-		}
- 		return $districtsAggregates;
- 	}
  	private function _getProcessedDurationNumberAggregates($sample_data){
  		$samples_patients_received= $sample_data['samples_patients_received'];
 		$suppressed=$sample_data['suppressed'];
@@ -964,47 +829,44 @@ class DashboardController extends Controller {
 	}
 	*/
 	private function _durationNumbers(){
-		$grp=[];
-		$grp['_id']='$year_month';
-		$grp['samples_received'] = ['$addToSet'=>'$vl_sample_id'];
-		$grp['patients_received']=['$addToSet'=>'$patient_unique_id'];
-
-		$projectArray['_id']='$_id';
-		//$projectArray['district_id']='$_id';
-		$projectArray['samples_received']=['$size'=>'$samples_received'];
-		$projectArray['patients_received']=['$size'=>'$patients_received'];
-		$res=$this->mongo->dashboard_new_backend->aggregate(['$match'=>$this->conditions],['$group'=>$grp],
-			['$project'=>$projectArray],['$sort'=>["_id"=>1]]);
-
-
-		//------------
-		$samples_patients_received= isset($res['result'])?$res['result']:[];
-		$suppressed=$this->_getSuppressedByDurationNumbers();
-		$validResults=$this->_getValidResultsByDurationNumbers();
-
-		$sampleQualityRejections=$this->_getSampleQualityRejectionsByDurationNumbers();
-		$eligibilityRejections=$this->_getEligibilityRejectionsByDurationNumbers();
-		$incompleteFormRejections=$this->_getIncompleteFormRejectionsByDurationNumbers();
-
-		$rejectedSamples=$this->_getRejectedSamplesByDurationNumbers();
-		$dbs_samples=$this->_getDbsSamplesByDurationNumbers();
-		$totalResults=$this->_getTotalResultsByDurationNumbers();
- 
- 	
-		$sample_data=[];
-		$sample_data['samples_patients_received']=$samples_patients_received;
-		$sample_data['suppressed']=$suppressed;
-		$sample_data['validResults']=$validResults;
-
-		$sample_data['sampleQualityRejections']=$sampleQualityRejections;
-		$sample_data['eligibilityRejections']=$eligibilityRejections;
-		$sample_data['incompleteFormRejections']=$incompleteFormRejections;
-
-		$sample_data['rejectedSamples']=$rejectedSamples;
-		$sample_data['dbs_samples']=$dbs_samples;
-		$sample_data['totalResults']=$totalResults;
 		
-		return $this->_getProcessedDurationNumberAggregates($sample_data);
+
+	    $match_stage['$match']=$this->conditions;
+
+		$group_stage = array(
+			
+			'$group' => array(
+				'_id' => '$year_month', 
+				'samples_received' => array('$sum' => 1 ),
+				'valid_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_result_validity','valid')),1,0))),
+				'dbs_samples' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_type_id',1)),1,0))),
+				'total_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$tested','yes')),1,0))),
+				'suppressed' => array('$sum' => array('$cond'=>array(array('$eq' => array('$suppression_status','yes')),1,0))),
+				'rejected_samples' => array(
+					'$sum' => array(
+						'$cond'=>array(
+							array('$or' => array(
+									'$eq' => array('$rejection_reason','eligibility'),
+									'$eq' => array('$rejection_reason','incomplete_form'),
+									'$eq' => array('$rejection_reason','quality_of_sample')
+								)
+								),1,0)
+						)
+					),
+				'unique_patient_count' =>array(
+						'$addToSet'=>'$patient_unique_id'
+					)
+			 ));
+		
+		$project_stage['$project']=array(
+			'samples_received'=>1,'valid_results'=>1,'dbs_samples'=>1,'total_results'=>1,'suppressed' => 1,'rejected_samples'=>1,
+			'patients_received'=>array('$size'=>'$unique_patient_count')
+			);
+		
+		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage,$project_stage);
+		
+		
+		return isset($res['result'])?$res['result']:[];
 	}
 
 	/*private function _regimenGroupNumbers(){
