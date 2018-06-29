@@ -38,7 +38,7 @@
 
          <span ng-model='filter_gender' ng-init='filter_gender={}'>
             <span ng-repeat="(g_nr,g_name) in filter_gender">
-                <span class="filter-val ng-cloak"> <% g_name %> (g) <x ng-click='removeTag("gender",g_nr)'>&#120;</x></span> 
+                <span class="filter-val ng-cloak"> <% g_name %> (s) <x ng-click='removeTag("gender",g_nr)'>&#120;</x></span> 
             </span>
         </span>
 
@@ -136,7 +136,7 @@
         </td>
         <td width='9%' id='dist_elmt'>
             <select ng-model="gender" ng-init="gender='all'" ng-change="filter('gender')">
-                <option value='all'>GENDER</option>
+                <option value='all'>SEX</option>
                 <option class="ng-cloak" ng-repeat="(g_nr,gnd) in labels.genders" value="<% g_nr %>">
                     <% gnd %>
                 </option>
