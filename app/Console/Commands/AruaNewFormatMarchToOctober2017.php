@@ -89,8 +89,8 @@ class AruaNewFormatMarchToOctober2017 extends Command
     {
         echo "---March To Octber 2017 --\n";
         
-        $file_location = "/Users/simon/Documents/Documents/METS/CBS/CPHL/AruaData/Mar_to_Oct_2017.csv";
-        //$file_location = "./docs/others/arua.csv";
+        //$file_location = "/Users/simon/Documents/Documents/METS/CBS/CPHL/AruaData/Mar_to_Oct_2017.csv";
+        $file_location = "./docs/others/Mar_to_Oct_2017.csv";
 
         
         //read file into array
