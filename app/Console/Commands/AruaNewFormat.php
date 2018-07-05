@@ -45,7 +45,7 @@ class AruaNewFormat extends Command
         $_month=11;
         $year_and_month=201711;
         //$file_location = "/Users/simon/Documents/Documents/METS/CBS/CPHL/AruaData/Nov2017Submission.csv";
-        $file_location = "./docs/others/Nov2017Submission.csv";
+        $file_location = "./docs/others/Dec2017Submission.csv";
 
         //read file into array
         $arua_data = $this->getAruaData($file_location);
