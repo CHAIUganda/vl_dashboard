@@ -40,18 +40,27 @@ class MyName extends Command{
     }
 
     public function handle($x="p") {
-    	$number_of_valid_tests = 7;
-        $number_suppressed = 6;
-        
 
-            $suppression_rate=0.0;
-            if($number_suppressed>0){
-                $suppression_rate = round(($number_suppressed /$number_of_valid_tests)*100);
-            }
+        if(strtolower(trim("Yes")) == strtolower(trim(" Nes")))
+            echo "pass\n";
+        else
+            echo "fail\n";
+        echo "\n";
 
-            echo "..... $suppression_rate \n";
+     //$date_collection="01/09/2017";
+     //$date_created = $this->getDateCreated($date_collection);
+     //echo "$date_created \n";
+
     }
-
+    private function getDateCreated($date_collection){
+       //add 10 days to the $date_collection
+      $date = date_create($date_collection);
+      $fff = date_interval_create_from_date_string('15 days');
+     
+     
+      date_add($date, date_interval_create_from_date_string('15 days'));
+      return date_format($date, 'Y-m-d H:m:s');
+    }
     private function loadFacilities(){
         $file = fopen("/Users/simon/Desktop/unmatched_cphl_dhis2.csv", "r");
         $data = array();
@@ -78,7 +87,8 @@ class MyName extends Command{
 
         return $facilities;
     }
-     private function loadDhis2Facilities(){
+    
+    private function loadDhis2Facilities(){
         $file = fopen("/Users/simon/Desktop/dhis2.csv", "r");
         $data = array();
         //loading CSV entire data

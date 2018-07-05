@@ -6,21 +6,29 @@ use Illuminate\Console\Command;
 use EID\LiveData;
 use EID\Mongo;
 
-class AruaNewFormat extends Command
+class AruaNewFormatMarchToOctober2017 extends Command
 {
     /**
      * The name and signature of the console command.
-     *
+     *AruaNewFormatMarchToOctober2017
      * @var string
      */
-    protected $signature = 'arua:onwards';
+    protected $signature = 'arua:MarchToOctber2017';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Loads Arua Data';
+    protected $description = 'Loads Arua Data from March to October 2017';
+
+
+    /**
+    * Properties Setters & Getters
+    */
+    private $global_month;
+    private $global_year;
+    private $global_year_month;
 
     /**
      * Create a new command instance.
@@ -33,6 +41,45 @@ class AruaNewFormat extends Command
         $this->mongo=Mongo::connect();
     }
 
+
+    public function setGlobalMonth($date_of_collection){
+      //01/03/2017
+      $date_collection_array = explode("/", $date_of_collection);
+      $this->global_month = intval($date_collection_array[1]);
+    }
+
+    public function getGlobalMonth(){
+      return $this->global_month;
+    }
+
+    public function setGlobalYear($date_of_collection){
+      //01/03/2017
+      $date_collection_array = explode("/", $date_of_collection);
+      $this->global_year = intval($date_collection_array[2]);
+
+    }
+
+    public function getGlobalYear(){
+      return $this->global_year;
+    }
+
+    public function setGlobalYearMonth($date_of_collection){
+      //01/03/2017
+      $date_collection_array = explode("/", $date_of_collection);
+      $year_month_string = $date_collection_array[2]."".$date_collection_array[1];
+      $this->global_year_month = intval($year_month_string);
+
+    }
+
+   
+
+    public function getGlobalYearMonth($date_of_collection){
+      //01/03/2017
+      $date_collection_array = explode("/", $date_of_collection);
+      $year_month_string = $date_collection_array[2]."".$date_collection_array[1];
+      $this->global_year_month = intval($year_month_string);
+      return $this->global_year_month;
+    }
     /**
      * Execute the console command.
      *
@@ -40,13 +87,12 @@ class AruaNewFormat extends Command
      */
     public function handle()
     {
-        echo "---April 2017 Onwards--\n";
-        $_year=2017;
-        $_month=11;
-        $year_and_month=201711;
-        //$file_location = "/Users/simon/Documents/Documents/METS/CBS/CPHL/AruaData/Nov2017Submission.csv";
-        $file_location = "./docs/others/Nov2017Submission.csv";
+        echo "---March To Octber 2017 --\n";
+        
+        //$file_location = "/Users/simon/Documents/Documents/METS/CBS/CPHL/AruaData/Mar_to_Oct_2017.csv";
+        $file_location = "./docs/others/Mar_to_Oct_2017.csv";
 
+        
         //read file into array
         $arua_data = $this->getAruaData($file_location);
         
@@ -60,20 +106,26 @@ class AruaNewFormat extends Command
         //facility ID, District ID, Hub ID,year_month:201709
         echo "----- sample insertion is starting----\n";
         
-        $this->insertSamples($arua_data,$year_and_month);
+        $this->insertSamples($arua_data);
         
         
         //insert results
         echo "----- results insertion is starting----\n";
-        $this->insertResults($arua_data,$year_and_month);
+        $this->insertResults($arua_data);
         echo "----- results insertion is complete----\n";
 
+        
         //mongo transfer: This could be a separate script
         echo "----- Mongo job is starting----\n";
-        $this->_loadDataFromMysql($_year,$_month);
+        $_year = 2017;
+        for ($_month=3; $_month < 11; $_month++) { 
+          $this->_loadDataFromMysql($_year,$_month);
+        }
+        
         echo "----- Mongo job is complete----\n";
 
     }
+
 
     private function _loadDataFromMysql($_year,$_month){
         $facilities=$this->_getFacilities();
@@ -344,7 +396,9 @@ class AruaNewFormat extends Command
         $sample_id=$year_month."/".$sample_record['form_number']."/".$facilityID;
         return $sample_id;
     }
-    private function insertSamples($arua_data,$year_and_month){
+    private function insertSamples($arua_data){
+
+
         $counter = 0;
         foreach ($arua_data as $key => $arua_data_record) {
 
@@ -364,7 +418,7 @@ class AruaNewFormat extends Command
            $districtID=7;
            $hubID=1;
            $facilityID=50;
-           $year_month=$year_and_month;
+           $year_month=$this->getGlobalYearMonth($arua_data_record['date_of_collection']);
 
            $vlSampleID=$this->generateSampleId($arua_data_record,$facilityID,$year_month);
            $age = $arua_data_record['age'];
@@ -489,7 +543,7 @@ class AruaNewFormat extends Command
 
       return $suppressedStatus;
     }
-    private function insertResults($arua_data,$year_and_month){
+    private function insertResults($arua_data){
       
       $counter = 0;
         foreach ($arua_data as $key => $arua_data_record) {
@@ -506,7 +560,7 @@ class AruaNewFormat extends Command
           $districtID=7;
           $hubID=1;
           $facilityID=50;
-          $year_month=$year_and_month;
+          $year_month=$this->getGlobalYearMonth($arua_data_record['date_of_collection']);
 
           $vlSampleID=$this->generateSampleId($arua_data_record,$facilityID,$year_month);
           
@@ -656,9 +710,12 @@ class AruaNewFormat extends Command
       $hadTreatmentInLast6Months = "Left Blank";
       if(!empty($treatmentLast6Months)){
 
-        if(strtolower(trim($treatmentLast6Months))== strtolower('≥5yrs') ){
+        if(strtolower(trim($treatmentLast6Months))== strtolower('_5yrs') ){
           $hadTreatmentInLast6Months = "Yes";
-        }elseif (strtolower(trim($treatmentLast6Months))== strtolower('2-<5yrs')) {
+        }elseif(strtolower(trim($treatmentLast6Months))== strtolower('≥5yrs') ){
+          $hadTreatmentInLast6Months = "Yes";
+        }
+        elseif (strtolower(trim($treatmentLast6Months))== strtolower('2-<5yrs')) {
           $hadTreatmentInLast6Months = "Yes";
         }elseif (strtolower(trim($treatmentLast6Months))== strtolower('1-<2yrs')) {
           $hadTreatmentInLast6Months = "Yes";
@@ -684,11 +741,11 @@ class AruaNewFormat extends Command
     }
     
     private function getSampleTypeId($sample_record){
-      if(strcasecmp($sample_record['sample_type_at_last_viral_load'], "plasma") == 0 || 
-        strcasecmp($sample_record['sample_type_at_last_viral_load2'], "plasma") == 0){
+      if(strcasecmp(trim($sample_record['sample_type']), "plasma") == 0 || 
+        strcasecmp(trim($sample_record['sample_type_at_last_viral_load2']), "plasma") == 0){
         return 2;
       }else{
-        return 0;
+        return 2;
       }
     }
     private function getViralLoadTestingID($routineMonitoring){
