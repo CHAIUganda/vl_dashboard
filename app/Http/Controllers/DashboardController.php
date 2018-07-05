@@ -857,13 +857,17 @@ class DashboardController extends Controller {
 						'$addToSet'=>'$patient_unique_id'
 					)
 			 ));
-		
+		$sort_stage = array(
+			'$sort' => array(
+				'_id'=>1
+				)
+			);
 		$project_stage['$project']=array(
 			'samples_received'=>1,'valid_results'=>1,'dbs_samples'=>1,'total_results'=>1,'suppressed' => 1,'rejected_samples'=>1,
 			'patients_received'=>array('$size'=>'$unique_patient_count')
 			);
 		
-		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage,$project_stage);
+		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage,$sort_stage,$project_stage);
 		
 		
 		return isset($res['result'])?$res['result']:[];

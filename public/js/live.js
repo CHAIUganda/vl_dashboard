@@ -1186,21 +1186,21 @@ ctrllers.DashController = function($scope,$http){
 
             var hub_name_value = null;
             try{
-                hub_name_value =scopeInstance.getHubName(facilityRecord.hub_id);
+                hub_name_value =scopeInstance.getHubName(facilityRecord._id.hub_id);
             }catch(err){
 
             }
-            var facility_details_lables_object = facility_details_labels[facilityRecord.facility_id];
+            var facility_details_lables_object = facility_details_labels[facilityRecord._id.facility_id];
             if(typeof facility_details_lables_object === "undefined"){
                 console.log(facilityRecord.facility_id);
                 continue;
             }
             var facility_instance = {
-                district_name : district_labels[facilityRecord.district_id],
+                district_name : district_labels[facilityRecord._id.district_id],
                 hub_name: hub_name_value,
                 facility_name : facility_details_lables_object.cphl_name,
-                dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
-                dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
+                dhis2_facility_name : facility_details_labels[facilityRecord._id.facility_id].dhis2_name,
+                dhis2_facility_uid : facility_details_labels[facilityRecord._id.facility_id].dhis2_uid,
                 samples_received : facilityRecord.samples_received,
                 patients_received : facilityRecord.patients_received,
                 samples_tested : facilityRecord.total_results,
@@ -1252,20 +1252,20 @@ ctrllers.DashController = function($scope,$http){
 
             var hub_name_value = null;
             try{
-                hub_name_value = scopeInstance.getHubName(facilityRecord.hub_id);
+                hub_name_value = scopeInstance.getHubName(facilityRecord._id.hub_id);
             }catch(err){
 
             }
-             var facility_details_lables_object = facility_details_labels[facilityRecord.facility_id];
+             var facility_details_lables_object = facility_details_labels[facilityRecord._id.facility_id];
             if(typeof facility_details_lables_object === "undefined"){
                 continue;
             }
             var facility_instance = {
-                district_name : district_labels[facilityRecord.district_id],
+                district_name : district_labels[facilityRecord._id.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_details_labels[facilityRecord.facility_id].cphl_name,
-                dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
-                dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
+                facility_name : facility_details_labels[facilityRecord._id.facility_id].cphl_name,
+                dhis2_facility_name : facility_details_labels[facilityRecord._id.facility_id].dhis2_name,
+                dhis2_facility_uid : facility_details_labels[facilityRecord._id.facility_id].dhis2_uid,
                 valid_results : facilityRecord.valid_results,
                 suppressed_results : facilityRecord.suppressed,
                 non_suppressed_results : (Number(facilityRecord.valid_results) - Number(facilityRecord.suppressed)),
@@ -1314,20 +1314,20 @@ ctrllers.DashController = function($scope,$http){
 
             var hub_name_value = null;
             try{
-                hub_name_value = scopeInstance.getHubName(facilityRecord.hub_id);
+                hub_name_value = scopeInstance.getHubName(facilityRecord._id.hub_id);
             }catch(err){
 
             }
-            var facility_details_lables_object = facility_details_labels[facilityRecord.facility_id];
+            var facility_details_lables_object = facility_details_labels[facilityRecord._id.facility_id];
             if(typeof facility_details_lables_object === "undefined"){
                 continue;
             }
             var facility_instance = {
-                district_name : district_labels[facilityRecord.district_id],
+                district_name : district_labels[facilityRecord._id.district_id],
                 hub_name: hub_name_value,
-                facility_name : facility_details_labels[facilityRecord.facility_id].cphl_name,
-                dhis2_facility_name : facility_details_labels[facilityRecord.facility_id].dhis2_name,
-                dhis2_facility_uid : facility_details_labels[facilityRecord.facility_id].dhis2_uid,
+                facility_name : facility_details_labels[facilityRecord._id.facility_id].cphl_name,
+                dhis2_facility_name : facility_details_labels[facilityRecord._id.facility_id].dhis2_name,
+                dhis2_facility_uid : facility_details_labels[facilityRecord._id.facility_id].dhis2_uid,
                 samples_received : facilityRecord.samples_received,
                 rejected_samples:facilityRecord.rejected_samples,
                 rejection_rate : Math.round(((facilityRecord.rejected_samples/facilityRecord.samples_received)*100),1)
