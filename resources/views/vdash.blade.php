@@ -21,6 +21,8 @@
     <script>
         
         $(document).ready(function() {
+             
+
             $("#exportButton").click(function(){
                 $("#samples_received_table").tableToCSV();
             });
@@ -29,12 +31,9 @@
         
     </script>
 
-    <span style="
-    font-size: 10px;
-    color: #F44336;
-">{{ env('UPDATE_MESSAGE')}}</span>
+    
     <?php //if(!isset($filter_val)) $filter_val="National Metrics, ".$time." thus far" ?>
-<!--       
+     <!--       
       <span style="font-size:20px">eid</span>
       <span style="font-size:20px">scd</span>
       <span style="font-size:20px">vl</span> -->
@@ -81,6 +80,17 @@
      //krsort($months_by_years);
      ?>
      
+    <div>
+        <span style="font-size: 10px; color: #F44336;">
+        {{env('UPDATE_MESSAGE')}}
+    </span>
+    </div>
+   
+   
+    
+
+   
+
      @include('sections._filters')
      <span ng-model="loading" ng-init="loading=true"></span>
      <div ng-show="loading" style="text-align: center;padding:10px;"> <img src="{{ asset('/images/loading.gif') }}" height="20" width="20"> processing</div>
