@@ -16,7 +16,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/tabstyles.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/angular-datatables.css') }}" />
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css"> -->
-    <link href="{{ asset('/css/dash.css') }}" rel="stylesheet">
+   
+
+  
+   
+    <link href="{{ asset('/css/dash.css') }}" rel="stylesheet"/>
     <link rel="Shortcut Icon" href="{{ asset('/images/icon.png') }}" />
 
     
@@ -98,12 +102,129 @@
 
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
-<link href="{{ asset('/css/hub.css') }}" rel="stylesheet">
+<link href="{{ asset('/css/hub.css') }}" rel="stylesheet"/>
+<style type="text/css">
+    
+    /* Popup box BEGIN */
+.hover_bkgr_fricc{
+    background:rgba(0,0,0,.4);
+    cursor:pointer;
+    display:none;
+    height:100%;
+    position:fixed;
+    text-align:center;
+    top:0;
+    width:100%;
+    z-index:10000;
+}
+.hover_bkgr_fricc .helper{
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+}
+.hover_bkgr_fricc > div {
+    background-color: #fff;
+    box-shadow: 10px 10px 60px #555;
+    display: inline-block;
+    height: auto;
+    max-width: 551px;
+    min-height: 100px;
+    vertical-align: middle;
+    width: 60%;
+    position: relative;
+    border-radius: 8px;
+    padding: 15px 5%;
+}
+.popupCloseButton {
+    background-color: #fff;
+    border: 3px solid #999;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: arial;
+    font-weight: bold;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 25px;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+.popupCloseButton:hover {
+    background-color: #ccc;
+}
+.trigger_popup_fricc {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 20px;
+    display: inline-block;
+    font-weight: bold;
+}
+/* Popup box BEGIN */
+</style>
+
+<script type="text/javascript">
+
+ $(document).ready(function(){
+    $(window).load(function () {
+        $('.hover_bkgr_fricc').show();
+
+        $(".trigger_popup_fricc").click(function(){
+           $('.hover_bkgr_fricc').show();
+        });
+        $('.hover_bkgr_fricc').click(function(){
+            $('.hover_bkgr_fricc').hide();
+        });
+        $('.popupCloseButton').click(function(){
+            $('.hover_bkgr_fricc').hide();
+        });
+    });
+    
+});
+</script>
+
+
 </head>
 
 
 
 <body ng-app="dashboard" ng-controller="DashController">
+
+    <div class="hover_bkgr_fricc">
+            <span class="helper"></span>
+            <div>
+                <div class="popupCloseButton">X</div>
+                <div class="modal-header text-danger">Why wait? - Print EID and Viral load results now!</div>
+
+                <div class="modal-body text-left text-danger">
+                    <small>Viral Load and EID results can be accessed and printed real time by the electronic 
+                results dispatch (e-RD) Viral load and EID dashboards.</small>
+
+                    <ul class="list-unstyled hover">
+                    <li>Advantages/Benefits</li>
+                        <ul><small>Instant access to completed results</small></ul>
+                        <ul><small>Easy access to old pre previously printed results</small></ul>
+                        <ul><small>Electronic access</small></ul>
+                        <ul><small>Ability to store electronic copy of results</small></ul>
+                        
+                    <li>What you need to print</li>
+                        <ul><small>Computer</small></ul>
+                        <ul><small>Printer</small></ul>
+                        <ul><small>Paper, A4</small></ul>
+                        <ul><small>Envelopes</small></ul>
+                        <ul><small>Reliable internet for it to start printing.</small></ul>
+                    <li>How to enroll for e-RD</li>
+            <ul><small>We call upon all facilities interested and with capacity to print to contact our customer care on 0800221100 or 
+            send email to <a>pronam2000@gmail.com</a> for further follow up.</small></ul>
+                </ul>
+
+                </div>
+                
+
+            </div>
+    </div>
 
     <div class="navbar-custom navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -175,10 +296,12 @@
         </div>
     </div> 
     <div class='row'>
-    <div class="col-xs-1"> @yield('content1') </div>
-    <div class='col-xs-11 container'>
-        @yield('content')
-    </div>
+        <div class="col-xs-1"> @yield('content1') </div>
+        <div class='col-s-10 container'>
+            @yield('content')
+        </div>
+        <div class="col-xs-1">  </div>
 
+    </div>
 </body>
 </html>
