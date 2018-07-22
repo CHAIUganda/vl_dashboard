@@ -5,7 +5,9 @@ namespace EID\Console\Commands;
 use Illuminate\Console\Command;
 use EID\LiveData;
 use EID\Mongo;
-
+/**
+*Change year, month, and file paths
+*/
 class AruaNewFormat extends Command
 {
     /**
@@ -42,10 +44,9 @@ class AruaNewFormat extends Command
     {
         echo "---April 2017 Onwards--\n";
         $_year=2018;
-        $_month=01;
-        $year_and_month=201801;
-        //$file_location = "/Users/simon/Documents/Documents/METS/CBS/CPHL/AruaData/Nov2017Submission.csv";
-        $file_location = "./docs/others/Jan2018Submission.csv";
+        $_month=06;
+        $year_and_month=201806;
+        $file_location = "./docs/others/June2018Submission.csv";
 
         //read file into array
         $arua_data = $this->getAruaData($file_location);
