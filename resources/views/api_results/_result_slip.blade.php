@@ -257,6 +257,6 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 		
 	</div>
 	</div>
-	<footer><span style='float:left'>"a SANAS Accredited Medical Laboratory, No. M0589"</span> <span style='float:right'>{{ $print_version }} &nbsp;&nbsp; 1 of 1</span></footer>
+	<footer><span style='float:left'>"a SANAS Accredited Medical Laboratory, No. M0589"</span> <span style='float:right'>1 of 1</span></footer>
 </page>
 <!-- </div> -->
