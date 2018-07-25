@@ -191,40 +191,41 @@
 
 
 <body ng-app="dashboard" ng-controller="DashController">
+    @if(!Auth::check())
+        <div class="hover_bkgr_fricc">
+                <span class="helper"></span>
+                <div>
+                    <div class="popupCloseButton">X</div>
+                    <div class="modal-header text-danger">Why wait? - Print EID and Viral load results now!</div>
 
-    <div class="hover_bkgr_fricc">
-            <span class="helper"></span>
-            <div>
-                <div class="popupCloseButton">X</div>
-                <div class="modal-header text-danger">Why wait? - Print EID and Viral load results now!</div>
+                    <div class="modal-body text-left text-danger">
+                        <small>Viral Load and EID results can be printed real time from the Viral load and EID dashboards by the 
+                            Electronic results printing (e-RD).</small>
 
-                <div class="modal-body text-left text-danger">
-                    <small>Viral Load and EID results can be accessed and printed real time by the electronic 
-                results dispatch (e-RD) Viral load and EID dashboards.</small>
+                        <ul class="list-unstyled hover">
+                        <li>Advantages/Benefits</li>
+                            <ul><small>Instant access to completed results</small></ul>
+                            <ul><small>Continuous access to old results</small></ul>
+                            <ul><small>Ability to store electronic copy of results</small></ul>
+                            
+                        <li>What you need to print</li>
+                            <ul><small>Computer</small></ul>
+                            <ul><small>Printer</small></ul>
+                            <ul><small>Paper, A4</small></ul>
+                            <ul><small>Envelopes</small></ul>
+                            <ul><small>Internet Access</small></ul>
+                        <li>How to enroll for e-RD</li>
+                <ul><small>We call upon all facilities with capacity to print to contact our 
+                    customer care on 0800221100 or send email 
+                    to  <a>customercare@cphl.go.ug</a> for enrollment.</small></ul>
+                    </ul>
 
-                    <ul class="list-unstyled hover">
-                    <li>Advantages/Benefits</li>
-                        <ul><small>Instant access to completed results</small></ul>
-                        <ul><small>Easy access to old pre previously printed results</small></ul>
-                        <ul><small>Electronic access</small></ul>
-                        <ul><small>Ability to store electronic copy of results</small></ul>
-                        
-                    <li>What you need to print</li>
-                        <ul><small>Computer</small></ul>
-                        <ul><small>Printer</small></ul>
-                        <ul><small>Paper, A4</small></ul>
-                        <ul><small>Envelopes</small></ul>
-                        <ul><small>Reliable internet for it to start printing.</small></ul>
-                    <li>How to enroll for e-RD</li>
-            <ul><small>We call upon all facilities interested and with capacity to print to contact our customer care on 0800221100 or 
-            send email to <a>pronam2000@gmail.com</a> for further follow up.</small></ul>
-                </ul>
+                    </div>
+                    
 
                 </div>
-                
-
-            </div>
-    </div>
+        </div>
+    @endif
 
     <div class="navbar-custom navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
