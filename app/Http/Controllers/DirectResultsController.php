@@ -113,6 +113,13 @@ class DirectResultsController extends Controller {
 		return view('direct.result_slip', compact('vldbresult'));
 	}
 
+	public function forms_download(){
+		$form_numbers = \Request::get('form_numbers');		
+		$vldbresult = $this->fetch_result("", $form_numbers);
+		$pdf = \PDF::loadView('direct.result_slip', compact("vldbresult"));
+		return $pdf->download('vl_results_'.\Request::get('facility').'.pdf');
+	}
+
 
 	private function fetch_facilities($cols){
 		$params = \MyHTML::datatableParams($cols);
@@ -222,8 +229,10 @@ class DirectResultsController extends Controller {
 		}
 	}
 
-	private function fetch_result($samples){
+	private function fetch_result($samples, $f=0){
 		$samples_str = implode(",", $samples);
+		$samples_cond = !empty($f)?"form_number in ($f)":"s.id in ($samples_str)";
+		
 		$sql = " SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line, rs.appendix AS rejection_reason,
 				 rj.released_at AS rj_released_at
 				 FROM vl_samples AS s
@@ -241,7 +250,7 @@ class DirectResultsController extends Controller {
 				 LEFT JOIN vl_patients AS p ON s.patient_id=p.id
 				 LEFT JOIN auth_user AS u ON r.test_by_id=u.id
 				 LEFT JOIN backend_user_profiles AS up ON u.id=up.user_id
-				 WHERE s.created_at >='".env('QC_START_DATE')."' AND s.id in ($samples_str) LIMIT 100		 
+				 WHERE s.created_at >='".env('QC_START_DATE')."' AND $samples_cond LIMIT 100		 
 				 ";
 		return $this->db->select($sql);
 	}
