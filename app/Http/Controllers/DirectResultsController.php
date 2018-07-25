@@ -106,9 +106,9 @@ class DirectResultsController extends Controller {
 		$tab = \Request::get('tab');
 		if($tab=='pending'){
 			$this->save_dispatch($samples);
-			$print_version = "version 1.0";
+			$print_version = "1.0";
 		}else{
-			$print_version = "version 2.0";
+			$print_version = "2.0";
 		}	
 
 		if(\Request::has('pdf')){
