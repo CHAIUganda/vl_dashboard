@@ -107,7 +107,7 @@ $local_today = date('d M Y');
 $local_today = strtoupper($local_today);
 ?> 
 @foreach ($vldbresult AS $result_obj)
-  @include('direct._result_slip');
+  @include('direct._result_slip')
 @endforeach
 </body>
 <script type="text/javascript">

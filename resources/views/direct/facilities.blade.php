@@ -53,7 +53,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 <thead>
     <tr>
        <!--  @if(empty(Auth::user()->hub_id))<th>Hub</th> @endif  -->
-        <th>Facddility</th>  
+        <th>Facility</th>  
         <th>Hub</th>                   
         <th>Contact Person</th>
         <th>Phone</th>
