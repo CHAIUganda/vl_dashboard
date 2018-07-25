@@ -104,19 +104,25 @@ class DirectResultsController extends Controller {
 		}
 		$vldbresult = $this->fetch_result($samples);			
 		$tab = \Request::get('tab');
-		if($tab=='pending')	$this->save_dispatch($samples);
+		if($tab=='pending'){
+			$this->save_dispatch($samples);
+			$print_version = "version 1.0";
+		}else{
+			$print_version = "version 2.0";
+		}	
 
 		if(\Request::has('pdf')){
-			$pdf = \PDF::loadView('direct.result_slip', compact("vldbresult"));
+			$pdf = \PDF::loadView('direct.result_slip', compact('vldbresult', 'print_version'));
 			return $pdf->download('vl_results_'.\Request::get('facility').'.pdf');
 		}
-		return view('direct.result_slip', compact('vldbresult'));
+		return view('direct.result_slip', compact('vldbresult', 'print_version'));
 	}
 
 	public function forms_download(){
 		$form_numbers = \Request::get('form_numbers');		
 		$vldbresult = $this->fetch_result([], $form_numbers);
-		$pdf = \PDF::loadView('direct.result_slip', compact("vldbresult"));
+		$print_version = "";
+		$pdf = \PDF::loadView('direct.result_slip', compact("vldbresult", "print_version"));
 		return $pdf->download('vl_results_'.\Request::get('facility').'.pdf');
 	}
 
