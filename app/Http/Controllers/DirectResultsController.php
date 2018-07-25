@@ -115,7 +115,7 @@ class DirectResultsController extends Controller {
 
 	public function forms_download(){
 		$form_numbers = \Request::get('form_numbers');		
-		$vldbresult = $this->fetch_result("", $form_numbers);
+		$vldbresult = $this->fetch_result([], $form_numbers);
 		$pdf = \PDF::loadView('direct.result_slip', compact("vldbresult"));
 		return $pdf->download('vl_results_'.\Request::get('facility').'.pdf');
 	}
