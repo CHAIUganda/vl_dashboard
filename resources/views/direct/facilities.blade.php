@@ -61,6 +61,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 
         <th># Pending</th>
         <th># Printed/ Downloaded</th>
+        <th>Last dispatch date</th>
         <th>Action</th>
        <!--  <th># Downloaded</th>
         @if($sect == 'admin')<th># Last Printed/ Downloaded</th>@endif 

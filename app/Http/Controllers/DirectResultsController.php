@@ -49,6 +49,7 @@ class DirectResultsController extends Controller {
 						$facility->coordinator_email,
 						"<a title='view pending' href='$url'>$facility->num_pending_dispatch</a>", 
 						"<a title='view printed/downloaded' href='$url?tab=completed'>$facility->num_dispatched</a>",
+						\MyHTML::localiseDate($facility->last_dispatched_at, 'd-M-Y'),
 						"<a href='$url' $clss>view pending</a>
 						<a title='view printed/downloaded' href='$url?tab=completed' $clss>$tick</a>
 						<a title='print envelope' $clss href='$env_url'>$env</a>
@@ -104,6 +105,7 @@ class DirectResultsController extends Controller {
 		}
 		$vldbresult = $this->fetch_result($samples);			
 		$tab = \Request::get('tab');
+		$this->log_last_dispatch();
 		if($tab=='pending'){
 			$this->save_dispatch($samples);
 			$print_version = "1.0";
@@ -144,7 +146,7 @@ class DirectResultsController extends Controller {
 		$cond = "$such_cond AND $facility_cond AND $hub_cond";
 
 		$sql0 = "SELECT f.id,facility, hub, f.coordinator_name, f.coordinator_contact, f.coordinator_email, 
-				 num_pending_dispatch, num_dispatched
+				 num_pending_dispatch, num_dispatched, last_dispatched_at
 				 FROM backend_facilities AS f
 				 LEFT JOIN backend_hubs AS h ON f.hub_id=h.id
 				 INNER JOIN backend_facility_stats AS fs ON f.id=fs.facility_id
@@ -261,6 +263,15 @@ class DirectResultsController extends Controller {
 		return $this->db->select($sql);
 	}
 
+	private function log_last_dispatch(){
+		$now = date("Y-m-d H:i:s");
+		if(\Request::has('facility_id')){
+			$f_id = \Request::get('facility_id');
+			$sql1 = "UPDATE backend_facility_stats SET last_dispatched_at='$now' WHERE facility_id=$f_id";
+			$this->db->unprepared($sql1);
+		}	
+	}
+
 	private function save_dispatch($samples){
 		$now = date("Y-m-d H:i:s");
 		$by = addslashes(\Auth::user()->name);
@@ -273,6 +284,7 @@ class DirectResultsController extends Controller {
 		}
 		$sql = trim($sql, ',');
 		$this->db->unprepared($sql);
+
 		if(\Request::has('facility_id')){
 			$f_id = \Request::get('facility_id');
 			$n = count($samples);
