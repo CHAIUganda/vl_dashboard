@@ -22,8 +22,11 @@ class AdminController extends Controller {
 
 		}else{
 			$roles = Role::orderby('name')->get();
-			$hubs = LiveData::getHubs();
-			$facilities = LiveData::getFacilities();
+			// $hubs = LiveData::getHubs();
+			// $facilities = LiveData::getFacilities();
+			$db = \DB::connection('direct_db');
+			$hubs = $db->select('id','hub')->from('backend_hubs')->get();
+			$facilities = $db->select('id','facility')->from('backend_facilities')->get();	
 
 			//$roles = \MyHTML::get_arr_pair($roles, 'display_name');
 			$hubs = \MyHTML::get_arr_pair($hubs, 'hub');
