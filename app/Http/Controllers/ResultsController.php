@@ -422,7 +422,7 @@ class ResultsController extends Controller {
 		$sql = "select facility, hub, district from 
 				backend_facilities f, backend_hubs h, backend_districts d 
 				where f.hub_id=h.id and h.district_id=d.id and f.id=$id";
-		$facility = collect($this->db->select($sql))->first();
+		$facility = collect($db->select($sql))->first();
 		return view('results.print_envelope', compact('facility'));
 	}
 
