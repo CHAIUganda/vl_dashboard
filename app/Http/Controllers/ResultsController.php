@@ -419,7 +419,7 @@ class ResultsController extends Controller {
 						->where('f.id', '=', $id)->limit(1)->get();
 		$facility = $facility[0];*/
 		$db = \DB::connection('direct_db');
-		$sql = "select facility, hub, district from backend_facilities f, 
+		$sql = "select facility, hub, district from backend_facilities f
 				left join backend_hubs h on f.hub_id=h.id
 				left join backend_districts d on f.district_id=d.id
 				where f.id=$id";
