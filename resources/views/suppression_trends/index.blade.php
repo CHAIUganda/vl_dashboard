@@ -187,22 +187,27 @@
                             <thead>
                                 <tr>
                                     <th >Patient ID</th>
+                                    <th >Sample ID</th>
                                     <th >Facility</th>
                                     <th >ART Number</th>
                                     <th >Date of Arrival at CPHL</th>
                                     <th >Results </th>
+                                    <th >Suppression Status </th>
                                     
                                 </tr>
                             </thead>
                             <tbody>                                
                                       
                               <tr ng-repeat="validPatientResults_object in validPatientResults" >
-                              
-                                  <td class="ng-cloak"><% validPatientResults_object.patientID %></td>
-                                  <td class="ng-cloak"><% validPatientResults_object.facility %></td>
-                                  <td class="ng-cloak"><% validPatientResults_object.artNumber %></td>
-                                  <td class="ng-cloak"><% validPatientResults_object.datesArrivedAtCPHL %></td>
-                                  <td class="ng-cloak"><% validPatientResults_object.results %></td>
+                            
+
+                                  <td class="ng-cloak"><% validPatientResults_object.patient_unique_id %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.vl_sample_id %></td>
+                                  <td class="ng-cloak"><% labels.facilities_details[validPatientResults_object.facility_id].dhis2_name %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.art_number %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.date_received %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.alpha_numeric_result %></td>
+                                  <td class="ng-cloak"><% labels.suppression[validPatientResults_object.suppression_status] %></td>
                               </tr>                 
                              </tbody>
                         </table>
@@ -214,21 +219,25 @@
                             <thead>
                                 <tr>
                                     <th >Patient ID</th>
+                                    <th >Sample ID</th>
                                     <th >Facility</th>
                                     <th >ART Number</th>
                                     <th >Date of Arrival at CPHL</th>
                                     <th >Results </th>
+                                    <th >Suppression Status </th>
                                     
                                 </tr>
                             </thead>
                             <tbody>                                
                               <tr ng-repeat="allPatientsResults_object in allPatientsResults" >
                               
-                                  <td class="ng-cloak"><% allPatientsResults_object.patientID %></td>
-                                  <td class="ng-cloak"><% allPatientsResults_object.facility %></td>
-                                  <td class="ng-cloak"><% allPatientsResults_object.artNumber %></td>
-                                  <td class="ng-cloak"><% allPatientsResults_object.datesArrivedAtCPHL %></td>
-                                  <td class="ng-cloak"><% allPatientsResults_object.results %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.patient_unique_id %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.vl_sample_id %></td>
+                                  <td class="ng-cloak"><% labels.facilities_details[allPatientsResults_object.facility_id].dhis2_name %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.art_number %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.date_received %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.alpha_numeric_result %></td>
+                                  <td class="ng-cloak"><% labels.suppression[allPatientsResults_object.suppression_status] %></td>
                               
                           </tr>           
                              </tbody>
