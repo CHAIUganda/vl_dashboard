@@ -363,7 +363,8 @@ class ResultsController extends Controller {
 				            "tested" =>"yes",
 				            "year_month" => array('$gte' => intval($fromyear), '$lte' => intval($toyear))
 				        )
-				    )
+				    ),
+				    
 				);
          Log::info(".....its a hub.....");
 		}elseif(!empty(\Auth::user()->facility_id) && \Auth::user()->facility_id > 0 ){
@@ -376,6 +377,7 @@ class ResultsController extends Controller {
 				            "year_month" => array('$gte' => intval($fromyear), '$lte' => intval($toyear))
 				        )
 				    )
+
 				);
 			Log::info(".....its a facility.....");
 		}
@@ -392,7 +394,7 @@ class ResultsController extends Controller {
 		
         $res=$this->mongo->dashboard_new_backend->find($condition_statement);
         
-	    
+	    $res = $res->sort(array('patient_unique_id'=>1));
 	    $all_patient_results = array();
         
         foreach ($res as $key => $value) {
