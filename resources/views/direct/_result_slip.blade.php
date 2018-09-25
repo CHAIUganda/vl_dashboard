@@ -230,7 +230,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 		<div style="width:100%;float:left; margin-top:15px;" >
 			<?php if ($rejected!=1){ ?>
 			<div style="width:15%;float:left">
-				Lab Technologist: 
+				Tested by: 
 			</div>
 			<div style="width:15%;float:left">
 				<img src= "{{ $signature_img }}" height="50" width="100">
@@ -238,7 +238,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 			</div>
 			<?php } ?>
 			<div style="width:10%;float:left">
-				Lab Manager: 
+				Approved by: 
 			</div>
 			<div style="width:15%;float:left">
 				<img src="{{ MyHTML::getImageData('images/signatures/signature.14.gif') }}" height="50" width="100">
