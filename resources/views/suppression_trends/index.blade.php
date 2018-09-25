@@ -123,16 +123,16 @@
                       </thead>
                       <tbody>                                
                           <tr ng-repeat="previouslyNScurrentlyNS_object in previouslyNScurrentlyNS" >
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.patientID %></td>
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.facility %></td>
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.artNumber %></td>
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.previousCollectionDate %></td>
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.prevoiusReceiptDate %></td>
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.previousResults %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.patient_id %></td>
+                              <td class="ng-cloak"><% labels.facilities_details[previouslyNScurrentlyNS_object.facility_id] %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.art_number %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.previous_collection_date %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.prevoius_receipt_date %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.previous_alpha_numeric_result %></td>
 
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.currentCollectionDate %></td>
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.currentReceiptDate %></td>
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.currentResults %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_collection_date %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_receipt_date %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_alpha_numeric_result %></td>
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.phone %></td>
                           </tr>                        
                        </tbody>
@@ -159,17 +159,17 @@
                       </thead>
                       <tbody>                                
                           <tr ng-repeat="previouslyScurrentlyNS_object in previouslyScurrentlyNS" >
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.patientID %></td>
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.facility %></td>
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.artNumber %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.patient_id %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.facility_id %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.art_number %></td>
 
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.previousCollectionDate %></td>
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.prevoiusReceiptDate %></td>
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.previousResults %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.previous_collection_date %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.prevoius_receipt_date %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.previous_alpha_numeric_result %></td>
 
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.currentCollectionDate %></td>
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.currentReceiptDate %></td>
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.currentResults %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_collection_date %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_receipt_date %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_alpha_numeric_result %></td>
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.phone %></td>
                           </tr>                        
                        </tbody>

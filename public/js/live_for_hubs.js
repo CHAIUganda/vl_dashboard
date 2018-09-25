@@ -8,8 +8,10 @@ Logan Smith                 CHAI    2015(v1)    Interface Design, Q/A
 Lena Derisavifard           CHAI    2015(v1)    Req Specification, Q/A, UAT
 Kitutu Paul                 CHAI    2015(v1)    System development
 Sam Otim                    CHAI    2015(v1)    System development
+Simon Peter Muwanga         METS    2016(v2)    System Development
 
-Credit to CHAI Uganda, CPHL and stakholders
+
+Credit to CHAI Uganda,METS Program-School of Public Health Makerere University, CPHL and stakholders
 */
     
 
@@ -143,7 +145,7 @@ ctrllers.DashController = function($scope,$http){
         };//end for loop
         return clean_results;
     };
-     var convertStringIntoDate=function(date_string){
+    var convertStringIntoDate=function(date_string){
         var date_array=date_string.split("-");
 
         var year=date_array[0];
@@ -153,7 +155,7 @@ ctrllers.DashController = function($scope,$http){
         var new_date = new Date(year,month,day);
         return new_date;
     };
-    var compareDates =function(a,b){
+    var compareDates =function(a,b){//getTime() returns numberOfMilliSeconds from 1970
         if(a.getTime() == b.getTime()){
             return 0;
         }else if(a.getTime() > b.getTime()){
@@ -169,7 +171,17 @@ ctrllers.DashController = function($scope,$http){
         var year_month_string = dummy_string.split("");
         var year_string=""+year_month_string[0]+""+year_month_string[1]+""+year_month_string[2]+""+year_month_string[3];
         var month_string=""+year_month_string[4]+""+year_month_string[5];
-        var day_string="1";
+        var day_string="01";
+        var date_string=year_string+"-"+month_string+"-"+day_string;
+        return date_string;
+    };
+    var convertYearMonthIntoCustomDateString=function(year_month,day){
+
+        var dummy_string=""+year_month;
+        var year_month_string = dummy_string.split("");
+        var year_string=""+year_month_string[0]+""+year_month_string[1]+""+year_month_string[2]+""+year_month_string[3];
+        var month_string=""+year_month_string[4]+""+year_month_string[5];
+        var day_string=""+day;
         var date_string=year_string+"-"+month_string+"-"+day_string;
         return date_string;
     };
@@ -418,6 +430,109 @@ ctrllers.DashController = function($scope,$http){
          return sorted_patient_records;
     };
 
+    var sortPatientRecordsWithMostRecentTests = function(tests_of_patient){
+        var sorted_tests_of_patient=[];
+        var dummy_test=null;
+        dummy_test = tests_of_patient[0];
+        var last_index = tests_of_patient.length - 1;
+        for (var i = 1; i < tests_of_patient.length; i++){
+            var current_test = tests_of_patient[i];
+            var current_date = convertStringIntoDate(current_test.date_collected);
+            var dummy_date = convertStringIntoDate(dummy_test.date_collected);
+
+            var comparison_result_flag = compareDates(dummy_date,current_date);
+            if(comparison_result_flag == 1){//Dummy_date is the longest date from 1970, ... it is the latest
+                sorted_tests_of_patient.push(dummy_test);
+                dummy_test = current_test;
+            }else if(comparison_result_flag == -1){//current date is the latest.
+                sorted_tests_of_patient.push(current_test);
+
+            }//end if else
+
+            if(comparison_result_flag == 1 && i ==last_index){
+                sorted_tests_of_patient.push(dummy_test);
+            }else if(comparison_result_flag == -1 && i ==last_index){
+                sorted_tests_of_patient.push(current_test);
+            }
+        }//end for loop
+
+        return sorted_tests_of_patient;
+    };
+
+    var getTwoMostRecentTestsForAllPatients = function(valid_patient_results){
+        var all_patients_two_most_recent_tests_array=[];
+        var dummy_patient_array=[];
+        var dummy_patient_record=null;
+
+        if(valid_patient_results.length > 0)
+            dummy_patient_record = valid_patient_results[0];
+
+        for (var i = 0; i < valid_patient_results.length; i++){
+
+            var current_record = valid_patient_results[i];
+            if(current_record.patient_unique_id == dummy_patient_record.patient_unique_id){
+                //if collection date is empty, use year_month
+
+                if(current_record.date_collected == null){
+                    var collection_date_string = convertYearMonthIntoDateString(current_record.year_month);
+                    current_record.date_collected = collection_date_string;
+                    current_record.date_received = convertYearMonthIntoCustomDateString(current_record.year_month,"15");
+                }
+                
+                dummy_patient_array.push(current_record);
+            }else if(current_record.patient_unique_id != dummy_patient_record.patient_unique_id){
+                //process dummy_patient_array: 
+                //sort the array by date of collection, pick the top two dates, create the suppression_trend object
+                if(dummy_patient_array.length <2){
+                    dummy_patient_array=[];
+                    dummy_patient_record=current_record;
+                    continue;
+                }
+                    
+                var sorted_tests_of_patient=[];
+                sorted_tests_of_patient = sortPatientRecordsWithMostRecentTests(dummy_patient_array);
+
+                var recent_test_object=sorted_tests_of_patient[0];
+                var previous_test_object=sorted_tests_of_patient[1];
+
+                
+
+                var two_most_recent_tests_object = {
+                    "patient_id":dummy_patient_record.patient_unique_id,
+                    "facility_id":dummy_patient_record.facility_id,
+                    "art_number":dummy_patient_record.art_number,
+                    "patient_unique_id":dummy_patient_record.patient_unique_id,
+
+                    "previous_collection_date":previous_test_object.date_collected,
+                    "prevoius_receipt_date":previous_test_object.date_received,
+                    "previous_alpha_numeric_result":previous_test_object.alpha_numeric_result,
+                    "previous_suppression_status":previous_test_object.suppression_status,
+
+                    "recent_collection_date":recent_test_object.date_collected,
+                    "recent_receipt_date":recent_test_object.date_received,
+                    "recent_alpha_numeric_result":recent_test_object.alpha_numeric_result,
+                    "recent_suppression_status":recent_test_object.suppression_status,
+                    "phone": dummy_patient_record.phone
+
+                };
+
+                all_patients_two_most_recent_tests_array.push(two_most_recent_tests_object)
+                dummy_patient_array=[];
+                
+                //reset dummy_patient_record to current
+                dummy_patient_record=current_record;
+            }
+
+        }//end For Loop
+
+        return all_patients_two_most_recent_tests_array;
+
+    };
+
+    var getPreviouslyNScurrentlyNS = function(sorted_patient_records){
+
+    };
+
     var getSuppressionTrend = function(sorted_patient_records){
         var suppression_trend = null;
         var previouslyNotSuppressing = 0;
@@ -431,15 +546,15 @@ ctrllers.DashController = function($scope,$http){
 
         for (var i = 0; i < sorted_patient_records.length; i++) {
             var sorted_patient_records_object = sorted_patient_records[i];
-            if(sorted_patient_records_object.previousStatus == "notSuppressed"){
+            if(sorted_patient_records_object.previous_suppression_status == "no"){
                 previouslyNotSuppressing ++;
-                if(sorted_patient_records_object.currentStatus == "notSuppressed"){
+                if(sorted_patient_records_object.recent_suppression_status == "yes"){
                     previouslyNotSuppressingCurrentlyNotSuppressing ++;
                     previouslyNScurrentlyNS.push(sorted_patient_records_object);
                 }
-            }else if(sorted_patient_records_object.previousStatus == "suppressed"){
+            }else if(sorted_patient_records_object.previous_suppression_status == "no"){
                 previouslySuppressing++;
-                if(sorted_patient_records_object.currentStatus == "notSuppressed"){
+                if(sorted_patient_records_object.recent_suppression_status == "yes"){
                     previouslySuppressingCurrentlyNotSuppressing ++;
 
                     previouslyScurrentlyNS.push(sorted_patient_records_object);
@@ -686,7 +801,8 @@ ctrllers.DashController = function($scope,$http){
                     "date_collected":clean_results_object.date_collected,
                     "date_received":clean_results_object.date_received,
                     "art_number":clean_results_object.art_number,
-                    "phone":clean_results_object.phone_number
+                    "phone":clean_results_object.phone_number,
+                    "year_month":clean_results_object.year_month
                 };
                 patients_with_valid_results.push(valid_patient_record);
             }//end for loop
@@ -1004,31 +1120,35 @@ ctrllers.DashController = function($scope,$http){
                 //4. generate one row for each patient showing Prev[result, date of collection, receipt date] and Recent Result
                 var sorted_patient_records =null;
                 
+                
+
+                var valid_patient_results = getValidPatientResults(data.all_patient_results);
+                $scope.validPatientResults = valid_patient_results;
+
+
+
+
+                var all_patients_two_most_recent_tests_array =getTwoMostRecentTestsForAllPatients(valid_patient_results);
+                
+
                 //calculate those
-                var suppression_trend =null;
-
-                //VPatients
-                //var valid_patient_results = getValidPatients();
-
-                //APatients
-                //var all_patient_results = getAllPatientsResults(patients_with_more_results);
-
-                //rejections
-                //var patients_with_invalid_results = getPatientsWithInvalidResults(clean_results);
-
-                $scope.previouslyNonSuppressingCurrentlyNotSuppressing=null;//suppression_trend.previouslyNotSuppressingCurrentlyNotSuppressing;
-                $scope.previouslyNonSuppressingCurrentlySuppressing=null;//suppression_trend.previouslyNotSuppressing - suppression_trend.previouslyNotSuppressingCurrentlyNotSuppressing;
-                $scope.previouslyNotSuppressing = null;//suppression_trend.previouslyNotSuppressing;
-
-                $scope.previouslySuppressingCurrentlyNotSuppressing =null;// suppression_trend.previouslySuppressingCurrentlyNotSuppressing;
-                $scope.previouslySuppressingCurrentlySuppressing = null;//suppression_trend.previouslySuppressing - suppression_trend.previouslySuppressingCurrentlyNotSuppressing;
-                $scope.previouslySuppressing =null;// suppression_trend.previouslySuppressing;
-
-                $scope.previouslyNScurrentlyNS = null;//suppression_trend.previouslyNScurrentlyNS;
-                $scope.previouslyScurrentlyNS = null;//suppression_trend.previouslyScurrentlyNS;
+                var suppression_trend =getSuppressionTrend(all_patients_two_most_recent_tests_array);
 
                 
-                $scope.validPatientResults = getValidPatientResults(data.all_patient_results);
+                $scope.previouslyNonSuppressingCurrentlyNotSuppressing=suppression_trend.previouslyNotSuppressingCurrentlyNotSuppressing;
+                $scope.previouslyNonSuppressingCurrentlySuppressing=suppression_trend.previouslyNotSuppressing - suppression_trend.previouslyNotSuppressingCurrentlyNotSuppressing;
+                $scope.previouslyNotSuppressing = suppression_trend.previouslyNotSuppressing;
+
+                $scope.previouslySuppressingCurrentlyNotSuppressing =suppression_trend.previouslySuppressingCurrentlyNotSuppressing;
+                $scope.previouslySuppressingCurrentlySuppressing = suppression_trend.previouslySuppressing - suppression_trend.previouslySuppressingCurrentlyNotSuppressing;
+                $scope.previouslySuppressing = suppression_trend.previouslySuppressing;
+
+                $scope.previouslyNScurrentlyNS = suppression_trend.previouslyNScurrentlyNS;
+                $scope.previouslyScurrentlyNS = suppression_trend.previouslyScurrentlyNS;
+
+
+
+
                 $scope.allPatientsResults = data.all_patient_results;
 
                 $scope.patientsWithRejections = getPatientsWithRejections(data.all_patient_results);

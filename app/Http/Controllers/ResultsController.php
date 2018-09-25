@@ -385,11 +385,7 @@ class ResultsController extends Controller {
         //approach two
         
 
-		Log::info("$hub,$fromyear,$toyear");
-
-		Log::info($condition_statement);
-
-		Log::info("----2-1--");
+		
 		ini_set('memory_limit','384M');
 		
         $res=$this->mongo->dashboard_new_backend->find($condition_statement);
@@ -400,7 +396,7 @@ class ResultsController extends Controller {
         foreach ($res as $key => $value) {
         	array_push($all_patient_results, $value);
         }
-        Log::info("----2-3--");
+      
 		return $all_patient_results;
 	}
 	private function addSixMonths($to_date){
