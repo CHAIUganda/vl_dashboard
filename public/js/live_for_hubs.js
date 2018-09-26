@@ -8,9 +8,13 @@ Logan Smith                 CHAI    2015(v1)    Interface Design, Q/A
 Lena Derisavifard           CHAI    2015(v1)    Req Specification, Q/A, UAT
 Kitutu Paul                 CHAI    2015(v1)    System development
 Sam Otim                    CHAI    2015(v1)    System development
+Simon Peter Muwanga         METS    2016(v2)    System Development
 
-Credit to CHAI Uganda, CPHL and stakholders
+
+Credit to CHAI Uganda,METS Program-School of Public Health Makerere University, CPHL and stakholders
 */
+    
+
 var $injector = angular.injector();
 
 var app=angular.module('dashboard', ['datatables','ngSanitize', 'ngCsv'], function($interpolateProvider) {
@@ -73,69 +77,149 @@ ctrllers.DashController = function($scope,$http){
     $scope.labels.genders = genders_json;
     $scope.labels.lines = lines_json;
     $scope.labels.districts = [];
-    $scope.labels.facilities = [];
+ 
+    $scope.labels.facilities_details=[];
     $scope.labels.regimens = [];
     $scope.labels.regimens2 = [];
     $scope.labels.indications = t_indication_json;
 
+    $scope.labels.suppression={'yes':'Suppressed','no':'Not Suppressed'};
     var vvvrrr = 0;
 
     $scope.districts2 = [];
-    $scope.hubs2 = [];
+    $scope.hubs = []
     $scope.age_group_slct = age_group_json;
 
 
-    
-    var removeDuplicates = function(patient_results){
+
+    /*
+    * gets the latest lab tests for all patients
+    */
+    var getTheLatestTests = function(patient_results){
         var clean_results =[];
-        for (var i = 0; i < patient_results.length; i++) {
-            var patient_results_object = patient_results[i];
-            var clean_results_object = null;
-            if (i== 0) {
-                clean_results_object = {
-                "patientID":patient_results_object.patientID,
-                "vlSampleID":patient_results_object.vlSampleID,
-                "created":patient_results_object.created,
-                "patientUniqueID":patient_results_object.patientUniqueID,
-                "result":patient_results_object.result,
-                "hub":patient_results_object.hub,
-                "facility":patient_results_object.facility,
-                "collectionDate":patient_results_object.collectionDate,
-                "receiptDate":patient_results_object.receiptDate,
-                "artNumber":patient_results_object.artNumber,
-                "phone":patient_results_object.phone};
-
-                clean_results.push(clean_results_object);
-            }else if(i > 0){
-                var previous_index = i - 1;
-                var previous_patient_results_object = patient_results[previous_index];
-                if( 
-                    previous_patient_results_object.vlSampleID != patient_results_object.vlSampleID){
-                        clean_results_object = {
-                            "patientID":patient_results_object.patientID,
-                            "vlSampleID":patient_results_object.vlSampleID,
-                            "created":patient_results_object.created,
-                            "patientUniqueID":patient_results_object.patientUniqueID,
-                            "result":patient_results_object.result,
-                            "hub":patient_results_object.hub,
-                            "facility":patient_results_object.facility,
-                            "collectionDate":patient_results_object.collectionDate,
-                            "receiptDate":patient_results_object.receiptDate,
-                            "artNumber":patient_results_object.artNumber,
-                            "phone":patient_results_object.phone
-                        };
-
-                        clean_results.push(clean_results_object);
-
-                }
-            }//end else if
+        var temporary_patient_samples=[];
+        for (var i = 1; i < patient_results.length; i++) {
             
+           
+
+            var previous_index = i - 1;
+            var current_index=i;
+            var next_index= i+1;
+            var last_index=patient_results.length - 1;
+
+            var current_patient_results_object = patient_results[i];
+            var previous_patient_results_object = patient_results[previous_index];
+            var next_patient_results_object=null;
+           
+
+            if(next_index < last_index){//initialise next_patient_object
+                next_patient_results_object = patient_results[next_index];
+            }
+
+            if(previous_patient_results_object.patient_unique_id==current_patient_results_object.patient_unique_id){
+                temporary_patient_samples.push(previous_patient_results_object);
+            }else if(current_index == last_index && 
+                previous_patient_results_object.patient_unique_id==current_patient_results_object.patient_unique_id){
+                temporary_patient_samples.push(current_patient_results_object);
+                var latest_patient_sample_record=getLatestPatientSampleRecord(temporary_patient_samples);
+                clean_results.push(latest_patient_sample_record);
+            }else if(previous_patient_results_object.patient_unique_id != current_patient_results_object.patient_unique_id){
+                if(temporary_patient_samples.length > 1){
+                    var latest_patient_sample_record=getLatestPatientSampleRecord(temporary_patient_samples);
+                    clean_results.push(latest_patient_sample_record);
+                    temporary_patient_samples=[];
+                }else if(temporary_patient_samples.length == 0){
+                    clean_results.push(current_patient_results_object);
+                }
+            }else if(previous_index ==0 &&
+                previous_patient_results_object.patient_unique_id != current_patient_results_object.patient_unique_id){
+                clean_results.push(previous_patient_results_object);
+            }else if( previous_patient_results_object.patient_unique_id != current_patient_results_object.patient_unique_id
+                && next_patient_results_object.patient_unique_id == current_patient_results_object.patient_unique_id
+                && next_index < last_index
+                ){//this can be remove to only get people who are testing for the first time in this period of time/year/month
+                clean_results.push(current_patient_results_object);
+            }
             
             
         };//end for loop
         return clean_results;
     };
+    var convertStringIntoDate=function(date_string){
+        var date_array=date_string.split("-");
 
+        var year=date_array[0];
+        var month=date_array[1] - 1;
+        var day=date_array[2];
+
+        var new_date = new Date(year,month,day);
+        return new_date;
+    };
+    var compareDates =function(a,b){//getTime() returns numberOfMilliSeconds from 1970
+        if(a.getTime() == b.getTime()){
+            return 0;
+        }else if(a.getTime() > b.getTime()){
+            return 1;
+        }else if(a.getTime() < b.getTime()){
+            return -1;
+        }
+
+    };
+    var convertYearMonthIntoDateString=function(year_month){
+
+        var dummy_string=""+year_month;
+        var year_month_string = dummy_string.split("");
+        var year_string=""+year_month_string[0]+""+year_month_string[1]+""+year_month_string[2]+""+year_month_string[3];
+        var month_string=""+year_month_string[4]+""+year_month_string[5];
+        var day_string="01";
+        var date_string=year_string+"-"+month_string+"-"+day_string;
+        return date_string;
+    };
+    var convertYearMonthIntoCustomDateString=function(year_month,day){
+
+        var dummy_string=""+year_month;
+        var year_month_string = dummy_string.split("");
+        var year_string=""+year_month_string[0]+""+year_month_string[1]+""+year_month_string[2]+""+year_month_string[3];
+        var month_string=""+year_month_string[4]+""+year_month_string[5];
+        var day_string=""+day;
+        var date_string=year_string+"-"+month_string+"-"+day_string;
+        return date_string;
+    };
+    var getLatestPatientSampleRecord = function(sample_records_of_one_patient){
+        var latest_sample_record=null;
+        for (var i = 0; i < sample_records_of_one_patient.length; i++) {
+            if(i == 0){
+                latest_sample_record=sample_records_of_one_patient[i];
+            }
+      
+            //use year_month in case date_collected is not yet created in the object
+            if (!latest_sample_record.hasOwnProperty('date_collected')){
+                latest_sample_record.date_collected=convertYearMonthIntoDateString(latest_sample_record.year_month);
+            }
+
+            var latest_date=convertStringIntoDate(latest_sample_record.date_collected);
+
+
+            var current_sample_record = sample_records_of_one_patient[i];
+            if (!current_sample_record.hasOwnProperty('date_collected')){
+                current_sample_record.date_collected=convertYearMonthIntoDateString(current_sample_record.year_month);
+            }
+            var current_date = convertStringIntoDate(current_sample_record.date_collected);
+            
+            // -1 if a < b, 
+            // 0 if a = b,
+            // 1 if a > b, 
+            // NaN if a or b is an illegal date
+            var date_flag=compareDates(latest_date,current_date);
+            if(date_flag == -1){
+                latest_sample_record=current_sample_record;
+            }
+
+        }
+
+        return latest_sample_record;
+    };
+   
     var getUniformResults = function(result){
         //var returnString = null;
         var returnString = "rejected";
@@ -346,6 +430,109 @@ ctrllers.DashController = function($scope,$http){
          return sorted_patient_records;
     };
 
+    var sortPatientRecordsWithMostRecentTests = function(tests_of_patient){
+        var sorted_tests_of_patient=[];
+        var dummy_test=null;
+        dummy_test = tests_of_patient[0];
+        var last_index = tests_of_patient.length - 1;
+        for (var i = 1; i < tests_of_patient.length; i++){
+            var current_test = tests_of_patient[i];
+            var current_date = convertStringIntoDate(current_test.date_collected);
+            var dummy_date = convertStringIntoDate(dummy_test.date_collected);
+
+            var comparison_result_flag = compareDates(dummy_date,current_date);
+            if(comparison_result_flag == 1){//Dummy_date is the longest date from 1970, ... it is the latest
+                sorted_tests_of_patient.push(dummy_test);
+                dummy_test = current_test;
+            }else if(comparison_result_flag == -1){//current date is the latest.
+                sorted_tests_of_patient.push(current_test);
+
+            }//end if else
+
+            if(comparison_result_flag == 1 && i ==last_index){
+                sorted_tests_of_patient.push(dummy_test);
+            }else if(comparison_result_flag == -1 && i ==last_index){
+                sorted_tests_of_patient.push(current_test);
+            }
+        }//end for loop
+
+        return sorted_tests_of_patient;
+    };
+
+    var getTwoMostRecentTestsForAllPatients = function(valid_patient_results){
+        var all_patients_two_most_recent_tests_array=[];
+        var dummy_patient_array=[];
+        var dummy_patient_record=null;
+
+        if(valid_patient_results.length > 0)
+            dummy_patient_record = valid_patient_results[0];
+
+        for (var i = 0; i < valid_patient_results.length; i++){
+
+            var current_record = valid_patient_results[i];
+            if(current_record.patient_unique_id == dummy_patient_record.patient_unique_id){
+                //if collection date is empty, use year_month
+
+                if(current_record.date_collected == null){
+                    var collection_date_string = convertYearMonthIntoDateString(current_record.year_month);
+                    current_record.date_collected = collection_date_string;
+                    current_record.date_received = convertYearMonthIntoCustomDateString(current_record.year_month,"15");
+                }
+                
+                dummy_patient_array.push(current_record);
+            }else if(current_record.patient_unique_id != dummy_patient_record.patient_unique_id){
+                //process dummy_patient_array: 
+                //sort the array by date of collection, pick the top two dates, create the suppression_trend object
+                if(dummy_patient_array.length <2){
+                    dummy_patient_array=[];
+                    dummy_patient_record=current_record;
+                    continue;
+                }
+                    
+                var sorted_tests_of_patient=[];
+                sorted_tests_of_patient = sortPatientRecordsWithMostRecentTests(dummy_patient_array);
+
+                var recent_test_object=sorted_tests_of_patient[0];
+                var previous_test_object=sorted_tests_of_patient[1];
+
+                
+
+                var two_most_recent_tests_object = {
+                    "patient_id":dummy_patient_record.patient_unique_id,
+                    "facility_id":dummy_patient_record.facility_id,
+                    "art_number":dummy_patient_record.art_number,
+                    "patient_unique_id":dummy_patient_record.patient_unique_id,
+
+                    "previous_collection_date":previous_test_object.date_collected,
+                    "prevoius_receipt_date":previous_test_object.date_received,
+                    "previous_alpha_numeric_result":previous_test_object.alpha_numeric_result,
+                    "previous_suppression_status":previous_test_object.suppression_status,
+
+                    "recent_collection_date":recent_test_object.date_collected,
+                    "recent_receipt_date":recent_test_object.date_received,
+                    "recent_alpha_numeric_result":recent_test_object.alpha_numeric_result,
+                    "recent_suppression_status":recent_test_object.suppression_status,
+                    "phone": dummy_patient_record.phone
+
+                };
+
+                all_patients_two_most_recent_tests_array.push(two_most_recent_tests_object)
+                dummy_patient_array=[];
+                
+                //reset dummy_patient_record to current
+                dummy_patient_record=current_record;
+            }
+
+        }//end For Loop
+
+        return all_patients_two_most_recent_tests_array;
+
+    };
+
+    var getPreviouslyNScurrentlyNS = function(sorted_patient_records){
+
+    };
+
     var getSuppressionTrend = function(sorted_patient_records){
         var suppression_trend = null;
         var previouslyNotSuppressing = 0;
@@ -359,15 +546,15 @@ ctrllers.DashController = function($scope,$http){
 
         for (var i = 0; i < sorted_patient_records.length; i++) {
             var sorted_patient_records_object = sorted_patient_records[i];
-            if(sorted_patient_records_object.previousStatus == "notSuppressed"){
+            if(sorted_patient_records_object.previous_suppression_status == "no"){
                 previouslyNotSuppressing ++;
-                if(sorted_patient_records_object.currentStatus == "notSuppressed"){
+                if(sorted_patient_records_object.recent_suppression_status == "yes"){
                     previouslyNotSuppressingCurrentlyNotSuppressing ++;
                     previouslyNScurrentlyNS.push(sorted_patient_records_object);
                 }
-            }else if(sorted_patient_records_object.previousStatus == "suppressed"){
+            }else if(sorted_patient_records_object.previous_suppression_status == "no"){
                 previouslySuppressing++;
-                if(sorted_patient_records_object.currentStatus == "notSuppressed"){
+                if(sorted_patient_records_object.recent_suppression_status == "yes"){
                     previouslySuppressingCurrentlyNotSuppressing ++;
 
                     previouslyScurrentlyNS.push(sorted_patient_records_object);
@@ -595,211 +782,63 @@ ctrllers.DashController = function($scope,$http){
         return patients_with_more_results_and_no_rejections;
     };
     var getValidPatientResults = function(patients_with_more_results){
-        var valid_patient_results =[];
-        var sorted_patient_records_object = null;
-        var dummy_receipt_dates = "";
-        var dummy_results = "";
-        var test ="";
+        var patients_with_valid_results = [];
+        
+
         var array_size = patients_with_more_results.length;
         for (var i = 0; i< array_size; i++) {
-            var current_record = patients_with_more_results[i];
-
-            var next_index = i + 1;
-            var next_record = null;
-
-            var second_next_index = i + 2;
-            var second_next_record = null;
-
-            var third_next_index = i + 3;
-            var third_next_record = null;
-
-            var fourth_next_index = i + 4; 
-            var fourth_next_record = null;
+            var clean_results_object = patients_with_more_results[i];
             
-            //check last four records
-            if(fourth_next_index < array_size){
-                fourth_next_record = patients_with_more_results[fourth_next_index];
-                third_next_record =  patients_with_more_results[third_next_index];
-                second_next_record = patients_with_more_results[second_next_index];
-                next_record = patients_with_more_results[next_index];
+            if(clean_results_object.sample_result_validity=='valid'){
+                valid_patient_record = {
+                    "vl_sample_id":clean_results_object.vl_sample_id,
+                    "created":clean_results_object.date_created,
+                    "patient_unique_id":clean_results_object.patient_unique_id,
+                    "alpha_numeric_result":clean_results_object.alpha_numeric_result,
+                    "suppression_status":clean_results_object.suppression_status,
+                    "hub_id":clean_results_object.hub_id,
+                    "facility_id":clean_results_object.facility_id,
+                    "date_collected":clean_results_object.date_collected,
+                    "date_received":clean_results_object.date_received,
+                    "art_number":clean_results_object.art_number,
+                    "phone":clean_results_object.phone_number,
+                    "year_month":clean_results_object.year_month
+                };
+                patients_with_valid_results.push(valid_patient_record);
+            }//end for loop
+        }
 
-                if(fourth_next_record.patientID == current_record.patientID){
-
-                    if(current_record.status == "suppressed" || current_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+current_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
-                    }
-                    if(current_record.status == "suppressed" || next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
-                    }
-                    
-                    if(second_next_record.status == "suppressed" || second_next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+second_next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
-                    }
-                    if(third_next_record.status == "suppressed" || third_next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+third_next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+third_next_record.receiptDate;
-                    }
-                    
-                    if(third_next_record.status == "suppressed" || third_next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+fourth_next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+fourth_next_record.receiptDate;
-                    }
-                    
-
-                    
-                    
-
-                    //construct object to push
-                    var patient_id = current_record.patientUniqueID;
-                    sorted_patient_records_object = {
-                        "patientID":patient_id,
-                        "patientUniqueID":current_record.patientUniqueID,
-                        "hub":current_record.hub,
-                        "facility":current_record.facility,
-                        "artNumber":current_record.artNumber,
-                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
-                        
-                        "results": dummy_results.substr(1)
-                    };
-                     //push object to array
-                    valid_patient_results.push(sorted_patient_records_object);
-                    dummy_receipt_dates = "";
-                    dummy_results = "";
-                    sorted_patient_records_object = null;
-                    i=i+4;
-                    continue;
-                }
-
-            }
-            //check last three records
-            if (third_next_index  < array_size) {
-                third_next_record = patients_with_more_results[third_next_index];
-                second_next_record = patients_with_more_results[second_next_index];
-                next_record = patients_with_more_results[next_index];
-
-                if(third_next_record.patientID == current_record.patientID){
-                    
-                    if(current_record.status == "suppressed" || current_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+current_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
-                    }
-                    if(current_record.status == "suppressed" || next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
-                    }
-                    
-                    if(second_next_record.status == "suppressed" || second_next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+second_next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
-                    }
-                    if(third_next_record.status == "suppressed" || third_next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+third_next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+third_next_record.receiptDate;
-                    }
-
-                    //construct object to push
-                    var patient_id = current_record.patientUniqueID;
-                    sorted_patient_records_object = {
-                        "patientID":patient_id,
-                        "patientUniqueID":current_record.patientUniqueID,
-                        "hub":current_record.hub,
-                        "facility":current_record.facility,
-                        "artNumber":current_record.artNumber,
-                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
-                        "results": dummy_results.substr(1)
-                    };
-                     //push object to array
-                    valid_patient_results.push(sorted_patient_records_object);
-                    dummy_receipt_dates = "";
-                    dummy_results = "";
-                    sorted_patient_records_object = null;
-                    i=i+3;
-                    continue;
-                }
-            } 
-            //check last two records
-            if(second_next_index < array_size){
-                second_next_record = patients_with_more_results[second_next_index];
-                next_record = patients_with_more_results[next_index];
-
-                if(second_next_record.patientID == current_record.patientID){
-                    if(current_record.status == "suppressed" || current_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+current_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
-                    }
-                    if(current_record.status == "suppressed" || next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
-                    }
-                    
-                    if(second_next_record.status == "suppressed" || second_next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+second_next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+second_next_record.receiptDate;
-                    }
-                    
-
-                    //construct object to push
-                    var patient_id = current_record.patientUniqueID;
-                    sorted_patient_records_object = {
-                        "patientID":patient_id,
-                        "patientUniqueID":current_record.patientUniqueID,
-                        "hub":current_record.hub,
-                        "facility":current_record.facility,
-                        "artNumber":current_record.artNumber,
-                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
-                        "results": dummy_results.substr(1)
-                    };
-                     //push object to array
-                    valid_patient_results.push(sorted_patient_records_object);
-                    dummy_receipt_dates = "";
-                    dummy_results = "";
-                    patient_records_object = null;
-                    i=i+2;
-                    continue;
-                }
-            }
-            //check last record
-             if(next_index < array_size){
-                next_record = patients_with_more_results[next_index];
-                if(next_record.patient_id == current_record.patient_id){
-                    if(current_record.status == "suppressed" || current_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+current_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+current_record.receiptDate;
-                    }
-                    if(current_record.status == "suppressed" || next_record.status == "notSuppressed"){
-                        dummy_results = dummy_results +'\&'+next_record.status;
-                        dummy_receipt_dates = dummy_receipt_dates +'\&'+next_record.receiptDate;
-                    }
-                    
-                    //construct object to push
-                    var patient_id = current_record.patientUniqueID;
-                    sorted_patient_records_object = {
-                        "patientID":patient_id,
-                        "patientUniqueID":current_record.patientUniqueID,
-                        "hub":current_record.hub,
-                        "facility":current_record.facility,
-                        "artNumber":current_record.artNumber,
-                        "datesArrivedAtCPHL":dummy_receipt_dates.substr(1),
-                        "results": dummy_results.substr(1)
-                    };
-                     //push object to array
-                    valid_patient_results.push(sorted_patient_records_object);
-                    dummy_receipt_dates = "";
-                    dummy_results = "";
-                    sorted_patient_records_object = null;
-                    i=i+1;
-
-                    continue;
-                }
-            }
-            
-        };
-         return valid_patient_results;
+        return patients_with_valid_results;
     };
+    var getPatientsWithRejections = function(clean_results){
+        var rejected_samples = [];
+        
 
+        var array_size = clean_results.length;
+        for (var i = 0; i< array_size; i++) {
+            var clean_results_object = clean_results[i];
+            
+            if(clean_results_object.rejection_reason !='UNKNOWN'){
+                rejected_sample_record = {
+                    "patientID":clean_results_object.patient_unique_id,
+                    "vl_sample_id":clean_results_object.vl_sample_id,
+                    "created":clean_results_object.date_created,
+                    "patient_unique_id":clean_results_object.patient_unique_id,
+                    "hub_id":clean_results_object.hub_id,
+                    "facility_id":clean_results_object.facility_id,
+                    "date_collected":clean_results_object.date_collected,
+                    "date_received":clean_results_object.date_received,
+                    "art_number":clean_results_object.art_number,
+                    "phone":clean_results_object.phone_number,
+                    "rejection_category":clean_results_object.rejection_category,
+                    "rejection_reason":clean_results_object.rejection_reason
+                };
+                rejected_samples.push(rejected_sample_record);
+            }//end for loop
+        }
+
+        return rejected_samples;
+    };
     var getPatientsWithInvalidResults = function(clean_results){
         var patients_with_invalid_results = [];
         
@@ -807,22 +846,21 @@ ctrllers.DashController = function($scope,$http){
         var array_size = clean_results.length;
         for (var i = 0; i< array_size; i++) {
             var clean_results_object = clean_results[i];
-            var uniformResult = getUniformResults(clean_results_object.result);
-            var invalid_patient_record = null;
-            if(clean_results_object.result != null && uniformResult == 'rejected'){
+            
+            if(clean_results_object.sample_result_validity=='valid'){
                 invalid_patient_record = {
-                    "patientID":clean_results_object.patientID,
-                    "vlSampleID":clean_results_object.vlSampleID,
-                    "created":clean_results_object.created,
-                    "patientUniqueID":clean_results_object.patientUniqueID,
-                    "result":clean_results_object.result,
-                    "status":getUniformResults(clean_results_object.result),
-                    "hub":clean_results_object.hub,
-                    "facility":clean_results_object.facility,
-                    "collectionDate":clean_results_object.collectionDate,
-                    "receiptDate":clean_results_object.receiptDate,
-                    "artNumber":clean_results_object.artNumber,
-                    "phone":clean_results_object.phone
+                    "patientID":clean_results_object.patient_unique_id,
+                    "vlSampleID":clean_results_object.vl_sample_id,
+                    "created":clean_results_object.date_created,
+                    "patient_unique_id":clean_results_object.patientUniqueID,
+                    "alpha_numeric_result":clean_results_object.alpha_numeric_result,
+                    "suppression_status":clean_results_object.suppression_status,
+                    "hub_id":clean_results_object.hub_id,
+                    "facility_id":clean_results_object.facility_id,
+                    "date_collected":clean_results_object.date_collected,
+                    "date_received":clean_results_object.date_received,
+                    "art_number":clean_results_object.art_number,
+                    "phone":clean_results_object.phone_number
                 };
                 patients_with_invalid_results.push(invalid_patient_record);
             }//end for loop
@@ -858,12 +896,12 @@ ctrllers.DashController = function($scope,$http){
     //=====End Date customization====================
     var getRecommendedRetestDate =function(collectionDate,suppressionRetestType){
         //parse string to Date
-        var collection_date_object = new Date(collectionDate);
+        var collection_date_object = convertStringIntoDate(collectionDate);
 
         var recommended_retest_date = null;
         //add 6 months if retest_not_suppressing
         if(suppressionRetestType == "retest_not_suppressing"){
-            recommended_retest_date = collection_date_object.addMonths(6);
+            recommended_retest_date = collection_date_object.addMonths(3);
         }else if(suppressionRetestType == "retest_suppressing"){//add 12 months if retest_suppressing
             recommended_retest_date = collection_date_object.addMonths(12);
         }
@@ -958,35 +996,38 @@ ctrllers.DashController = function($scope,$http){
         var retestNSPatients = [];
         var array_size = clean_results.length;
 
-         for (var i = 0; i< array_size; i++) {
+        for (var i = 0; i< array_size; i++) {
             var clean_results_object = clean_results[i];
-            var uniformResult = getUniformResults(clean_results_object.result);
             var retest_ns_patient_record = null;
 
 
-            if(clean_results_object.result != null && uniformResult == 'notSuppressed'){
+            if(clean_results_object.suppression_status == 'no'){
+                //use year_month in case date_collected is not yet created in the object
+                if (!clean_results_object.hasOwnProperty('date_collected')){
+                    clean_results_object.date_collected=convertYearMonthIntoDateString(clean_results_object.year_month);
+                }
+
                 var suppressionRetestType = "retest_not_suppressing";
-                var recommended_retest_date = getRecommendedRetestDate(clean_results_object.collectionDate,suppressionRetestType);
+                var recommended_retest_date = getRecommendedRetestDate(clean_results_object.date_collected,suppressionRetestType);
                 retest_ns_patient_record = {
-                    "patientID":clean_results_object.patientID,
-                    "vlSampleID":clean_results_object.vlSampleID,
+                    "patient_id":clean_results_object.patient_unique_id,
+                    "vl_sample_id":clean_results_object.vl_sample_id,
                     "created":clean_results_object.created,
-                    "patientUniqueID":clean_results_object.patientUniqueID,
-                    "result":clean_results_object.result,
-                    "status":uniformResult,
-                    "hub":clean_results_object.hub,
-                    "facility":clean_results_object.facility,
-                    "collectionDate":clean_results_object.collectionDate,
-                    "recommendedRetestDate":recommended_retest_date,
-                    "receiptDate":clean_results_object.receiptDate,
-                    "artNumber":clean_results_object.artNumber,
-                    "phone":clean_results_object.phone
+                    "patient_unique_id":clean_results_object.patient_unique_id,
+                    "alpha_numeric_result":clean_results_object.alpha_numeric_result,
+                    "suppression_status":clean_results_object.suppression_status,
+                    "hub_id":clean_results_object.hub_id,
+                    "facility_id":clean_results_object.facility_id,
+                    "date_collected":clean_results_object.date_collected,
+                    "recommended_retest_date":recommended_retest_date,
+                    "date_received":clean_results_object.date_received,
+                    "art_number":clean_results_object.art_number,
+                    "phone_number":clean_results_object.phone_number
                     
                 };
                 retestNSPatients.push(retest_ns_patient_record);
             }//end for loop
         }
-
         return retestNSPatients;
     };
 
@@ -996,27 +1037,31 @@ ctrllers.DashController = function($scope,$http){
 
          for (var i = 0; i< array_size; i++) {
             var clean_results_object = clean_results[i];
-            var uniformResult = getUniformResults(clean_results_object.result);
             var retest_suppressing_patient_record = null;
 
 
-            if(clean_results_object.result != null && uniformResult == 'suppressed'){
+            if(clean_results_object.suppression_status == 'yes'){
+                //use year_month in case date_collected is not yet created in the object
+                if (!clean_results_object.hasOwnProperty('date_collected')){
+                    clean_results_object.date_collected=convertYearMonthIntoDateString(clean_results_object.year_month);
+                }
+
                 var suppressionRetestType = "retest_suppressing";
-                var recommended_retest_date = getRecommendedRetestDate(clean_results_object.collectionDate,suppressionRetestType);
+                var recommended_retest_date = getRecommendedRetestDate(clean_results_object.date_collected,suppressionRetestType);
                 retest_suppressing_patient_record = {
-                    "patientID":clean_results_object.patientID,
-                    "vlSampleID":clean_results_object.vlSampleID,
+                    "patient_id":clean_results_object.patient_unique_id,
+                    "vl_sample_id":clean_results_object.vl_sample_id,
                     "created":clean_results_object.created,
-                    "patientUniqueID":clean_results_object.patientUniqueID,
-                    "result":clean_results_object.result,
-                    "status":uniformResult,
-                    "hub":clean_results_object.hub,
-                    "facility":clean_results_object.facility,
-                    "collectionDate":clean_results_object.collectionDate,
-                    "recommendedRetestDate":recommended_retest_date,
-                    "receiptDate":clean_results_object.receiptDate,
-                    "artNumber":clean_results_object.artNumber,
-                    "phone":clean_results_object.phone
+                    "patient_unique_id":clean_results_object.patient_unique_id,
+                    "alpha_numeric_result":clean_results_object.alpha_numeric_result,
+                    "suppression_status":clean_results_object.suppression_status,
+                    "hub_id":clean_results_object.hub_id,
+                    "facility_id":clean_results_object.facility_id,
+                    "date_collected":clean_results_object.date_collected,
+                    "recommended_retest_date":recommended_retest_date,
+                    "date_received":clean_results_object.date_received,
+                    "art_number":clean_results_object.art_number,
+                    "phone_number":clean_results_object.phone_number
                 };
                 retestSuppressingPatients.push(retest_suppressing_patient_record);
             }//end for loop
@@ -1024,6 +1069,38 @@ ctrllers.DashController = function($scope,$http){
 
         return retestSuppressingPatients;
     };
+
+    $http.get("/other_data/").success(function(data){
+        //console.log("Ehealth at chai rocks 1 "+JSON.stringify(data.facilities));
+        for(var i in data.hubs){
+            var obj = data.hubs[i];
+            $scope.hubs.push({"id":obj.id,"name":obj.name});
+        }
+
+        for(var i in data.new_hubs){
+            var obj = data.new_hubs[i];
+            
+            $scope.hubs.push({"id":obj.id,"name":obj.hub});
+        }
+
+        for(var i in data.facilities){
+            var obj = data.facilities[i];
+          
+            var facility_object = {
+                id:obj.id,
+                cphl_name:obj.name,
+                dhis2_name:obj.dhis2_name,
+                hub_id:obj.hub_id,
+                ip_id:obj.ip_id,
+                district_id:obj.district_id,
+                dhis2_uid:obj.dhis2_uid,
+                district_uid:obj.district_uid
+            };
+            $scope.labels.facilities_details[obj.id] = facility_object||"no facility";
+            
+        }
+    });
+
     var getData=function(){
             $scope.loading = true;
             var prms = {};
@@ -1034,48 +1111,52 @@ ctrllers.DashController = function($scope,$http){
             $http({method:'GET',url:"/suppression_trends/reports",params:prms}).success(function(data) {
                 
                 //1. remove duplicates
-                var clean_results = removeDuplicates(data.patient_results);
+                var clean_results = null;
                 
                 //2. remove those with One VL test
-                var patients_with_more_results = removeFirstTimeVLTesters(clean_results);
+                var patients_with_more_results = null
                 //3. add status(NS or S)
 
                 //4. generate one row for each patient showing Prev[result, date of collection, receipt date] and Recent Result
-                var sorted_patient_records = sortPatientRecords(patients_with_more_results);
+                var sorted_patient_records =null;
                 
+                
+
+                var valid_patient_results = getValidPatientResults(data.all_patient_results);
+                $scope.validPatientResults = valid_patient_results;
+
+
+
+
+                var all_patients_two_most_recent_tests_array =getTwoMostRecentTestsForAllPatients(valid_patient_results);
+                
+
                 //calculate those
-                var suppression_trend = getSuppressionTrend(sorted_patient_records);
+                var suppression_trend =getSuppressionTrend(all_patients_two_most_recent_tests_array);
 
-                //VPatients
-                //var valid_patient_results = getValidPatients();
-
-                //APatients
-                //var all_patient_results = getAllPatientsResults(patients_with_more_results);
-
-                //rejections
-                //var patients_with_invalid_results = getPatientsWithInvalidResults(clean_results);
-
+                
                 $scope.previouslyNonSuppressingCurrentlyNotSuppressing=suppression_trend.previouslyNotSuppressingCurrentlyNotSuppressing;
                 $scope.previouslyNonSuppressingCurrentlySuppressing=suppression_trend.previouslyNotSuppressing - suppression_trend.previouslyNotSuppressingCurrentlyNotSuppressing;
                 $scope.previouslyNotSuppressing = suppression_trend.previouslyNotSuppressing;
 
-                $scope.previouslySuppressingCurrentlyNotSuppressing = suppression_trend.previouslySuppressingCurrentlyNotSuppressing;
+                $scope.previouslySuppressingCurrentlyNotSuppressing =suppression_trend.previouslySuppressingCurrentlyNotSuppressing;
                 $scope.previouslySuppressingCurrentlySuppressing = suppression_trend.previouslySuppressing - suppression_trend.previouslySuppressingCurrentlyNotSuppressing;
                 $scope.previouslySuppressing = suppression_trend.previouslySuppressing;
 
                 $scope.previouslyNScurrentlyNS = suppression_trend.previouslyNScurrentlyNS;
                 $scope.previouslyScurrentlyNS = suppression_trend.previouslyScurrentlyNS;
 
-                var patients_with_more_results_and_no_rejections = removeRejections(patients_with_more_results);
-                $scope.validPatientResults = getValidPatientResults(patients_with_more_results_and_no_rejections);
-                $scope.allPatientsResults = getAllPatientsResults(patients_with_more_results);
-
-                $scope.patientsWithInvalidResults = getPatientsWithInvalidResults(clean_results);
 
 
-                //$scope.patient_retested_dates = data.patient_retested_dates;
-                $scope.retestNSPatients = getRetestNSPatients(patients_with_more_results);
-                $scope.retestSuppressingPatients = getRetestSuppressingPatients(patients_with_more_results);
+
+                $scope.allPatientsResults = data.all_patient_results;
+
+                $scope.patientsWithRejections = getPatientsWithRejections(data.all_patient_results);
+
+
+                var latest_tests=getTheLatestTests(data.all_patient_results);
+                $scope.retestNSPatients = getRetestNSPatients(latest_tests);
+                $scope.retestSuppressingPatients = getRetestSuppressingPatients(latest_tests);
 
                 $scope.filtered = $scope.date_filtered;    
                 $scope.loading = false;
@@ -1085,6 +1166,9 @@ ctrllers.DashController = function($scope,$http){
 
 
     getData();
+
+    
+
     var removeRepeatingDates=function(patient_viral_loads){
         var clean_results =[];
         var last_index = patient_viral_loads.length -1;
@@ -1444,283 +1528,6 @@ ctrllers.DashController = function($scope,$http){
         //generalFilter();
     };
 
-
-    $scope.displaySamplesRecieved=function(){       //$scope.samples_received=100000;  
-        //console.log("districts -- "+JSON.stringify($scope.labels.districts));
-        //console.log("facilities -- "+JSON.stringify($scope.labels.facilities));     
-        var data=[{"key":"DBS","values":[] },{"key":"PLASMA","values":[] }];
-
-        for(var i in $scope.duration_numbers){
-            var obj=$scope.duration_numbers[i];
-            var plasma_samples=obj.samples_received-obj.dbs_samples;
-            data[0].values.push({"x":dateFormat(obj._id),"y":Math.round(obj.dbs_samples||0)});
-            data[1].values.push({"x":dateFormat(obj._id),"y":Math.round(plasma_samples||0)});            
-        }
-
-        nv.addGraph( function(){
-            var chart = nv.models.multiBarChart().color(["#F44336","#607D8B"]);
-            if(count($scope.duration_numbers)<=8) { chart.reduceXTicks(false); }
-
-            chart.yAxis.tickFormat(d3.format(',.0d'));
-            $('#samples_received svg').html(" ");
-            d3.select('#samples_received svg').datum(data).transition().duration(500).call(chart);
-            return chart;
-        });
-    };
-
-    
-    $scope.displaySupressionRate=function(){
-        var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
-                  {"key":"VALID RESULTS","bar":true,"color": "#F44336","values":[]}];
-
-        for(var i in $scope.duration_numbers){
-            var obj=$scope.duration_numbers[i];
-            var sprsd=obj.suppressed||0;
-            var vld=obj.valid_results||0;
-            var s_rate=((sprsd/vld)||0)*100;
-            //s_rate.toPrecision(3);
-            data[0].values.push([dateFormat(obj._id),Math.round(s_rate)]);
-            data[1].values.push([dateFormat(obj._id),vld]);
-        } 
-        nv.addGraph( function() {
-            var chart = nv.models.linePlusBarChart()
-                        .margin({right: 60,})
-                        .x(function(d,i) { return i })
-                        .y(function(d,i) {return d[1] }).focusEnable(false);
-
-            chart.xAxis.tickFormat(function(d) {
-                return data[0].values[d] && data[0].values[d][0] || " ";
-            });
-            //chart.reduceXTicks(false);
-            //chart.bars.forceY([0]);
-            chart.lines.forceY([0,100]);
-            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
-
-            $('#supression_rate svg').html(" ");
-            d3.select('#supression_rate svg').datum(data).transition().duration(500).call(chart);
-            return chart;
-        });
-    }
-
-    $scope.displayRejectionRatexxxx=function(){
-            //this will hold of our main data consists of multiple chart data
-        var data = [];
-        
-        //variables to hold monthly month
-        var monthList = [];
-       
-        var sampleQualityRejectionRateList = [];
-        var incompleteFormRejectionRateList = [];
-        var eligibilityRejectionRateList = [];
-        var rejectionRateList = [];
-        var samplesRejectedList = [];
-
-           
-        for(var i in $scope.duration_numbers){
-            var duration_numbers_instance = $scope.duration_numbers[i];
-           
-            
-            monthList.push(dateFormat(duration_numbers_instance._id));
-
-            var totalRegections = duration_numbers_instance.sample_quality_rejections+duration_numbers_instance.incomplete_form_rejections
-            +duration_numbers_instance.eligibility_rejections;
-            
-            var sampleQualityRejectionRate = Math.round(((duration_numbers_instance.sample_quality_rejections/totalRegections)||0)*100);
-            sampleQualityRejectionRateList.push(sampleQualityRejectionRate);
-
-
-            var incompleteFormRejectionRate = Math.round(((duration_numbers_instance.incomplete_form_rejections/totalRegections)||0)*100);
-            incompleteFormRejectionRateList.push(incompleteFormRejectionRate);
-
-            var eligibilityRejectionRate =100-(sampleQualityRejectionRate+incompleteFormRejectionRate);
-            eligibilityRejectionRateList.push(eligibilityRejectionRate);
-
-            var rejected = totalRegections;
-            var received = duration_numbers_instance.samples_received;
-            rejectionRate = Math.round(((rejected/received)||0)*100);
-            rejectionRateList.push(rejectionRate);
-            samplesRejectedList.push(rejected);
-
-        }
-
-
-        //Array to hold each individual coordinate x and y values in json format
-        var sampleQualityRejectionRateValues = [];
-        var incompleteFormRejectionRateValues = [];
-        var eligibilityRejectionRateValues = [];
-        var rejectionRateValues = [];
-        var samplesRejectedValues = [];
-        
-        
-        //Looping the data and fetch into array
-        for(var i = 0; i < monthList.length; i++){
-          
-            
-            var xySampleQualityRejectionRate = {x:i,y:sampleQualityRejectionRateList[i]};
-            sampleQualityRejectionRateValues.push(xySampleQualityRejectionRate);
-
-            var xynIcompleteFormRejectionRate = {x:i, y:incompleteFormRejectionRateList[i]};
-            incompleteFormRejectionRateValues.push(xynIcompleteFormRejectionRate);
-
-            var xyEligibilityRejectionRate = {x:i,y:eligibilityRejectionRateList[i]};
-            eligibilityRejectionRateValues.push(xyEligibilityRejectionRate);
-
-            var xyRejectionRate = {x:i, y:rejectionRateList[i]};
-            rejectionRateValues.push(xyRejectionRate);
-
-            var xySamplesRejected = {x:i, y:samplesRejectedList[i]};
-            samplesRejectedValues.push(xySamplesRejected);
-
-        }
-        
-        //These will be for the bar charts 
-        var sampleQualityRejection = {key: "SAMPLE QUALITY", values: sampleQualityRejectionRateValues, type: "bar", yAxis: 1, color: '#F44336'};
-        var incompleteFormRejection = {key: "INCOMPLETE FORM", values: incompleteFormRejectionRateValues, type: "bar", yAxis: 1, color: '#607D8B'};
-        var eligibilityRejection = {key: "ELIGIBILITY", values: incompleteFormRejectionRateValues, type: "bar", yAxis: 1, color: '#FFCDD2'};
-        var samplesRejected = {key: "SAMPLES REJECTED", values: samplesRejectedValues, type: "bar", yAxis: 1, color: '#C62828'};
-
-        //These will be for line charts
-        var rejectionRate = { key: "Rejection Rate", values: rejectionRateValues, type: "line", yAxis: 2, color: '#D32F2F' }
-        
-        //Insert the values array into data variable
-        data.push(sampleQualityRejection);
-        data.push(incompleteFormRejection);
-        data.push(eligibilityRejection);
-        data.push(samplesRejected);
-        
-        data.push(rejectionRate);
-        
-        //build the graph
-        nv.addGraph(function () {
-            //build as multichart graphs and set the margin right and left to 100px.
-            var chart = nv.models.multiChart()
-                        .margin({left: 100, right: 100});
-                        
-            chart.bars1.stacked(true);
-
-            //customize the tool tip
-            /**
-            chart.tooltip.contentGenerator(function (key, x, y, e, graph) {
-                return "<div class='tooltip'><span>Month:</span> " + monthList[key.index] + "</div>" + "<div class='tooltip'><span>Value:</span> " + key.series[0].value + "</div><div class='tooltip'><span>Legend:</span> <div style='background:" + key.series[0].color + ";display:inline-block;height:15px;width:15px;'>&#160;</div></div>";
-            });
-             */
-            //Overwrite the x axis label and replace it with the month name
-            chart.xAxis.tickFormat(function (d) { return monthList[d] });
-            
-            //get the chart svg object and fecth the data to build the chart
-            //$('#rejection_rate svg').html(" ");
-            d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
-            return chart;
-        });
-    };
-
-    $scope.displayRejectionRate=function(){
-        var data=[{"key":"SAMPLE QUALITY","values":[], "bar": true},
-                  {"key":"INCOMPLETE FORM","values":[], "bar": false },
-                  {"key":"ELIGIBILITY","values":[] }];
-
-        for(var i in $scope.duration_numbers){
-            var obj=$scope.duration_numbers[i];
-
-            
-            var ttl=obj.sample_quality_rejections+obj.incomplete_form_rejections+obj.eligibility_rejections;
-            var sq_rate=Math.round(((obj.sample_quality_rejections/ttl)||0)*100);
-            var inc_rate=Math.round(((obj.incomplete_form_rejections/ttl)||0)*100);
-            //var el_rate=((obj.eligibility_rejections/ttl)||0)*100;
-            var el_rate=100-(sq_rate+inc_rate);
-            data[0].values.push({"x":dateFormat(obj._id),"y": sq_rate });
-            data[1].values.push({"x":dateFormat(obj._id),"y": inc_rate });
-            data[2].values.push({"x":dateFormat(obj._id),"y": el_rate });
-        }
-        nv.addGraph( function(){
-            var chart = nv.models.multiBarChart().stacked(true).color(["#607D8B","#FFCDD2","#F44336"]);
-            if(count($scope.duration_numbers)<=8) { chart.reduceXTicks(false); }
-            chart.yAxis.tickFormat(d3.format(',.0d'));
-            $('#rejection_rate svg').html(" ");
-            d3.select('#rejection_rate svg').datum(data).transition().duration(500).call(chart);
-            return chart;
-        });
-    };
-     
-
-     $scope.displayRegimenGroups=function(){
-
-        var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
-                  {"key":"VALID RESULTS","bar":true,"color": "#F44336","values":[]}];
-
-        for(var i in $scope.regimen_numbers){
-            var obj=$scope.regimen_numbers[i];
-            var sprsd=obj.suppressed||0;
-            var vld=obj.valid_results||0;
-            var s_rate=((sprsd/vld)||0)*100;
-            //s_rate.toPrecision(3);
-            var label=$scope.labels.regimens2[obj._id];
-            data[0].values.push([label,Math.round(s_rate)]);
-            data[1].values.push([label,vld]);
-        } 
-        nv.addGraph( function() {
-            var chart = nv.models.linePlusBarChart()
-                        .margin({right: 60,})
-                        .x(function(d,i) { return i })
-                        .y(function(d,i) {return d[1] }).focusEnable(false);
-
-            chart.xAxis.tickFormat(function(d) {
-                return data[0].values[d] && data[0].values[d][0] || " ";
-            });
-            chart.xAxis.rotateLabels(90);
-            //chart.reduceXTicks(false);
-
-            chart.lines.forceY([0,100]);
-            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
-
-            $('#regimen_groups svg').html(" ");
-            d3.select('#regimen_groups svg').datum(data).transition().duration(500).call(chart);
-            return chart;
-        });
-
-        
-    };
-
-
-    $scope.displayRegimenTime=function(){
-        var data=[{"key":"SUPRESSION RATE","color": "#607D8B","values":[] },
-                  {"key":"SAMPLES RECEIVED","bar":true,"color": "#F44336","values":[]},
-                  {"key":"NON SUPRESSION RATE","color": "#FF851B","values":[]}];
-
-        for(var i in $scope.regimen_time_numbers){
-            var obj=$scope.regimen_time_numbers[i];
-            var sprsd=obj.suppressed||0;
-            var vld=obj.valid_results||0;
-            var s_rate=((sprsd/vld)||0)*100;
-            var non_suppression_rates = 100 - s_rate;
-            //s_rate.toPrecision(3);
-            var label=regimen_times_json[obj._id];//non_suppression
-
-            data[0].values.push([label,Math.round(s_rate)]);
-            data[1].values.push([label,obj.samples_received]);
-
-            data[2].values.push([label,Math.round(non_suppression_rates)]);//non_suppression
-        } 
-        nv.addGraph( function() {
-            var chart = nv.models.linePlusBarChart()
-                        .margin({right: 60,})
-                        .x(function(d,i) { return i })
-                        .y(function(d,i) {return d[1] }).focusEnable(false);
-
-            chart.xAxis.tickFormat(function(d) {
-                return data[0].values[d] && data[0].values[d][0] || " ";
-            });
-            //chart.reduceXTicks(false);
-            //chart.bars.forceY([0]);
-            chart.lines.forceY([0,100]);
-            chart.legendRightAxisHint(" (R)").legendLeftAxisHint(" (L)");
-
-            $('#regimen_time svg').html(" ");
-            d3.select('#regimen_time svg').datum(data).transition().duration(500).call(chart);
-            return chart;
-        });
-    };
-
     $scope.compare = function(prop,comparator, val){
         return function(item){
             if(comparator=='eq'){
@@ -1837,193 +1644,11 @@ ctrllers.DashController = function($scope,$http){
         decimals = decimals || 0;
         return Number(round(value + 'e' + decimals) + 'e-' + decimals);
     }
-    function exportDistrictNumbers(scopeInstance){
-       
-        var export_district_numbers = [];
-        var district_labels = scopeInstance.labels.districts;
-        var district_numbers_from_scope = scopeInstance.district_numbers;
+   
 
-        for( var index = 0; index < district_numbers_from_scope.length; index++){
-            var districtRecord = district_numbers_from_scope[index];
 
-            var district_instance = {
-                district_name : district_labels[districtRecord._id],
-                samples_received : districtRecord.samples_received,
-                patients_received : districtRecord.patients_received,
-                samples_tested : districtRecord.total_results,
-                samples_pending : (districtRecord.samples_received - districtRecord.total_results),
-                rejected_samples : districtRecord.rejected_samples,
-                dbs : Math.round(((districtRecord.dbs_samples/districtRecord.samples_received)*100),1),
-                plasma : Math.round((((districtRecord.samples_received-districtRecord.dbs_samples)/districtRecord.samples_received)*100 ),1)
-            }
-
-            export_district_numbers.push(district_instance);
-        }
-
-        return export_district_numbers;
-    }
-
-    function exportFacilityNumbers(scopeInstance){
-       
-        var export_facility_numbers = [];
-        var facility_labels = scopeInstance.labels.facilities;
-        var facility_numbers_from_scope = scopeInstance.facility_numbers;
-
-        for( var index = 0; index < facility_numbers_from_scope.length; index++){
-            var facilityRecord = facility_numbers_from_scope[index];
-
-            var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
-                samples_received : facilityRecord.samples_received,
-                patients_received : facilityRecord.patients_received,
-                samples_tested : facilityRecord.total_results,
-                samples_pending : (facilityRecord.samples_received - facilityRecord.total_results),
-                rejected_samples : facilityRecord.rejected_samples,
-                dbs : Math.round(((facilityRecord.dbs_samples/facilityRecord.samples_received)*100),1),
-                plasma : Math.round((((facilityRecord.samples_received-facilityRecord.dbs_samples)/facilityRecord.samples_received)*100 ),1)
-            }
-
-            export_facility_numbers.push(facility_instance);
-        }
-
-        return export_facility_numbers;
-    }
-
-    function exportDistrictSuppressionNumbers(scopeInstance){
-        var export_district_suppression_numbers = [];
-        var district_labels = scopeInstance.labels.districts;
-        var district_numbers_from_scope = scopeInstance.district_numbers;
-
-        for( var index = 0; index < district_numbers_from_scope.length; index++){
-            var districtRecord = district_numbers_from_scope[index];
-
-            var district_instance = {
-                district_name : district_labels[districtRecord._id],
-                valid_results : districtRecord.valid_results,
-                
-                suppression_rate : Math.round(((districtRecord.suppressed/districtRecord.valid_results)*100),1)
-            }
-
-            export_district_suppression_numbers.push(district_instance);
-        }
-
-        return export_district_suppression_numbers;
-    }
-
-    function exportFacilitySuppressionNumbers(scopeInstance){
-        var export_facility_numbers = [];
-        var facility_labels = scopeInstance.labels.facilities;
-        var facility_numbers_from_scope = scopeInstance.facility_numbers;
-
-        for( var index = 0; index < facility_numbers_from_scope.length; index++){
-            var facilityRecord = facility_numbers_from_scope[index];
-
-            var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
-                valid_results : facilityRecord.valid_results,
-                suppression_rate : Math.round(((facilityRecord.suppressed/facilityRecord.valid_results)*100),1)
-            }
-
-            export_facility_numbers.push(facility_instance);
-        }
-
-        return export_facility_numbers;
-    }
-
-    function exportDistrictRejectionNumbers(scopeInstance){
-        var export_district_rejection_numbers = [];
-        var district_labels = scopeInstance.labels.districts;
-        var district_numbers_from_scope = scopeInstance.district_numbers;
-
-        for( var index = 0; index < district_numbers_from_scope.length; index++){
-            var districtRecord = district_numbers_from_scope[index];
-
-            var district_instance = {
-                district_name : district_labels[districtRecord._id],
-                samples_received : districtRecord.samples_received,
-                rejected_samples : districtRecord.rejected_samples,
-                
-                rejection_rate : Math.round(((districtRecord.rejected_samples/districtRecord.samples_received)*100),1)
-            }
-
-            export_district_rejection_numbers.push(district_instance);
-        }
-
-        return export_district_rejection_numbers;
-    }
-
-    function exportFacilityRejectionNumbers(scopeInstance){
-        var export_facility_rejection_numbers = [];
-        var facility_labels = scopeInstance.labels.facilities;
-        var facility_numbers_from_scope = scopeInstance.facility_numbers;
-
-        for( var index = 0; index < facility_numbers_from_scope.length; index++){
-            var facilityRecord = facility_numbers_from_scope[index];
-
-            var facility_instance = {
-                facility_name : facility_labels[facilityRecord._id],
-                samples_received : facilityRecord.samples_received,
-                rejected_samples:facilityRecord.rejected_samples,
-                rejection_rate : Math.round(((facilityRecord.rejected_samples/facilityRecord.samples_received)*100),1)
-            }
-
-            export_facility_rejection_numbers.push(facility_instance);
-        }
-
-        return export_facility_rejection_numbers;
-    }
-
-    function exportRegimenNumbers(scopeInstance){
-        //
-        var export_regimen_numbers = [];
-        var regimen_labels = scopeInstance.labels.regimens2;
-        var regimen_numbers_from_scope = scopeInstance.regimen_numbers;
-        var samples_received = scopeInstance.samples_received;
-
-        for( var index = 0; index < regimen_numbers_from_scope.length; index++){
-            var regimenRecord = regimen_numbers_from_scope[index];
-
-            var regimen_instance = {
-                regimen : regimen_labels[regimenRecord._id],
-                samples_received : regimenRecord.samples_received,
-                total_results:regimenRecord.total_results,
-                valid_results : regimenRecord.valid_results,
-                suppressed:regimenRecord.suppressed,
-                suppression_rate : Math.round(((regimenRecord.suppressed/regimenRecord.valid_results)*100),1),
-                percentage_of_samples : Math.round(((regimenRecord.samples_received/samples_received)*100),1),
-            }
-
-            export_regimen_numbers.push(regimen_instance);
-        }
-
-        return export_regimen_numbers;
-    }
-
-    function exportDurationOnArt(scopeInstance){
-        //
-        var export_duration_on_art= [];
-        var regimen_time_labels = scopeInstance.labels.reg_times;
-        var regimen_time_numbers_from_scope = scopeInstance.regimen_time_numbers;
-        var samples_received = scopeInstance.samples_received;
-
-        for( var index = 0; index < regimen_time_numbers_from_scope.length; index++){
-            var regimenTimeRecord = regimen_time_numbers_from_scope[index];
-
-            var regimen_time_instance = {
-                time_on_treatment: regimen_time_labels[regimenTimeRecord._id],
-                samples_received : regimenTimeRecord.samples_received,
-
-                
-                percentage_of_samples : Math.round(((regimenTimeRecord.samples_received/samples_received)*100),1),
-                samples_tested : regimenTimeRecord.total_results,
-                suppressed : regimenTimeRecord.suppressed
-                             }
-
-            export_duration_on_art.push(regimen_time_instance);
-        }
-
-        return export_duration_on_art;
-    }
+    
+   
     function getCurrentTimeStamp(){
         var today = new Date();
         var dd = today.getDate();

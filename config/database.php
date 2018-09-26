@@ -111,6 +111,15 @@ return [
             'charset'  => 'utf8',
             'prefix'   => '',
         ],
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('MONGO_DB_HOST', 'localhost'),
+            'port'     => env('MONGO_DB_PORT', 27017),
+            'database' => env('MONGO_DB'),
+            'username' => env('MONGO_USER'),
+            'password' => env('MONGO_PWD'),
+            'options'  => []
+        ],
 
     ],
 

@@ -35,7 +35,7 @@
                    <td>&nbsp;&nbsp;</td>
                    <td class="action-pane-td"><a href="#retest-s" data-toggle="tab" onclick="activeRetestSTab()"><% retestSuppressingPatients.length%></a></td>
                    <td>&nbsp;&nbsp;</td>
-                   <td class="action-pane-td"><a href="#rejections" data-toggle="tab" onclick="activeRejectionsTab()"><% patientsWithInvalidResults.length %></a></td>
+                   <td class="action-pane-td"><a href="#rejections" data-toggle="tab" onclick="activeRejectionsTab()"><% patientsWithRejections.length %></a></td>
                    <td>&nbsp;&nbsp;</td>
                </tr>
                <tr>
