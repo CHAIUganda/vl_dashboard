@@ -512,7 +512,7 @@ class MyHTML{
 	}
 
 	public static function methodUsed($type){
-		$types = ['A'=> 'Abbott Real time HIV-1 PCR', 'R'=> 'HIV-1 RNA PCR Roche', 'C'=> 'HIV-1 RNA PCR Roche'];
+		$types = ['A'=> 'Abbott Real Time HIV-1 PCR test', 'R'=> 'COBAS Ampliprep/COBAS Taqman HIV-1 Test Version 2.0', 'C'=> 'Cobas HIV-1 Test'];
 		return isset($types[$type])?$types[$type]:"";
 	}
 

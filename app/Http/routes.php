@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function()
 		Route::match(['GET', 'POST'], '/direct/result/{id?}', ['uses'=>'DirectResultsController@result']);
 		Route::get('/direct/search_result/', ['uses' => 'DirectResultsController@search_result']);
 
+		Route::get('/forms_download/', ['uses' => 'DirectResultsController@forms_download']);
+
 	
 	});
 

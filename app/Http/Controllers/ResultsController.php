@@ -498,11 +498,17 @@ class ResultsController extends Controller {
         	if($i==$n) $ret=$y.str_pad($m, 2,0, STR_PAD_LEFT);
 	*/
 	public function print_envelope($id){
-		$facility = LiveData::leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')
+		/*$facility = LiveData::leftjoin('vl_districts AS d', 'd.id', '=', 'f.districtID')
 		                ->leftjoin('vl_hubs AS h', 'h.id', '=', 'f.hubID')
 						->select('hub','district','facility', 'f.contactPerson', 'f.phone', 'f.email')->from('vl_facilities AS f')
 						->where('f.id', '=', $id)->limit(1)->get();
-		$facility = $facility[0];
+		$facility = $facility[0];*/
+		$db = \DB::connection('direct_db');
+		$sql = "select facility, hub, district from backend_facilities f
+				left join backend_hubs h on f.hub_id=h.id
+				left join backend_districts d on f.district_id=d.id
+				where f.id=$id";
+		$facility = collect($db->select($sql))->first();
 		return view('results.print_envelope', compact('facility'));
 	}
 

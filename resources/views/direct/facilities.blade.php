@@ -53,7 +53,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 <thead>
     <tr>
        <!--  @if(empty(Auth::user()->hub_id))<th>Hub</th> @endif  -->
-        <th>Facddility</th>  
+        <th>Facility</th>  
         <th>Hub</th>                   
         <th>Contact Person</th>
         <th>Phone</th>
@@ -61,6 +61,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 
         <th># Pending</th>
         <th># Printed/ Downloaded</th>
+        <th>Last dispatch date</th>
         <th>Action</th>
        <!--  <th># Downloaded</th>
         @if($sect == 'admin')<th># Last Printed/ Downloaded</th>@endif 
