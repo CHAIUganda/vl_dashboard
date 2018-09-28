@@ -110,6 +110,7 @@ Route::group(['middleware' => 'auth'], function()
 Route::get("/","DashboardController@init");
 
 Route::get("/live","DashboardController@live");
+Route::get("/results_printing_stats/","DirectResultsController@getResultsPrintingStatistics");
 
 Route::get("/other_data/","DashboardController@other_data");
 

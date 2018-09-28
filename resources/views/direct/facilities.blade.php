@@ -30,11 +30,7 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
 <h2 style="text-align:center;text-transform:uppercase">{{ Auth::user()->hub_name }}</h2>
 @if(empty(Auth::user()->facility_id) AND empty(Auth::user()->hub_id) AND $sect == 'results')
    <div class="row">
-   <!--  <div class="col-md-6">
-        {!! Form::text('hub','', ['id'=>'hub','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search Hub"] ) !!}
-        <div class='live_drpdwn' id="worksheet_dropdown" style='display:none'></div>
-        <br> 
-    </div> -->
+   
      <div class="col-md-6">
         {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search result..."] ) !!}
         <div class='live_drpdwn' id="id-dropdown" style='display:none;width:480px'></div>

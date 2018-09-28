@@ -60,6 +60,15 @@ class DirectResultsController extends Controller {
 		return compact("draw", "recordsTotal", "recordsFiltered", "data");
 	}
 
+	public function getResultsPrintingStatistics(){
+		
+	    $facilities = $this->fetch_facilities_statistics();
+		
+		$facilities_array = [];
+		
+		return compact('facilities');
+
+	}
 	public function results($facility_id){
 		$facility_name = $this->fetch_facility($facility_id);
 		$tab = \Request::has('tab')?\Request::get('tab'):'pending';
@@ -161,6 +170,22 @@ class DirectResultsController extends Controller {
 		$sql2 = "$sql1 WHERE $cond";
 		$recordsFiltered = empty($search)?$recordsTotal:collect($this->db->select($sql2))->first()->num;
 		return compact('facilities', 'recordsTotal', 'recordsFiltered');
+	}
+
+	private function fetch_facilities_statistics(){
+		
+
+		$sql0 = "SELECT f.id,facility, hub, ip,
+				 num_pending_dispatch, num_dispatched, last_dispatched_at
+				 FROM backend_facilities AS f
+				 LEFT JOIN backend_hubs AS h ON f.hub_id=h.id
+				 LEFT JOIN backend_ips AS ips ON ips.id = h.ip_id 
+				 INNER JOIN backend_facility_stats AS fs ON f.id=fs.facility_id 
+				 where ips.active=1 and num_pending_dispatch > 0";
+		$facilities = $this->db->select($sql0);
+		
+		
+		return compact('facilities');
 	}
 
 	private function fetch_facility($id){

@@ -137,6 +137,8 @@ ctrllers.DashController = function($scope,$http){
     $scope.hubs = [];
     $scope.age_group_slct = age_group_json;
 
+    $scope.facilities_array =[];
+
 
    /* $scope.orderByCurrentRegimen = function(regimen){
         if($scope.labels.reg_grps[regimen._id] == 'ABC')
@@ -167,7 +169,7 @@ ctrllers.DashController = function($scope,$http){
             return 4;
     };*/
     
-
+  
     $http.get("/other_data/").success(function(data){
         //console.log("Ehealth at chai rocks 1 "+JSON.stringify(data.facilities));
         for(var i in data.districts){
@@ -214,6 +216,9 @@ ctrllers.DashController = function($scope,$http){
         }
     });
     
+    $http.get("/results_printing_stats/").success(function(data){
+        $scope.facilities_array=data.facilities.facilities;
+    });
     var convertAgeRangesToAgeIds=function(scopeAgeRangesParam){
         var age_ranges_array = scopeAgeRangesParam;
         var age_ids_array=[];
