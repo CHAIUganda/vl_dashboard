@@ -39,11 +39,13 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
         {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm input_md', 'autocomplete'=>'off', 'placeholder'=>"Search result..."] ) !!}
         <div class='live_drpdwn' id="id-dropdown" style='display:none;width:480px'></div>
      </div>
+      <span id="id-search-button" class="btn btn-danger btn-sm">search</span>
    </div>     
    
 @endif() 
 
 @if(empty(Auth::user()->facility_id))
+<br>
 <div style="text-align:center;"> 
     <span style="background-color:#F5A9A9;border: 1px solid;"> &nbsp; &nbsp;  &nbsp;</span> 
     Facility has an account and may be printing
@@ -119,6 +121,12 @@ $("#id-search").keyup(function(){
     var dd = $("#id-dropdown");
     get_data(q, dd, "/direct/search_result/");
 });
+
+$("#id-search-button").click(function(){
+    var q = $("#id-search").val();
+    var dd = $("#id-dropdown");
+    get_data(q, dd, "/direct/search_result/");
+})
 
 </script>
 
