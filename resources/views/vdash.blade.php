@@ -141,8 +141,8 @@
                 </li>
                 <li id='tb_hd6'>
                     <a href="#tab6" id='tb_lnk6' ng-click="">
-                        <span style="font-size:10px">Results Printing Stats</span> 
-                        <span class="desc">Results Printing Statistics</span>
+                        <span style="font-size:10px">Results Printing Status</span> 
+                        <span class="desc">Results Printing Status</span>
                     </a>
                 </li>
             </ul>

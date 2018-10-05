@@ -44,5 +44,9 @@
                               </tr>           
                                  </tbody>
                             </table>
+                             <br>
+                        <br>
+                        <button id="exportRetestNSResults" type="button" ng-csv="export_retest_ns_results"  class="btn btn-success" filename="retest_ns_results_<%current_timestamp%>.csv" csv-header="['PatientID','Facility','Art Number','SampleID','Date of Collection', 'Date of Arrival at CPHL','Results','Recommended Retest Date','Contact','Action','Comments']">Download CSV</button>
+
 </div>
 

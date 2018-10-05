@@ -13,7 +13,7 @@
 
                         
                         <th>Last Printed on</th>
-                        <th>Oldest Result Pending Printing</th>
+                        <th>Oldest Not Printed</th>
 
                     </tr>
                 </thead>

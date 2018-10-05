@@ -92,6 +92,7 @@ ctrllers.DashController = function($scope,$http){
 
 
 
+
     /*
     * gets the latest lab tests for all patients
     */
@@ -165,6 +166,7 @@ ctrllers.DashController = function($scope,$http){
         }
 
     };
+
     var convertYearMonthIntoDateString=function(year_month){
 
         var dummy_string=""+year_month;
@@ -1158,6 +1160,14 @@ ctrllers.DashController = function($scope,$http){
                 $scope.retestNSPatients = getRetestNSPatients(latest_tests);
                 $scope.retestSuppressingPatients = getRetestSuppressingPatients(latest_tests);
 
+
+                $scope.current_timestamp = getCurrentTimeStamp();
+                $scope.export_retest_ns_results=exportRetestNotSuppressingPatients($scope);
+                $scope.export_retest_suppressing=exportRetestSuppressingPatients($scope);
+                $scope.export_rejection_results=exportRejectionResults($scope);
+                $scope.export_valid_patient_results = exportValidPatientResults($scope);
+                $scope.export_all_patient_results = exportAllPatientResults($scope);
+
                 $scope.filtered = $scope.date_filtered;    
                 $scope.loading = false;
                 
@@ -1166,8 +1176,173 @@ ctrllers.DashController = function($scope,$http){
 
 
     getData();
+    function exportRetestNotSuppressingPatients(scopeInstance){
+       
+        var retest_not_suppressing_patients_array = [];
+        var facility_labels = scopeInstance.labels.facilities_details;
+        var retest_results_from_scope = scopeInstance.retestNSPatients;
 
+        for( var index = 0; index < retest_results_from_scope.length; index++){
+            var patientRecord = retest_results_from_scope[index];
+
+            var retest_not_suppressing_patient_object={
+
+                patient_unique_id:patientRecord.patient_unique_id,
+                
+                facility: facility_labels[patientRecord.facility_id].dhis2_name,
+                art_number:patientRecord.art_number,
+                vl_sample_id:patientRecord.vl_sample_id,
+                
+                date_collected:patientRecord.date_collected,
+                date_received:patientRecord.date_received,
+                
+
+                alpha_numeric_result:patientRecord.alpha_numeric_result,
+                recommended_retest_date:patientRecord.recommended_retest_date,
+                phone:patientRecord.phone_number,
+
+                action:'',
+                comment:'',
+
+            };
+
+
+            retest_not_suppressing_patients_array.push(retest_not_suppressing_patient_object);
+        }
+
+        return retest_not_suppressing_patients_array;
+    }
+    function exportRetestSuppressingPatients(scopeInstance){
+       
+        var retest_suppressing_patients_array = [];
+        var facility_labels = scopeInstance.labels.facilities_details;
+        var retest_results_from_scope = scopeInstance.retestSuppressingPatients;
+
+        for( var index = 0; index < retest_results_from_scope.length; index++){
+            var patientRecord = retest_results_from_scope[index];
+
+            var retest_suppressing_patient_object={
+
+                patient_unique_id:patientRecord.patient_unique_id,
+                
+                facility: facility_labels[patientRecord.facility_id].dhis2_name,
+                art_number:patientRecord.art_number,
+                vl_sample_id:patientRecord.vl_sample_id,
+                
+                date_collected:patientRecord.date_collected,
+                date_received:patientRecord.date_received,
+                
+
+                alpha_numeric_result:patientRecord.alpha_numeric_result,
+                recommended_retest_date:patientRecord.recommended_retest_date,
+                phone:patientRecord.phone_number,
+
+                action:'',
+                comment:'',
+
+            };
+
+
+            retest_suppressing_patients_array.push(retest_suppressing_patient_object);
+        }
+
+        return retest_suppressing_patients_array;
+    }
+    function exportRejectionResults(scopeInstance){
+       
+        var rejection_results_array = [];
+        var facility_labels = scopeInstance.labels.facilities_details;
+        var rejection_results_from_scope = scopeInstance.patientsWithRejections;
+
+        for( var index = 0; index < rejection_results_from_scope.length; index++){
+            var patientRecord = rejection_results_from_scope[index];
+
+            var rejection_result_object={
+
+                patient_unique_id:patientRecord.patient_unique_id,
+                vl_sample_id:patientRecord.vl_sample_id,
+                facility: facility_labels[patientRecord.facility_id].dhis2_name,
+
+                art_number:patientRecord.art_number,
+                date_collected:patientRecord.date_collected,
+                date_received:patientRecord.date_received,
+                
+                rejection_category:patientRecord.rejection_category,
+                rejection_reason:patientRecord.rejection_reason,
+
+                alpha_numeric_result:patientRecord.alpha_numeric_result,
+                suppression_status:patientRecord.suppression_status,
+                phone:patientRecord.phone_number,
+
+                action:'',
+                comment:'',
+
+            };
+
+
+            rejection_results_array.push(rejection_result_object);
+        }
+
+        return rejection_results_array;
+    }
     
+    function exportValidPatientResults(scopeInstance){
+       
+        var valid_patient_results_array = [];
+        var facility_labels = scopeInstance.labels.facilities_details;
+        var valid_patient_results_from_scope = scopeInstance.validPatientResults;
+
+        for( var index = 0; index < valid_patient_results_from_scope.length; index++){
+            var patientRecord = valid_patient_results_from_scope[index];
+
+            var valid_patient_result_object={
+
+                patient_unique_id:patientRecord.patient_unique_id,
+                vl_sample_id:patientRecord.vl_sample_id,
+                facility: facility_labels[patientRecord.facility_id].dhis2_name,
+
+                art_number:patientRecord.art_number,
+                date_received:patientRecord.date_received,
+                alpha_numeric_result:patientRecord.alpha_numeric_result,
+                suppression_status:patientRecord.suppression_status
+
+            };
+
+
+            valid_patient_results_array.push(valid_patient_result_object);
+        }
+
+        return valid_patient_results_array;
+    }
+
+    function exportAllPatientResults(scopeInstance){
+       
+        var all_patient_results_array = [];
+        var facility_labels = scopeInstance.labels.facilities_details;
+        var all_patient_results_from_scope = scopeInstance.allPatientsResults;
+
+        for( var index = 0; index < all_patient_results_from_scope.length; index++){
+            var patientRecord = all_patient_results_from_scope[index];
+
+            var all_patient_result_object={
+
+                patient_unique_id:patientRecord.patient_unique_id,
+                vl_sample_id:patientRecord.vl_sample_id,
+                facility: facility_labels[patientRecord.facility_id].dhis2_name,
+
+                art_number:patientRecord.art_number,
+                date_received:patientRecord.date_received,
+                alpha_numeric_result:patientRecord.alpha_numeric_result,
+                suppression_status:patientRecord.suppression_status
+
+            };
+
+
+            all_patient_results_array.push(all_patient_result_object);
+        }
+
+        return all_patient_results_array;
+    }
 
     var removeRepeatingDates=function(patient_viral_loads){
         var clean_results =[];

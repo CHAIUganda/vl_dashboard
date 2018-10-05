@@ -5,6 +5,7 @@ namespace EID\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 use EID\LiveData;
+use EID\User;
 
 class Inspire extends Command
 {
@@ -13,7 +14,7 @@ class Inspire extends Command
      *
      * @var string
      */
-    protected $signature = 'inspire';
+    protected $signature = 'inspire:run {name} {--oauth_name=} {--oauth_username=} {--oauth_password=} {--oauth_email=}';
 
     /**
      * The console command description. 
@@ -31,19 +32,27 @@ class Inspire extends Command
     {
         $this->comment(PHP_EOL.Inspiring::quote().PHP_EOL);
 
-        $this->rejections();
-    }
 
-     private function rejections(){
-      $rejections = LiveData::getRejections();
-      $rejections_array=[];
-      foreach ($rejections as $key => $value) {
-         
-          $id=$value->id;
-          $appendix=$value->appendix;
-          $rejections_array[$id]=$appendix;
-      }
 
-      return $rejections_array;
-    }
+        // or get all as array
+        $arguments = $this->argument();
+
+        $options = $this->option();
+
+        var_dump($arguments);
+        var_dump($options);
+
+        
+         $user = new User();
+         $user->name=$options['oauth_name'];
+         $user->email=$options['oauth_email'];
+         $user->username=$options['oauth_username'];
+         $user->setPasswordAttribute($options['oauth_password']);
+        
+         $user->hub_id=0;
+         $user->facility_id=0;
+         $user->deactivated=0;
+         $user->save();
+       }
+        
 }

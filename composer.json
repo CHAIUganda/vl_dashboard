@@ -10,7 +10,6 @@
         "laravelcollective/html": "5.1.*",
         "laracasts/validation": "dev-master",
         "maatwebsite/excel": "~2.1.0",
-        "dinesh/barcode": "5.0.*@dev",
         "yajra/laravel-datatables-oracle": "~6.0",
         "zizaco/entrust": "5.2.x-dev",
         "zizaco/confide": "5.0.x-dev",
@@ -18,7 +17,8 @@
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "h4cc/wkhtmltoimage-amd64": "0.12.x",
         "barryvdh/laravel-snappy": "^0.3.1",
-        "simplesoftwareio/simple-qrcode": "~1"
+        "simplesoftwareio/simple-qrcode": "~1",
+        "lucadegasperi/oauth2-server-laravel": "^5.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

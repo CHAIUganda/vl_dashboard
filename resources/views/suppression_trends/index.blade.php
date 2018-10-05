@@ -64,8 +64,8 @@
               <li id="li-retest-ns"><a href="#retest-ns" role="tab" data-toggle="tab">Retest-NotSuppressing</a></li>
               <li id="li-retest-s"><a href="#retest-s" role="tab" data-toggle="tab">Retest-Suppressing</a></li>
               <li id="li-rejections"><a href="#rejections" role="tab" data-toggle="tab">Rejections</a></li>
-              <li id="li-v-patients"><a href="#v-patients" role="tab" data-toggle="tab">Valid Patients</a></li>
-              <li id="li-a-patients"><a href="#a-patients" role="tab" data-toggle="tab">All Patients</a></li>
+              <li id="li-v-patients"><a href="#v-patients" role="tab" data-toggle="tab">Valid Patients' Results</a></li>
+              <li id="li-a-patients"><a href="#a-patients" role="tab" data-toggle="tab">All Patients' Results</a></li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
@@ -211,6 +211,10 @@
                               </tr>                 
                              </tbody>
                         </table>
+                        <br>
+                        <br>
+                        <button id="exportValidPatientResults" type="button" ng-csv="export_valid_patient_results"  class="btn btn-success" filename="valid_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Suppression Status']">Download CSV</button>
+
                       </div>
                </div><!--end v-patients tab-pane-->
                <div class="tab-pane" id="a-patients">
@@ -242,6 +246,10 @@
                           </tr>           
                              </tbody>
                         </table>
+                         <br>
+                        <br>
+                        <button id="exportAllPatientResults" type="button" ng-csv="export_all_patient_results"  class="btn btn-success" filename="all_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Suppression Status']">Download CSV</button>
+
                       </div>
                </div><!--end a-patients tab-pane-->
             </div>   
