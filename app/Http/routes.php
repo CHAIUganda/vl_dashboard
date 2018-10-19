@@ -125,6 +125,7 @@ Route::post('oauth/access_token', function() {
  return Response::json(Authorizer::issueAccessToken());
 });
 Route::group(['middleware'=>'oauth'], function(){
-	Route::get('/api/facility_list/{facility_id}/{year}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
-	Route::get('/api/facility_list/{hub_id}/{year}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
+	//Route::get('/api/facility_list/{facility_id}/{yearmonth}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
+	//Route::get('/api/facility_list/{hub_id}/{yearmonth}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
+	Route::get('/api/hivdr/{year}/{month}/', ['uses' => 'APIResultsController@getHivDrugResistanceTests']);
 	});

@@ -259,13 +259,13 @@ class ResultsController extends Controller {
 		
 		
 
-		Log::info("----1--");
+		
 
         //$valid_patient_results = $this->getValidPatientResults();
         $all_patient_results = $this->getAllPatientResults();
 
         
-        Log::info("----4-returned-");
+        
 		return compact("all_patient_results");
 	}
 
@@ -278,66 +278,14 @@ class ResultsController extends Controller {
 		}
 
 
-        /*
-		$match_stage=array();
-		if(!empty(\Auth::user()->hub_id) && \Auth::user()->can('view_reports_as_hub')){
-			$match_stage= array(
-				 '$match' => array(
-							'$and'=>array(
-								array('hub_id' => intval(\Auth::user()->hub_id)),
-								array('year_month'=>array('$gte'=>$fro_date,'$lte'=>$to_date)),
-								array('sample_result_validity' => 'valid'),
-								),
-							
-							
-							)
-				      );
-		}elseif(!empty(\Auth::user()->facility_id) && \Auth::user()->can('view_reports_as_facility')){
-			$match_stage= array(
-				 '$match' => array(
-							'$and'=>array(
-								array('facility_id' => intval(\Auth::user()->facility_id)),
-								array('year_month'=>array('$gte'=>$fro_date,'$lte'=>$to_date)),
-								array('sample_result_validity' => 'valid'),
-								),
-							
-							
-							)
-				      );
-		}*/
-		
-		
-			
-
-      /*
-		$project_stage = array(
-			
-			'$project' => array(
-				 '_id' => 1,
-				 'sample_id' => 1,
-				 'patient_unique_id' => 1,
-				 'suppression_status' => 1,
-				 'facility_id' => 1,
-				 'hub_id'=>1,
-				 'year_month'=>1,
-				 'alpha_numeric_result'=>1,
-				 'phone_number'=>1
-				
-			 ));
-		*/
-		
-		
-		//ini_set('memory_limit','384M');
-		//$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$project_stage);
 		$query= array(
 			'hub_id' => intval(\Auth::user()->hub_id),
 			'sample_result_validity' => 'valid',
 			'year_month'=>array('$gte'=>$fro_date,'$lte'=>$to_date),
 		 );
-		Log::info("----1-1--");
+		
         $res=$this->mongo->dashboard_new_backend->find($query);
-        var_dump($res);
-        Log::info("----1-2--");
+        
 		return $res;
 		
 	}
@@ -366,7 +314,6 @@ class ResultsController extends Controller {
 				    ),
 				    
 				);
-         Log::info(".....its a hub.....");
 		}elseif(!empty(\Auth::user()->facility_id) && \Auth::user()->facility_id > 0 ){
 			
 			$condition_statement = array(
@@ -379,7 +326,6 @@ class ResultsController extends Controller {
 				    )
 
 				);
-			Log::info(".....its a facility.....");
 		}
 		
         //approach two

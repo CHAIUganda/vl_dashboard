@@ -26,7 +26,7 @@
 
                             
                             <td class="ng-cloak"><% f.last_dispatched_at %></td>
-                            <td class="ng-cloak"><%  %></td>
+                            <td class="ng-cloak"><% f.oldest_pending_printing %></td>
                         </tr>                        
                      </tbody>
                  

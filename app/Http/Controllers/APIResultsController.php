@@ -465,5 +465,18 @@ class APIResultsController extends Controller {
         return $clean_result_set;
     }
 
+    public function getHivDrugResistanceTests($year,$month){
+    	$_year = intval($year);
+    	$_month=intval($month);
+    	
+    	$sql="SELECT s.id,s.patient_unique_id,s.facility_id,f.facility,s.vl_sample_id,s.date_collected,s.date_received,
+    	    s.sample_type,s.clinician_id,c.cname,p.art_number,p.gender,p.dob 
+    	FROM vl_production_v2.vl_samples s left join vl_patients p on p.id = s.patient_id 
+    	inner join backend_facilities f on f.id=s.facility_id 
+    	inner join vl_clinicians c on c.id=s.clinician_id 
+    	where YEAR(s.created_at)=$_year and MONTH(s.created_at)=$_month and";
+    	
+    }
+
 
 }
