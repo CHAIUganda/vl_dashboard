@@ -128,4 +128,5 @@ Route::group(['middleware'=>'oauth'], function(){
 	//Route::get('/api/facility_list/{facility_id}/{yearmonth}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
 	//Route::get('/api/facility_list/{hub_id}/{yearmonth}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
 	Route::get('/api/hivdr/{year}/{month}/', ['uses' => 'APIResultsController@getHivDrugResistanceTests']);
+	Route::post('/api/hivdr/', ['uses' => 'APIResultsController@receiveHivDrugResistanceTests']);
 	});

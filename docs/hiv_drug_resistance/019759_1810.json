@@ -1,0 +1,266 @@
+[
+{
+"drr_id":"202878",
+"sample_id":"2242926",
+"vl_sample_id":"067743/1802",
+"cphl_patient_unique_id":"788-A-EH5426",
+"accession_number":"OS0919/17",
+"entity_patient_id":"MBL-14-4443",
+"analyst":"PAMELA A.",
+"no_charge_reason":"",
+"study_name":"Central Public Health Lab",
+"study_code":"CPHL",
+"test_date":"03/01/2018  9:35:15 AM",
+"result_date":"04/01/2018  4:04:37 PM",
+"result_string":{
+	"LabNo":"DR1134",
+	"Condons":"1-238",
+	"SubType":"A",
+	"PolymorphismResults":
+	[  
+	     {
+	     	"Classification":"OTHER",
+	     	"Result":"L10R,I13V,K20R,E35D,M36I,R41K,K43R,R57K,I62V,L63P,H69K,A71V,K11A,K20R,E28R,K32E,V35T,T39N,V60I,A98S,K102Q,K122E,D123N,I135T,I167V,K173L,D177E,T200A,I202V,E203K,Q207A,R211K,L228H"
+	     },
+	     {
+	     	"Classification":"PI_MINOR","Result":"M46V,F53L,L89T"
+	     },
+	     {  
+	     	"Classification":"NRTI",
+	     	"Result":"M41L,D67N,K70R,V75M,M184V,T215F,K219E"
+	     },
+	     {
+	     	"Classification":"NNRTI",
+	     	"Result":"K103N,E138EG,V179T"
+	     }
+	],
+	"DrugScoreGroups":
+	[
+	    {
+	    	"Type":"NNRTI",
+	    	"DrugScores":
+	    	[
+	    	    {
+	    	    	"DrugName":"efavirenz",
+	    	    	"DrugCode":"EFV",
+	    	    	"ResistanceLevelText":"High-Level Resistance",
+	    	    	"DrugNameCode":"efavirenz (EFV)"
+	    	    },
+	    	    {
+	    	    	"DrugName":"etravirine",
+	    	    	"DrugCode":"ETR",
+	    	    	"ResistanceLevelText":"Potential Low-Level Resistance",
+	    	    	"DrugNameCode":"etravirine (ETR)"
+	    	    },
+	    	    {
+	    	    	"DrugName":"nevirapine",
+	    	    	"DrugCode":"NVP",
+	    	    	"ResistanceLevelText":"High-Level Resistance",
+	    	    	"DrugNameCode":"nevirapine (NVP)"
+	    	    },
+	    	    {
+	    	    	"DrugName":"rilpivirine","DrugCode":"RPV","ResistanceLevelText":"Low-Level Resistance","DrugNameCode":"rilpivirine (RPV)"}
+	    	]
+	    },
+	    {
+	    	"Type":"NRTI",
+	    	"DrugScores":
+	    	[
+	    		{
+	    			"DrugName":"abacavir",
+	    			"DrugCode":"ABC",
+	    			"ResistanceLevelText":"High-Level Resistance",
+	    			"DrugNameCode":"abacavir (ABC)"
+	    		},
+	    		{
+	    			"DrugName":"zidovudine","DrugCode":"AZT","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"zidovudine (AZT)"},
+	    			{"DrugName":"stavudine","DrugCode":"D4T","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"stavudine (D4T)"},
+	    			{"DrugName":"didanosine","DrugCode":"DDI","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"didanosine (DDI)"},
+	    			{"DrugName":"emtricitabine","DrugCode":"FTC","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"emtricitabine (FTC)"},
+	    			{"DrugName":"lamivudine","DrugCode":"3TC","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"lamivudine (3TC)"},
+	    			{"DrugName":"tenofovir","DrugCode":"TDF","ResistanceLevelText":"Intermediate Resistance","DrugNameCode":"tenofovir (TDF)"}
+	    	]
+	    },
+	    {
+	    	"Type":"PI",
+	    	"DrugScores":
+	    	[
+	    	        {"DrugName":"atazanavir/r","DrugCode":"ATV/r","ResistanceLevelText":"Low-Level Resistance","DrugNameCode":"atazanavir/r (ATV/r)"},
+	    			{"DrugName":"darunavir/r","DrugCode":"DRV/r","ResistanceLevelText":"Susceptible","DrugNameCode":"darunavir/r (DRV/r)"},
+	    			{"DrugName":"fosamprenavir/r","DrugCode":"FPV/r","ResistanceLevelText":"Potential Low-Level Resistance","DrugNameCode":"fosamprenavir/r (FPV/r)"},
+	    			{"DrugName":"indinavir/r","DrugCode":"IDV/r","ResistanceLevelText":"Potential Low-Level Resistance","DrugNameCode":"indinavir/r (IDV/r)"},
+	    			{"DrugName":"lopinavir/r","DrugCode":"LPV/r","ResistanceLevelText":"Susceptible","DrugNameCode":"lopinavir/r (LPV/r)"},
+	    			{"DrugName":"nelfinavir","DrugCode":"NFV","ResistanceLevelText":"Intermediate Resistance","DrugNameCode":"nelfinavir (NFV)"},
+	    			{"DrugName":"saquinavir/r","DrugCode":"SQV/r","ResistanceLevelText":"Low-Level Resistance","DrugNameCode":"saquinavir/r (SQV/r)"},
+	    			{"DrugName":"tipranavir/r","DrugCode":"TPV/r","ResistanceLevelText":"Susceptible","DrugNameCode":"tipranavir/r (TPV/r)"}
+	    	]
+	    }
+	],
+	"ResultComments":
+	[
+		{
+			"Group":"Accessory",
+			"Comments":
+			["M46I/L are relatively non-polymorphic PI-selected mutations. In combination with other PI-resistance mutations, they are associated with reduced susceptibility to each of the PIs except DRV. M46V is a rare non-polymorphic PI-selected mutation that has not been well studied.\r\n",
+			"F53L is a non-polymorphic accessory PI-selected mutation that reduces susceptibility primarily to ATV, SQV, and NFV.",
+			"L89V is a non-polymorphic PI-selected accessory mutation that contributes reduced susceptibility to FPV, DRV, NFV, and IDV. L89V is included in the Tibotec DRV genotypic susceptibility score. L89T is a rare non-polymorphic PI-selected mutation that has not been well studied."
+			]
+		},
+		{
+			"Group":"Other",
+			"Comments":["L10R/Y are rare, non-polymorphic PI-selected mutations. Their effects on PI susceptibility have not been well studied.","K20R is a highly polymorphic PI-selected accessory mutation.","A71V/T are polymorphic, PI-selected accessory mutations that increase the replication of viruses with other PI-resistance mutations."
+			]
+		},
+		{
+			"Group":"NRTI",
+			"Comments":["M184V/I cause high-level in vitro resistance to 3TC and FTC and low-level resistance to ddI and ABC. However, 
+			M184V/I are not contraindications to continued treatment with 3TC or FTC because they increase susceptibility to AZT, TDF and d4T and are associated with clinically significant reductions in HIV-1 replication.",
+			"T215F is a TAM that causes intermediate/high-level resistance to AZT and d4T, low-level resistance to ddI, and potentially low-level resistance to ABC and TDF.","K219Q/E are accessory TAMS associated with reduced susceptibility to AZT and possibly d4T.",
+			"M41L is a TAM that usually occurs with T215Y. In combination, M41L plus T215Y confer intermediate / high-level resistance to AZT and d4T and contribute to reduced ddI, ABC and TDF susceptibility.",
+			"D67N is a non-polymorphic TAM associated with low-level resistance to AZT and d4T. When present with other TAMs, it contributes reduced susceptibility to ABC, ddI, and TDF.","K70R causes intermediate resistance to AZT and possibly low-level resistance to D4T, DDI, ABC and TDF.","V75M causes intermediate d4T resistance, low-level ddI resistance, and potentially low-level AZT resistance."
+			]
+		},
+		{
+			"Group":"NNRTI",
+			"Comments":["K103N is a non-polymorphic mutation that causes high-level resistance to NVP and EFV.","E138Q/G are non-polymorphic accessory mutations frequently selected in patients receiving ETR and RPV and occasionally in patients receiving NVP and EFV. Preliminary data suggest that E138Q/G are associated with 2 to 3-fold reduced susceptibility to each of the NNRTIs.",
+			"V179T is a relatively rare non-polymorphic mutation occasionally selected in patients receiving NNRTIs. It is associated with minimal, if any, reduction in ETR and RPV susceptibility. It has a low weight in the Tibotec ETR genotypic susceptibility score."
+		     ]
+		}
+	]
+},
+"form_number":"2261814"
+},
+{
+"drr_id":"202878",
+"sample_id":"2242926",
+"vl_sample_id":"067743/1802",
+"cphl_patient_unique_id":"788-A-EH5426",
+"accession_number":"OS0919/17",
+"entity_patient_id":"MBL-14-4443",
+"analyst":"PAMELA A.",
+"no_charge_reason":"",
+"study_name":"Central Public Health Lab",
+"study_code":"CPHL",
+"test_date":"03/01/2018  9:35:15 AM",
+"result_date":"04/01/2018  4:04:37 PM",
+"result_string":{
+	"LabNo":"DR1134",
+	"Condons":"1-238",
+	"SubType":"A",
+	"PolymorphismResults":
+	[  
+	     {
+	     	"Classification":"OTHER",
+	     	"Result":"L10R,I13V,K20R,E35D,M36I,R41K,K43R,R57K,I62V,L63P,H69K,A71V,K11A,K20R,E28R,K32E,V35T,T39N,V60I,A98S,K102Q,K122E,D123N,I135T,I167V,K173L,D177E,T200A,I202V,E203K,Q207A,R211K,L228H"
+	     },
+	     {
+	     	"Classification":"PI_MINOR","Result":"M46V,F53L,L89T"
+	     },
+	     {  
+	     	"Classification":"NRTI",
+	     	"Result":"M41L,D67N,K70R,V75M,M184V,T215F,K219E"
+	     },
+	     {
+	     	"Classification":"NNRTI",
+	     	"Result":"K103N,E138EG,V179T"
+	     }
+	],
+	"DrugScoreGroups":
+	[
+	    {
+	    	"Type":"NNRTI",
+	    	"DrugScores":
+	    	[
+	    	    {
+	    	    	"DrugName":"efavirenz",
+	    	    	"DrugCode":"EFV",
+	    	    	"ResistanceLevelText":"High-Level Resistance",
+	    	    	"DrugNameCode":"efavirenz (EFV)"
+	    	    },
+	    	    {
+	    	    	"DrugName":"etravirine",
+	    	    	"DrugCode":"ETR",
+	    	    	"ResistanceLevelText":"Potential Low-Level Resistance",
+	    	    	"DrugNameCode":"etravirine (ETR)"
+	    	    },
+	    	    {
+	    	    	"DrugName":"nevirapine",
+	    	    	"DrugCode":"NVP",
+	    	    	"ResistanceLevelText":"High-Level Resistance",
+	    	    	"DrugNameCode":"nevirapine (NVP)"
+	    	    },
+	    	    {
+	    	    	"DrugName":"rilpivirine","DrugCode":"RPV","ResistanceLevelText":"Low-Level Resistance","DrugNameCode":"rilpivirine (RPV)"}
+	    	]
+	    },
+	    {
+	    	"Type":"NRTI",
+	    	"DrugScores":
+	    	[
+	    		{
+	    			"DrugName":"abacavir",
+	    			"DrugCode":"ABC",
+	    			"ResistanceLevelText":"High-Level Resistance",
+	    			"DrugNameCode":"abacavir (ABC)"
+	    		},
+	    		{
+	    			"DrugName":"zidovudine","DrugCode":"AZT","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"zidovudine (AZT)"},
+	    			{"DrugName":"stavudine","DrugCode":"D4T","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"stavudine (D4T)"},
+	    			{"DrugName":"didanosine","DrugCode":"DDI","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"didanosine (DDI)"},
+	    			{"DrugName":"emtricitabine","DrugCode":"FTC","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"emtricitabine (FTC)"},
+	    			{"DrugName":"lamivudine","DrugCode":"3TC","ResistanceLevelText":"High-Level Resistance","DrugNameCode":"lamivudine (3TC)"},
+	    			{"DrugName":"tenofovir","DrugCode":"TDF","ResistanceLevelText":"Intermediate Resistance","DrugNameCode":"tenofovir (TDF)"}
+	    	]
+	    },
+	    {
+	    	"Type":"PI",
+	    	"DrugScores":
+	    	[
+	    	        {"DrugName":"atazanavir/r","DrugCode":"ATV/r","ResistanceLevelText":"Low-Level Resistance","DrugNameCode":"atazanavir/r (ATV/r)"},
+	    			{"DrugName":"darunavir/r","DrugCode":"DRV/r","ResistanceLevelText":"Susceptible","DrugNameCode":"darunavir/r (DRV/r)"},
+	    			{"DrugName":"fosamprenavir/r","DrugCode":"FPV/r","ResistanceLevelText":"Potential Low-Level Resistance","DrugNameCode":"fosamprenavir/r (FPV/r)"},
+	    			{"DrugName":"indinavir/r","DrugCode":"IDV/r","ResistanceLevelText":"Potential Low-Level Resistance","DrugNameCode":"indinavir/r (IDV/r)"},
+	    			{"DrugName":"lopinavir/r","DrugCode":"LPV/r","ResistanceLevelText":"Susceptible","DrugNameCode":"lopinavir/r (LPV/r)"},
+	    			{"DrugName":"nelfinavir","DrugCode":"NFV","ResistanceLevelText":"Intermediate Resistance","DrugNameCode":"nelfinavir (NFV)"},
+	    			{"DrugName":"saquinavir/r","DrugCode":"SQV/r","ResistanceLevelText":"Low-Level Resistance","DrugNameCode":"saquinavir/r (SQV/r)"},
+	    			{"DrugName":"tipranavir/r","DrugCode":"TPV/r","ResistanceLevelText":"Susceptible","DrugNameCode":"tipranavir/r (TPV/r)"}
+	    	]
+	    }
+	],
+	"ResultComments":
+	[
+		{
+			"Group":"Accessory",
+			"Comments":
+			["M46I/L are relatively non-polymorphic PI-selected mutations. In combination with other PI-resistance mutations, they are associated with reduced susceptibility to each of the PIs except DRV. M46V is a rare non-polymorphic PI-selected mutation that has not been well studied.\r\n",
+			"F53L is a non-polymorphic accessory PI-selected mutation that reduces susceptibility primarily to ATV, SQV, and NFV.",
+			"L89V is a non-polymorphic PI-selected accessory mutation that contributes reduced susceptibility to FPV, DRV, NFV, and IDV. L89V is included in the Tibotec DRV genotypic susceptibility score. L89T is a rare non-polymorphic PI-selected mutation that has not been well studied."
+			]
+		},
+		{
+			"Group":"Other",
+			"Comments":["L10R/Y are rare, non-polymorphic PI-selected mutations. Their effects on PI susceptibility have not been well studied.","K20R is a highly polymorphic PI-selected accessory mutation.","A71V/T are polymorphic, PI-selected accessory mutations that increase the replication of viruses with other PI-resistance mutations."
+			]
+		},
+		{
+			"Group":"NRTI",
+			"Comments":["M184V/I cause high-level in vitro resistance to 3TC and FTC and low-level resistance to ddI and ABC. However, 
+			M184V/I are not contraindications to continued treatment with 3TC or FTC because they increase susceptibility to AZT, TDF and d4T and are associated with clinically significant reductions in HIV-1 replication.",
+			"T215F is a TAM that causes intermediate/high-level resistance to AZT and d4T, low-level resistance to ddI, and potentially low-level resistance to ABC and TDF.","K219Q/E are accessory TAMS associated with reduced susceptibility to AZT and possibly d4T.",
+			"M41L is a TAM that usually occurs with T215Y. In combination, M41L plus T215Y confer intermediate / high-level resistance to AZT and d4T and contribute to reduced ddI, ABC and TDF susceptibility.",
+			"D67N is a non-polymorphic TAM associated with low-level resistance to AZT and d4T. When present with other TAMs, it contributes reduced susceptibility to ABC, ddI, and TDF.","K70R causes intermediate resistance to AZT and possibly low-level resistance to D4T, DDI, ABC and TDF.","V75M causes intermediate d4T resistance, low-level ddI resistance, and potentially low-level AZT resistance."
+			]
+		},
+		{
+			"Group":"NNRTI",
+			"Comments":["K103N is a non-polymorphic mutation that causes high-level resistance to NVP and EFV.","E138Q/G are non-polymorphic accessory mutations frequently selected in patients receiving ETR and RPV and occasionally in patients receiving NVP and EFV. Preliminary data suggest that E138Q/G are associated with 2 to 3-fold reduced susceptibility to each of the NNRTIs.",
+			"V179T is a relatively rare non-polymorphic mutation occasionally selected in patients receiving NNRTIs. It is associated with minimal, if any, reduction in ETR and RPV susceptibility. It has a low weight in the Tibotec ETR genotypic susceptibility score."
+		     ]
+		}
+	]
+},
+"form_number":"2261814"
+}
+
+
+]
