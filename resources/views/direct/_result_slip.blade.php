@@ -163,7 +163,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 				<br><b>Rejection Reason:</b> &nbsp; <?=$result_obj->rejection_reason ?>	
 			</div>
 			<div style="width:16%;float:right">
-				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,'yes',$now_s") !!}
+				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$result_obj->sid") !!}
 			</div>
 		</div>	
 	</div>
@@ -221,7 +221,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 				<div><?=$recommendation ?></div>
 			</div>
 			<div style="width:16%;float:right">
-				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,'yes',$now_s") !!}
+				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$result_obj->sid") !!}
 			</div>
 		</div>	
 	</div>
