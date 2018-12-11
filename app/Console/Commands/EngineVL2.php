@@ -41,6 +41,7 @@ class EngineVL2 extends Command
     {
         parent::__construct();
         $this->mongo=Mongo::connect();
+        $this->db = \DB::connection('direct_db');
     }
 
     /**
@@ -55,174 +56,98 @@ class EngineVL2 extends Command
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //$this->facilities = $this->option('facilities');
         $this->months = $this->option('months');
-        $this->months = empty($this->months)?10:$this->months;
+        $this->months = empty($this->months)?3:$this->months;
 
         $this->limit = $this->option('limit');
         $this->limit = empty($this->limit)?10:$this->limit;
 
-        $this->_loadData();
+        $to = date("Y-m-d");
+        $fro = $this->_getFro();
+        $this->cond = "date(s.created_at)>='$fro' AND  date(s.created_at)<='$to'";
+
+        $this->_load();
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
 
     }
 
-    private function _getData($fro, $to, $start){
-    	$sql = "SELECT * FROM vl_sample s
-    	        INNER JOIN vl_verifications v ON s.id=v.sample_id
-    	        INNER JOIN vl_results r ON s.id=r.sample_id
-    	        WHERE date(s.created_at)>='$fro' AND  date(s.created_at)<='$to' 
+    private function _getData($start){
+    	
+    	$sql = "SELECT s.*, f.district_id, f.hub_id, p.gender, p.dob,
+                a1.code AS treatment_indication,
+                a2.code AS current_regimen,
+                a2.tag AS treatment_line,
+                a3.tag AS rejection_reason,
+                r.suppressed, r.result_alphanumeric
+                FROM vl_samples s
+                LEFT JOIN vl_patients p ON s.patient_id=p.id
+    	        LEFT JOIN vl_verifications v ON s.id=v.sample_id
+    	        LEFT JOIN vl_results r ON s.id=r.sample_id
+                LEFT JOIN backend_facilities f ON s.facility_id=f.id
+                LEFT JOIN backend_appendices a1 ON s.treatment_indication_id=a1.id
+                LEFT JOIN backend_appendices a2 ON s.current_regimen_id=a2.id
+                LEFT JOIN backend_appendices a3 ON v.rejection_reason_id=a3.id
+                LEFT JOIN backend_appendices a4 ON v.rejection_reason_id=a3.id
+    	        WHERE $this->cond 
     	        LIMIT $start, $this->limit";
-    }		
-
-
-    private function _loadData(){
-        $num_records = 0;
-
-        if($this->facilities){
-            $facilities =  $this->_get('facilities');
-            $this->mongo->api_facilities->drop();
-            $this->mongo->api_facilities->batchInsert($facilities);
-
-        }elseif($this->pk){
-            $samples = $this->_get('samples', "pk=$this->pk");
-            if(is_array($samples)){
-                foreach ($samples as $sample) {
-                    $data = $this->_getDashboardData($sample);
-                    $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
-
-                    unset($sample->resultsdispatch);
-                    $sample->created_at = Mongo::mDate($sample->created_at);
-                    $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
-                    //$this->comment($sample->pk);
-                    $num_records++;
-                }
-            }
-        }elseif($this->changes){
-            $updated_date = $this->changes=='today'?date('Y-m-d'):$this->changes;
-            $i = 1000;
-            $start = 0;
-            $length = 20;
-            while($i>0){
-                //$this->comment("start: $start, length: $length, $updated_date");
-                $samples = $this->_get('samples', "start=$start&length=$length&updated_date=$updated_date");
-                if(is_array($samples)){
-                    foreach ($samples as $sample) {
-                        $data = $this->_getDashboardData($sample);
-                        $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
-
-                        unset($sample->resultsdispatch);
-                        $sample->created_at = Mongo::mDate($sample->created_at);
-                        $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
-                        //$this->comment($sample->form_number);
-                        $num_records++;
-                    }
-                }
-                $start +=$length;
-                $i--;
-            }
-           
-            
-        }elseif($this->minutes){
-            $samples = $this->_get('samples', "latest_minutes=$this->minutes");
-            if(is_array($samples)){
-                foreach ($samples as $sample) {
-                    $data = $this->_getDashboardData($sample);
-                    $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
-
-                    unset($sample->resultsdispatch);
-                    $sample->created_at = Mongo::mDate($sample->created_at);
-                    $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
-                    //$this->comment($sample->pk);
-                    $num_records++;
-                }
-            }
-        }elseif($this->today){
-            $samples = $this->_get('samples', "changes_today=1");
-            if(is_array($samples)){
-                foreach ($samples as $sample) {
-                   $data = $this->_getDashboardData($sample);
-                   $this->mongo->dashboard_new_backend->update(['sample_id'=>(int)$sample->pk],$data, ["upsert"=>true]);
-                   $num_records++;
-                }
-            }            
-        }elseif(!empty($this->month) and !empty($this->year)){
-            $dates = $this->_getMonthDates($this->year, $this->month);
-            $year_month = intval($this->year.str_pad($this->month,2,0,STR_PAD_LEFT));
-            
-            if($this->expanded){
-                /*$cond = ['created_at'=>['$gte'=>$dates[0], '$lte'=>end($dates)]];
-                $this->mongo->api_samples->remove($cond, ['justOne'=>false]);
-                foreach ($dates as $date) {                    
-                    $samples = $this->_get('samples', "date=$date");
-                    $num_samples = count($samples);
-                    if(is_array($samples) && $num_samples>0){
-                        $this->mongo->api_samples->batchInsert($samples);
-                        $num_records += $num_samples;
-                    }
-                }*/
-                foreach ($dates as $date) {
-                    $samples = $this->_get('samples', "date=$date");
-                    if(is_array($samples)){
-                        foreach ($samples as $sample) {
-                            unset($sample->resultsdispatch);
-                            $sample->created_at = Mongo::mDate($sample->created_at);
-                            $this->mongo->api_samples->update(['pk'=>(int)$sample->pk],['$set'=>$sample, '$setOnInsert'=>['resultsdispatch'=>null]], ["upsert"=>true]);
-                            $num_records++;
-                        }
-                    }               
-                }
-
-            }else{
-                $this->_removeSamples(['year_month'=>$year_month]);
-                foreach ($dates as $date) {
-                    $samples = $this->_get('samples', "date=$date");
-                    if(is_array($samples)){
-                        foreach ($samples as $sample) {
-                           $data = $this->_getDashboardData($sample);
-                           $this->mongo->dashboard_new_backend->insert($data);
-                           $num_records++;
-                        }
-                    }               
-                }
-            }
-        }else{
-            $this->comment("You are missing some options essai:run {--t|today} {--m|month=} {--y|year=}");
-        } 
-        $this->comment("$num_records Records updated");
+    	return $this->db->select($sql);
+    	#$this->comment($sql);
     }
+
+    private function _load(){
+    	$this->_removeSamples();
+    	$count_sql = "SELECT count(id) AS num FROM vl_samples s WHERE $this->cond";
+    	$count = collect($this->db->select($count_sql))->first()->num;
+    	//$this->comment($count_sql);
+    	//$this->comment($count);
+    	$loops = ceil($count/$this->limit);
+
+    	for ($i=0; $i < $loops; $i++) { 
+    		$start = $i*$this->limit;
+    		$this->comment("$i start is $start");
+
+    		$samples = $this->_getData($start);
+            $s_arr = [];
+            foreach ($samples as $sample) {
+                 $s_arr[] = $this->_getDashboardData($sample);
+            }
+            $this->mongo->dashboard_new_backend->batchInsert($s_arr);
+    	}
+ 
+    }		
 
     private function _getDashboardData($sample){
         $data = [];
 
         $year_month = date("Ym",strtotime($sample->created_at));
         $data["year_month"] = (int)$year_month;
-        $data["sample_id"] = (int)$sample->pk;
+        $data["sample_id"] = (int)$sample->id;
         $data["vl_sample_id"] = $sample->vl_sample_id;
         $data["patient_unique_id"] = $sample->patient_unique_id;                 
 
-        $data["facility_id"] = (int)$sample->facility->pk;
-        $data['district_id'] = isset($sample->facility->district->pk)?(int)$sample->facility->district->pk:0;
-        $data['hub_id'] = isset($sample->facility->hub->pk)?(int)$sample->facility->hub->pk:0;
-        $age = $this->_getAge($sample->patient->dob, $sample->created_at);
+        $data["facility_id"] = (int)$sample->facility_id;
+        $data['district_id'] = isset($sample->district_id)?(int)$sample->district_id:0;
+        $data['hub_id'] = isset($sample->hub_id)?(int)$sample->hub_id:0;
+        $age = $this->_getAge($sample->dob, $sample->created_at);
         $data["age"] = $age;
         $data["age_group_id"] = $age;
-        $data["gender"] = $this->_getGender($sample->patient->gender);
-        $data["treatment_indication_id"] = isset($sample->treatment_indication->code)?(int)$sample->treatment_indication->code:0;//treatment_initiation
+        $data["gender"] = $this->_getGender($sample->gender);
+        $data["treatment_indication_id"] = isset($sample->treatment_indication)?(int)$sample->treatment_indication:0;//treatment_initiation
 
-        $data["regimen"] = isset($sample->current_regimen->code)?(int)$sample->current_regimen->code:0;//current regimen
-        $data["regimen_line"] = isset($sample->treatment_line->code)?(int)$sample->treatment_line->code:0;
+        $data["regimen"] = isset($sample->current_regimen)?(int)$sample->current_regimen:0;//current regimen
+        $data["regimen_line"] = isset($sample->treatment_line)?(int)$sample->treatment_line:0;
         $data["regimen_time_id"] = $this->_getRegTime($sample->treatment_initiation_date, $sample->created_at);
 
-        $data["pregnancy_status"] = $sample->get_pregnant_display?$sample->get_pregnant_display:"UNKNOWN";
-        $data["breastfeeding_status"] = $sample->get_breast_feeding_display?$sample->get_breast_feeding_display:"UNKNOWN";
-        $data["active_tb_status"] = $sample->get_active_tb_status_display?$sample->get_active_tb_status_display:"UNKNOWN";
+        $data["pregnancy_status"] = $this->_choice($sample->pregnant);
+        $data["breastfeeding_status"] = $this->_choice($sample->breast_feeding); 
+        $data["active_tb_status"] = $this->_choice($sample->active_tb_status);
 
         $data["sample_type_id"] = $sample->sample_type=='D'?1:2;
-        $suppressed = isset($sample->result->get_suppressed_display)?$sample->result->get_suppressed_display:"UNKNOWN";
-        $data["sample_result_validity"] = $suppressed=='NO'||$suppressed=='YES'?'valid':'invalid';
+        $suppressed = $this->_choice($sample->suppressed);
+        $data["sample_result_validity"] = $suppressed=='No'||$suppressed=='Yes'?'valid':'invalid';
         $data["suppression_status"] = $suppressed!='UNKNOWN'?strtolower($suppressed):$suppressed;
 
-        $data["tested"]=!empty($sample->result)?"yes":"no";
-        $data["rejection_reason"] = isset($sample->verification->rejection_reason->tag)?$this->_getRejectionCat($sample->verification->rejection_reason->tag):"UNKNOWN";
+        $data["tested"]=!empty($sample->result_alphanumeric)?"yes":"no";
+        $data["rejection_reason"] = isset($sample->rejection_reason)?$this->_getRejectionCat($sample->rejection_reason):"UNKNOWN";
         return $data;
     }
 
@@ -235,8 +160,10 @@ class EngineVL2 extends Command
         }
     }
 
-    private function _removeSamples($cond=[], $justOne=false){
-        $result=$this->mongo->dashboard_new_backend->remove($cond, ['justOne'=>$justOne]);
+    private function _removeSamples(){
+    	$last_n_months = $this->_lastNMonths();
+    	$cond = ['year_month', ['$in'=>$last_n_months]];
+        $result=$this->mongo->dashboard_new_backend->remove($cond, ['justOne'=>false]);
         return $result['n'];//return 1 for when a record has been successfully removed,0 when nothing has been found.
     }
 
@@ -336,6 +263,33 @@ class EngineVL2 extends Command
            $ret[] = date("Y-m-d", strtotime($date_str));
         }
         return $ret;
+    }
+
+    private function _getFro(){
+    	$fro_m = (date('m')-$this->months)+1;
+    	$yr = date('Y');
+    	if($fro_m<1){
+    		$fro_m += 12;
+    		$yr += 1;
+    	}
+    	
+    	return $yr."-".str_pad($fro_m,2,0,STR_PAD_LEFT).'-'.'01';
+    }
+
+    private function _lastNMonths(){
+    	$months = [];
+    	for ($i = 0; $i < $this->months ; $i++) {  $months[] = (int)date("Ym", strtotime( date( 'Y-m-01' )." -$i months")); }
+    	return $months;
+    }
+
+    private function _choice($val){
+        if($val=='N'){
+            return 'No';
+        }else if ($val=='Y'){
+            return 'Yes';
+        }else{
+            return 'UNKNOWN';
+        }
     }
 
 
