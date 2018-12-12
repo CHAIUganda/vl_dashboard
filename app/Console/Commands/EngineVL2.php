@@ -65,7 +65,10 @@ class EngineVL2 extends Command
         $fro = $this->_getFro();
         $this->cond = "date(s.created_at)>='$fro' AND  date(s.created_at)<='$to'";
 
+        //$this->comment($this->cond);
+
         $this->_load();
+        //$this->comment($this->_removeSamples());
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
 
     }
@@ -162,7 +165,7 @@ class EngineVL2 extends Command
 
     private function _removeSamples(){
     	$last_n_months = $this->_lastNMonths();
-    	$cond = ['year_month', ['$in'=>$last_n_months]];
+    	$cond = ['year_month'=>['$in'=>$last_n_months]];
         $result=$this->mongo->dashboard_new_backend->remove($cond, ['justOne'=>false]);
         return $result['n'];//return 1 for when a record has been successfully removed,0 when nothing has been found.
     }
