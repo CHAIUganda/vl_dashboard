@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <title>@yield('meta-title', 'Uganda Viral Load Dashboard')</title>
+     <title>@yield('meta-title', 'Sierra Leone Viral Load Dashboard')</title>
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/jquery.dataTables.css') }}" rel="stylesheet">    
     <link href="{{ asset('/css/jquery-ui.css')}}" rel="stylesheet" >
@@ -191,47 +191,12 @@
 
 
 <body ng-app="dashboard" ng-controller="DashController">
-    @if(!Auth::check())
-        <div class="hover_bkgr_fricc">
-                <span class="helper"></span>
-                <div>
-                    <div class="popupCloseButton">X</div>
-                    <div class="modal-header text-danger">Why wait? - Print EID and Viral load results now!</div>
-
-                    <div class="modal-body text-left text-danger">
-                        <small>Viral Load and EID results can be printed real time from the Viral load and EID dashboards by the 
-                            Electronic results printing (e-RD).</small>
-
-                        <ul class="list-unstyled hover">
-                        <li>Advantages/Benefits</li>
-                            <ul><small>Instant access to completed results</small></ul>
-                            <ul><small>Continuous access to old results</small></ul>
-                            <ul><small>Ability to store electronic copy of results</small></ul>
-                            
-                        <li>What you need to print</li>
-                            <ul><small>Computer</small></ul>
-                            <ul><small>Printer</small></ul>
-                            <ul><small>Paper, A4</small></ul>
-                            <ul><small>Envelopes</small></ul>
-                            <ul><small>Internet Access</small></ul>
-                        <li>How to enroll for e-RD</li>
-                <ul><small>We call upon all facilities with capacity to print to contact our 
-                    customer care on 0800221100 or send email 
-                    to  <a>customercare@cphl.go.ug</a> for enrollment.</small></ul>
-                    </ul>
-
-                    </div>
-                    
-
-                </div>
-        </div>
-    @endif
 
     <div class="navbar-custom navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header"> 
                 <!-- <img src="{{ asset('/images/icon.png') }}" height="20" width="20"> -->
-                <a class="navbar-brand" href="/" style="font-weight:800px;color:#FFF"> UGANDA VIRAL LOAD</a>
+                <a class="navbar-brand" href="/" style="font-weight:800px;color:#FFF"> SIERRA LEONE VIRAL LOAD</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">

@@ -61,11 +61,12 @@ class EngineVL2 extends Command
         $this->limit = $this->option('limit');
         $this->limit = empty($this->limit)?10:$this->limit;
 
-        $to = date("Y-m-d");
+        $to = date("Y-m-d", (strtotime(date("Y-m-d"))-(24*60*60)));
         $fro = $this->_getFro();
         $this->cond = "date(s.created_at)>='$fro' AND  date(s.created_at)<='$to'";
 
-        //$this->comment($this->cond);
+        $this->comment($this->cond);
+        //print_r($this->_lastNMonths());
 
         $this->_load();
         //$this->comment($this->_removeSamples());
@@ -273,7 +274,7 @@ class EngineVL2 extends Command
     	$yr = date('Y');
     	if($fro_m<1){
     		$fro_m += 12;
-    		$yr += 1;
+    		$yr -= 1;
     	}
     	
     	return $yr."-".str_pad($fro_m,2,0,STR_PAD_LEFT).'-'.'01';

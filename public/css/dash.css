@@ -119,14 +119,14 @@ background-color: #00786A;
 color: white; /*BACKGROUND color for active*/
 /*background-color: #346290;*/
 /*background-color: red;*/
-background-color: #D32F2F;
+background-color: #186A3B;
 }
 
   .navbar-custom {
    /* background-color: #337ab7;
     border-color: #337ab7;*/
-    border-color: #F44336 ;
-    background-color: #F44336;
+    border-color: #008000 ;
+    background-color: #008000;
 }
 
  .navbar-custom .dropdown-menu > li > a:hover,
@@ -141,7 +141,7 @@ background-color: #D32F2F;
  .navbar-inverse .navbar-nav > .open > a {
     text-decoration: none;
     /*background-color: #346290;*/ /*Change rollover cell color here*/
-    background-color: #D32F2F;
+    background-color: #186A3B;
   }
 
 
@@ -383,7 +383,7 @@ div.addition-metrics{
 	color: #fff;
 	/*background-color: #90B4FF;*/
 	/*background-color: #009688;*/
-	background-color: #F44336;
+	background-color: #008000;
 	padding-left: 15px;
 	padding-right: 15px;
 	padding-top: 7px;
@@ -439,11 +439,11 @@ div.addition-metrics{
 	margin-left: 30%;
 	padding-top: 4px;
 	padding-bottom: 4px;
-	border: 1px solid #F44336 
+	border: 1px solid #008000 
 }
 
 .dist_faclty_toggle>.active,.reg_toggle>.active{
-	background-color:#F44336; 
+	background-color:#008000; 
 	color:#FFF;
 	padding-top: inherit;
 	padding-bottom: inherit;
@@ -474,7 +474,7 @@ div.addition-metrics{
 
 .filter_clear{
 	cursor: pointer;
-	color: #F44336;
+	color: #008000;
 }
 
 .navbar-custom > navbar-brand{
@@ -503,7 +503,7 @@ div.addition-metrics{
 
 .border-frame{
     
-    border-bottom: 1px solid #f44336;
+    border-bottom: 1px solid #008000;
     padding: 10px;
 }
 
