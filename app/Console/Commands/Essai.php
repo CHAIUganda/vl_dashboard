@@ -239,7 +239,7 @@ class Essai extends Command
     private function _getDashboardData($sample){
         $data = [];
 
-        $year_month = date("Ym",strtotime($sample->created_at));
+        $year_month = date("Ym",strtotime($sample->date_received));
         $data["year_month"] = (int)$year_month;
         $data["sample_id"] = (int)$sample->pk;
         $data["vl_sample_id"] = $sample->vl_sample_id;

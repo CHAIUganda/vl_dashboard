@@ -242,7 +242,7 @@ class DashboardController extends Controller {
 		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage);
 		
 		
-		return isset($res['result'])?$res['result'][0]:[];
+		return isset($res['result'][0])?$res['result'][0]:[];
 
 
 	}
