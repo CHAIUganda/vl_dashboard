@@ -2,10 +2,10 @@
 
 @section('content')  
 
-<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+<!-- <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
     <li id='logs-tab' ><a href="/logs" >Logs</a></li>
     <li id='users-tab' ><a href="/admin/list_users" >User Management</a></li>
-</ul>
+</ul> -->
 
 <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active"> 
