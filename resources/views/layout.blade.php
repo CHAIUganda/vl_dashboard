@@ -201,10 +201,10 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                         <li id='dashboard' >{!! link_to("/","DASHBOARD",['class'=>'hdr']) !!}</li>
-
+<!-- 
                         @if(Auth::check())   
                         @permission('qc')<li id='qc' >{!! link_to("/qc","RESULTS RELEASE",['class'=>'hdr']) !!}</li>@endpermission
-                        @permission('lab_qc')<li id='lab_qc' >{!! link_to("/lab_qc/index","RESULTS AUTH",['class'=>'hdr']) !!}</li>@endpermission       
+                        @permission('lab_qc')<li id='lab_qc' >{!! link_to("/lab_qc/index","RESULTS AUTH",['class'=>'hdr']) !!}</li>@endpermission    -->    
                         @permission('print_results')
                         <li id='results' >{!! link_to("/direct/facility_list/","RESULTS",['class'=>'hdr']) !!}</li>
                         <li id='suppression_trends' >{!! link_to("/suppression_trends/index","REPORTS",['class'=>'hdr']) !!}</li>

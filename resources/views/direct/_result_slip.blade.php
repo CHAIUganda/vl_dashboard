@@ -23,7 +23,7 @@ switch ($result_obj->suppressed) {
 
 $location_id = $result_obj->locator_category.$result_obj->envelope_number."/".$result_obj->locator_position;
 $rejected = $result_obj->accepted==0?1:2;
-$release_date = $rejected==1?$result_obj->rj_released_at:$result_obj->released_at;
+$release_date = $rejected==1?$result_obj->rj_released_at:$result_obj->authorised_at;
 $now_s = strtotime(date("Y-m-d"));
 $signature_arr = explode("/",$result_obj->signature);
 $signature = end($signature_arr);
@@ -32,19 +32,20 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 
 //$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
  ?>
+
 <page size="A4">
 	<div style="height:95%">
 <!-- <div class="print-container"> -->
 	<div class="print-header">
-		<img src="{{ MyHTML::getImageData('images/uganda.emblem.gif') }}">
+		<img src="{{ MyHTML::getImageData('images/coa.png') }}">
 		<div class="print-header-moh">
-			ministry of health uganda<br>
+			ministry of health and sanitation<br>
 			national aids control program<br>
 		</div>
 
-	central public health laboratories<br>
+	central public health reference laboratory<br>
 	
-	<u>viral load test results</u><br>
+	<u>hiv viral load test results</u><br>
 	</div>
 	<!-- <div class="print-henader">
 		<div style="width:10%;float:left"><img src="{{ MyHTML::getImageData('images/uganda.emblem.gif') }}"></div>
@@ -226,7 +227,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 		</div>	
 	</div>
 	<?php } ?>
-	<div class="row">
+	<!-- <div class="row">
 		<div style="width:100%;float:left; margin-top:15px;" >
 			<?php if ($rejected!=1){ ?>
 			<div style="width:15%;float:left">
@@ -253,7 +254,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 			</div>
 		</div>
 		
-	</div>
+	</div> -->
 	</div>
 	<footer><span style='float:left'>"a SANAS Accredited Medical Laboratory, No. M0589"</span> <span style="float:left;margin-left: 60px">print&nbsp;version&nbsp;{{ $print_version }}</span><span style='float:right'>1 of 1</span></footer>
 </page>

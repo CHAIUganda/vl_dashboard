@@ -68,8 +68,9 @@ class DirectResultsController extends Controller {
 	}
 
 	public function results_data($facility_id){
+		$release_col = \Request::get('type')=='rejects'?"released_at":"authorised_at";
 		$cols = ['r.sample_id','form_number', 'art_number', 'other_id', 'date_collected', 'date_received',
-				 'released_at','dispatch_date', 'r.sample_id'];
+				 $release_col,'dispatch_date', 'r.sample_id'];
 		$arr = $this->fetch_results($cols, $facility_id);
 		extract($arr);
 
@@ -85,7 +86,7 @@ class DirectResultsController extends Controller {
 				$result->other_id, 
 				\MyHTML::localiseDate($result->date_collected, 'd-M-Y'), 
 				\MyHTML::localiseDate($result->date_received, 'd-M-Y'), 
-				\MyHTML::localiseDate($result->released_at, 'd-M-Y'),
+				\MyHTML::localiseDate($result->authorised_at, 'd-M-Y'),
 				\MyHTML::localiseDate($result->dispatch_date, 'd-M-Y'),
 				\MyHTML::dropdownLinks($links)];
 		}
@@ -174,7 +175,8 @@ class DirectResultsController extends Controller {
 		$tab = \Request::has('tab')?\Request::get('tab'):'pending';
 		$crtd_at = $tab=='pending'?env('PENDING_DATE'):env('QC_START_DATE');
 
-		$cond = " released=1 AND facility_id=$facility_id AND s.created_at >='$crtd_at' ";		
+		$release_cond = \Request::get('type')=='rejects'?'released=1':'authorised=1';
+		$cond = "$release_cond  AND facility_id=$facility_id AND s.created_at >='$crtd_at' ";		
 		$cond = $tab == 'pending'? "$cond AND d.id IS NULL":"$cond AND d.id IS NOT NULL";
 		$cond2 = !empty($search)?" $cond AND form_number='$search'":$cond;
 
@@ -201,8 +203,7 @@ class DirectResultsController extends Controller {
 
 		if($type=='valids'||$type=='invalids'){
 			return  "SELECT $fields
-					 FROM vl_results_qc AS q
-					 INNER JOIN vl_results AS r ON q.result_id=r.id
+					 FROM  vl_results AS r
 					 INNER JOIN vl_samples AS s ON r.sample_id=s.id
 					 INNER JOIN vl_patients AS p ON s.patient_id=p.id
 					 LEFT JOIN vl_results_dispatch AS d ON s.id=d.sample_id	
