@@ -845,11 +845,21 @@ class DashboardController extends Controller {
 				'rejected_samples' => array(
 					'$sum' => array(
 						'$cond'=>array(
-							array('$or' => array(
-									'$eq' => array('$rejection_reason','eligibility'),
-									'$eq' => array('$rejection_reason','incomplete_form'),
-									'$eq' => array('$rejection_reason','quality_of_sample')
-								)
+							array('$eq' => array('$rejection_reason','UNKNOWN') 
+								),0,1)
+						)
+					),
+				'sample_quality_rejections' => array(
+					'$sum' => array(
+						'$cond'=>array(
+							array('$eq' => array('$rejection_reason','quality_of_sample') 
+								),1,0)
+						)
+					),
+				'incomplete_form_rejections' => array(
+					'$sum' => array(
+						'$cond'=>array(
+							array('$eq' => array('$rejection_reason','incomplete_form') 
 								),1,0)
 						)
 					),
