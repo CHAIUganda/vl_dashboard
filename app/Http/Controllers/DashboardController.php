@@ -845,8 +845,8 @@ class DashboardController extends Controller {
 				'rejected_samples' => array(
 					'$sum' => array(
 						'$cond'=>array(
-							array('$eq' => array('$rejection_reason','UNKNOWN') 
-								),0,1)
+							array('$ne' => array('$rejection_reason','UNKNOWN') 
+								),1,0)
 						)
 					),
 				'sample_quality_rejections' => array(
@@ -873,7 +873,7 @@ class DashboardController extends Controller {
 				)
 			);
 		$project_stage['$project']=array(
-			'samples_received'=>1,'valid_results'=>1,'dbs_samples'=>1,'total_results'=>1,'suppressed' => 1,'rejected_samples'=>1,
+			'samples_received'=>1,'valid_results'=>1,'dbs_samples'=>1,'total_results'=>1,'suppressed' => 1,'rejected_samples'=>1,'sample_quality_rejections'=>1, 'incomplete_form_rejections'=>1,
 			'patients_received'=>array('$size'=>'$unique_patient_count')
 			);
 		
