@@ -76,7 +76,9 @@ class EngineVL2 extends Command
 
     private function _getData($start){
     	
-    	$sql = "SELECT s.*, f.district_id, f.hub_id, p.gender, p.dob,
+    	$sql = "SELECT s.id, s.vl_sample_id, patient_unique_id, facility_id, 
+                s.created_at, pregnant, breast_feeding, active_tb_status, sample_type,
+                treatment_initiation_date, f.district_id, f.hub_id, p.gender, p.dob,
                 a1.code AS treatment_indication,
                 a2.code AS current_regimen,
                 a2.tag AS treatment_line,
@@ -92,6 +94,7 @@ class EngineVL2 extends Command
                 LEFT JOIN backend_appendices a3 ON v.rejection_reason_id=a3.id
                 LEFT JOIN backend_appendices a4 ON v.rejection_reason_id=a3.id
     	        WHERE $this->cond 
+                GROUP BY s.id
     	        LIMIT $start, $this->limit";
     	return $this->db->select($sql);
     	#$this->comment($sql);
