@@ -92,9 +92,7 @@ class EngineVL2 extends Command
                 LEFT JOIN backend_appendices a1 ON s.treatment_indication_id=a1.id
                 LEFT JOIN backend_appendices a2 ON s.current_regimen_id=a2.id
                 LEFT JOIN backend_appendices a3 ON v.rejection_reason_id=a3.id
-                LEFT JOIN backend_appendices a4 ON v.rejection_reason_id=a3.id
     	        WHERE $this->cond 
-                GROUP BY s.id
     	        LIMIT $start, $this->limit";
     	return $this->db->select($sql);
     	#$this->comment($sql);
@@ -149,13 +147,24 @@ class EngineVL2 extends Command
         $data["active_tb_status"] = $this->_choice($sample->active_tb_status);
 
         $data["sample_type_id"] = $sample->sample_type=='D'?1:2;
-        $suppressed = $this->_choice($sample->suppressed);
-        $data["sample_result_validity"] = $suppressed=='No'||$suppressed=='Yes'?'valid':'invalid';
-        $data["suppression_status"] = $suppressed!='UNKNOWN'?strtolower($suppressed):$suppressed;
+        
+        $data["sample_result_validity"] = $sample->suppressed==1||$sample->suppressed==2?'valid':'invalid';
+
+        $data["suppression_status"] = $this->_spsd($sample->suppressed);
 
         $data["tested"]=!empty($sample->result_alphanumeric)?"yes":"no";
         $data["rejection_reason"] = isset($sample->rejection_reason)?$this->_getRejectionCat($sample->rejection_reason):"UNKNOWN";
         return $data;
+    }
+
+    private function _spsd($suppressed){
+        if($suppressed==1){
+            return 'yes';
+        }elseif ($suppressed==2) {
+            return 'no';
+        }else{
+            return 'UNKNOWN';
+        }
     }
 
     private function _loadHubs(){
