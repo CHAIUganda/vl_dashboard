@@ -106,8 +106,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::match(array('GET', 'POST'),'/change_password',['uses'=>'AdminController@change_password']);
 	//Route::get('/qc', ['middleware' => ['permission:qc'], 'as' => 'qc', 'uses' => 'QCController@index']);
 
+	Route::get("/","DashboardController@init");
 });
-Route::get("/","DashboardController@init");
+
 
 Route::get("/live","DashboardController@live");
 
