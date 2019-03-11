@@ -76,9 +76,9 @@ class EngineVL2 extends Command
 
     private function _getData($start){
     	
-    	$sql = "SELECT s.id, s.vl_sample_id, patient_unique_id, facility_id, 
+    	$sql = "SELECT s.id, s.vl_sample_id, patient_unique_id, s.facility_id, 
                 s.created_at, pregnant, breast_feeding, active_tb_status, sample_type,
-                treatment_initiation_date, f.district_id, f.hub_id, p.gender, p.dob,
+                s.treatment_initiation_date, f.district_id, f.hub_id, p.gender, p.dob,
                 a1.code AS treatment_indication,
                 a2.code AS current_regimen,
                 a2.tag AS treatment_line,
