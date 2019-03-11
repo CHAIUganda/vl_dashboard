@@ -174,7 +174,7 @@ class DirectResultsController extends Controller {
 		$tab = \Request::has('tab')?\Request::get('tab'):'pending';
 		$crtd_at = $tab=='pending'?env('PENDING_DATE'):env('QC_START_DATE');
 
-		$cond = " released=1 AND facility_id=$facility_id AND s.created_at >='$crtd_at' ";		
+		$cond = " released=1 AND s.facility_id=$facility_id AND s.created_at >='$crtd_at' ";		
 		$cond = $tab == 'pending'? "$cond AND d.id IS NULL":"$cond AND d.id IS NOT NULL";
 		$cond2 = !empty($search)?" $cond AND form_number='$search'":$cond;
 
@@ -299,7 +299,7 @@ class DirectResultsController extends Controller {
 	public function search_result(){ 	
     	$txt = \Request::get("txt");
     	$txt = trim($txt);
-    	$facility_cond = \Request::has('f')?'facility_id='.\Request::get('f'):1;
+    	$facility_cond = \Request::has('f')?'s.facility_id='.\Request::get('f'):1;
     	$type = \Request::get('type');
     	$res_tbls = "LEFT JOIN vl_results AS r ON s.id=r.sample_id LEFT JOIN vl_results_qc AS q ON r.id=q.result_id";
     	$rej_tbls = "LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id";
