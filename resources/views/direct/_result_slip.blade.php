@@ -42,7 +42,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 			national aids control program<br>
 		</div>
 
-	national health laboratory services<br>
+	central public health laboratories<br>
 	
 	<u>viral load test results</u><br>
 	</div>
