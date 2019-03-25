@@ -30,6 +30,12 @@ $signature = end($signature_arr);
 $signature_img = MyHTML::getImageData("images/signatures/$signature");
 $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.148.png'):$signature_img;
 
+$appr_sign_arr = explode("/",$result_obj->appr_sign);
+$appr_sign = end($appr_sign_arr);
+$appr_sign_img = MyHTML::getImageData("images/signatures/$appr_sign");
+$appr_sign_img = empty($appr_sign_img)|| empty($appr_sign) ||$appr_sign_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.148.png'):$appr_sign_img;
+
+
 //$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
  ?>
 <page size="A4">
@@ -241,7 +247,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 				Approved by: 
 			</div>
 			<div style="width:15%;float:left">
-				<img src="{{ MyHTML::getImageData('images/signatures/signature.14.gif') }}" height="50" width="100">
+				<img src="{{ $appr_sign_img }}" height="50" width="100">
 				<hr>
 			</div>
 

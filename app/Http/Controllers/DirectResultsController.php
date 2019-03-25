@@ -242,7 +242,7 @@ class DirectResultsController extends Controller {
 		$samples_cond = !empty($f)?"form_number in ($f)":"s.id in ($samples_str)";
 		
 		$sql = " SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line, rs.appendix AS rejection_reason,
-				 rj.released_at AS rj_released_at, s.id as sid
+				 rj.released_at AS rj_released_at, s.id as sid, up2.signature as appr_sign
 				 FROM vl_samples AS s
 				 LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id
 				 LEFT JOIN vl_results AS r ON s.id=r.sample_id
@@ -257,7 +257,9 @@ class DirectResultsController extends Controller {
 				 LEFT JOIN backend_districts AS d ON f.district_id=d.id
 				 LEFT JOIN vl_patients AS p ON s.patient_id=p.id
 				 LEFT JOIN auth_user AS u ON r.test_by_id=u.id
+				 LEFT JOIN auth_user AS u2 ON r.authorised_by_id=u2.id
 				 LEFT JOIN backend_user_profiles AS up ON u.id=up.user_id
+				 LEFT JOIN backend_user_profiles AS up2 ON u2.id=up2.user_id
 				 WHERE s.created_at >='".env('QC_START_DATE')."' AND $samples_cond LIMIT 100		 
 				 ";
 		return $this->db->select($sql);
