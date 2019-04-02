@@ -25,7 +25,7 @@ $location_id = $result_obj->locator_category.$result_obj->envelope_number."/".$r
 $rejected = $result_obj->accepted==0?1:2;
 $release_date = $rejected==1?$result_obj->rj_released_at:$result_obj->released_at;
 $now_s = strtotime(date("Y-m-d"));
-$signature_arr = explode("/",$result_obj->signature);
+$signature_arr = explode("/",$result_obj->testby_sign);
 $signature = end($signature_arr);
 $signature_img = MyHTML::getImageData("images/signatures/$signature");
 $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.148.png'):$signature_img;
@@ -33,10 +33,11 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 $appr_sign_arr = explode("/",$result_obj->appr_sign);
 $appr_sign = end($appr_sign_arr);
 $appr_sign_img = MyHTML::getImageData("images/signatures/$appr_sign");
-$appr_sign_img = empty($appr_sign_img)|| empty($appr_sign) ||$appr_sign_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.148.png'):$appr_sign_img;
+$appr_sign_img = $result_obj->appr_sign==$result_obj->testby_sign || empty($appr_sign_img)|| empty($appr_sign) ||$appr_sign_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.27.png'):$appr_sign_img;
 
 
 //$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
+
  ?>
 <page size="A4">
 	<div style="height:95%">

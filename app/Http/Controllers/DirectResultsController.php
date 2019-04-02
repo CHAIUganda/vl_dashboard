@@ -242,7 +242,7 @@ class DirectResultsController extends Controller {
 		$samples_cond = !empty($f)?"form_number in ($f)":"s.id in ($samples_str)";
 		
 		$sql = " SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line, rs.appendix AS rejection_reason,
-				 rj.released_at AS rj_released_at, s.id as sid, up2.signature as appr_sign
+				 rj.released_at AS rj_released_at, s.id as sid, up2.signature as appr_sign, up.signature as testby_sign
 				 FROM vl_samples AS s
 				 LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id
 				 LEFT JOIN vl_results AS r ON s.id=r.sample_id
