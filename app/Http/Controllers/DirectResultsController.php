@@ -64,8 +64,6 @@ class DirectResultsController extends Controller {
 		
 	    $facilities = $this->fetch_facilities_statistics();
 		
-		$facilities_array = [];
-		
 		return compact('facilities');
 
 	}
@@ -176,7 +174,7 @@ class DirectResultsController extends Controller {
 		
 
 		$sql0 = "SELECT f.id,facility, hub, ip,
-				 num_pending_dispatch, num_dispatched, last_dispatched_at
+				 num_pending_dispatch, num_dispatched, last_dispatched_at,oldest_pending_printing  
 				 FROM backend_facilities AS f
 				 LEFT JOIN backend_hubs AS h ON f.hub_id=h.id
 				 LEFT JOIN backend_ips AS ips ON ips.id = h.ip_id 

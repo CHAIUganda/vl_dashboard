@@ -115,8 +115,8 @@ class LongitudinalPatientResults extends Command{
 
             $samples_record = $patient_record->record;
 
-                $random_patient_id = rand(10, 30);
-                array_push($result_array,$random_patient_id);
+                //$random_patient_id = rand(10, 30);
+                array_push($result_array,$patient_unique_number);
                 array_push($result_array,$patient_gender);
                 array_push($result_array,$patient_date_of_birth);
 
@@ -147,7 +147,7 @@ class LongitudinalPatientResults extends Command{
 
         //make csv
         echo ".... generating csv...\n";
-        $fp = fopen('/tmp/results'.date('YmdHis').'.csv', 'w');
+        $fp = fopen('/tmp/longitudinal_results'.date('YmdHis').'.csv', 'w');
         foreach ($list_results as $fields) {
              fputcsv($fp, $fields);
         }

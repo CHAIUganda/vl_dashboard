@@ -465,5 +465,17 @@ class APIResultsController extends Controller {
         return $clean_result_set;
     }
 
+    /*
+		SELECT  s.id, s.patient_unique_id, s.facility_id, f.facility, s.vl_sample_id, 
+s.date_collected, s.date_received,s.created_at, s.sample_type, s.clinician_id, c.cname, 
+p.art_number, p.gender, p.dob, drequest.patient_on_rifampicin  
+ FROM vl_samples s left join vl_patients p on p.id = s.patient_id  
+inner join backend_facilities f on f.id=s.facility_id  
+inner join vl_clinicians c on c.id=s.clinician_id  
+inner join vl_drug_resistance_requests drequest on drequest.sample_id = s.id 
+where YEAR(s.created_at)=2018 and drequest.body_weight is not NULL or drequest.patient_on_rifampicin is not NULL
+
+    */
+
 
 }

@@ -82,7 +82,7 @@
      
     <div>
         <span style="font-size: 10px; color: #F44336;">
-        {{env('UPDATE_MESSAGE')}}
+        
     </span>
     </div>
    
@@ -140,7 +140,7 @@
                     </a>
                 </li>
                 <li id='tb_hd6'>
-                    <a href="#tab6" id='tb_lnk6' ng-click="">
+                    <a href="#tab6" id='tb_lnk6'>
                         <span style="font-size:10px">Results Printing Stats</span> 
                         <span class="desc">Results Printing Statistics</span>
                     </a>
@@ -154,8 +154,7 @@
             <section id="tab4"> @include('sections._current_regimen')</section>
             <section id="tab5"> @include('sections._all_regimens')</section>
             <section id="tab6"> @include('sections._results_printing_statistics')</section>
-            <!-- <section id="tab4"> @include('sections._regimen_groups')</section>
-            <section id="tab5"> @include('sections._regimen_time')</section> -->
+            
         </div><!-- /content -->
     </div><!-- /tabs -->
     <br>
