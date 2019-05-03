@@ -25,7 +25,7 @@ class DirectResultsController extends Controller {
 
 	public function facility_data(){
 		$cols = ['facility', 'hub', 'coordinator_name', 'coordinator_contact', 'coordinator_email',
-				 'num_pending_dispatch', 'num_dispatched', 'facility'];
+				 'num_pending_dispatch', 'num_dispatched', 'last_dispatched_at',  'facility'];
 		$arr = $this->fetch_facilities($cols);
 		extract($arr);
 		$data = [];
