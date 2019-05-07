@@ -3,6 +3,7 @@
         <thead>
           <tr>
                                         <th >Patient ID</th>
+                                        <th >Sample ID</th>
                                         <th >Facility</th>
                                         <th >ART Number</th>
                                         <th>Date of Collection</th>
@@ -18,17 +19,17 @@
           </tr>
         </thead>
                                 <tbody>                                
-                                  <tr ng-repeat="patientsWithInvalidResults_object in patientsWithInvalidResults" >
-                                  
-                                      <td class="ng-cloak"><% patientsWithInvalidResults_object.patientUniqueID %></td>
-                                      <td class="ng-cloak"><% patientsWithInvalidResults_object.facility %></td>
-                                      <td class="ng-cloak"><% patientsWithInvalidResults_object.artNumber %></td>
-                                      <td class="ng-cloak"><% patientsWithInvalidResults_object.collectionDate %></td>
+                                  <tr ng-repeat="patientsWithRejections_object in patientsWithRejections" >
+                                      <td class="ng-cloak"><% patientsWithRejections_object.patient_unique_id %></td>
+                                      <td class="ng-cloak"><% patientsWithRejections_object.vl_sample_id %></td>
+                                      <td class="ng-cloak"><% labels.facilities_details[patientsWithRejections_object.facility_id].dhis2_name%></td>
+                                      <td class="ng-cloak"><% patientsWithRejections_object.art_number %></td>
+                                      <td class="ng-cloak"><% patientsWithRejections_object.date_collected %></td>
 
-                                      <td class="ng-cloak"><% patientsWithInvalidResults_object.receiptDate %></td>
-                                      <td class="ng-cloak"><% patientsWithInvalidResults_object.status %></td>
-                                      <td class="ng-cloak"><% patientsWithInvalidResults_object.result %></td>
-                                      <td class="ng-cloak"><% patientsWithInvalidResults_object.phone %></td>
+                                      <td class="ng-cloak"><% patientsWithRejections_object.date_received %></td>
+                                      <td class="ng-cloak"><% patientsWithRejections_object.rejection_category %></td>
+                                      <td class="ng-cloak"><% patientsWithRejections_object.rejection_reason %></td>
+                                      <td class="ng-cloak"><% patientsWithRejections_object.phone %></td>
 
                                       <td></td>
                                       <td></td>
@@ -36,4 +37,8 @@
                               </tr>           
                                  </tbody>
                             </table>
+                        <br>
+                        <br>
+                        <button id="exportRetestRejectionResults" type="button" ng-csv="export_rejection_results"  class="btn btn-success" filename="rejections_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Suppression Status']">Download CSV</button>
+
 </div>

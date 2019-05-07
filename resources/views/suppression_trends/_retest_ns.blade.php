@@ -5,6 +5,7 @@
                                         <th >Patient ID</th>
                                         <th >Facility</th>
                                         <th >ART Number</th>
+                                        <th>Sample ID</th>
                                         <th>Date of Collection</th>
 
                                         <th >Date Arrived at CPHL</th>
@@ -21,20 +22,20 @@
                                 <tbody>                                
                                   <tr ng-repeat="retestNSPatients_object in retestNSPatients" >
                                   
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.patientUniqueID %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.facility %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.artNumber %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.collectionDate %></td>
+                                      <td ng-class="ng-cloak"><% retestNSPatients_object.patient_unique_id %></td>
+                                      <td ng-class="ng-cloak"><% labels.facilities_details[retestNSPatients_object.facility_id].dhis2_name %></td>
+                                      <td ng-class="ng-cloak"><% retestNSPatients_object.art_number %></td>
 
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.receiptDate %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.result %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.recommendedRetestDate %></td>
-                                      <td ng-class="ng-cloak"><% retestNSPatients_object.phone %></td>
+                                      <td ng-class="ng-cloak"><% retestNSPatients_object.vl_sample_id %></td>
+                                      <td ng-class="ng-cloak"><% retestNSPatients_object.date_collected %></td>
+
+                                      <td ng-class="ng-cloak"><% retestNSPatients_object.date_received %></td>
+                                      <td ng-class="ng-cloak"><% retestNSPatients_object.alpha_numeric_result %></td>
+                                      <td ng-class="ng-cloak"><% retestNSPatients_object.recommended_retest_date %></td>
+                                      <td ng-class="ng-cloak"><% retestNSPatients_object.phone_number %></td>
 
                                       <td ng-class="ng-cloak">
-                                        <div class="cursor" ng-click="loadProgressMap(retestNSPatients_object.patientID,retestNSPatients_object.patientUniqueID,'retestNonSuppressedMap')">
-                                          Click Here for details
-                                        </div>
+                                        
                                               
                                         </td>
                                       <td ng-class="ng-cloak"></td>
@@ -43,24 +44,9 @@
                               </tr>           
                                  </tbody>
                             </table>
+                             <br>
+                        <br>
+                        <button id="exportRetestNSResults" type="button" ng-csv="export_retest_ns_results"  class="btn btn-success" filename="retest_ns_results_<%current_timestamp%>.csv" csv-header="['PatientID','Facility','Art Number','SampleID','Date of Collection', 'Date of Arrival at CPHL','Results','Recommended Retest Date','Contact','Action','Comments']">Download CSV</button>
+
 </div>
 
-<div id="progressmap_retest_not_suppressed_id">
-    <h3>Progress Map for <% patientUniqueID %></h3>
-    <svg></svg>
-    <table class="table table-bordered table-condensed table-striped">
-      <tr>
-        <th class="ng-cloak" colspan="2">Collection Date</th> 
-      </tr>
-      <tr>
-        <td ng-repeat="progressmaplabel in progressmaplabels" class="figure ng-cloak">
-           <% progressmaplabel.x %>
-        </td>
-      </tr>
-      <tr>
-        <td ng-repeat="progressmapresult in progressmapresults" class="figure ng-cloak">
-           <% progressmapresult.y %>
-        </td>
-      </tr>
-    </table>
-</div>

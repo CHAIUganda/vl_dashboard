@@ -2,14 +2,20 @@
 
 use EID\Http\Requests;
 use EID\Http\Controllers\Controller;
-
+use EID\Mongo;
 use EID\LiveData;
+use EID\ValidResult;
 use Log;
 use DateTime;
 use DateInterval;
 
 class ResultsController extends Controller {
 
+	public function __construct(){
+		
+		$this->mongo=Mongo::connect();
+	
+	}
 	public function getIndex(){
 		$printed=\Request::get("printed");
 		$printed=empty($printed)?'NO':$printed;
@@ -247,72 +253,97 @@ class ResultsController extends Controller {
         return $patient_results;
 	}
 
-	public function getPatientResultsForFacility(){
+	
+	
+	public function getPatientResults(){
+		
+		
+
+		
+
+        //$valid_patient_results = $this->getValidPatientResults();
+        $all_patient_results = $this->getAllPatientResults();
+
+        
+        
+		return compact("all_patient_results");
+	}
+
+	public function getValidPatientResults(){
 		extract(\Request::all());
+	
+		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){
+			$to_date=date("Ym");
+			$fro_date=$this->_dateNMonthsBack();
+		}
+
+
+		$query= array(
+			'hub_id' => intval(\Auth::user()->hub_id),
+			'sample_result_validity' => 'valid',
+			'year_month'=>array('$gte'=>$fro_date,'$lte'=>$to_date),
+		 );
+		
+        $res=$this->mongo->dashboard_new_backend->find($query);
+        
+		return $res;
+		
+	}
+	public function getAllPatientResults(){
+        extract(\Request::all());
+	
 		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){
 			$to_date=date("Ym");
 			$fro_date=$this->_dateNMonthsBack();
 		}
         
-        $facility_id = \Auth::user()->facility_id;
+        $hub=intval(\Auth::user()->hub_id);
+        $facility=intval(\Auth::user()->facility_id);
+		$fromyear=$fro_date;
+		$toyear=$to_date;
         
-		$sql = "select sr.patientID,sr.vlSampleID,sr.created,sr.patientUniqueID, sr.result,
-						h.hub, f.facility,sr.collectionDate,sr.receiptDate,p.artNumber,p.phone
-						
-					from 
-						(select s.patientID,s.vlSampleID,s.created,s.patientUniqueID, r.result,
-						 s.hubID, s.facilityID,s.collectionDate,s.receiptDate
-						   from 
-					           ( select * from vl_samples where facilityID=$facility_id and  str_to_date(created,'%Y-%m') 
-						between str_to_date('$fro_date','%Y%m') and str_to_date('$to_date','%Y%m')) s left join 
-								(select sampleID, result as result, created 
-									from vl_results_abbott order by sampleID,created) r
-						on s.vlSampleID = r.sampleID 
-					    ) sr,
+		$condition_statement=array();
+		if(empty(\Auth::user()->facility_id) || \Auth::user()->facility_id == 0 ){//Hub
+			$condition_statement = array(
+				    '$and' => array(
+				        array(
+				            "hub_id" => $hub,
+				            "tested" =>"yes",
+				            "year_month" => array('$gte' => intval($fromyear), '$lte' => intval($toyear))
+				        )
+				    ),
+				    
+				);
+		}elseif(!empty(\Auth::user()->facility_id) && \Auth::user()->facility_id > 0 ){
+			
+			$condition_statement = array(
+				    '$and' => array(
+				        array(
+				            "facility_id" => $facility,
+				            "tested" =>"yes",
+				            "year_month" => array('$gte' => intval($fromyear), '$lte' => intval($toyear))
+				        )
+				    )
 
-						(SELECT p.uniqueID,p.artNumber,pp.phone FROM vl_patients p left join vl_patients_phone pp  on pp.patientID = p.id) p,
-					vl_hubs h,vl_facilities f
-
-					where 
-						sr.patientUniqueID = p.uniqueID and
-						sr.hubID = h.id and sr.facilityID = f.id
-
-					order by sr.patientID
-					";
-
-		Log::info($sql);
-        $patient_results = null;
-        $patient_retested_dates = null;
-        try{
-        	ini_set('memory_limit','384M');
-        	$patient_results =  \DB::connection('live_db')->select($sql);
-        	
-        	//$patient_retested_dates = $this->getPatientRetestedDates($fro_date,$to_date,$hub_id);
-        	
-        }catch(\Illuminate\Database\QueryException $e){
-        	Log::info("---ooops---");
-        	Log::error($e->getMessage());
-        	
-        }		
-		//return compact("patient_results");
-		return $patient_results;
-
-	}
-	public function getPatientResults(){
-		$patient_results = null;
-		/*if(!empty(\Auth::user()->hub_id) && \Auth::user()->can('view_reports_as_hub')){
-			$patient_results = $this->getPatientResultsForHub();
-		}elseif(!empty(\Auth::user()->facility_id) && \Auth::user()->can('view_reports_as_facility')){
-			$patient_results = $this->getPatientResultsForFacility();
+				);
 		}
-		*/
-		if(!empty(\Auth::user()->hub_id) && intval(\Auth::user()->hub_id) > 0){
-			$patient_results = $this->getPatientResultsForHub();
-		}elseif(!empty(\Auth::user()->facility_id)){
-			$patient_results = $this->getPatientResultsForFacility();
-		}
+		
+        //approach two
+        
 
-		return compact("patient_results");
+		
+		ini_set('memory_limit','384M');
+		
+        $res=$this->mongo->dashboard_new_backend->find($condition_statement);
+        
+	    $res = $res->sort(array('patient_unique_id'=>1));
+	    $all_patient_results = array();
+        
+        foreach ($res as $key => $value) {
+        	array_push($all_patient_results, $value);
+        }
+      
+		return $all_patient_results;
 	}
 	private function addSixMonths($to_date){
 	    $year = intval(substr($to_date,0,4));

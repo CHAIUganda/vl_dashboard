@@ -10,6 +10,8 @@ use EID\LiveData;
 use Log;
 use DateTime;
 use DateInterval;
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
+use EID\User;
 
 class APIResultsController extends Controller {
 
@@ -464,6 +466,143 @@ class APIResultsController extends Controller {
         
         return $clean_result_set;
     }
+
+
+    /*
+		SELECT  s.id, s.patient_unique_id, s.facility_id, f.facility, s.vl_sample_id, 
+s.date_collected, s.date_received,s.created_at, s.sample_type, s.clinician_id, c.cname, 
+p.art_number, p.gender, p.dob, drequest.patient_on_rifampicin  
+ FROM vl_samples s left join vl_patients p on p.id = s.patient_id  
+inner join backend_facilities f on f.id=s.facility_id  
+inner join vl_clinicians c on c.id=s.clinician_id  
+inner join vl_drug_resistance_requests drequest on drequest.sample_id = s.id 
+where YEAR(s.created_at)=2018 and drequest.body_weight is not NULL or drequest.patient_on_rifampicin is not NULL
+
+    */
+
+    public function getHivDrugResistanceTests($year,$month){
+    	$_year = intval($year);
+    	$_month=intval($month);
+    	
+    	$sql="SELECT s.id as sample_id,s.patient_unique_id,s.facility_id,f.facility,s.vl_sample_id,s.date_collected,s.date_received,
+    	    s.sample_type,s.clinician_id,c.cname,p.art_number,p.gender,p.dob,drr.id as drr_id
+    	FROM vl_production_v2.vl_samples s left join vl_patients p on p.id = s.patient_id 
+    	inner join backend_facilities f on f.id=s.facility_id 
+    	inner join vl_clinicians c on c.id=s.clinician_id 
+    	inner join vl_drug_resistance_requests drr on drr.sample_id=s.id 
+    	where YEAR(s.created_at)=$_year and MONTH(s.created_at)=$_month and drr.body_weight is not NULL";
+
+    	return \DB::connection('direct_db')->select($sql); 
+    	
+    }
+
+    public function receiveHivDrugResistanceTests(){
+    	Log::info("Data received from IP");
+    	
+    	$return_message="";
+    	$request = \Request();
+    	$array_of_sample_results = $request->request->all();
+    	Log::info("....post ....");
+    	Log::info($array_of_sample_results);
+    	Log::info("....post .1..");
+    	
+    	foreach ($array_of_sample_results as $key => $value) {
+    		
+    		Log::info("....key ....");
+    		Log::info($key);
+    		Log::info("....value ....");
+    		Log::info($value);
+    		
+
+    		
+    		$drr_uploaded_by_id=1;
+    		
+    		$api_user=User::find(Authorizer::getResourceOwnerId());
+    	    $api_username = $api_user->username;//$value['api_username'];
+    	    
+    		$drr_id=intval($value['drr_id']);
+
+    		$sample_id=$value['sample_id'];
+    		$vl_sample_id=$value['vl_sample_id'];
+    		$cphl_patient_unique_id=$value['cphl_patient_unique_id'];
+
+    		$accession_number=$value['accession_number'];
+    		$entity_patient_id=$value['entity_patient_id'];
+    		
+    		$analyst=$value['analyst'];
+    		$no_charge_reason=$value['no_charge_reason'];
+    		$study_name=$value['study_name'];
+    		$study_code=$value['study_code'];
+
+    		$test_date=$value['test_date'];
+    		$result_date=$value['result_date'];
+    		$result_string=serialize($value['result_string']) ;//send this to the filesystem
+    		$form_number=$value['form_number'];
+
+    		//$this->saveHivDrugResistanceResultToFileSystem($result_string,$vl_sample_id);
+
+    		
+    		//insert into database
+    		$sql="INSERT INTO vl_drug_resistance_results 
+					(
+					results_file,upload_date,drr_uploaded_by_id,drug_resistance_request_id,
+					accession_number,cphl_patient_unique_id,vl_sample_id,entity_patient_id,
+					analyst,no_charge_reason,study_name,study_code,
+					test_date,result_date,result_string,form_number,api_username 
+					) 
+					VALUES
+					('api_upload',NOW(),$drr_uploaded_by_id,$drr_id,
+					  '$accession_number','$cphl_patient_unique_id','$vl_sample_id','$entity_patient_id',
+					  '$analyst','$no_charge_reason','$study_name','$study_code',
+					  '$test_date','$result_date','$result_string',$form_number,'$api_username'
+					  )";
+    		$return_message="data arrived in one piece.";
+    		
+    		try {
+    			Log::info("....Start saving ....");
+    			\DB::connection('direct_db')->insert($sql);
+    			Log::info("....saved successfully ....");
+    			$return_message="successfully received $accession_number";
+    		} catch (Exception $e) {
+    			$return_message = "Ensure all fields are valid";//$e->getMessage();
+    			Log::error("Hiv Drug Resistance accession number: $accession_number");
+    			Log::error($e->getMessage());
+    		}
+		   
+
+    	}
+    	return $return_message;
+
+    }
+
+    private function saveHivDrugResistanceResultToFileSystem($result_array,$vl_sample_id){
+
+    	//if directory is absent, create it.
+    	$new_directory='hiv_drug_resistance/';
+        $directory_path="./docs/".$new_directory;
+        if (!is_dir($directory_path)) {
+            mkdir($directory_path, 0777, true);
+        }
+
+        
+
+    	//save file there.
+        $sample_id=str_replace("/", "_", $vl_sample_id);
+        $file_url=$directory_path.$sample_id.".json";
+        //$sample_result_file = fopen($file_url, "w") or die("Unable to open file!");
+        //fwrite($sample_result_file, $result_string);
+        //fclose($sample_result_file);
+
+        //Encode the array into a JSON string.
+        $encodedString = json_encode($result_array);
+ 
+        //Save the JSON string to a text file.
+        file_put_contents($file_url, $encodedString);
+ 
+        //Retrieve the data from our text file.
+        //$fileContents = file_get_contents('json_array.txt');
+    }
+
 
 
 }

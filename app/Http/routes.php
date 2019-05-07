@@ -110,6 +110,7 @@ Route::group(['middleware' => 'auth'], function()
 Route::get("/","DashboardController@init");
 
 Route::get("/live","DashboardController@live");
+Route::get("/results_printing_stats/","DirectResultsController@getResultsPrintingStatistics");
 
 Route::get("/other_data/","DashboardController@other_data");
 
@@ -120,9 +121,12 @@ Route::get('/pdf_test', function(){
 });
 
 Route::get('/api/facility_list/age_group/{year}/{gender}/{from}/{to}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
-
-//Route::post('/downloadCsv', 'DashboardController@downloadCsv');
-
-/*Route::get('/w',function(){
-	return view("welcome");
-});*/
+Route::post('oauth/access_token', function() {
+ return Response::json(Authorizer::issueAccessToken());
+});
+Route::group(['middleware'=>'oauth'], function(){
+	//Route::get('/api/facility_list/{facility_id}/{yearmonth}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
+	//Route::get('/api/facility_list/{hub_id}/{yearmonth}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
+	Route::get('/api/hivdr/{year}/{month}/', ['uses' => 'APIResultsController@getHivDrugResistanceTests']);
+	Route::post('/api/hivdr/', ['uses' => 'APIResultsController@receiveHivDrugResistanceTests']);
+	});

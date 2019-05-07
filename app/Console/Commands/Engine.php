@@ -142,7 +142,7 @@ class Engine extends Command
                 var_dump($e);
             }//end catch
 
-        }//end of while loop
+        }//end of for loop
     }
    
     /*
