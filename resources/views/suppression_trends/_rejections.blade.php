@@ -37,4 +37,8 @@
                               </tr>           
                                  </tbody>
                             </table>
+                        <br>
+                        <br>
+                        <button id="exportRetestRejectionResults" type="button" ng-csv="export_rejection_results"  class="btn btn-success" filename="rejections_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Suppression Status']">Download CSV</button>
+
 </div>

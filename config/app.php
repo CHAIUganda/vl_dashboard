@@ -152,6 +152,12 @@ return [
         EID\Providers\EventServiceProvider::class,
         EID\Providers\RouteServiceProvider::class,
 
+        /*
+        * API Authentication using Oauth2.0, Google's recommended webservice security protocol
+        */
+        LucaDegasperi\OAuth2Server\Storage\FluentStorageServiceProvider::class,
+        LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider::class,
+
 
     ],
 
@@ -213,6 +219,8 @@ return [
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+
+        'Authorizer' => LucaDegasperi\OAuth2Server\Facades\Authorizer::class,
 
     ],
 

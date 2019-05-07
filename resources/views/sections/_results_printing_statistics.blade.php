@@ -3,6 +3,7 @@
 
     <div class="col-lg-12 facilties-sect " >
         
+
              <table  id="results-stats-table" datatable="ng" class="row-border hover table table-bordered table-condensed table-striped">
                             <thead>
                                 <tr>
@@ -30,6 +31,7 @@
                                     </tr>                        
                                  </tbody>
                              
+
             </table>
 
             

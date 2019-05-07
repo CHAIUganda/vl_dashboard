@@ -67,8 +67,9 @@ if(\Request::has('search')){
             <div class="col-md-4">
             {!! Form::text('search','', ['id'=>'id-search','class' => 'form-control input-sm  input_md', 'autocomplete'=>'off', 'placeholder'=>"Search..."] ) !!}
             </div>
+            <span id="id-search-button" class="btn btn-danger btn-sm">search</span>
             <div class="col-md-5">
-                <!-- <span id="id-search-button" class="btn btn-danger btn-sm">search</span> -->
+                
             </div>
         </div>
           
@@ -164,6 +165,12 @@ function get_data(q,drpdwn,link){
 
 $("#id-search").keyup(function(){
     var q = $(this).val();
+    var dd = $("#id-dropdown");
+    get_data(q, dd, "/direct/search_result/");
+});
+
+$("#id-search-button").click(function(){
+    var q = $("#id-search").val();
     var dd = $("#id-dropdown");
     get_data(q, dd, "/direct/search_result/");
 });
