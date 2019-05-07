@@ -25,12 +25,19 @@ $location_id = $result_obj->locator_category.$result_obj->envelope_number."/".$r
 $rejected = $result_obj->accepted==0?1:2;
 $release_date = $rejected==1?$result_obj->rj_released_at:$result_obj->released_at;
 $now_s = strtotime(date("Y-m-d"));
-$signature_arr = explode("/",$result_obj->signature);
+$signature_arr = explode("/",$result_obj->testby_sign);
 $signature = end($signature_arr);
 $signature_img = MyHTML::getImageData("images/signatures/$signature");
 $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.148.png'):$signature_img;
 
+$appr_sign_arr = explode("/",$result_obj->appr_sign);
+$appr_sign = end($appr_sign_arr);
+$appr_sign_img = MyHTML::getImageData("images/signatures/$appr_sign");
+$appr_sign_img = $result_obj->appr_sign==$result_obj->testby_sign || empty($appr_sign_img)|| empty($appr_sign) ||$appr_sign_img=="data:image/;base64,"?MyHTML::getImageData('images/signatures/signature.27.png'):$appr_sign_img;
+
+
 //$phone = isset($result_obj->patient['patientphone_set'][0]['phone'])?$result_obj->patient['patientphone_set'][0]['phone'] 	:"";
+
  ?>
 <page size="A4">
 	<div style="height:95%">
@@ -163,7 +170,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 				<br><b>Rejection Reason:</b> &nbsp; <?=$result_obj->rejection_reason ?>	
 			</div>
 			<div style="width:16%;float:right">
-				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,'yes',$now_s") !!}
+				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$result_obj->sid") !!}
 			</div>
 		</div>	
 	</div>
@@ -221,7 +228,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 				<div><?=$recommendation ?></div>
 			</div>
 			<div style="width:16%;float:right">
-				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$location_id,'yes',$now_s") !!}
+				{!! QrCode::errorCorrection('H')->size("90")->generate("VL,$result_obj->sid") !!}
 			</div>
 		</div>	
 	</div>
@@ -241,7 +248,7 @@ $signature_img = empty($signature_img)|| empty($signature) ||$signature_img=="da
 				Approved by: 
 			</div>
 			<div style="width:15%;float:left">
-				<img src="{{ MyHTML::getImageData('images/signatures/signature.14.gif') }}" height="50" width="100">
+				<img src="{{ $appr_sign_img }}" height="50" width="100">
 				<hr>
 			</div>
 

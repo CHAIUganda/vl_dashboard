@@ -25,7 +25,7 @@ class DirectResultsController extends Controller {
 
 	public function facility_data(){
 		$cols = ['facility', 'hub', 'coordinator_name', 'coordinator_contact', 'coordinator_email',
-				 'num_pending_dispatch', 'num_dispatched', 'facility'];
+				 'num_pending_dispatch', 'num_dispatched', 'last_dispatched_at',  'facility'];
 		$arr = $this->fetch_facilities($cols);
 		extract($arr);
 		$data = [];
@@ -200,7 +200,7 @@ class DirectResultsController extends Controller {
 		$tab = \Request::has('tab')?\Request::get('tab'):'pending';
 		$crtd_at = $tab=='pending'?env('PENDING_DATE'):env('QC_START_DATE');
 
-		$cond = " released=1 AND facility_id=$facility_id AND s.created_at >='$crtd_at' ";		
+		$cond = " released=1 AND s.facility_id=$facility_id AND s.created_at >='$crtd_at' ";		
 		$cond = $tab == 'pending'? "$cond AND d.id IS NULL":"$cond AND d.id IS NOT NULL";
 		$cond2 = !empty($search)?" $cond AND form_number='$search'":$cond;
 
@@ -268,7 +268,7 @@ class DirectResultsController extends Controller {
 		$samples_cond = !empty($f)?"form_number in ($f)":"s.id in ($samples_str)";
 		
 		$sql = " SELECT *, cr.appendix AS current_regimen, tl.code AS tx_line, rs.appendix AS rejection_reason,
-				 rj.released_at AS rj_released_at
+				 rj.released_at AS rj_released_at, s.id as sid, up2.signature as appr_sign, up.signature as testby_sign
 				 FROM vl_samples AS s
 				 LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id
 				 LEFT JOIN vl_results AS r ON s.id=r.sample_id
@@ -283,7 +283,9 @@ class DirectResultsController extends Controller {
 				 LEFT JOIN backend_districts AS d ON f.district_id=d.id
 				 LEFT JOIN vl_patients AS p ON s.patient_id=p.id
 				 LEFT JOIN auth_user AS u ON r.test_by_id=u.id
+				 LEFT JOIN auth_user AS u2 ON r.authorised_by_id=u2.id
 				 LEFT JOIN backend_user_profiles AS up ON u.id=up.user_id
+				 LEFT JOIN backend_user_profiles AS up2 ON u2.id=up2.user_id
 				 WHERE s.created_at >='".env('QC_START_DATE')."' AND $samples_cond LIMIT 100		 
 				 ";
 		return $this->db->select($sql);
@@ -325,7 +327,7 @@ class DirectResultsController extends Controller {
 	public function search_result(){ 	
     	$txt = \Request::get("txt");
     	$txt = trim($txt);
-    	$facility_cond = \Request::has('f')?'facility_id='.\Request::get('f'):1;
+    	$facility_cond = \Request::has('f')?'s.facility_id='.\Request::get('f'):1;
     	$type = \Request::get('type');
     	$res_tbls = "LEFT JOIN vl_results AS r ON s.id=r.sample_id LEFT JOIN vl_results_qc AS q ON r.id=q.result_id";
     	$rej_tbls = "LEFT JOIN vl_rejected_samples_release AS rj ON s.id=rj.sample_id";
