@@ -40,12 +40,16 @@ class SampleRecordAugmentEngine extends Command
      */
     public function handle()
     {
-       ini_set('memory_limit','1384M');
+       ini_set('memory_limit','3384M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
 
         
-    
+        try{
+          $this->mongo->dashboard_new_backend->createIndex(array('vl_sample_id'=>1));
+        }catch(Exception $e){
+            $this->comment("index error: ".$e->message);
+        }
             
         if($this->argument('year') != null){
 
@@ -91,7 +95,7 @@ class SampleRecordAugmentEngine extends Command
     private function _loadData(){
         $turnAroundTimeInMonths=env('TAT_MONTHS', 3);//Number of Months to consider for worst turn -around-time
 
-        $rejections_map = $this->getRejectionsMap();
+        //$rejections_map = $this->getRejectionsMap();
         for ($month=0; $month < $turnAroundTimeInMonths; $month++) { 
             $turnAroundYear=intval(date("Y",strtotime("-$month month")));
             $turnAroundMonth=intval(date("m",strtotime("-$month month")));
@@ -101,7 +105,7 @@ class SampleRecordAugmentEngine extends Command
 
             
 
-            $samples_records = LiveData::_optimisedLoadDataInitiallyForSpecificMonth($turnAroundYear,$turnAroundMonth);
+            $samples_records = LiveData::getDataToAugmentSampleRecordsByMonth($turnAroundYear,$turnAroundMonth);
             $recordsUpdated=0;
             
             
@@ -109,15 +113,16 @@ class SampleRecordAugmentEngine extends Command
                 foreach($samples_records AS $s){
                     
                    $this->augmentSampleRecord(
-                    $s->vlSampleID,
+                    $s->vl_sample_id,
+                    'art_number',$s->art_number,
                     'phone_number',$s->contacts,
-                    'art_number',$s->artNumber,
-                    'date_created',$s->created,
-                    'date_collected',$s->collectionDate,
-                    'date_received',$s->receiptDate,
-                    'alpha_numeric_result',$this->processAlphaNumericResult($s->resultAlphanumeric),
-                    'rejection_category',$s->rejectionCategory,
-                    'rejection_reason',$rejections_map[$s->outcomeReasonsID]
+                    'date_created',$s->created_at,
+                    'date_collected',$s->date_collected,
+                    'date_received',$s->date_received,
+                    'alpha_numeric_result',$this->processAlphaNumericResult($s->result_alphanumeric),
+                    'rejection_category',isset($s->rejection_category)?$s->rejection_category:'UNKNOWN',
+                    'rejection_reason',isset($s->rejection_reason)?$s->rejection_reason:'UNKNOWN'
+                  
                     );
 
                    $recordsUpdated ++;
@@ -133,25 +138,24 @@ class SampleRecordAugmentEngine extends Command
 
     }
     private function _loadDataInitially($turnAroundYear,$turnAroundMonth,$firstRowIndex,$lastRowIndex){
-            $rejections_map = $this->getRejectionsMap();
+            //$rejections_map = $this->getRejectionsMap();
             $samples_records = LiveData::getDataToAugmentSampleRecordsByMonthWithLimits($turnAroundYear,$turnAroundMonth,$firstRowIndex,$lastRowIndex);
             echo "starting to update\n";
             $recordsUpdated=0;
             
-             $rejections_map = $this->getRejectionsMap();
             try {
                 foreach($samples_records AS $s){
                     
                    $this->augmentSampleRecord(
-                    $s->vlSampleID,
-                    'art_number',$s->artNumber,
+                    $s->vl_sample_id,
+                    'art_number',$s->art_number,
                     'phone_number',$s->contacts,
-                    'date_created',$s->created,
-                    'date_collected',$s->collectionDate,
-                    'date_received',$s->receiptDate,
-                    'alpha_numeric_result',$this->processAlphaNumericResult($s->resultAlphanumeric),
-                    'rejection_category',isset($s->rejectionCategory)?$s->rejectionCategory:'UNKNOWN',
-                    'rejection_reason',isset($rejections_map[$s->outcomeReasonsID])? $rejections_map[$s->outcomeReasonsID]:'UNKNOWN'
+                    'date_created',$s->created_at,
+                    'date_collected',$s->date_collected,
+                    'date_received',$s->date_received,
+                    'alpha_numeric_result',$this->processAlphaNumericResult($s->result_alphanumeric),
+                    'rejection_category',isset($s->rejection_category)?$s->rejection_category:'UNKNOWN',
+                    'rejection_reason',isset($s->rejection_reason)?$s->rejection_reason:'UNKNOWN'
                     );
                    
                    $recordsUpdated ++;
@@ -179,7 +183,7 @@ class SampleRecordAugmentEngine extends Command
 
             echo "Rows: $countOfRows \n";
             //set number of rows per fetch/page
-            $rowsToBeFetched=5000;
+            $rowsToBeFetched=20000;
 
             //modulus
             $modulus = $countOfRows%$rowsToBeFetched;
@@ -193,7 +197,7 @@ class SampleRecordAugmentEngine extends Command
             //loop over with Limit index, lastIndex
             $firstRowIndex=0;
             $lastRowIndex=0;
-              for($i=1; $i <= $numberOfPages; $i++){
+              for($i=0; $i <= $numberOfPages; $i++){
                 
                 if($i==1){
                   $firstRowIndex=0;
@@ -223,7 +227,7 @@ class SampleRecordAugmentEngine extends Command
       
     }
 
-     private function _optimisedLoadDataInitiallyForSpecificMonth($turnAroundYear,$specificMonth){
+    private function _optimisedLoadDataInitiallyForSpecificMonth($turnAroundYear,$specificMonth){
       
 
             //get count of rows
@@ -231,7 +235,7 @@ class SampleRecordAugmentEngine extends Command
 
             echo "Rows: $countOfRows \n";
             //set number of rows per fetch/page
-            $rowsToBeFetched=5000;
+            $rowsToBeFetched=20000;
 
             //modulus
             $modulus = $countOfRows%$rowsToBeFetched;
@@ -245,7 +249,7 @@ class SampleRecordAugmentEngine extends Command
             //loop over with Limit index, lastIndex
               $firstRowIndex=0;
               $lastRowIndex=0;
-              for($i=1; $i <= $numberOfPages; $i++){
+              for($i=0; $i <= $numberOfPages; $i++){
                   
                 if($i==1){
                   $firstRowIndex=0;
