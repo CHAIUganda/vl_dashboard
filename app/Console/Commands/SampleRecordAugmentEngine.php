@@ -183,7 +183,7 @@ class SampleRecordAugmentEngine extends Command
 
             echo "Rows: $countOfRows \n";
             //set number of rows per fetch/page
-            $rowsToBeFetched=5000;
+            $rowsToBeFetched=20000;
 
             //modulus
             $modulus = $countOfRows%$rowsToBeFetched;
