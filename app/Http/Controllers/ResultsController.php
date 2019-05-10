@@ -290,7 +290,7 @@ class ResultsController extends Controller {
 		
 	}
 	public function getAllPatientResults(){
-		
+
         extract(\Request::all());
 	
 		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){
@@ -334,7 +334,13 @@ class ResultsController extends Controller {
 
 		
 		ini_set('memory_limit','384M');
-		
+		try{
+          $this->mongo->dashboard_new_backend->createIndex(array('facility_id' => 1,
+				            'tested' =>1,
+				            'year_month' =>1));
+        }catch(Exception $e){
+           $this->comment("index error: ".$e->message);
+        }
         $res=$this->mongo->dashboard_new_backend->find($condition_statement);
         
 	    $res = $res->sort(array('patient_unique_id'=>1));
