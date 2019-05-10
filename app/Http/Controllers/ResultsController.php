@@ -290,6 +290,7 @@ class ResultsController extends Controller {
 		
 	}
 	public function getAllPatientResults(){
+		
         extract(\Request::all());
 	
 		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){

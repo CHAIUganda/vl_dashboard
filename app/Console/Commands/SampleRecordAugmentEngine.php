@@ -120,7 +120,7 @@ class SampleRecordAugmentEngine extends Command
                     'date_collected',$s->date_collected,
                     'date_received',$s->date_received,
                     'alpha_numeric_result',$this->processAlphaNumericResult($s->result_alphanumeric),
-                    'rejection_category',isset($s->rejection_category)?$s->rejection_category:'UNKNOWN',
+                    'rejection_category',isset($s->rejection_category)?$this->_cleanRejectionCategory($s->rejection_category):'UNKNOWN',
                     'rejection_reason',isset($s->rejection_reason)?$s->rejection_reason:'UNKNOWN'
                   
                     );
@@ -136,6 +136,10 @@ class SampleRecordAugmentEngine extends Command
 
         }//end of for loop
 
+    }
+    private function _cleanRejectionCategory($rejectionCategoryString){
+      $rejectionCategoryArray = explode(",", $rejectionCategoryString);
+      return $rejectionCategoryArray[1];
     }
     private function _loadDataInitially($turnAroundYear,$turnAroundMonth,$firstRowIndex,$lastRowIndex){
             //$rejections_map = $this->getRejectionsMap();
@@ -154,7 +158,7 @@ class SampleRecordAugmentEngine extends Command
                     'date_collected',$s->date_collected,
                     'date_received',$s->date_received,
                     'alpha_numeric_result',$this->processAlphaNumericResult($s->result_alphanumeric),
-                    'rejection_category',isset($s->rejection_category)?$s->rejection_category:'UNKNOWN',
+                    'rejection_category',isset($s->rejection_category)?$this->_cleanRejectionCategory($s->rejection_category):'UNKNOWN',
                     'rejection_reason',isset($s->rejection_reason)?$s->rejection_reason:'UNKNOWN'
                     );
                    
