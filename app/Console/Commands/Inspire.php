@@ -30,6 +30,7 @@ class Inspire extends Command
      */
     public function handle()
     {
+        /*
         $this->comment(PHP_EOL.Inspiring::quote().PHP_EOL);
         $new_directory='hiv_drug_resistance/';
         $directory_path="./docs/".$new_directory;
@@ -46,8 +47,12 @@ class Inspire extends Command
         fwrite($sample_result_file, $result_string);
         
         fclose($sample_result_file);
-            
+        */
+        
+        
         
     }
+
+    
         
 }
