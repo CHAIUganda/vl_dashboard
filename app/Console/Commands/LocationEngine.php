@@ -4,22 +4,36 @@ namespace EID\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
+use EID\Mongo;
 
-class FacilityEngine extends Command
+class LocationEngine extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'facility:update';
+    protected $signature = 'locations:update {--F|facilities} {--H|hubs} {--D|districts} {--dhis2}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update Facility records';
+    protected $description = 'Update Locations records';
+
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->mongo=Mongo::connect();
+        $this->db = \DB::connection('direct_db');
+    }
 
     /**
      * Execute the console command.
@@ -28,14 +42,61 @@ class FacilityEngine extends Command
      */
     public function handle()
     {
-        echo "......started...\n";
-        $facilities = $this->loadFacilities();
+        $this->dhis2 = $this->option('dhis2'); 
+        $this->facilities = $this->option('facilities');
+        if($this->dhis2){
+            echo "......started...\n";
+            $facilities = $this->loadFacilities();
+            
+            echo "......facilities read...\n";
+            $this->updateFacilitiesWithDHIS2Names($facilities);
+            echo "......facilities updated with dhis2 names...\n";
+        }
+        if($this->facilities){
+            $this->comment("....load facilities  latest list....");
+            $this->loadAllFacilities();
+            $this->comment("....finished....");
+        }
+    }
+    /* 
+    * Loads all facilities with the latest details/fields about facilities like dhis uid, dhis name
+    */
+    private function loadAllFacilities(){
+        $sql="SELECT f.id,f.facility name,f.dhis2_name,f.hub_id,
+        h.ip_id, f.district_id,f.dhis2_uid,d.dhis2_uid as district_uid 
+        FROM backend_facilities f 
+        left join backend_hubs h on f.hub_id = h.id 
+        left join backend_districts d on d.id = f.district_id";
+
+        $facilities_array = $this->db->select($sql);
+
+        $this->mongo->facilities->drop();
         
-        echo "......facilities read...\n";
-        $this->updateFacilitiesWithDHIS2Names($facilities);
-        echo "......facilities updated...\n";
+        foreach($facilities_array AS $row){
+            $data=[
+                  'id'=>$row->id,
+                  'name'=>$row->name,
+                  'dhis2_name'=>$row->dhis2_name,
+                  'hub_id'=>$row->hub_id,
+                  'ip_id'=>$row->ip_id,
+
+                  'district_id'=>$row->district_id,
+                  'dhis2_uid'=>$row->dhis2_uid,
+                  'district_uid'=>$row->district_uid,
+                  'updated'=>'done'
+                  ];
+            $this->mongo->facilities->insert($data);
+        }
+
     }
 
+    /* 
+    * Loads all districts with the latest details/fields about districts like dhis uid, dhis name
+    */
+    private function loadAllDistricts(){
+        
+
+    }
     private function loadFacilities(){
         $file = fopen("./docs/others/facilities_20171019.csv", "r");
         $data = array();
