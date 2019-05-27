@@ -803,7 +803,7 @@ ctrllers.DashController = function($scope,$http){
                     "date_collected":clean_results_object.date_collected,
                     "date_received":clean_results_object.date_received,
                     "art_number":clean_results_object.art_number,
-                    "phone":clean_results_object.phone_number,
+                    "phone_number":clean_results_object.phone_number,
                     "year_month":clean_results_object.year_month
                 };
                 patients_with_valid_results.push(valid_patient_record);
@@ -831,7 +831,7 @@ ctrllers.DashController = function($scope,$http){
                     "date_collected":clean_results_object.date_collected,
                     "date_received":clean_results_object.date_received,
                     "art_number":clean_results_object.art_number,
-                    "phone":clean_results_object.phone_number,
+                    "phone_number":clean_results_object.phone_number,
                     "rejection_category":clean_results_object.rejection_category,
                     "rejection_reason":clean_results_object.rejection_reason
                 };
@@ -862,7 +862,7 @@ ctrllers.DashController = function($scope,$http){
                     "date_collected":clean_results_object.date_collected,
                     "date_received":clean_results_object.date_received,
                     "art_number":clean_results_object.art_number,
-                    "phone":clean_results_object.phone_number
+                    "phone_number":clean_results_object.phone_number
                 };
                 patients_with_invalid_results.push(invalid_patient_record);
             }//end for loop
