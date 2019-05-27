@@ -51,7 +51,7 @@ class EngineVL2 extends Command
      */
     public function handle()
     {
-        ini_set('memory_limit', '2024M');
+        ini_set('memory_limit', '3024M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //$this->facilities = $this->option('facilities');
