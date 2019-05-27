@@ -133,7 +133,7 @@
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_collection_date %></td>
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_receipt_date %></td>
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_alpha_numeric_result %></td>
-                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.phone %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.phone_number %></td>
                           </tr>                        
                        </tbody>
                   </table>
@@ -170,7 +170,7 @@
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_collection_date %></td>
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_receipt_date %></td>
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_alpha_numeric_result %></td>
-                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.phone %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.phone_number %></td>
                           </tr>                        
                        </tbody>
                   </table>

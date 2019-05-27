@@ -29,7 +29,7 @@
                                       <td class="ng-cloak"><% patientsWithRejections_object.date_received %></td>
                                       <td class="ng-cloak"><% patientsWithRejections_object.rejection_category %></td>
                                       <td class="ng-cloak"><% patientsWithRejections_object.rejection_reason %></td>
-                                      <td class="ng-cloak"><% patientsWithRejections_object.phone %></td>
+                                      <td class="ng-cloak"><% patientsWithRejections_object.phone_number %></td>
 
                                       <td></td>
                                       <td></td>
