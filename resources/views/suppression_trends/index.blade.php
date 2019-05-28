@@ -124,7 +124,7 @@
                       <tbody>                                
                           <tr ng-repeat="previouslyNScurrentlyNS_object in previouslyNScurrentlyNS" >
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.patient_id %></td>
-                              <td class="ng-cloak"><% labels.facilities_details[previouslyNScurrentlyNS_object.facility_id] %></td>
+                              <td class="ng-cloak"><% labels.facilities_details[previouslyNScurrentlyNS_object.facility_id].dhis2_name %></td>
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.art_number %></td>
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.previous_collection_date %></td>
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.prevoius_receipt_date %></td>
@@ -160,6 +160,8 @@
                       <tbody>                                
                           <tr ng-repeat="previouslyScurrentlyNS_object in previouslyScurrentlyNS" >
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.patient_id %></td>
+                              <td class="ng-cloak"><% labels.facilities_details[previouslyScurrentlyNS_object.facility_id].dhis2_name %></td>
+
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.facility_id %></td>
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.art_number %></td>
 
