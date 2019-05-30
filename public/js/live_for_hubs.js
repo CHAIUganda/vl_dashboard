@@ -499,13 +499,15 @@ ctrllers.DashController = function($scope,$http){
 
                 
 
-                var two_most_recent_tests_object = {
+                var two_most_recent_tests_object = {};
+                try{ 
+                two_most_recent_tests_object = {
                     "patient_id":dummy_patient_record.patient_unique_id,
                     "facility_id":dummy_patient_record.facility_id,
                     "art_number":(isEmpty(dummy_patient_record.art_number))?'null':dummy_patient_record.art_number,
                     "patient_unique_id":(isEmpty(dummy_patient_record.patient_unique_id))?'null':dummy_patient_record.patient_unique_id,
 
-                    "previous_collection_date":(isEmpty(previous_test_object.date_collected))?'null':previous_test_object.date_collected,
+                    "previous_collection_date":(typeof previous_test_object.date_collected === 'undefined')?'null':previous_test_object.date_collected,
                     "prevoius_receipt_date":(isEmpty(previous_test_object.date_received))?'null':previous_test_object.date_received,
                     "previous_alpha_numeric_result":(isEmpty(previous_test_object.alpha_numeric_result))?'null':previous_test_object.alpha_numeric_result,
                     "previous_suppression_status":(isEmpty(previous_test_object.suppression_status))?'null':previous_test_object.suppression_status,
@@ -517,6 +519,10 @@ ctrllers.DashController = function($scope,$http){
                     "phone": (isEmpty(dummy_patient_record.phone))?'null':dummy_patient_record.phone
 
                 };
+            }catch(e){
+                console.log(previous_test_object);
+                continue;
+            }
 
                 all_patients_two_most_recent_tests_array.push(two_most_recent_tests_object)
                 dummy_patient_array=[];
@@ -796,14 +802,14 @@ ctrllers.DashController = function($scope,$http){
                     "vl_sample_id":clean_results_object.vl_sample_id,
                     "created":clean_results_object.date_created,
                     "patient_unique_id":clean_results_object.patient_unique_id,
-                    "alpha_numeric_result":clean_results_object.alpha_numeric_result,
-                    "suppression_status":clean_results_object.suppression_status,
-                    "hub_id":clean_results_object.hub_id,
+                    "alpha_numeric_result":isEmpty(clean_results_object.alpha_numeric_result)?'null':clean_results_object.alpha_numeric_result,
+                    "suppression_status":isEmpty(clean_results_object.suppression_status)?'null':clean_results_object.suppression_status,
+                    "hub_id":isEmpty(clean_results_object.hub_id)?'null':clean_results_object.hub_id,
                     "facility_id":clean_results_object.facility_id,
-                    "date_collected":clean_results_object.date_collected,
-                    "date_received":clean_results_object.date_received,
-                    "art_number":clean_results_object.art_number,
-                    "phone_number":clean_results_object.phone_number,
+                    "date_collected":isEmpty(clean_results_object.date_collected)?'null':clean_results_object.date_collected,
+                    "date_received":isEmpty(clean_results_object.date_received)?'null':clean_results_object.date_received,
+                    "art_number":isEmpty(clean_results_object.art_number)?'null':clean_results_object.art_number,
+                    "phone_number":isEmpty(clean_results_object.phone_number)?'null':clean_results_object.phone_number,
                     "year_month":clean_results_object.year_month
                 };
                 patients_with_valid_results.push(valid_patient_record);
@@ -1213,7 +1219,7 @@ ctrllers.DashController = function($scope,$http){
         return retest_not_suppressing_patients_array;
     }
     function isEmpty(val){
-            return (val === undefined || val == null || val.length <= 0) ? true : false;
+            return (val === undefined || typeof(val) === 'undefined' ||val == 'undefined'|| val == null || val == 'null' || val.length <= 0) ? true : false;
     }
     function exportRetestSuppressingPatients(scopeInstance){
        
