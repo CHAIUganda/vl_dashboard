@@ -502,19 +502,19 @@ ctrllers.DashController = function($scope,$http){
                 var two_most_recent_tests_object = {
                     "patient_id":dummy_patient_record.patient_unique_id,
                     "facility_id":dummy_patient_record.facility_id,
-                    "art_number":dummy_patient_record.art_number,
-                    "patient_unique_id":dummy_patient_record.patient_unique_id,
+                    "art_number":(typeof dummy_patient_record.art_number === 'undefined')?'null':dummy_patient_record.art_number,
+                    "patient_unique_id":(typeof dummy_patient_record.patient_unique_id === 'undefined')?'null':dummy_patient_record.patient_unique_id,
 
-                    "previous_collection_date":previous_test_object.date_collected,
-                    "prevoius_receipt_date":previous_test_object.date_received,
-                    "previous_alpha_numeric_result":previous_test_object.alpha_numeric_result,
-                    "previous_suppression_status":previous_test_object.suppression_status,
+                    "previous_collection_date":(typeof previous_test_object.date_collected === 'undefined')?'null':previous_test_object.date_collected,
+                    "prevoius_receipt_date":(typeof previous_test_object.date_received === 'undefined')?'null':previous_test_object.date_received,
+                    "previous_alpha_numeric_result":(typeof previous_test_object.alpha_numeric_result === 'undefined')?'null':previous_test_object.alpha_numeric_result,
+                    "previous_suppression_status":(typeof previous_test_object.suppression_status === 'undefined')?'null':previous_test_object.suppression_status,
 
-                    "recent_collection_date":recent_test_object.date_collected,
-                    "recent_receipt_date":recent_test_object.date_received,
-                    "recent_alpha_numeric_result":recent_test_object.alpha_numeric_result,
-                    "recent_suppression_status":recent_test_object.suppression_status,
-                    "phone": dummy_patient_record.phone
+                    "recent_collection_date":(typeof recent_test_object.date_collected === 'undefined')?'null':recent_test_object.date_collected,
+                    "recent_receipt_date":(typeof recent_test_object.date_received === 'undefined')?'null':recent_test_object.date_received,
+                    "recent_alpha_numeric_result":(typeof recent_test_object.alpha_numeric_result === 'undefined')?'null':recent_test_object.alpha_numeric_result,
+                    "recent_suppression_status":(typeof recent_test_object.suppression_status === 'undefined')?'null':recent_test_object.suppression_status,
+                    "phone": (typeof dummy_patient_record.phone === 'undefined')?'null':dummy_patient_record.phone
 
                 };
 
@@ -1189,17 +1189,17 @@ ctrllers.DashController = function($scope,$http){
 
                 patient_unique_id:patientRecord.patient_unique_id,
                 
-                facility: facility_labels[patientRecord.facility_id].dhis2_name,
-                art_number:patientRecord.art_number,
-                vl_sample_id:patientRecord.vl_sample_id,
+                facility: (isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
+                art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
+                vl_sample_id:(typeof patientRecord.vl_sample_id === 'undefined')?'null':patientRecord.vl_sample_id,
                 
-                date_collected:patientRecord.date_collected,
-                date_received:patientRecord.date_received,
+                date_collected:(typeof patientRecord.date_collected === 'undefined')?'null':patientRecord.date_collected,
+                date_received:(typeof patientRecord.date_received === 'undefined')?'null':patientRecord.date_received,
                 
 
-                alpha_numeric_result:patientRecord.alpha_numeric_result,
-                recommended_retest_date:patientRecord.recommended_retest_date,
-                phone:patientRecord.phone_number,
+                alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                recommended_retest_date:(typeof patientRecord.recommended_retest_date  === 'undefined')?'null':patientRecord.recommended_retest_date,
+                phone:(typeof patientRecord.phone_number === 'undefined')?'null':patientRecord.phone_number,
 
                 action:'',
                 comment:'',
@@ -1212,30 +1212,37 @@ ctrllers.DashController = function($scope,$http){
 
         return retest_not_suppressing_patients_array;
     }
+    function isEmpty(val){
+            return (val === undefined || val == null || val.length <= 0) ? true : false;
+    }
     function exportRetestSuppressingPatients(scopeInstance){
        
         var retest_suppressing_patients_array = [];
         var facility_labels = scopeInstance.labels.facilities_details;
         var retest_results_from_scope = scopeInstance.retestSuppressingPatients;
 
+
         for( var index = 0; index < retest_results_from_scope.length; index++){
             var patientRecord = retest_results_from_scope[index];
 
+
+
             var retest_suppressing_patient_object={
 
-                patient_unique_id:patientRecord.patient_unique_id,
+                patient_unique_id:(typeof patientRecord.patient_unique_id === 'undefined')?'null':patientRecord.patient_unique_id,
                 
-                facility: facility_labels[patientRecord.facility_id].dhis2_name,
-                art_number:patientRecord.art_number,
-                vl_sample_id:patientRecord.vl_sample_id,
+                //facility: (facility_labels[patientRecord.facility_id] === 'undefined')?facility_labels[patientRecord.facility_id].cphl_name:'',
+                facility:(isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
+                art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
+                vl_sample_id:(typeof patientRecord.vl_sample_id === 'undefined')?'null':patientRecord.vl_sample_id,
                 
-                date_collected:patientRecord.date_collected,
-                date_received:patientRecord.date_received,
+                date_collected:(typeof patientRecord.date_collected === 'undefined')?'null':patientRecord.date_collected,
+                date_received:(typeof patientRecord.date_received === 'undefined')?'null':patientRecord.date_received,
                 
 
-                alpha_numeric_result:patientRecord.alpha_numeric_result,
-                recommended_retest_date:patientRecord.recommended_retest_date,
-                phone:patientRecord.phone_number,
+                alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                recommended_retest_date:(typeof patientRecord.recommended_retest_date === 'undefined')?'null':patientRecord.recommended_retest_date,
+                phone:(typeof patientRecord.phone_number === 'undefined')?'null':patientRecord.phone_number,
 
                 action:'',
                 comment:'',
@@ -1261,18 +1268,17 @@ ctrllers.DashController = function($scope,$http){
 
                 patient_unique_id:patientRecord.patient_unique_id,
                 vl_sample_id:patientRecord.vl_sample_id,
-                facility: facility_labels[patientRecord.facility_id].dhis2_name,
-
-                art_number:patientRecord.art_number,
-                date_collected:patientRecord.date_collected,
-                date_received:patientRecord.date_received,
+                facility: (isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
+                art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
+                date_collected:(typeof patientRecord.date_collected === 'undefined')?'null':patientRecord.date_collected,
+                date_received:(typeof patientRecord.date_received)?'null':patientRecord.date_received,
                 
-                rejection_category:patientRecord.rejection_category,
-                rejection_reason:patientRecord.rejection_reason,
+                rejection_category:(typeof patientRecord.rejection_category === 'undefined')?'null':patientRecord.rejection_category,
+                rejection_reason:(typeof patientRecord.rejection_reason === 'undefined')?'null':patientRecord.rejection_reason,
 
-                alpha_numeric_result:patientRecord.alpha_numeric_result,
-                suppression_status:patientRecord.suppression_status,
-                phone:patientRecord.phone_number,
+                alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status,
+                phone:(typeof patientRecord.phone_number === 'undefined')?'null':patientRecord.phone_number,
 
                 action:'',
                 comment:'',
@@ -1299,12 +1305,12 @@ ctrllers.DashController = function($scope,$http){
 
                 patient_unique_id:patientRecord.patient_unique_id,
                 vl_sample_id:patientRecord.vl_sample_id,
-                facility: facility_labels[patientRecord.facility_id].dhis2_name,
+                facility: (isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
 
-                art_number:patientRecord.art_number,
-                date_received:patientRecord.date_received,
-                alpha_numeric_result:patientRecord.alpha_numeric_result,
-                suppression_status:patientRecord.suppression_status
+                art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
+                date_received:(typeof patientRecord.date_received === 'undefined')?'null':patientRecord.date_received,
+                alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status
 
             };
 
@@ -1327,13 +1333,13 @@ ctrllers.DashController = function($scope,$http){
             var all_patient_result_object={
 
                 patient_unique_id:patientRecord.patient_unique_id,
-                vl_sample_id:patientRecord.vl_sample_id,
-                facility: facility_labels[patientRecord.facility_id].dhis2_name,
+                vl_sample_id:(typeof patientRecord.vl_sample_id === 'undefined')?'null':patientRecord.vl_sample_id,
+                facility: (isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
 
-                art_number:patientRecord.art_number,
-                date_received:patientRecord.date_received,
-                alpha_numeric_result:patientRecord.alpha_numeric_result,
-                suppression_status:patientRecord.suppression_status
+                art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
+                date_received:(typeof patientRecord.date_received === 'undefined')?'null':patientRecord.date_received,
+                alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status
 
             };
 
