@@ -502,19 +502,19 @@ ctrllers.DashController = function($scope,$http){
                 var two_most_recent_tests_object = {
                     "patient_id":dummy_patient_record.patient_unique_id,
                     "facility_id":dummy_patient_record.facility_id,
-                    "art_number":(typeof dummy_patient_record.art_number === 'undefined')?'null':dummy_patient_record.art_number,
-                    "patient_unique_id":(typeof dummy_patient_record.patient_unique_id === 'undefined')?'null':dummy_patient_record.patient_unique_id,
+                    "art_number":(isEmpty(dummy_patient_record.art_number))?'null':dummy_patient_record.art_number,
+                    "patient_unique_id":(isEmpty(dummy_patient_record.patient_unique_id))?'null':dummy_patient_record.patient_unique_id,
 
-                    "previous_collection_date":(typeof previous_test_object.date_collected === 'undefined')?'null':previous_test_object.date_collected,
-                    "prevoius_receipt_date":(typeof previous_test_object.date_received === 'undefined')?'null':previous_test_object.date_received,
-                    "previous_alpha_numeric_result":(typeof previous_test_object.alpha_numeric_result === 'undefined')?'null':previous_test_object.alpha_numeric_result,
-                    "previous_suppression_status":(typeof previous_test_object.suppression_status === 'undefined')?'null':previous_test_object.suppression_status,
+                    "previous_collection_date":(isEmpty(previous_test_object.date_collected))?'null':previous_test_object.date_collected,
+                    "prevoius_receipt_date":(isEmpty(previous_test_object.date_received))?'null':previous_test_object.date_received,
+                    "previous_alpha_numeric_result":(isEmpty(previous_test_object.alpha_numeric_result))?'null':previous_test_object.alpha_numeric_result,
+                    "previous_suppression_status":(isEmpty(previous_test_object.suppression_status))?'null':previous_test_object.suppression_status,
 
-                    "recent_collection_date":(typeof recent_test_object.date_collected === 'undefined')?'null':recent_test_object.date_collected,
-                    "recent_receipt_date":(typeof recent_test_object.date_received === 'undefined')?'null':recent_test_object.date_received,
-                    "recent_alpha_numeric_result":(typeof recent_test_object.alpha_numeric_result === 'undefined')?'null':recent_test_object.alpha_numeric_result,
-                    "recent_suppression_status":(typeof recent_test_object.suppression_status === 'undefined')?'null':recent_test_object.suppression_status,
-                    "phone": (typeof dummy_patient_record.phone === 'undefined')?'null':dummy_patient_record.phone
+                    "recent_collection_date":(isEmpty(recent_test_object.date_collected))?'null':recent_test_object.date_collected,
+                    "recent_receipt_date":(isEmpty(recent_test_object.date_received))?'null':recent_test_object.date_received,
+                    "recent_alpha_numeric_result":(isEmpty(recent_test_object.alpha_numeric_result))?'null':recent_test_object.alpha_numeric_result,
+                    "recent_suppression_status":(isEmpty(recent_test_object.suppression_status))?'null':recent_test_object.suppression_status,
+                    "phone": (isEmpty(dummy_patient_record.phone))?'null':dummy_patient_record.phone
 
                 };
 
