@@ -101,8 +101,8 @@
 
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
-<script type="text/javascript" src="https://nvd3-community.github.io/nvd3/build/nv.d3.js"></script>
+<script src="{{ asset('/js/d3.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/nv.d3.js') }}" type="text/javascript"></script>
 
 <link href="{{ asset('/css/hub.css') }}" rel="stylesheet"/>
 <style type="text/css">
