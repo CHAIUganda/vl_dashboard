@@ -919,8 +919,8 @@ ctrllers.DashController = function($scope,$http){
 
     $scope.displayRejectionRate=function(){
         var data=[{"key":"SAMPLE QUALITY","values":[], "bar": true},
-                  {"key":"INCOMPLETE FORM","values":[], "bar": false },
-                  {"key":"ELIGIBILITY","values":[] }];
+                  {"key":"INCOMPLETE FORM","values":[], "bar": true },
+                  {"key":"ELIGIBILITY","values":[],"bar": true  }];
 
         for(var i in $scope.duration_numbers){
             var obj=$scope.duration_numbers[i];
@@ -929,7 +929,7 @@ ctrllers.DashController = function($scope,$http){
             var ttl=obj.sample_quality_rejections+obj.incomplete_form_rejections+obj.eligibility_rejections;
             var sq_rate=Math.round(((obj.sample_quality_rejections/ttl)||0)*100);
             var inc_rate=Math.round(((obj.incomplete_form_rejections/ttl)||0)*100);
-            //var el_rate=((obj.eligibility_rejections/ttl)||0)*100;
+            //var el_rate=Math.round(((obj.eligibility_rejections/ttl)||0)*100);
             var el_rate=100-(sq_rate+inc_rate);
             data[0].values.push({"x":dateFormat(obj._id),"y": sq_rate });
             data[1].values.push({"x":dateFormat(obj._id),"y": inc_rate });
@@ -1197,7 +1197,6 @@ ctrllers.DashController = function($scope,$http){
             }
             var facility_details_lables_object = facility_details_labels[facilityRecord._id.facility_id];
             if(typeof facility_details_lables_object === "undefined"){
-                console.log(facilityRecord.facility_id);
                 continue;
             }
             var facility_instance = {

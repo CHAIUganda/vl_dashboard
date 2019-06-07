@@ -227,9 +227,13 @@ class DashboardController extends Controller {
 					'$sum' => array(
 						'$cond'=>array(
 							array('$or' => array(
-									'$eq' => array('$rejection_reason','eligibility'),
-									'$eq' => array('$rejection_reason','incomplete_form'),
-									'$eq' => array('$rejection_reason','quality_of_sample')
+					
+								    //'$eq' => array('$rejection_category','eligibility'),
+									//'$eq' => array('$rejection_category','data_quality'),
+									//'$eq' => array('$rejection_category','sample_quality'),
+
+									'$ne' => array('$rejection_category','UNKNOWN')
+
 								)
 								),1,0)
 						)
@@ -297,9 +301,9 @@ class DashboardController extends Controller {
 					'$sum' => array(
 						'$cond'=>array(
 							array('$or' => array(
-									'$eq' => array('$rejection_reason','eligibility'),
-									'$eq' => array('$rejection_reason','incomplete_form'),
-									'$eq' => array('$rejection_reason','quality_of_sample')
+									'$eq' => array('$rejection_category','eligibility'),
+									'$eq' => array('$rejection_category','data_quality'),
+									'$eq' => array('$rejection_category','sample_quality')
 								)
 								),1,0)
 						)
@@ -336,9 +340,9 @@ class DashboardController extends Controller {
 					'$sum' => array(
 						'$cond'=>array(
 							array('$or' => array(
-									'$eq' => array('$rejection_reason','eligibility'),
-									'$eq' => array('$rejection_reason','incomplete_form'),
-									'$eq' => array('$rejection_reason','quality_of_sample')
+									'$eq' => array('$rejection_category','eligibility'),
+									'$eq' => array('$rejection_category','data_quality'),
+									'$eq' => array('$rejection_category','sample_quality')
 								)
 								),1,0)
 						)
@@ -656,7 +660,7 @@ class DashboardController extends Controller {
  	}
  	private function _getRejectedSamplesByWholeNumbers(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility','incomplete_form','quality_of_sample']] ];
+		$extendedConditions['$and'][]=[ 'rejection_category'=>  ['$in'=> ['eligibility','data_quality','sample_quality']] ];
 		$grp=[];
 		$grp['_id']=null;
 		$grp['rejected_samples']=['$sum'=>1];
@@ -666,7 +670,7 @@ class DashboardController extends Controller {
  	}
  	private function _getRejectedSamplesByDistrict(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility','incomplete_form','quality_of_sample']] ];
+		$extendedConditions['$and'][]=[ 'rejection_category'=>  ['$in'=> ['eligibility','data_quality','sample_quality']] ];
 		$grp=[];
 		$grp['_id']='$district_id';
 		$grp['rejected_samples']=['$sum'=>1];
@@ -677,7 +681,7 @@ class DashboardController extends Controller {
 
  	private function _getRejectedSamplesByFacility(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility','incomplete_form','quality_of_sample']] ];
+		$extendedConditions['$and'][]=[ 'rejection_category'=>  ['$in'=> ['eligibility','data_quality','sample_quality']] ];
 		$grp=[];
 		$grp['_id']=array('district_id'=>'$district_id','hub_id'=>'$hub_id','facility_id'=>'$facility_id');
 		$grp['rejected_samples']=['$sum'=>1];
@@ -687,7 +691,7 @@ class DashboardController extends Controller {
  	}
  	private function _getSampleQualityRejectionsByDurationNumbers(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['quality_of_sample']] ];
+		$extendedConditions['$and'][]=[ 'rejection_category'=>  ['$in'=> ['sample_quality']] ];
 		$grp=[];
 		$grp['_id']='$year_month';
 		$grp['rejected_samples']=['$sum'=>1];
@@ -697,7 +701,7 @@ class DashboardController extends Controller {
  	}
  	private function _getRejectedSamplesByDurationNumbers(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility','incomplete_form','quality_of_sample']] ];
+		$extendedConditions['$and'][]=[ 'rejection_category'=>  ['$in'=> ['eligibility','data_quality','sample_quality']] ];
 		$grp=[];
 		$grp['_id']='$year_month';
 		$grp['rejected_samples']=['$sum'=>1];
@@ -707,7 +711,7 @@ class DashboardController extends Controller {
  	}
  	private function _getEligibilityRejectionsByDurationNumbers(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['eligibility']] ];
+		$extendedConditions['$and'][]=[ 'rejection_category'=>  ['$in'=> ['eligibility']] ];
 		$grp=[];
 		$grp['_id']='$year_month';
 		$grp['rejected_samples']=['$sum'=>1];
@@ -718,7 +722,7 @@ class DashboardController extends Controller {
  	}
  	private function _getIncompleteFormRejectionsByDurationNumbers(){
  		$extendedConditions=$this->conditions;
-		$extendedConditions['$and'][]=[ 'rejection_reason'=>  ['$in'=> ['incomplete_form']] ];
+		$extendedConditions['$and'][]=[ 'rejection_category'=>  ['$in'=> ['data_quality']] ];
 		$grp=[];
 		$grp['_id']='$year_month';
 		$grp['rejected_samples']=['$sum'=>1];
@@ -844,28 +848,28 @@ class DashboardController extends Controller {
 				'rejected_samples' => array(
 					'$sum' => array(
 						'$cond'=>array(
-							array('$ne' => array('$rejection_reason','UNKNOWN') 
+							array('$ne' => array('$rejection_category','UNKNOWN') 
 								),1,0)
 						)
 					),
 				'sample_quality_rejections' => array(
 					'$sum' => array(
 						'$cond'=>array(
-							array('$eq' => array('$rejection_reason','quality_of_sample') 
+							array('$eq' => array('$rejection_category','sample_quality') 
 								),1,0)
 						)
 					),
 				'incomplete_form_rejections' => array(
 					'$sum' => array(
 						'$cond'=>array(
-							array('$eq' => array('$rejection_reason','incomplete_form') 
+							array('$eq' => array('$rejection_category','data_quality') 
 								),1,0)
 						)
 					),
 				'eligibility_rejections' => array(
 					'$sum' => array(
 						'$cond'=>array(
-							array('$eq' => array('$rejection_reason','eligibility') 
+							array('$eq' => array('$rejection_category','eligibility') 
 								),1,0)
 						)
 					),
