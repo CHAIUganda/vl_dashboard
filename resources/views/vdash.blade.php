@@ -168,7 +168,7 @@
     <div class='addition-metrics'> @include('sections._treatment_indication') </div>
     <br>
     <script src=" {{ asset('js/cbpFWTabs.js') }} "></script>
-    <script type="text/javascript" src=" {{ asset('js/FileSaver.js') }} "></script>
+    
     <script type="text/javascript" src=" {{ asset('js/live.js') }} "></script>
     
     <script>
