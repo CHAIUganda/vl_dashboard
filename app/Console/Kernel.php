@@ -20,14 +20,16 @@ class Kernel extends ConsoleKernel
         \EID\Console\Commands\DHIS2::class,
         \EID\Console\Commands\Essai::class,
         \EID\Console\Commands\Arua::class,
-        \EID\Console\Commands\FacilityEngine::class,
+        \EID\Console\Commands\LocationEngine::class,//loads locations like facility, district, hub
         \EID\Console\Commands\AruaNewFormat::class,
         \EID\Console\Commands\AruaNewFormatMarchToOctober2017::class,
         \EID\Console\Commands\LongitudinalPatientResults::class,
         \EID\Console\Commands\DataSetDump::class,
         \EID\Console\Commands\DataAPI::class,
         \EID\Console\Commands\FacilityDhis2::class,
+        \EID\Console\Commands\SampleRecordAugmentEngine::class,
         \EID\Console\Commands\EngineVL2::class
+
         
     ];
 

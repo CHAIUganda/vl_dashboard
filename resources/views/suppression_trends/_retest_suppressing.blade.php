@@ -5,6 +5,7 @@
                                         <th >Patient ID</th>
                                         <th >Facility</th>
                                         <th >ART Number</th>
+                                        <th>Sample ID</th>
                                         <th>Date of Collection</th>
 
                                         <th >Date Arrived at CPHL</th>
@@ -20,20 +21,20 @@
         </thead>
                                 <tbody>                                
                                   <tr ng-repeat="retestSuppressingPatients_object in retestSuppressingPatients" >
-                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.patientUniqueID %></td>
-                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.facility %></td>
-                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.artNumber %></td>
-                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.collectionDate %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.patient_unique_id %></td>
+                                      <td ng-class="ng-cloak"><% labels.facilities_details[retestSuppressingPatients_object.facility_id].dhis2_name %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.art_number %></td>
 
-                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.receiptDate %></td>
-                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.result %></td>
-                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.recommendedRetestDate %></td>
-                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.phone %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.vl_sample_id %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.date_collected %></td>
+
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.date_received %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.alpha_numeric_result %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.recommended_retest_date %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.phone_number %></td>
 
                                       <td ng-class="ng-cloak">
-                                        <div class="cursor" ng-click="loadProgressMap(retestSuppressingPatients_object.patientID,retestSuppressingPatients_object.patientUniqueID,'retestSuppressedMap')">
-                                          Click Here for details
-                                        </div>
+                                        
                                       </td>
                                       <td ng-class="ng-cloak"></td>
                                       <td ng-class="ng-cloak"></td>
@@ -41,23 +42,8 @@
                               </tr>           
                                  </tbody>
                             </table>
-</div>
-<div id="progressmap_retest_suppressed_id">
-    <h3>Progress Map for <% patientUniqueID %></h3>
-    <svg></svg>
-    <table class="table table-bordered table-condensed table-striped">
-      <tr>
-        <th class="ng-cloak" colspan="2">Collection Date</th> 
-      </tr>
-      <tr>
-        <td ng-repeat="progressmaplabel in progressmaplabels" class="figure ng-cloak">
-           <% progressmaplabel.x %>
-        </td>
-      </tr>
-      <tr>
-        <td ng-repeat="progressmapresult in progressmapresults" class="figure ng-cloak">
-           <% progressmapresult.y %>
-        </td>
-      </tr>
-    </table>
+                             <br>
+                        <br>
+                        <button id="exportRetestSuppressed" type="button" ng-csv="export_retest_suppressing"  class="btn btn-success" filename="restest_suppressing_results_<%current_timestamp%>.csv" csv-header="['PatientID','Facility','Art Number','SampleID','Date of Collection', 'Date of Arrival at CPHL','Results','Recommended Retest Date','Contact','Action','Comments']">Download CSV</button>
+
 </div>

@@ -43,8 +43,7 @@
 
     <script src="{{ asset('/js/general.js') }}" type="text/javascript"></script>
    
-    <script src="{{ asset('/js/d3.min.js') }}" charset="utf-8"></script>
-    <script src="{{ asset('/js/nv.d3.min.js') }}"></script>
+    
     <script type="text/javascript">
         function activeRetestNSTab () {
             //remove class
@@ -101,6 +100,9 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.js"></script>
 
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+<script src="{{ asset('/js/d3.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/nv.d3.js') }}" type="text/javascript"></script>
 
 <link href="{{ asset('/css/hub.css') }}" rel="stylesheet"/>
 <style type="text/css">

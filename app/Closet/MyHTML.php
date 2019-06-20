@@ -460,7 +460,7 @@ class MyHTML{
 	}
 
 	public static function dateNMonthsBack(){
-    	$ret;
+    	/*$ret;
     	$n=env('INIT_MONTHS');
         $m=date('m');
         $y=date('Y');
@@ -473,7 +473,18 @@ class MyHTML{
             }
             $m--;
         }
-        return $ret;
+        $ret = $y.$m;
+        return $ret;*/
+
+        $months_back=env('INIT_MONTHS') -1;
+        $date=date_create();
+        date_sub($date,date_interval_create_from_date_string($months_back." months"));
+        $date_after_subtracting_months= date_format($date,"Ym");
+
+
+		return $date_after_subtracting_months ;
+
+		
     }
 
     public static function interpretCobas8800($result, $worksheet_factor){

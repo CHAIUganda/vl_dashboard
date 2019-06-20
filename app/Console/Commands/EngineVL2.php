@@ -51,7 +51,7 @@ class EngineVL2 extends Command
      */
     public function handle()
     {
-        ini_set('memory_limit', '2024M');
+        ini_set('memory_limit', '3024M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
         //$this->facilities = $this->option('facilities');
@@ -75,7 +75,7 @@ class EngineVL2 extends Command
     }
 
     private function _getData($start){
-    	
+    	/*
     	$sql = "SELECT s.id, s.vl_sample_id, patient_unique_id, s.facility_id, 
                 s.created_at, pregnant, breast_feeding, active_tb_status, sample_type,
                 s.treatment_initiation_date, f.district_id, f.hub_id, p.gender, p.dob,
@@ -93,7 +93,27 @@ class EngineVL2 extends Command
                 LEFT JOIN backend_appendices a2 ON s.current_regimen_id=a2.id
                 LEFT JOIN backend_appendices a3 ON v.rejection_reason_id=a3.id
     	        WHERE $this->cond 
-    	        LIMIT $start, $this->limit";
+    	        LIMIT $start, $this->limit";*/
+        $sql = "select * from (SELECT s.id, s.vl_sample_id, patient_unique_id,GROUP_CONCAT(pp.phone separator ',') contacts, p.art_number,s.facility_id, 
+                s.created_at, s.date_collected,s.date_received, pregnant, breast_feeding, active_tb_status, sample_type,
+                s.treatment_initiation_date, f.district_id, f.hub_id, p.gender, p.dob,
+                a1.code AS treatment_indication,
+                a2.code AS current_regimen,
+                a2.tag AS treatment_line,
+                a3.appendix rejection_reason,
+                a3.tag AS rejection_category,
+                r.suppressed,GROUP_CONCAT(r.result_alphanumeric separator ':') result_alphanumeric
+                FROM vl_samples s 
+                LEFT JOIN vl_patients p ON s.patient_id=p.id 
+                LEFT JOIN vl_patient_phones pp on pp.patient_id = p.id 
+                LEFT JOIN vl_verifications v ON s.id=v.sample_id
+                LEFT JOIN vl_results r ON s.id=r.sample_id
+                LEFT JOIN backend_facilities f ON s.facility_id=f.id
+                LEFT JOIN backend_appendices a1 ON s.treatment_indication_id=a1.id
+                LEFT JOIN backend_appendices a2 ON s.current_regimen_id=a2.id
+                LEFT JOIN backend_appendices a3 ON v.rejection_reason_id=a3.id
+                WHERE $this->cond group by s.vl_sample_id) records
+                LIMIT $start, $this->limit";
     	return $this->db->select($sql);
     	#$this->comment($sql);
     }
@@ -127,7 +147,13 @@ class EngineVL2 extends Command
         $data["year_month"] = (int)$year_month;
         $data["sample_id"] = (int)$sample->id;
         $data["vl_sample_id"] = $sample->vl_sample_id;
-        $data["patient_unique_id"] = $sample->patient_unique_id;                 
+        $data["patient_unique_id"] = $sample->patient_unique_id;
+
+        $data["art_number"]=$sample->art_number;
+        $data["phone_number"]=$sample->contacts;
+        $data["date_created"]=$sample->created_at;
+        $data["date_collected"]=$sample->date_collected;
+        $data["date_received"]=$sample->date_received;                 
 
         $data["facility_id"] = (int)$sample->facility_id;
         $data['district_id'] = isset($sample->district_id)?(int)$sample->district_id:0;
@@ -153,10 +179,32 @@ class EngineVL2 extends Command
         $data["suppression_status"] = $this->_spsd($sample->suppressed);
 
         $data["tested"]=!empty($sample->result_alphanumeric)?"yes":"no";
-        $data["rejection_reason"] = isset($sample->rejection_reason)?$this->_getRejectionCat($sample->rejection_reason):"UNKNOWN";
+
+        $data["alpha_numeric_result"]=$this->processAlphaNumericResult($sample->result_alphanumeric);
+        $data["rejection_reason"] = isset($sample->rejection_reason)?$sample->rejection_reason:'UNKNOWN';
+        $data["rejection_category"] = isset($sample->rejection_category)?$this->_cleanRejectionCategory($sample->rejection_category):'UNKNOWN';
         return $data;
     }
 
+    private function _cleanRejectionCategory($rejectionCategoryString){
+      $rejectionCategoryArray = explode(",", $rejectionCategoryString);
+      return $rejectionCategoryArray[1];
+    }
+    private function processAlphaNumericResult($result){
+      $newResult='';
+
+      
+      if(isset($result)){
+        $resultArray= explode(':', $result);
+        $lastIndex = sizeof($resultArray) - 1;
+        $newResult = $resultArray[$lastIndex];
+      }else{
+        $newResult='NIL';
+      }
+      
+
+      return $newResult;
+    }
     private function _spsd($suppressed){
         if($suppressed==1){
             return 'yes';
