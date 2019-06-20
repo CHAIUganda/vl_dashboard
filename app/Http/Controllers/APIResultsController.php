@@ -299,7 +299,10 @@ class APIResultsController extends Controller {
         
         $mongo_result_set = $this->getMonthlyData($params);
         $clean_result_set = $this->getCleanResultSet($mongo_result_set,$params);
-
+        Log::info(".....api..dirty..");
+        Log::info($mongo_result_set);
+         Log::info(".....api. clean...");
+        Log::info($clean_result_set);
         return $clean_result_set;
         
         
@@ -441,7 +444,7 @@ class APIResultsController extends Controller {
 				continue;
 		     }
             $fields['facility_name']=isset($facility) ? $facility['facility']: 'Null';
-            $facility = $facilities[$facility_id];
+            $facility = isset($facilities[$facility_id])?$facilities[$facility_id]:null;
             $fields['facility_code'] = isset($facility) ? $facility['dhis2_uid']: 'Null';
             $fields['district_code']=isset($facility) ? $facility['district_uid']: 'Null';
            
@@ -467,7 +470,97 @@ class APIResultsController extends Controller {
         return $clean_result_set;
     }
 
+    public function getDistricts(){
+    	$sql = "SELECT id,district,dhis2_uid FROM backend_districts";
 
+    	return \DB::connection('direct_db')->select($sql); 
+    }
+
+    public function getDistrictsNumbers(){
+    	
+        $and_for_year_month=array('year_month' => array('$gte'=>201801,'$lt'=>201812));
+        
+        //$match_array=array('$and' => array($and_for_year_month,$and_for_age,$and_for_gender));
+		$match_stage['$match']=$and_for_year_month;
+
+		$group_stage = array(
+			
+			'$group' => array(
+				'_id' => '$district_id', 
+				'samples_received' => array('$sum' => 1 ),
+				'valid_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_result_validity','valid')),1,0))),
+				'dbs_samples' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_type_id',1)),1,0))),
+				'total_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$tested','yes')),1,0))),
+				'suppressed' => array('$sum' => array('$cond'=>array(array('$eq' => array('$suppression_status','yes')),1,0))),
+				'rejected_samples' => array(
+					'$sum' => array(
+						'$cond'=>array(
+							array('$or' => array(
+									'$eq' => array('$rejection_category','eligibility'),
+									'$eq' => array('$rejection_category','data_quality'),
+									'$eq' => array('$rejection_category','sample_quality')
+								)
+								),1,0)
+						)
+					),
+				'unique_patient_count' =>array(
+						'$addToSet'=>'$patient_unique_id'
+					)
+			 ));
+		
+		$project_stage['$project']=array(
+			'samples_received'=>1,'valid_results'=>1,'dbs_samples'=>1,'total_results'=>1,'suppressed' => 1,'rejected_samples'=>1,'sample_quality_rejections'=>1, 'incomplete_form_rejections'=>1,'eligibility_rejections'=>1,'patients_received'=>array('$size'=>'$unique_patient_count')
+			);
+		
+		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage,$project_stage);
+		
+		
+		return isset($res['result'])?$res['result']:[];
+	}
+
+	public function getDistrictsNumberByMonth($year_month){
+    	$int_year_month = intval($year_month);
+    	Log::info($year_month);
+        $and_for_year_month=array('year_month' => array('$eq'=>$int_year_month ));
+        
+        //$match_array=array('$and' => array($and_for_year_month,$and_for_age,$and_for_gender));
+		$match_stage['$match']=$and_for_year_month;
+
+		$group_stage = array(
+			
+			'$group' => array(
+				'_id' => '$district_id', 
+				'samples_received' => array('$sum' => 1 ),
+				'valid_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_result_validity','valid')),1,0))),
+				'dbs_samples' => array('$sum' => array('$cond'=>array(array('$eq' => array('$sample_type_id',1)),1,0))),
+				'total_results' => array('$sum' => array('$cond'=>array(array('$eq' => array('$tested','yes')),1,0))),
+				'suppressed' => array('$sum' => array('$cond'=>array(array('$eq' => array('$suppression_status','yes')),1,0))),
+				'rejected_samples' => array(
+					'$sum' => array(
+						'$cond'=>array(
+							array('$or' => array(
+									'$eq' => array('$rejection_category','eligibility'),
+									'$eq' => array('$rejection_category','data_quality'),
+									'$eq' => array('$rejection_category','sample_quality')
+								)
+								),1,0)
+						)
+					),
+				'unique_patient_count' =>array(
+						'$addToSet'=>'$patient_unique_id'
+					)
+			 ));
+		
+		$project_stage['$project']=array(
+			'samples_received'=>1,'valid_results'=>1,'dbs_samples'=>1,'total_results'=>1,'suppressed' => 1,'rejected_samples'=>1,'sample_quality_rejections'=>1, 'incomplete_form_rejections'=>1,'eligibility_rejections'=>1,'patients_received'=>array('$size'=>'$unique_patient_count')
+			);
+
+		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage,$project_stage);
+		Log::info("......");
+		Log::info($res['result']);
+		
+		return isset($res['result'])?$res['result']:[];
+	}
     /*
 		SELECT  s.id, s.patient_unique_id, s.facility_id, f.facility, s.vl_sample_id, 
 s.date_collected, s.date_received,s.created_at, s.sample_type, s.clinician_id, c.cname, 
