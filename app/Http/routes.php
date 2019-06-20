@@ -120,7 +120,13 @@ Route::get('/pdf_test', function(){
 	return $pdf->download('pdf_test.pdf');
 });
 
+/* ----Situation Room ----*/
 Route::get('/api/facility_list/age_group/{year}/{gender}/{from}/{to}/', ['uses' => 'APIResultsController@getFacilitiesDataByAgeGroup']);
+Route::get('/api/districts/', ['uses' => 'APIResultsController@getDistricts']);
+Route::get('/api/districts/numbers/', ['uses' => 'APIResultsController@getDistrictsNumbers']);
+Route::get('/api/districts/numbers/{year}/', ['uses' => 'APIResultsController@getDistrictsNumberByMonth']);
+
+/* ----end Situation Room ----*/
 Route::post('oauth/access_token', function() {
  return Response::json(Authorizer::issueAccessToken());
 });
