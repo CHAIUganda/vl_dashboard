@@ -48,8 +48,9 @@ class AdminController extends Controller {
 			return redirect('admin/list_users')->with('msge',"saving successful");	
 
 		}else{
-			$hubs = LiveData::getHubs();
-			$facilities = LiveData::getFacilities();
+			$db = \DB::connection('direct_db');
+			$hubs = $db->select("select id, hub from backend_hubs");
+			$facilities = $db->select("select id, facility from backend_facilities");	
 
 			$roles = Role::orderby('name')->get();
 
