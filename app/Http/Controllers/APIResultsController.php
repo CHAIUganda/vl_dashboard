@@ -556,9 +556,9 @@ class APIResultsController extends Controller {
 			);
 
 		$res=$this->mongo->dashboard_new_backend->aggregate($match_stage,$group_stage,$project_stage);
-		Log::info("......");
-		Log::info($res['result']);
 		
+		$json_array_test = json_encode(isset($res['result'])?$res['result']:[]);
+		$this->exportToCsv($json_array_test,$year_month);
 		return isset($res['result'])?$res['result']:[];
 	}
     /*
@@ -694,6 +694,30 @@ where YEAR(s.created_at)=2018 and drequest.body_weight is not NULL or drequest.p
  
         //Retrieve the data from our text file.
         //$fileContents = file_get_contents('json_array.txt');
+    }
+
+    private function exportToCsv($data_in_json,$year_month){
+
+		//Decode the JSON and convert it into an associative array.
+		$jsonDecoded = json_decode($data_in_json, true);
+		 
+		//Give our CSV file a name.
+		$csvFileName = '/tmp/vl/'.$year_month.'.csv';
+		 
+		//Open file pointer.
+		$fp = fopen($csvFileName, 'w');
+		 
+		 //header
+		 $header_row=['district_id','samples_received','valid_results','dbs_samples','total_results','suppressed','rejected_samples','patients_received'];
+		 fputcsv($fp, $header_row);
+		//Loop through the associative array.
+		foreach($jsonDecoded as $row){
+		    //Write the row to the CSV file.
+		    fputcsv($fp, $row);
+		}
+		 
+		//Finally, close the file pointer.
+		fclose($fp);
     }
 
 
