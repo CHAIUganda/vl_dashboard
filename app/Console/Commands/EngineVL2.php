@@ -94,7 +94,7 @@ class EngineVL2 extends Command
                 LEFT JOIN backend_appendices a3 ON v.rejection_reason_id=a3.id
     	        WHERE $this->cond 
     	        LIMIT $start, $this->limit";*/
-        $sql = "select * from (SELECT s.id, s.vl_sample_id, patient_unique_id,GROUP_CONCAT(pp.phone separator ',') contacts, p.art_number,s.facility_id, 
+        $sql = "SELECT s.id, s.vl_sample_id, patient_unique_id,GROUP_CONCAT(pp.phone separator ',') contacts, p.art_number,s.facility_id, 
                 s.created_at, s.date_collected,s.date_received, pregnant, breast_feeding, active_tb_status, sample_type,
                 s.treatment_initiation_date, f.district_id, f.hub_id, p.gender, p.dob,
                 a1.code AS treatment_indication,
@@ -112,7 +112,7 @@ class EngineVL2 extends Command
                 LEFT JOIN backend_appendices a1 ON s.treatment_indication_id=a1.id
                 LEFT JOIN backend_appendices a2 ON s.current_regimen_id=a2.id
                 LEFT JOIN backend_appendices a3 ON v.rejection_reason_id=a3.id
-                WHERE $this->cond group by s.vl_sample_id) records
+                WHERE $this->cond group by s.vl_sample_id 
                 LIMIT $start, $this->limit";
     	return $this->db->select($sql);
     	#$this->comment($sql);
