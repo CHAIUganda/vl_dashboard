@@ -28,6 +28,14 @@ $tab_limit = isset($tab)?"?tab=$tab":"";
     <li action="active">FACILITIES</li>
 </ul>
 <h2 style="text-align:center;text-transform:uppercase">{{ Auth::user()->hub_name }}</h2>
+
+<div class="alert alert-danger alert-dismissible show" role="alert">
+  <strong>Please Note!</strong> The numbers showing in the printed column are for 2019 only. The older data has been archived to improve the speed of loading the page.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
 @if(empty(Auth::user()->facility_id) AND empty(Auth::user()->hub_id) AND $sect == 'results')
    <div class="row">
    

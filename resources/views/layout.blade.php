@@ -45,6 +45,7 @@
    
     
     <script type="text/javascript">
+
         function activeRetestNSTab () {
             //remove class
             $('#li-suppression-trend').removeClass('active');
