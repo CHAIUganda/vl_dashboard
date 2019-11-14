@@ -27,7 +27,8 @@ class Kernel extends ConsoleKernel
         \EID\Console\Commands\DataSetDump::class,
         \EID\Console\Commands\DataAPI::class,
         \EID\Console\Commands\FacilityDhis2::class,
-        \EID\Console\Commands\EngineVL2::class
+        \EID\Console\Commands\EngineVL2::class,
+        \EID\Console\Commands\MigrateOldData::class,
         
     ];
 
