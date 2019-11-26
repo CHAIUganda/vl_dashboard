@@ -207,7 +207,8 @@
                         @permission('lab_qc')<li id='lab_qc' >{!! link_to("/lab_qc/index","RESULTS AUTH",['class'=>'hdr']) !!}</li>@endpermission    -->  
                         @if(Auth::check())  
                         @permission('print_results')
-                        <li id='results' >{!! link_to("/direct/facility_list/","RESULTS",['class'=>'hdr']) !!}</li>
+                        <!-- <li id='results' >{!! link_to("/direct/facility_list/","RESULTS",['class'=>'hdr']) !!}</li> -->
+                        <li><a href="http://results.nas.gov.sl">RESULTS</a></li>
                         <li id='suppression_trends' >{!! link_to("/suppression_trends/index","REPORTS",['class'=>'hdr']) !!}</li>
                         @endpermission
 
@@ -215,7 +216,8 @@
 
                         @role('admin')<li id='admin' >{!! link_to("/admin/list_users","ADMIN",['class'=>'hdr']) !!}</li> @endrole
                         @else
-                        <li id='login'>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li> 
+                        <!-- <li id='login'>{!! link_to("auth/login","LOGIN",['class'=>'hdr']) !!}</li>  -->
+                        <li><a href="http://results.nas.gov.sl">LOGIN</a></li>
                         @endif 
                         
 
