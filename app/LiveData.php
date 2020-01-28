@@ -169,15 +169,22 @@ class LiveData extends Model
     }
 
     public static function getHubs(){
-    	return LiveData::select('id','hub')->from('vl_hubs')->get();
+      $sql = "select id,hub from backend_hubs";
+      return $res=\DB::connection('direct_db')->select($sql);
+    	//return LiveData::select('id','hub')->from('vl_hubs')->get();
     }
 
     public static function getDistricts(){
-      return LiveData::select('id','district','dhis2_name')->from('vl_districts')->get();
+      $sql = "select id,district,dhis2_uid from backend_districts";
+      return $res=\DB::connection('direct_db')->select($sql);
+      //return LiveData::select('id','district','dhis2_name')->from('vl_districts')->get();
     }
 
     public static function getFacilities(){
-      return LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID','dhis2_uid','district_uid')->from('vl_facilities')->get();
+      
+      $sql = "select id,facility,district_id,hub_id,dhis2_name,dhis2_uid from backend_facilities";
+      return $res=\DB::connection('direct_db')->select($sql);
+      //return LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID','dhis2_uid','district_uid')->from('vl_facilities')->get();
     }
     public static function getFacilitiesInAnArrayForm(){
       $result_set = LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID','dhis2_uid','district_uid')->from('vl_facilities')->get();
