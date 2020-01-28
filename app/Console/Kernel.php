@@ -28,7 +28,8 @@ class Kernel extends ConsoleKernel
         \EID\Console\Commands\DataAPI::class,
         \EID\Console\Commands\FacilityDhis2::class,
         \EID\Console\Commands\SampleRecordAugmentEngine::class,
-        \EID\Console\Commands\EngineVL2::class
+        \EID\Console\Commands\EngineVL2::class,
+        \EID\Console\Commands\ViralLoadJobs::class
 
         
     ];
