@@ -536,6 +536,7 @@ class LiveData extends Model
             $sql="select s.id,s.patient_unique_id,GROUP_CONCAT(pp.phone separator ',') contacts, 
               s.vl_sample_id,p.art_number, s.date_collected,s.date_received,s.created_at,
               GROUP_CONCAT(r.result_alphanumeric separator ':') result_alphanumeric,
+              DATE_FORMAT(r.test_date,'%Y-%m-%d') as test_date,
               rr.appendix rejection_reason, rr.tag rejection_category
 
               from vl_samples s 
@@ -555,7 +556,7 @@ class LiveData extends Model
 
            $sql= "select count(*) samples_records from (select s.id,s.patient_unique_id,GROUP_CONCAT(pp.phone separator ',') contacts, 
               s.vl_sample_id,p.art_number, s.date_collected,s.date_received,s.created_at,
-              GROUP_CONCAT(r.result_alphanumeric separator ':') result_alphanumeric,
+              GROUP_CONCAT(r.result_alphanumeric separator ':') result_alphanumeric,r.test_date,
               rr.appendix rejection_reason, rr.tag rejection_category
 
               from vl_samples s 

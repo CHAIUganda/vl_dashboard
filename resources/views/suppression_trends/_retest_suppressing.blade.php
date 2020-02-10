@@ -10,6 +10,7 @@
 
                                         <th >Date Arrived at CPHL</th>
                                         <th >Results</th>
+                                        <th> Date Tested</th>
                                         <th> Recommended Retest Date</th>
                                         <th>Contact</th>
   
@@ -30,6 +31,8 @@
 
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.date_received %></td>
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.alpha_numeric_result %></td>
+                                      <td ng-class="ng-cloak"><% retestSuppressingPatients_object.test_date %></td>
+
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.recommended_retest_date %></td>
                                       <td ng-class="ng-cloak"><% retestSuppressingPatients_object.phone_number %></td>
 
@@ -44,6 +47,6 @@
                             </table>
                              <br>
                         <br>
-                        <button id="exportRetestSuppressed" type="button" ng-csv="export_retest_suppressing"  class="btn btn-success" filename="restest_suppressing_results_<%current_timestamp%>.csv" csv-header="['PatientID','Facility','Art Number','SampleID','Date of Collection', 'Date of Arrival at CPHL','Results','Recommended Retest Date','Contact','Action','Comments']">Download CSV</button>
+                        <button id="exportRetestSuppressed" type="button" ng-csv="export_retest_suppressing"  class="btn btn-success" filename="restest_suppressing_results_<%current_timestamp%>.csv" csv-header="['PatientID','Facility','Art Number','SampleID','Date of Collection', 'Date of Arrival at CPHL','Results','Date Tested','Recommended Retest Date','Contact','Action','Comments']">Download CSV</button>
 
 </div>
