@@ -45,12 +45,6 @@ class SampleRecordAugmentEngine extends Command
         $this->comment("Engine has started at :: ".date('YmdHis'));
 
         
-        try{
-          $this->mongo->dashboard_new_backend->createIndex(array('vl_sample_id'=>1));
-        }catch(Exception $e){
-            $this->comment("index error: ".$e->message);
-        }
-            
         if($this->argument('year') != null){
 
           $year=intval($this->argument('year'));
@@ -114,15 +108,8 @@ class SampleRecordAugmentEngine extends Command
                     
                    $this->augmentSampleRecord(
                     $s->vl_sample_id,
-                    'art_number',$s->art_number,
-                    'phone_number',$s->contacts,
-                    'date_created',$s->created_at,
-                    'date_collected',$s->date_collected,
-                    'date_received',$s->date_received,
-                    'alpha_numeric_result',$this->processAlphaNumericResult($s->result_alphanumeric),
-                    'rejection_category',isset($s->rejection_category)?$this->_cleanRejectionCategory($s->rejection_category):'UNKNOWN',
-                    'rejection_reason',isset($s->rejection_reason)?$s->rejection_reason:'UNKNOWN'
-                  
+                    'test_date',isset($s->test_date)?$s->test_date: '0000-00-00 00:00:00'
+                    
                     );
 
                    $recordsUpdated ++;
@@ -152,14 +139,7 @@ class SampleRecordAugmentEngine extends Command
                     
                    $this->augmentSampleRecord(
                     $s->vl_sample_id,
-                    'art_number',$s->art_number,
-                    'phone_number',$s->contacts,
-                    'date_created',$s->created_at,
-                    'date_collected',$s->date_collected,
-                    'date_received',$s->date_received,
-                    'alpha_numeric_result',$this->processAlphaNumericResult($s->result_alphanumeric),
-                    'rejection_category',isset($s->rejection_category)?$this->_cleanRejectionCategory($s->rejection_category):'UNKNOWN',
-                    'rejection_reason',isset($s->rejection_reason)?$s->rejection_reason:'UNKNOWN'
+                    'test_date',isset($s->test_date)?$s->test_date: '0000-00-00 00:00:00'
                     );
                    
                    $recordsUpdated ++;
@@ -280,18 +260,10 @@ class SampleRecordAugmentEngine extends Command
               echo "Sample records for $turnAroundYear-$specificMonth updated \n";
       
     }
-    private function augmentSampleRecord($vlSampleId,$field,$value,$field2,$value2,$field3,$value3,$field4,$value4,
-      $field5,$value5,$field6,$value6,$field7,$value7,$field8,$value8){
+    private function augmentSampleRecord($vlSampleId,$field,$value){
         
         $addNewFieldArray = array('$set' => array(
-            $field=>$value,
-            $field2=>$value2,
-            $field3=>$value3,
-            $field4=>$value4,
-            $field5=>$value5,
-            $field6=>$value6,
-            $field7=>$value7,
-            $field8=>$value8
+            $field=>$value
             ));
         $result=$this->mongo->dashboard_new_backend->update(array('vl_sample_id' => $vlSampleId), $addNewFieldArray);
        // var_dump($result);

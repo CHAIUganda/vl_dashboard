@@ -808,6 +808,9 @@ ctrllers.DashController = function($scope,$http){
                     "facility_id":clean_results_object.facility_id,
                     "date_collected":isEmpty(clean_results_object.date_collected)?'null':clean_results_object.date_collected,
                     "date_received":isEmpty(clean_results_object.date_received)?'null':clean_results_object.date_received,
+
+                    "test_date":isEmpty(clean_results_object.test_date)?'null':clean_results_object.test_date,
+
                     "art_number":isEmpty(clean_results_object.art_number)?'null':clean_results_object.art_number,
                     "phone_number":isEmpty(clean_results_object.phone_number)?'null':clean_results_object.phone_number,
                     "year_month":clean_results_object.year_month
@@ -1029,6 +1032,7 @@ ctrllers.DashController = function($scope,$http){
                     "date_collected":clean_results_object.date_collected,
                     "recommended_retest_date":recommended_retest_date,
                     "date_received":clean_results_object.date_received,
+                    "test_date":isEmpty(clean_results_object.test_date)?'null':clean_results_object.test_date,
                     "art_number":clean_results_object.art_number,
                     "phone_number":clean_results_object.phone_number
                     
@@ -1068,6 +1072,7 @@ ctrllers.DashController = function($scope,$http){
                     "date_collected":clean_results_object.date_collected,
                     "recommended_retest_date":recommended_retest_date,
                     "date_received":clean_results_object.date_received,
+                    "test_date":isEmpty(clean_results_object.test_date)?'null':clean_results_object.test_date,
                     "art_number":clean_results_object.art_number,
                     "phone_number":clean_results_object.phone_number
                 };
@@ -1204,6 +1209,8 @@ ctrllers.DashController = function($scope,$http){
                 
 
                 alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                test_date:(typeof patientRecord.test_date === 'undefined')?'null':patientRecord.test_date,
+
                 recommended_retest_date:(typeof patientRecord.recommended_retest_date  === 'undefined')?'null':patientRecord.recommended_retest_date,
                 phone:(typeof patientRecord.phone_number === 'undefined')?'null':patientRecord.phone_number,
 
@@ -1247,6 +1254,8 @@ ctrllers.DashController = function($scope,$http){
                 
 
                 alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                test_date:(typeof patientRecord.test_date === 'undefined')?'null':patientRecord.test_date,
+
                 recommended_retest_date:(typeof patientRecord.recommended_retest_date === 'undefined')?'null':patientRecord.recommended_retest_date,
                 phone:(typeof patientRecord.phone_number === 'undefined')?'null':patientRecord.phone_number,
 
@@ -1316,10 +1325,11 @@ ctrllers.DashController = function($scope,$http){
                 art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
                 date_received:(typeof patientRecord.date_received === 'undefined')?'null':patientRecord.date_received,
                 alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                test_date:(typeof patientRecord.test_date === 'undefined')?'null':patientRecord.test_date,
+
                 suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status
 
             };
-
 
             valid_patient_results_array.push(valid_patient_result_object);
         }
@@ -1345,6 +1355,8 @@ ctrllers.DashController = function($scope,$http){
                 art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
                 date_received:(typeof patientRecord.date_received === 'undefined')?'null':patientRecord.date_received,
                 alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                test_date:(typeof patientRecord.test_date === 'undefined')?'null':patientRecord.test_date,
+
                 suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status
 
             };

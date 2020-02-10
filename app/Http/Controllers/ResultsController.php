@@ -285,7 +285,7 @@ class ResultsController extends Controller {
 		 );
 		
         $res=$this->mongo->dashboard_new_backend->find($query);
-        
+        Log::info($res);
 		return $res;
 		
 	}
