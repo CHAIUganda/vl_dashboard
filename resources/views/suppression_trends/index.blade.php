@@ -117,6 +117,7 @@
                               <th >Previous Results</th>
                               <th>Recent Date of Collection</th>
                               <th>Recent Date of Arrival at CPHL</th>
+                              <th>Date Tested</th>
                               <th >Recent Results</th>
                               <th >Contact</th>
                           </tr>
@@ -132,6 +133,8 @@
 
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_collection_date %></td>
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_receipt_date %></td>
+                              <td class="ng-cloak"><% previouslyNScurrentlyNS_object.test_date %></td>
+
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.recent_alpha_numeric_result %></td>
                               <td class="ng-cloak"><% previouslyNScurrentlyNS_object.phone_number %></td>
                           </tr>                        
@@ -153,6 +156,7 @@
                               <th >Previous Results</th>
                               <th>Recent Date of Collection</th>
                               <th>Recent Date of Arrival at CPHL</th>
+                              <th>Date Tested</th>
                               <th >Recent Results</th>
                               <th >Contact</th>
                           </tr>
@@ -171,6 +175,7 @@
 
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_collection_date %></td>
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_receipt_date %></td>
+                              <td class="ng-cloak"><% previouslyScurrentlyNS_object.test_date %></td>
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.recent_alpha_numeric_result %></td>
                               <td class="ng-cloak"><% previouslyScurrentlyNS_object.phone_number %></td>
                           </tr>                        
@@ -193,6 +198,7 @@
                                     <th >Facility</th>
                                     <th >ART Number</th>
                                     <th >Date of Arrival at CPHL</th>
+                                    <th> Date Tested</th>
                                     <th >Results </th>
                                     <th >Suppression Status </th>
                                     
@@ -208,6 +214,7 @@
                                   <td class="ng-cloak"><% labels.facilities_details[validPatientResults_object.facility_id].dhis2_name %></td>
                                   <td class="ng-cloak"><% validPatientResults_object.art_number %></td>
                                   <td class="ng-cloak"><% validPatientResults_object.date_received %></td>
+                                  <td class="ng-cloak"><% validPatientResults_object.test_date %></td>
                                   <td class="ng-cloak"><% validPatientResults_object.alpha_numeric_result %></td>
                                   <td class="ng-cloak"><% labels.suppression[validPatientResults_object.suppression_status] %></td>
                               </tr>                 
@@ -215,7 +222,7 @@
                         </table>
                         <br>
                         <br>
-                        <button id="exportValidPatientResults" type="button" ng-csv="export_valid_patient_results"  class="btn btn-success" filename="valid_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Suppression Status']">Download CSV</button>
+                        <button id="exportValidPatientResults" type="button" ng-csv="export_valid_patient_results"  class="btn btn-success" filename="valid_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Date Tested','Suppression Status']">Download CSV</button>
 
                       </div>
                </div><!--end v-patients tab-pane-->
@@ -229,6 +236,7 @@
                                     <th >Facility</th>
                                     <th >ART Number</th>
                                     <th >Date of Arrival at CPHL</th>
+                                    <th>Date Tested</th>
                                     <th >Results </th>
                                     <th >Suppression Status </th>
                                     
@@ -242,6 +250,7 @@
                                   <td class="ng-cloak"><% labels.facilities_details[allPatientsResults_object.facility_id].dhis2_name %></td>
                                   <td class="ng-cloak"><% allPatientsResults_object.art_number %></td>
                                   <td class="ng-cloak"><% allPatientsResults_object.date_received %></td>
+                                  <td class="ng-cloak"><% allPatientsResults_object.test_date %></td>
                                   <td class="ng-cloak"><% allPatientsResults_object.alpha_numeric_result %></td>
                                   <td class="ng-cloak"><% labels.suppression[allPatientsResults_object.suppression_status] %></td>
                               
@@ -250,7 +259,7 @@
                         </table>
                          <br>
                         <br>
-                        <button id="exportAllPatientResults" type="button" ng-csv="export_all_patient_results"  class="btn btn-success" filename="all_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Suppression Status']">Download CSV</button>
+                        <button id="exportAllPatientResults" type="button" ng-csv="export_all_patient_results"  class="btn btn-success" filename="all_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Date Tested','Suppression Status']">Download CSV</button>
 
                       </div>
                </div><!--end a-patients tab-pane-->

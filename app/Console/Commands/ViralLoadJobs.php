@@ -17,7 +17,8 @@ class ViralLoadJobs extends Command{
      *
      * @var string
      */
-    protected $signature = 'jobs:run';
+    protected $signature = 'jobs:run {--F|locations} {--pvls} 
+    {--from_date= :in the format yyyy-MM-DD} {--to_date= :in the format yyyy-MM-DD }';
 
     /**
      * The console command description.
@@ -47,17 +48,29 @@ class ViralLoadJobs extends Command{
 
     public function handle() {
 
-        //Districts
-        //Facilities
-        //Hubs
+        $locations_flag = $this->option('locations');
+        if($locations_flag == 'locations'){
+            $this->_loadFacilitlyLocations();
+        }
 
+        $pvls_flag = $this->option('pvls');
+        $from_date_value = $this->option('from_date');
+        $to_date_value = $this->option('to_date');
+
+        if($pvls_flag == 'pvls'){
+            $this->_generatePvlsReport($from_date_value,$to_date_value);
+        }
+            
+    }
+
+
+    private function _loadFacilitlyLocations(){
         echo "\n ....started loading locations .... \n";
         $this->_loadDistricts();
         $this->_loadHubs();
         
-    	$this->_loadFacilities();
+        $this->_loadFacilities();
         echo "\n ..... finished loading locations in Mongo ....\n";
-            
     }
     private function _loadDistricts(){
         $this->mongo->districts->drop();
@@ -86,5 +99,8 @@ class ViralLoadJobs extends Command{
         }
     }
 
+    private function _generatePvlsReport($from_date_parameter,$to_date_parameter){
+        $this->comment('generating PVLS report');
+    }
 }
 
