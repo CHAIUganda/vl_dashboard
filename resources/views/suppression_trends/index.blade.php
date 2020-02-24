@@ -222,7 +222,8 @@
                         </table>
                         <br>
                         <br>
-                        <button id="exportValidPatientResults" type="button" ng-csv="export_valid_patient_results"  class="btn btn-success" filename="valid_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Date Tested','Suppression Status']">Download CSV</button>
+                        <button id="exportValidPatientResults" type="button" ng-csv="export_valid_patient_results"  class="btn btn-success" filename="valid_patient_results_<%current_timestamp%>.csv" csv-header="['patient_id','vl_sample_id','facility','dhis2_name','dhis2_uid','art_number',
+                          'date_collected', 'date_of_arrival_at_cphl','result_numeric','result_alphanumeric','date_tested','suppression_status']">Download CSV</button>
 
                       </div>
                </div><!--end v-patients tab-pane-->
