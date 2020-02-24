@@ -186,6 +186,11 @@ class LiveData extends Model
       return $res=\DB::connection('direct_db')->select($sql);
       //return LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID','dhis2_uid','district_uid')->from('vl_facilities')->get();
     }
+    public static function getPvlsPepfarLocations(){
+      
+      $sql = "SELECT * FROM pvls_pepfar_locations";
+      return $res=\DB::connection('direct_db')->select($sql);
+    }
     public static function getFacilitiesInAnArrayForm(){
       $result_set = LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID','dhis2_uid','district_uid')->from('vl_facilities')->get();
       $ret=[];
