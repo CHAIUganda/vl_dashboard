@@ -1321,10 +1321,17 @@ ctrllers.DashController = function($scope,$http){
                 patient_unique_id:patientRecord.patient_unique_id,
                 vl_sample_id:patientRecord.vl_sample_id,
                 facility: (isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
-
+                
+                dhis2_name: (isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
+                dhis2_uid:(isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_uid,
+                
                 art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
+                date_collected:isEmpty(patientRecord.date_collected)?'null':patientRecord.date_collected,
+
                 date_received:(typeof patientRecord.date_received === 'undefined')?'null':patientRecord.date_received,
-                alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
+                
+                result_numeric: (typeof patientRecord.alpha_numeric_result === 'undefined')?'null':getResult(patientRecord.alpha_numeric_result),
+                result_alphanumeric:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
                 test_date:(typeof patientRecord.test_date === 'undefined')?'null':patientRecord.test_date,
 
                 suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status
@@ -1392,10 +1399,10 @@ ctrllers.DashController = function($scope,$http){
             if(result == "" || result == null)
                 return newResult;
             var dummy = result.replace(/\s/g, '');
-            if(dummy=="Notdetected"){
+            if(dummy=="Notdetected" || dummy=="NotDetected"){
                 newResult = 20.0;
             }
-            else if(dummy=="Targetnotdetected"){
+            else if(dummy=="Targetnotdetected" || dummy=="TargetNotDetected"){
                 newResult = 20.0;
             }else if(dummy.startsWith("-1")){
                         newResult = -1;

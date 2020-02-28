@@ -101,6 +101,22 @@ class ViralLoadJobs extends Command{
 
     private function _generatePvlsReport($from_date_parameter,$to_date_parameter){
         $this->comment('generating PVLS report');
+
+        //generate CPHL names.
+        $pepfar_pvls_locations = LiveData::getPvlsPepfarLocations();
+
+        //indication
+
+        $array_pvls_map = array();
+
+        echo ".... generating csv...\n";
+        $fp = fopen('/tmp/pvls_report'.date('YmdHis').'.csv', 'w');
+        foreach ($pepfar_pvls_locations as $fields) {
+             fputcsv($fp, $fields);
+        }
+
+        
+        fclose($fp);
     }
 }
 
