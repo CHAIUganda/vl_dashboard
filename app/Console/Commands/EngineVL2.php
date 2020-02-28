@@ -102,7 +102,9 @@ class EngineVL2 extends Command
                 a2.tag AS treatment_line,
                 a3.appendix rejection_reason,
                 a3.tag AS rejection_category,
-                r.suppressed,GROUP_CONCAT(r.result_alphanumeric separator ':') result_alphanumeric
+                r.suppressed,GROUP_CONCAT(r.result_alphanumeric separator ':') result_alphanumeric,
+                DATE_FORMAT(r.test_date,'%Y-%m-%d') as test_date
+                
                 FROM vl_samples s 
                 LEFT JOIN vl_patients p ON s.patient_id=p.id 
                 LEFT JOIN vl_patient_phones pp on pp.patient_id = p.id 
@@ -183,6 +185,9 @@ class EngineVL2 extends Command
         $data["alpha_numeric_result"]=$this->processAlphaNumericResult($sample->result_alphanumeric);
         $data["rejection_reason"] = isset($sample->rejection_reason)?$sample->rejection_reason:'UNKNOWN';
         $data["rejection_category"] = isset($sample->rejection_category)?$this->_cleanRejectionCategory($sample->rejection_category):'UNKNOWN';
+        
+        $data["test_date"]=!empty($sample->test_date)?$sample->test_date: '0000-00-00 00:00:00';
+
         return $data;
     }
 
