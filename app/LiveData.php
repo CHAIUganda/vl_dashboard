@@ -191,10 +191,245 @@ class LiveData extends Model
       $sql = "SELECT * FROM pvls_pepfar_locations";
       return $res=\DB::connection('direct_db')->select($sql);
     }
+    public static function getIndividualsWithVLresult($from_date,$to_date){
+
+      $sql = "SELECT  count( DISTINCT s.patient_id) as individuals, s.facility_id,f.facility,
+      f.dhis2_uid FROM vl_samples s inner join vl_results r on s.id =r.sample_id left join 
+      backend_facilities f on f.id = s.facility_id where s.created_at 
+      BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59' group by s.facility_id";
+
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+
+    }
+    public static function getIndividualsWithVLsuppression($from_date,$to_date){
+
+      $sql = "SELECT  count( DISTINCT s.patient_id) as individuals, s.facility_id,f.facility,
+      f.dhis2_uid FROM vl_samples s inner join vl_results r on s.id =r.sample_id left join 
+      backend_facilities f on f.id = s.facility_id where r.suppressed=1 AND s.created_at 
+      BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59' group by s.facility_id";
+
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+
+    }
+
+    public static function getRoutineIndication($from_date,$to_date){
+      $sql="select count(DISTINCT table_1.patient_id) as individuals,table_1.facility_id,table_1.facility,table_1.dhis2_uid from 
+          (
+            (SELECT s.patient_id,s.facility_id,f.facility,f.dhis2_uid
+             FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+            left join backend_facilities f on f.id = s.facility_id
+            where  s.treatment_indication_id in (85,84 )
+             AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59')  
+
+          union 
+
+            (SELECT s.patient_id,s.facility_id,f.facility,f.dhis2_uid
+             FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+            left join backend_facilities f on f.id = s.facility_id
+            where  s.treatment_indication_id is null
+             AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59') 
+          ) table_1
+          group by table_1.facility_id";
+
+        $result_set = \DB::connection('direct_db')->select($sql);
+        $ret=[];
+        foreach ($result_set as $key => $row) {
+          $ret[$row->dhis2_uid] = array(
+            'dhis2_uid'=>$row->dhis2_uid,
+            'facility_id'=>$row->facility_id,
+            'facility'=>$row->facility,
+            'individuals'=>$row->individuals
+            );
+        }
+        return $ret;
+    }
+    public static function getTargetedIndication($from_date,$to_date){
+      $sql="SELECT count(DISTINCT s.patient_id) as individuals,s.facility_id,f.facility,f.dhis2_uid
+               FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+              left join backend_facilities f on f.id = s.facility_id
+              where  s.treatment_indication_id in (86,87,88 )
+               AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59' 
+
+            group by facility_id";
+
+              $result_set = \DB::connection('direct_db')->select($sql);
+              $ret=[];
+              foreach ($result_set as $key => $row) {
+                $ret[$row->dhis2_uid] = array(
+                  'dhis2_uid'=>$row->dhis2_uid,
+                  'facility_id'=>$row->facility_id,
+                  'facility'=>$row->facility,
+                  'individuals'=>$row->individuals
+                  );
+              }
+        return $ret;
+    }
+
+    public static function getPregnantRoutine($from_date,$to_date){
+        $sql="SELECT count(DISTINCT table_1.patient_id) as individuals,table_1.facility_id,table_1.facility,table_1.dhis2_uid from 
+          (
+            (SELECT s.patient_id,s.facility_id,f.facility,f.dhis2_uid
+             FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+            left join backend_facilities f on f.id = s.facility_id
+            where  s.treatment_indication_id in (85,84 ) AND s.pregnant like 'Y' 
+             AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59')  
+
+          union 
+
+            (SELECT s.patient_id,s.facility_id,f.facility,f.dhis2_uid
+             FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+            left join backend_facilities f on f.id = s.facility_id
+            where  s.treatment_indication_id is null AND s.pregnant like 'Y' 
+             AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59') 
+          ) table_1
+          group by table_1.facility_id";
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+    }
+    
+    public static function getPregnantTargeted($from_date,$to_date){
+      $sql="SELECT count(DISTINCT s.patient_id) as individuals,s.facility_id,f.facility,f.dhis2_uid
+       FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+      left join backend_facilities f on f.id = s.facility_id
+      where  s.treatment_indication_id in (86,87,88 ) AND s.pregnant like 'Y'
+       AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59' 
+      group by facility_id";
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+    }
+
+    public static function getBreastFeedingRoutine($from_date,$to_date){
+      $sql="SELECT count(DISTINCT table_1.patient_id) as individuals,table_1.facility_id,table_1.facility,table_1.dhis2_uid from 
+          (
+            (SELECT s.patient_id,s.facility_id,f.facility,f.dhis2_uid
+             FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+            left join backend_facilities f on f.id = s.facility_id
+            where  s.treatment_indication_id in (85,84 ) AND s.breast_feeding like 'Y' 
+             AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59')  
+
+          union 
+
+            (SELECT s.patient_id,s.facility_id,f.facility,f.dhis2_uid
+             FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+            left join backend_facilities f on f.id = s.facility_id
+            where  s.treatment_indication_id is null AND s.breast_feeding like 'Y' 
+             AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59') 
+          ) table_1
+          group by table_1.facility_id";
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+    }
+    public static function getBreastFeedingTargeted($from_date,$to_date){
+      $sql="SELECT count(DISTINCT s.patient_id) as individuals,s.facility_id,f.facility,f.dhis2_uid
+       FROM vl_samples s inner join vl_results r on s.id =r.sample_id 
+      left join backend_facilities f on f.id = s.facility_id
+      where  s.treatment_indication_id in (86,87,88 ) AND s.breast_feeding like 'Y'
+       AND s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59' 
+      group by facility_id";
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+    }
+   public static function getWhereClause($from_age,$to_age){
+      $where_clause = "";
+      
+      if($from_age > 0 && $to_age > 0)
+      {
+        $where_clause = "where age BETWEEN ".$from_age." and ".$to_age;
+      }elseif ($from_age > 0 && $to_age == NULL) {
+        $where_clause = "where age < ".$from_age;
+      }elseif ($from_age == NULL && $to_age > 0) {
+        $where_clause = "where age >= ".$to_age;
+      }
+     
+      return $where_clause;
+    }
+    public static function getRoutineSuppressedIndividuals($from_date,$to_date,$sex,$from_age,$to_age){
+      \Log::info("..... started where_clause....");
+      $where_clause = LiveData::getWhereClause($from_age,$to_age);
+      $sql="select facility_id,facility,dhis2_uid,count(patient_id) as individuals from 
+        (SELECT DISTINCT s.patient_id ,s.facility_id,f.facility,f.dhis2_uid,p.dob,
+          TIMESTAMPDIFF(YEAR, p.dob, CURDATE()) as age
+
+         FROM vl_samples s inner join vl_results r on s.id = r.sample_id 
+         left join vl_patients p on p.id=s.patient_id 
+         left join backend_facilities f on f.id = s.facility_id
+         where s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59'  
+         and r.suppressed = 1 and p.gender like '".$sex."' AND s.treatment_indication_id in (85,84 )) as indicator ".$where_clause." 
+         group by facility_id";
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+    }
+
+    
     public static function getFacilitiesInAnArrayForm(){
       $result_set = LiveData::select('id','facility','dhis2_name','ipID','hubID','districtID','dhis2_uid','district_uid')->from('vl_facilities')->get();
       $ret=[];
-      foreach ($result_set as $key => $row) {
+        foreach ($result_set as $key => $row) {
      
        $ret[$row->id] = array(
                         'id' => $row->id,
@@ -670,6 +905,7 @@ class LiveData extends Model
       return $results;
     }
 
+
     private static function ageGroupCase(){
       //31536000 is the number of seconds in a year of 365 days
        $age=" ROUND((UNIX_TIMESTAMP(s.created)-UNIX_TIMESTAMP(dateOfBirth))/31536000) ";
@@ -713,6 +949,7 @@ class LiveData extends Model
        $ret.=" END";
        return $ret;
     }
+
 
     public static function regimenTimeInArrayForm(){
 
