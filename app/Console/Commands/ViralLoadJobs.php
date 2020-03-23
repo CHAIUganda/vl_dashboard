@@ -17,8 +17,9 @@ class ViralLoadJobs extends Command{
      *
      * @var string
      */
-    protected $signature = 'jobs:run {--F|locations} {--pvls} 
-    {--from_date= :in the format yyyy-MM-DD} {--to_date= :in the format yyyy-MM-DD }';
+    protected $signature = 'jobs:run {--L|locations} {--pvls} 
+    {--from_date= :in the format yyyy-MM-DD} {--to_date= :in the format yyyy-MM-DD } 
+    {--ih} {--regimens} {--IPs}';
 
     /**
      * The console command description.
@@ -60,10 +61,47 @@ class ViralLoadJobs extends Command{
         if($pvls_flag == 'pvls'){
             $this->_generatePvlsReport($from_date_value,$to_date_value);
         }
+
+        $intra_health_flag = $this->option('ih');
+        if($intra_health_flag == 'ih'){
+            $this->_intraHealth();
+        }
+
+        $ips_flag = $this->option('IPs');
+        if($ips_flag == 'IPs'){
+            $this->_loadIPs();
+        }
+
+        $regimens_flag = $this->option('regimens');
+        if($regimens_flag == 'regimens'){
+            $this->_loadRegimens();
+        }
             
     }
 
 
+    private function _intraHealth(){
+
+        $file = fopen("~/data/vl/VLMerge.csv", "r");
+        $data = array();    
+        while ( !feof($file)){
+
+            $array_instance = fgetcsv($file);
+            //print_r($array_instance);
+                $district['id']=$array_instance[0];
+                $district['district_name']=$array_instance[1];
+                $district['hub_name']=$array_instance[2];
+                $district['dhis2_name']=$array_instance[3];
+                $district['dhis2_uid']=$array_instance[4];
+                
+                array_push($data, $district); 
+            
+        }
+
+        $sql = "select id,facility,district_id,hub_id,dhis2_name,dhis2_uid from backend_facilities";
+      return $res=\DB::connection('direct_db')->select($sql);
+
+    }
     private function _loadFacilitlyLocations(){
         echo "\n ....started loading locations .... \n";
         $this->_loadDistricts();
@@ -96,6 +134,24 @@ class ViralLoadJobs extends Command{
             $data=['id'=>$row->id,'name'=>$row->facility,'dhis2_name'=>$row->dhis2_name,'hub_id'=>$row->hub_id,
             'district_id'=>$row->district_id, 'dhis2_uid'=>$row->dhis2_uid];
             $this->mongo->facilities->insert($data);
+        }
+    }
+
+    private function _loadRegimens(){
+        $this->mongo->regimens->drop();
+        $res = LiveData::getRegimens();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->appendix];
+            $this->mongo->regimens->insert($data);
+        }
+    }
+
+    private function _loadIPs(){
+        $this->mongo->ips->drop();
+        $res=LiveData::getIPs();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->ip];
+            $this->mongo->ips->insert($data);
         }
     }
 
@@ -162,6 +218,82 @@ class ViralLoadJobs extends Command{
         $routine_suppressed_f_from_50_plus = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
             'F',50,NULL);
 
+        $routine_suppressed_m_below_1 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',1,NULL);
+        $routine_suppressed_m_from_1_to_4 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',1,4);
+        $routine_suppressed_m_from_5_to_9 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',5,9);
+        $routine_suppressed_m_from_10_to_14 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',10,14);
+        $routine_suppressed_m_from_15_to_19 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',15,19);
+        $routine_suppressed_m_from_20_to_24 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',20,24);
+        $routine_suppressed_m_from_25_to_29 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',25,29);
+        $routine_suppressed_m_from_30_to_34 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',30,34);
+        $routine_suppressed_m_from_35_to_39 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',35,39);
+        $routine_suppressed_m_from_40_to_44 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',40,44);
+        $routine_suppressed_m_from_45_to_49 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',45,49);
+        $routine_suppressed_m_from_50_plus = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',50,NULL);
+
+        $targeted_suppressed_f_below_1 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',1,NULL);
+        $targeted_suppressed_f_from_1_to_4 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',1,4);
+        $targeted_suppressed_f_from_5_to_9 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',5,9);
+        $targeted_suppressed_f_from_10_to_14 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',10,14);
+        $targeted_suppressed_f_from_15_to_19 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',15,19);
+        $targeted_suppressed_f_from_20_to_24 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',20,24);
+        $targeted_suppressed_f_from_25_to_29 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',25,29);
+        $targeted_suppressed_f_from_30_to_34 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',30,34);
+        $targeted_suppressed_f_from_35_to_39 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',35,39);
+        $targeted_suppressed_f_from_40_to_44 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',40,44);
+        $targeted_suppressed_f_from_45_to_49 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',45,49);
+        $targeted_suppressed_f_from_50_plus = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'F',50,NULL);
+
+        $targeted_suppressed_m_below_1 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',1,NULL);
+        $targeted_suppressed_m_from_1_to_4 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',1,4);
+        $targeted_suppressed_m_from_5_to_9 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',5,9);
+        $targeted_suppressed_m_from_10_to_14 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',10,14);
+        $targeted_suppressed_m_from_15_to_19 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',15,19);
+        $targeted_suppressed_m_from_20_to_24 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',20,24);
+        $targeted_suppressed_m_from_25_to_29 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',25,29);
+        $targeted_suppressed_m_from_30_to_34 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',30,34);
+        $targeted_suppressed_m_from_35_to_39 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',35,39);
+        $targeted_suppressed_m_from_40_to_44 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',40,44);
+        $targeted_suppressed_m_from_45_to_49 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',45,49);
+        $targeted_suppressed_m_from_50_plus = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+            'M',50,NULL);
+
+
 
 
         $final_pvls_report_array = array();
@@ -174,7 +306,22 @@ class ViralLoadJobs extends Command{
             'routine_suppressed_f_below_1','routine_suppressed_f_from_1_to_4','routine_suppressed_f_from_5_to_9',
             'routine_suppressed_f_from_10_to_14','routine_suppressed_f_from_15_to_19','routine_suppressed_f_from_20_to_24',
             'routine_suppressed_f_from_25_to_29','routine_suppressed_f_from_30_to_34','routine_suppressed_f_from_35_to_39',
-            'routine_suppressed_f_from_40_to_44','routine_suppressed_f_from_45_to_49','routine_suppressed_f_from_50_plus'
+            'routine_suppressed_f_from_40_to_44','routine_suppressed_f_from_45_to_49','routine_suppressed_f_from_50_plus',
+
+            'routine_suppressed_m_below_1','routine_suppressed_m_from_1_to_4','routine_suppressed_m_from_5_to_9',
+            'routine_suppressed_m_from_10_to_14','routine_suppressed_m_from_15_to_19','routine_suppressed_m_from_20_to_24',
+            'routine_suppressed_m_from_25_to_29','routine_suppressed_m_from_30_to_34','routine_suppressed_m_from_35_to_39',
+            'routine_suppressed_m_from_40_to_44','routine_suppressed_m_from_45_to_49','routine_suppressed_m_from_50_plus',
+
+            'targeted_suppressed_f_below_1','targeted_suppressed_f_from_1_to_4','targeted_suppressed_f_from_5_to_9',
+            'targeted_suppressed_f_from_10_to_14','targeted_suppressed_f_from_15_to_19','targeted_suppressed_f_from_20_to_24',
+            'targeted_suppressed_f_from_25_to_29','targeted_suppressed_f_from_30_to_34','targeted_suppressed_f_from_35_to_39',
+            'targeted_suppressed_f_from_40_to_44','targeted_suppressed_f_from_45_to_49','targeted_suppressed_f_from_50_plus',
+
+            'targeted_suppressed_m_below_1','targeted_suppressed_m_from_1_to_4','targeted_suppressed_m_from_5_to_9',
+            'targeted_suppressed_m_from_10_to_14','targeted_suppressed_m_from_15_to_19','targeted_suppressed_m_from_20_to_24',
+            'targeted_suppressed_m_from_25_to_29','targeted_suppressed_m_from_30_to_34','targeted_suppressed_m_from_35_to_39',
+            'targeted_suppressed_m_from_40_to_44','targeted_suppressed_m_from_45_to_49','targeted_suppressed_m_from_50_plus'
             ]);
         foreach ($pepfar_pvls_locations as $key => $row) {
 
@@ -211,13 +358,54 @@ class ViralLoadJobs extends Command{
                 'routine_suppressed_f_from_35_to_39' =>$this->getNumbers($routine_suppressed_f_from_35_to_39,$row->dhis2_hf_id),
                 'routine_suppressed_f_from_40_to_44' =>$this->getNumbers($routine_suppressed_f_from_40_to_44,$row->dhis2_hf_id),
                 'routine_suppressed_f_from_45_to_49' =>$this->getNumbers($routine_suppressed_f_from_45_to_49,$row->dhis2_hf_id),
-                'routine_suppressed_f_from_50_plus' =>$this->getNumbers($routine_suppressed_f_from_50_plus,$row->dhis2_hf_id)
+                'routine_suppressed_f_from_50_plus' =>$this->getNumbers($routine_suppressed_f_from_50_plus,$row->dhis2_hf_id),
+
+                'routine_suppressed_m_below_1' =>$this->getNumbers($routine_suppressed_m_below_1,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_1_to_4' =>$this->getNumbers($routine_suppressed_m_from_1_to_4,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_5_to_9' =>$this->getNumbers($routine_suppressed_m_from_5_to_9,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_10_to_14' =>$this->getNumbers($routine_suppressed_m_from_10_to_14,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_15_to_19' =>$this->getNumbers($routine_suppressed_m_from_15_to_19,$row->dhis2_hf_id),
+
+                'routine_suppressed_m_from_20_to_24' =>$this->getNumbers($routine_suppressed_m_from_20_to_24,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_25_to_29' =>$this->getNumbers($routine_suppressed_m_from_25_to_29,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_30_to_34' =>$this->getNumbers($routine_suppressed_m_from_30_to_34,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_35_to_39' =>$this->getNumbers($routine_suppressed_m_from_35_to_39,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_40_to_44' =>$this->getNumbers($routine_suppressed_m_from_40_to_44,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_45_to_49' =>$this->getNumbers($routine_suppressed_m_from_45_to_49,$row->dhis2_hf_id),
+                'routine_suppressed_m_from_50_plus' =>$this->getNumbers($routine_suppressed_m_from_50_plus,$row->dhis2_hf_id),
+
+                'targeted_suppressed_f_below_1' =>$this->getNumbers($targeted_suppressed_f_below_1,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_1_to_4' =>$this->getNumbers($targeted_suppressed_f_from_1_to_4,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_5_to_9' =>$this->getNumbers($targeted_suppressed_f_from_5_to_9,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_10_to_14' =>$this->getNumbers($targeted_suppressed_f_from_10_to_14,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_15_to_19' =>$this->getNumbers($targeted_suppressed_f_from_15_to_19,$row->dhis2_hf_id),
+
+                'targeted_suppressed_f_from_20_to_24' =>$this->getNumbers($targeted_suppressed_f_from_20_to_24,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_25_to_29' =>$this->getNumbers($targeted_suppressed_f_from_25_to_29,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_30_to_34' =>$this->getNumbers($targeted_suppressed_f_from_30_to_34,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_35_to_39' =>$this->getNumbers($targeted_suppressed_f_from_35_to_39,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_40_to_44' =>$this->getNumbers($targeted_suppressed_f_from_40_to_44,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_45_to_49' =>$this->getNumbers($targeted_suppressed_f_from_45_to_49,$row->dhis2_hf_id),
+                'targeted_suppressed_f_from_50_plus' =>$this->getNumbers($targeted_suppressed_f_from_50_plus,$row->dhis2_hf_id),
+
+                'targeted_suppressed_m_below_1' =>$this->getNumbers($targeted_suppressed_m_below_1,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_1_to_4' =>$this->getNumbers($targeted_suppressed_m_from_1_to_4,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_5_to_9' =>$this->getNumbers($targeted_suppressed_m_from_5_to_9,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_10_to_14' =>$this->getNumbers($targeted_suppressed_m_from_10_to_14,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_15_to_19' =>$this->getNumbers($targeted_suppressed_m_from_15_to_19,$row->dhis2_hf_id),
+
+                'targeted_suppressed_m_from_20_to_24' =>$this->getNumbers($targeted_suppressed_m_from_20_to_24,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_25_to_29' =>$this->getNumbers($targeted_suppressed_m_from_25_to_29,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_30_to_34' =>$this->getNumbers($targeted_suppressed_m_from_30_to_34,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_35_to_39' =>$this->getNumbers($targeted_suppressed_m_from_35_to_39,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_40_to_44' =>$this->getNumbers($targeted_suppressed_m_from_40_to_44,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_45_to_49' =>$this->getNumbers($targeted_suppressed_m_from_45_to_49,$row->dhis2_hf_id),
+                'targeted_suppressed_m_from_50_plus' =>$this->getNumbers($targeted_suppressed_m_from_50_plus,$row->dhis2_hf_id),
                 );
 
             array_push($final_pvls_report_array, $facility_pvls_report);
         }
 
-INSERT INTO permissions (name, display_name, created_at, updated_at) VALUES ('collect_sample', 'Can collect test sample', '2019-01-14 09:46:00', '2019-01-14 09:46:00');
         
 
         echo ".... generating csv...\n";

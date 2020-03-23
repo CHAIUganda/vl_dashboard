@@ -179,14 +179,10 @@ ctrllers.DashController = function($scope,$http){
             $scope.districts2.push({"id":obj.id,"name":obj.name});
         }
 
+       
+
         for(var i in data.hubs){
             var obj = data.hubs[i];
-            hubs_json[obj.id] = obj.name;
-            $scope.hubs2.push({"id":obj.id,"name":obj.name});
-        }
-
-        for(var i in data.new_hubs){
-            var obj = data.new_hubs[i];
             
             $scope.hubs.push({"id":obj.id,"name":obj.hub});
         }
