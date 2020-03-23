@@ -68,7 +68,9 @@ class EngineVL2 extends Command
         $this->comment($this->cond);
         //print_r($this->_lastNMonths());
 
+        
         $this->_load();
+        
         //$this->comment($this->_removeSamples());
         $this->comment("Engine has stopped at :: ".date('YmdHis'));
 
@@ -226,6 +228,49 @@ class EngineVL2 extends Command
         foreach($res AS $row){
             $data=['id'=>$row->id,'name'=>$row->hub];
             $this->mongo->hubs->insert($data);
+        }
+    }
+
+
+    private function _loadFacilities(){
+        $this->mongo->facilities->drop();
+        $res=LiveData::getFacilities();
+        foreach($res AS $row){
+            //$facility_name = $row->dhis2_name!=null ? $row->dhis2_name:$row->facility;
+            $data=['id'=>$row->id,'name'=>$row->facility,'dhis2_name'=>$row->dhis2_name,'hub_id'=>$row->hubID,
+            'ip_id'=>$row->ipID,'district_id'=>$row->districtID, 'dhis2_uid'=>$row->dhis2_uid,
+            'district_uid'=>$row->district_uid];
+            $this->mongo->facilities->insert($data);
+        }
+    }
+
+    private function _loadIPs(){
+        $this->mongo->ips->drop();
+        $res=LiveData::getIPs();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->ip];
+            $this->mongo->ips->insert($data);
+        }
+    }
+
+    private function _loadDistricts(){
+        $this->mongo->districts->drop();
+        $res=LiveData::getDistricts();
+        foreach($res AS $row){
+
+            $district_name = $row->dhis2_name!=null ? $row->dhis2_name:$row->district;
+            
+            $data=['id'=>$row->id,'name'=>$district_name];
+            $this->mongo->districts->insert($data);
+        }
+    }
+
+    private function _loadRegimens(){
+        $this->mongo->regimens->drop();
+        $res = LiveData::getRegimens();
+        foreach($res AS $row){
+            $data=['id'=>$row->id,'name'=>$row->appendix];
+            $this->mongo->regimens->insert($data);
         }
     }
 
