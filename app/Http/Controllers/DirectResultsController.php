@@ -372,7 +372,21 @@ class DirectResultsController extends Controller {
     	return $ret;
     }
 
+	public function saveManualDispatch(){
+		$samples = $this->db->unprepared("SELECT id FROM `vl_rejected_samples_release` WHERE reject_released_by_id = 1");
+		$now = date("Y-m-d H:i:s");
+		$by = addslashes('Admin');
+		$dispatch_type =  'D';
+		$s_str = implode(",", $samples);
+		$this->db->unprepared("DELETE FROM vl_results_dispatch WHERE sample_id IN ($s_str)");
+		$sql = "INSERT INTO vl_results_dispatch (dispatch_type, dispatch_date, dispatched_by, sample_id) VALUES";
+		foreach($samples AS $sample_id){
+			$sql .= "('$dispatch_type', '$now', '$by', $sample_id),";
+		}
+		$sql = trim($sql, ',');
+		$this->db->unprepared($sql);
 
+	}
 
 
 }
