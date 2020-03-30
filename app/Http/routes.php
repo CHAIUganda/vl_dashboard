@@ -136,3 +136,4 @@ Route::group(['middleware'=>'oauth'], function(){
 	Route::get('/api/hivdr/{year}/{month}/', ['uses' => 'APIResultsController@getHivDrugResistanceTests']);
 	Route::post('/api/hivdr/', ['uses' => 'APIResultsController@receiveHivDrugResistanceTests']);
 	});
+Route::get("/manual_dispatch","DirectResultsController@saveManualDispatch");
