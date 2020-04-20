@@ -211,6 +211,57 @@ class LiveData extends Model
       return $ret;
 
     }
+
+    public static function getRoutineIndividualsWithVLresults($from_date,$to_date,$sex,$from_age,$to_age){
+
+      $where_clause = LiveData::getWhereClause($from_age,$to_age);
+      $sql="select facility_id,facility,dhis2_uid,count(patient_id) as individuals from 
+        (SELECT DISTINCT s.patient_id ,s.facility_id,f.facility,f.dhis2_uid,p.dob,
+          TIMESTAMPDIFF(YEAR, p.dob, CURDATE()) as age
+
+         FROM vl_samples s inner join vl_results r on s.id = r.sample_id 
+         left join vl_patients p on p.id=s.patient_id 
+         left join backend_facilities f on f.id = s.facility_id
+         where s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59' 
+         and p.gender like '".$sex."' AND s.treatment_indication_id in (85,84 )) as indicator ".$where_clause." 
+         group by facility_id";
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+    }
+    public static function getTargetedIndividualsWithVLresults($from_date,$to_date,$sex,$from_age,$to_age){
+
+      $where_clause = LiveData::getWhereClause($from_age,$to_age);
+      $sql="select facility_id,facility,dhis2_uid,count(patient_id) as individuals from 
+        (SELECT DISTINCT s.patient_id ,s.facility_id,f.facility,f.dhis2_uid,p.dob,
+          TIMESTAMPDIFF(YEAR, p.dob, CURDATE()) as age
+
+         FROM vl_samples s inner join vl_results r on s.id = r.sample_id 
+         left join vl_patients p on p.id=s.patient_id 
+         left join backend_facilities f on f.id = s.facility_id
+         where s.created_at BETWEEN '".$from_date." 00:00:00' AND '".$to_date." 23:59:59' 
+         and p.gender like '".$sex."' AND s.treatment_indication_id in (86,87,88)) as indicator ".$where_clause." 
+         group by facility_id";
+      $result_set = \DB::connection('direct_db')->select($sql);
+      $ret=[];
+      foreach ($result_set as $key => $row) {
+        $ret[$row->dhis2_uid] = array(
+          'dhis2_uid'=>$row->dhis2_uid,
+          'facility_id'=>$row->facility_id,
+          'facility'=>$row->facility,
+          'individuals'=>$row->individuals
+          );
+      }
+      return $ret;
+    }
     public static function getIndividualsWithVLsuppression($from_date,$to_date){
 
       $sql = "SELECT  count( DISTINCT s.patient_id) as individuals, s.facility_id,f.facility,
