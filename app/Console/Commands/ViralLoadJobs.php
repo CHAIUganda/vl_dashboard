@@ -59,7 +59,9 @@ class ViralLoadJobs extends Command{
         $to_date_value = $this->option('to_date');
 
         if($pvls_flag == 'pvls'){
+            $this->comment("Engine has started at :: ".date('YmdHis'));
             $this->_generatePvlsReport($from_date_value,$to_date_value);
+            $this->comment("Engine has ended at :: ".date('YmdHis'));
         }
 
         $intra_health_flag = $this->option('ih');
@@ -177,129 +179,239 @@ class ViralLoadJobs extends Command{
         //indication
 
         // - Individuals who did a vL
-         $this->comment('vl results...');
+        $this->comment('vl results...');
         $individualsWithVLresult = LiveData::getIndividualsWithVLresult($from_date_parameter,$to_date_parameter);
         
         // - Individuals with VL suppression
-        $this->comment('vl suppression...');
-        $individualsWithVLsuppression = LiveData::getIndividualsWithVLsuppression($from_date_parameter,$to_date_parameter);
+            $this->comment('vl suppression...');
+            $individualsWithVLsuppression = LiveData::getIndividualsWithVLsuppression($from_date_parameter,$to_date_parameter);
 
-        $routineIndication = LiveData::getRoutineIndication($from_date_parameter,$to_date_parameter);
-        $targetedIndication = LiveData::getTargetedIndication($from_date_parameter,$to_date_parameter);
+            $routineIndication = LiveData::getRoutineIndication($from_date_parameter,$to_date_parameter);
+            $targetedIndication = LiveData::getTargetedIndication($from_date_parameter,$to_date_parameter);
 
-        $pregantRoutine = LiveData::getPregnantRoutine($from_date_parameter,$to_date_parameter);
-        $pregantTargeted = LiveData::getPregnantTargeted($from_date_parameter,$to_date_parameter);
+            $pregantRoutine = LiveData::getPregnantRoutine($from_date_parameter,$to_date_parameter);
+            $pregantTargeted = LiveData::getPregnantTargeted($from_date_parameter,$to_date_parameter);
 
-        $breastFeedingRoutine = LiveData::getBreastFeedingRoutine($from_date_parameter,$to_date_parameter);
-        $breatFeedingTargeted = LiveData::getBreastFeedingTargeted($from_date_parameter,$to_date_parameter);
+            $breastFeedingRoutine = LiveData::getBreastFeedingRoutine($from_date_parameter,$to_date_parameter);
+            $breatFeedingTargeted = LiveData::getBreastFeedingTargeted($from_date_parameter,$to_date_parameter);
 
-        $routine_suppressed_f_below_1 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',1,NULL);
-        $routine_suppressed_f_from_1_to_4 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',1,4);
-        $routine_suppressed_f_from_5_to_9 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',5,9);
-        $routine_suppressed_f_from_10_to_14 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',10,14);
-        $routine_suppressed_f_from_15_to_19 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',15,19);
-        $routine_suppressed_f_from_20_to_24 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',20,24);
-        $routine_suppressed_f_from_25_to_29 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',25,29);
-        $routine_suppressed_f_from_30_to_34 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',30,34);
-        $routine_suppressed_f_from_35_to_39 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',35,39);
-        $routine_suppressed_f_from_40_to_44 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',40,44);
-        $routine_suppressed_f_from_45_to_49 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',45,49);
-        $routine_suppressed_f_from_50_plus = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',50,NULL);
+            $routine_suppressed_f_below_1 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',1,NULL);
+            $routine_suppressed_f_from_1_to_4 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',1,4);
+            $routine_suppressed_f_from_5_to_9 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',5,9);
+            $routine_suppressed_f_from_10_to_14 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',10,14);
+            $routine_suppressed_f_from_15_to_19 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',15,19);
+            $routine_suppressed_f_from_20_to_24 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',20,24);
+            $routine_suppressed_f_from_25_to_29 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',25,29);
+            $routine_suppressed_f_from_30_to_34 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',30,34);
+            $routine_suppressed_f_from_35_to_39 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',35,39);
+            $routine_suppressed_f_from_40_to_44 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',40,44);
+            $routine_suppressed_f_from_45_to_49 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',45,49);
+            $routine_suppressed_f_from_50_plus = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',50,NULL);
 
-        $routine_suppressed_m_below_1 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',1,NULL);
-        $routine_suppressed_m_from_1_to_4 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',1,4);
-        $routine_suppressed_m_from_5_to_9 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',5,9);
-        $routine_suppressed_m_from_10_to_14 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',10,14);
-        $routine_suppressed_m_from_15_to_19 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',15,19);
-        $routine_suppressed_m_from_20_to_24 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',20,24);
-        $routine_suppressed_m_from_25_to_29 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',25,29);
-        $routine_suppressed_m_from_30_to_34 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',30,34);
-        $routine_suppressed_m_from_35_to_39 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',35,39);
-        $routine_suppressed_m_from_40_to_44 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',40,44);
-        $routine_suppressed_m_from_45_to_49 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',45,49);
-        $routine_suppressed_m_from_50_plus = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',50,NULL);
+            $routine_suppressed_m_below_1 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',1,NULL);
+            $routine_suppressed_m_from_1_to_4 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',1,4);
+            $routine_suppressed_m_from_5_to_9 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',5,9);
+            $routine_suppressed_m_from_10_to_14 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',10,14);
+            $routine_suppressed_m_from_15_to_19 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',15,19);
+            $routine_suppressed_m_from_20_to_24 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',20,24);
+            $routine_suppressed_m_from_25_to_29 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',25,29);
+            $routine_suppressed_m_from_30_to_34 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',30,34);
+            $routine_suppressed_m_from_35_to_39 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',35,39);
+            $routine_suppressed_m_from_40_to_44 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',40,44);
+            $routine_suppressed_m_from_45_to_49 = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',45,49);
+            $routine_suppressed_m_from_50_plus = LiveData::getRoutineSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',50,NULL);
 
-        $targeted_suppressed_f_below_1 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',1,NULL);
-        $targeted_suppressed_f_from_1_to_4 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',1,4);
-        $targeted_suppressed_f_from_5_to_9 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',5,9);
-        $targeted_suppressed_f_from_10_to_14 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',10,14);
-        $targeted_suppressed_f_from_15_to_19 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',15,19);
-        $targeted_suppressed_f_from_20_to_24 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',20,24);
-        $targeted_suppressed_f_from_25_to_29 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',25,29);
-        $targeted_suppressed_f_from_30_to_34 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',30,34);
-        $targeted_suppressed_f_from_35_to_39 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',35,39);
-        $targeted_suppressed_f_from_40_to_44 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',40,44);
-        $targeted_suppressed_f_from_45_to_49 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',45,49);
-        $targeted_suppressed_f_from_50_plus = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'F',50,NULL);
+            $targeted_suppressed_f_below_1 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',1,NULL);
+            $targeted_suppressed_f_from_1_to_4 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',1,4);
+            $targeted_suppressed_f_from_5_to_9 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',5,9);
+            $targeted_suppressed_f_from_10_to_14 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',10,14);
+            $targeted_suppressed_f_from_15_to_19 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',15,19);
+            $targeted_suppressed_f_from_20_to_24 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',20,24);
+            $targeted_suppressed_f_from_25_to_29 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',25,29);
+            $targeted_suppressed_f_from_30_to_34 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',30,34);
+            $targeted_suppressed_f_from_35_to_39 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',35,39);
+            $targeted_suppressed_f_from_40_to_44 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',40,44);
+            $targeted_suppressed_f_from_45_to_49 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',45,49);
+            $targeted_suppressed_f_from_50_plus = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'F',50,NULL);
 
-        $targeted_suppressed_m_below_1 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',1,NULL);
-        $targeted_suppressed_m_from_1_to_4 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',1,4);
-        $targeted_suppressed_m_from_5_to_9 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',5,9);
-        $targeted_suppressed_m_from_10_to_14 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',10,14);
-        $targeted_suppressed_m_from_15_to_19 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',15,19);
-        $targeted_suppressed_m_from_20_to_24 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',20,24);
-        $targeted_suppressed_m_from_25_to_29 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',25,29);
-        $targeted_suppressed_m_from_30_to_34 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',30,34);
-        $targeted_suppressed_m_from_35_to_39 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',35,39);
-        $targeted_suppressed_m_from_40_to_44 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',40,44);
-        $targeted_suppressed_m_from_45_to_49 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',45,49);
-        $targeted_suppressed_m_from_50_plus = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
-            'M',50,NULL);
+            $targeted_suppressed_m_below_1 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',1,NULL);
+            $targeted_suppressed_m_from_1_to_4 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',1,4);
+            $targeted_suppressed_m_from_5_to_9 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',5,9);
+            $targeted_suppressed_m_from_10_to_14 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',10,14);
+            $targeted_suppressed_m_from_15_to_19 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',15,19);
+            $targeted_suppressed_m_from_20_to_24 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',20,24);
+            $targeted_suppressed_m_from_25_to_29 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',25,29);
+            $targeted_suppressed_m_from_30_to_34 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',30,34);
+            $targeted_suppressed_m_from_35_to_39 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',35,39);
+            $targeted_suppressed_m_from_40_to_44 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',40,44);
+            $targeted_suppressed_m_from_45_to_49 = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',45,49);
+            $targeted_suppressed_m_from_50_plus = LiveData::getTargetedSuppressedIndividuals($from_date_parameter,$to_date_parameter,
+                'M',50,NULL);
 
+        //last twelve months
+            $from_date_12_months_back = $this->getDate12MonthsBack($from_date_parameter);
+            
+            $individualsWithVLresult_last_12_months = LiveData::getIndividualsWithVLresult($from_date_12_months_back,$to_date_parameter);
+            $routine_indication_last_12_months=LiveData::getRoutineIndication($from_date_12_months_back,$to_date_parameter);
+            $targeted_indication_last_12_months=LiveData::getTargetedIndication($from_date_12_months_back,$to_date_parameter);
 
+            $pregantRoutine_last_12_months = LiveData::getPregnantRoutine($from_date_12_months_back,$to_date_parameter);
+            $pregantTargeted_last_12_months = LiveData::getPregnantTargeted($from_date_12_months_back,$to_date_parameter);
 
+            $breastFeedingRoutine_last_12_months = LiveData::getBreastFeedingRoutine($from_date_12_months_back,$to_date_parameter);
+            $breatFeedingTargeted_last_12_months = LiveData::getBreastFeedingTargeted($from_date_12_months_back,$to_date_parameter);
+
+            $routine_f_below_1_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',1,NULL);
+            $routine_f_from_1_to_4_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',1,4);
+            $routine_f_from_5_to_9_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',5,9);
+            $routine_f_from_10_to_14_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',10,14);
+            $routine_f_from_15_to_19_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',15,19);
+            $routine_f_from_20_to_24_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',20,24);
+            $routine_f_from_25_to_29_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',25,29);
+            $routine_f_from_30_to_34_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',30,34);
+            $routine_f_from_35_to_39_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',35,39);
+            $routine_f_from_40_to_44_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',40,44);
+            $routine_f_from_45_to_49_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',45,49);
+            $routine_f_from_50_plus_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',50,NULL);
+
+            $routine_m_below_1_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',1,NULL);
+            $routine_m_from_1_to_4_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',1,4);
+            $routine_m_from_5_to_9_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',5,9);
+            $routine_m_from_10_to_14_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',10,14);
+            $routine_m_from_15_to_19_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',15,19);
+            $routine_m_from_20_to_24_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',20,24);
+            $routine_m_from_25_to_29_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',25,29);
+            $routine_m_from_30_to_34_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',30,34);
+            $routine_m_from_35_to_39_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',35,39);
+            $routine_m_from_40_to_44_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',40,44);
+            $routine_m_from_45_to_49_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',45,49);
+            $routine_m_from_50_plus_last_12_months = LiveData::getRoutineIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',50,NULL);
+
+            $targeted_f_below_1_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',1,NULL);
+            $targeted_f_from_1_to_4_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',1,4);
+            $targeted_f_from_5_to_9_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',5,9);
+            $targeted_f_from_10_to_14_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',10,14);
+            $targeted_f_from_15_to_19_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',15,19);
+            $targeted_f_from_20_to_24_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',20,24);
+            $targeted_f_from_25_to_29_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',25,29);
+            $targeted_f_from_30_to_34_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',30,34);
+            $targeted_f_from_35_to_39_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',35,39);
+            $targeted_f_from_40_to_44_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',40,44);
+            $targeted_f_from_45_to_49_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',45,49);
+            $targeted_f_from_50_plus_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'F',50,NULL);
+
+            $targeted_m_below_1_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',1,NULL);
+            $targeted_m_from_1_to_4_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',1,4);
+            $targeted_m_from_5_to_9_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',5,9);
+            $targeted_m_from_10_to_14_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',10,14);
+            $targeted_m_from_15_to_19_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',15,19);
+            $targeted_m_from_20_to_24_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',20,24);
+            $targeted_m_from_25_to_29_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',25,29);
+            $targeted_m_from_30_to_34_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',30,34);
+            $targeted_m_from_35_to_39_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',35,39);
+            $targeted_m_from_40_to_44_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',40,44);
+            $targeted_m_from_45_to_49_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',45,49);
+            $targeted_m_from_50_plus_last_12_months = LiveData::getTargetedIndividualsWithVLresults($from_date_12_months_back,$to_date_parameter,
+                'M',50,NULL);
 
         $final_pvls_report_array = array();
 
         array_push($final_pvls_report_array, [
-            'dhis2_hf_id','region','dhis2_district','dhis2_subcounty','dhis2_name','datim_id',
+        'dhis2_hf_id','region','dhis2_district','dhis2_subcounty','dhis2_name','datim_id',
             'art_support','art_im','art_agency','individuals_with_vl_result',
             'individuals_with_vl_suppression','indication_routine','indication_target',
             'pregant_routine','pregant_targeted','breast_feeding_routine','breast_feeding_targeted',
@@ -321,7 +433,28 @@ class ViralLoadJobs extends Command{
             'targeted_suppressed_m_below_1','targeted_suppressed_m_from_1_to_4','targeted_suppressed_m_from_5_to_9',
             'targeted_suppressed_m_from_10_to_14','targeted_suppressed_m_from_15_to_19','targeted_suppressed_m_from_20_to_24',
             'targeted_suppressed_m_from_25_to_29','targeted_suppressed_m_from_30_to_34','targeted_suppressed_m_from_35_to_39',
-            'targeted_suppressed_m_from_40_to_44','targeted_suppressed_m_from_45_to_49','targeted_suppressed_m_from_50_plus'
+            'targeted_suppressed_m_from_40_to_44','targeted_suppressed_m_from_45_to_49','targeted_suppressed_m_from_50_plus',
+            'individualsWithVLresult_last_12_months','routine_indication_last_12_months','targeted_indication_last_12_months',
+            'pregantRoutine_last_12_months','pregantTargeted_last_12_months','breastFeedingRoutine_last_12_months',
+            'breatFeedingTargeted_last_12_months',
+            'routine_f_below_1_last_12_months','routine_f_from_1_to_4_last_12_months','routine_f_from_5_to_9_last_12_months',
+            'routine_f_from_10_to_14_last_12_months','routine_f_from_15_to_19_last_12_months','routine_f_from_20_to_24_last_12_months',
+            'routine_f_from_25_to_29_last_12_months','routine_f_from_30_to_34_last_12_months','routine_f_from_35_to_39_last_12_months',
+            'routine_f_from_40_to_44_last_12_months','routine_f_from_45_to_49_last_12_months','routine_f_from_50_plus_last_12_months',
+            'routine_m_below_1_last_12_months','routine_m_from_1_to_4_last_12_months','routine_m_from_5_to_9_last_12_months',
+            'routine_m_from_10_to_14_last_12_months','routine_m_from_15_to_19_last_12_months','routine_m_from_20_to_24_last_12_months',
+            'routine_m_from_25_to_29_last_12_months','routine_m_from_30_to_34_last_12_months','routine_m_from_35_to_39_last_12_months',
+            'routine_m_from_40_to_44_last_12_months','routine_m_from_45_to_49_last_12_months','routine_m_from_50_plus_last_12_months',
+        'targeted_f_below_1_last_12_months','targeted_f_from_1_to_4_last_12_months','targeted_f_from_5_to_9_last_12_months',
+        'targeted_f_from_10_to_14_last_12_months','targeted_f_from_15_to_19_last_12_months','targeted_f_from_20_to_24_last_12_months',
+        'targeted_f_from_25_to_29_last_12_months','targeted_f_from_30_to_34_last_12_months','targeted_f_from_35_to_39_last_12_months',
+        'targeted_f_from_40_to_44_last_12_months','targeted_f_from_45_to_49_last_12_months','targeted_f_from_50_plus_last_12_months',
+
+        'targeted_m_below_1_last_12_months','targeted_m_from_1_to_4_last_12_months','targeted_m_from_5_to_9_last_12_months',
+        'targeted_m_from_10_to_14_last_12_months','targeted_m_from_15_to_19_last_12_months','targeted_m_from_20_to_24_last_12_months',
+        'targeted_m_from_25_to_29_last_12_months','targeted_m_from_30_to_34_last_12_months','targeted_m_from_35_to_39_last_12_months',
+        'targeted_m_from_40_to_44_last_12_months','targeted_m_from_45_to_49_last_12_months','targeted_m_from_50_plus_last_12_months'
+     
             ]);
         foreach ($pepfar_pvls_locations as $key => $row) {
 
@@ -401,6 +534,68 @@ class ViralLoadJobs extends Command{
                 'targeted_suppressed_m_from_40_to_44' =>$this->getNumbers($targeted_suppressed_m_from_40_to_44,$row->dhis2_hf_id),
                 'targeted_suppressed_m_from_45_to_49' =>$this->getNumbers($targeted_suppressed_m_from_45_to_49,$row->dhis2_hf_id),
                 'targeted_suppressed_m_from_50_plus' =>$this->getNumbers($targeted_suppressed_m_from_50_plus,$row->dhis2_hf_id),
+
+            'individualsWithVLresult_last_12_months' => $this->getNumbers($individualsWithVLresult_last_12_months,$row->dhis2_hf_id),
+            'routine_indication_last_12_months'=>$this->getNumbers($routine_indication_last_12_months,$row->dhis2_hf_id),
+            'targeted_indication_last_12_months'=>$this->getNumbers($targeted_indication_last_12_months,$row->dhis2_hf_id),
+            
+            'pregantRoutine_last_12_months'=>$this->getNumbers($pregantRoutine_last_12_months,$row->dhis2_hf_id),
+            'pregantTargeted_last_12_months'=>$this->getNumbers($pregantTargeted_last_12_months,$row->dhis2_hf_id),
+            'breastFeedingRoutine_last_12_months'=>$this->getNumbers($breastFeedingRoutine_last_12_months,$row->dhis2_hf_id),
+            'breatFeedingTargeted_last_12_months'=>$this->getNumbers($breatFeedingTargeted_last_12_months,$row->dhis2_hf_id),
+
+            'routine_f_below_1_last_12_months'=>$this->getNumbers($routine_f_below_1_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_1_to_4_last_12_months'=>$this->getNumbers($routine_f_from_1_to_4_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_5_to_9_last_12_months'=>$this->getNumbers($routine_f_from_5_to_9_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_10_to_14_last_12_months'=>$this->getNumbers($routine_f_from_10_to_14_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_15_to_19_last_12_months'=>$this->getNumbers($routine_f_from_15_to_19_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_20_to_24_last_12_months'=>$this->getNumbers($routine_f_from_20_to_24_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_25_to_29_last_12_months'=>$this->getNumbers($routine_f_from_25_to_29_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_30_to_34_last_12_months'=>$this->getNumbers($routine_f_from_30_to_34_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_35_to_39_last_12_months'=>$this->getNumbers($routine_f_from_35_to_39_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_40_to_44_last_12_months'=>$this->getNumbers($routine_f_from_40_to_44_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_45_to_49_last_12_months'=>$this->getNumbers($routine_f_from_45_to_49_last_12_months,$row->dhis2_hf_id),
+            'routine_f_from_50_plus_last_12_months'=>$this->getNumbers($routine_f_from_50_plus_last_12_months,$row->dhis2_hf_id),
+
+            'routine_m_below_1_last_12_months'=>$this->getNumbers($routine_m_below_1_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_1_to_4_last_12_months'=>$this->getNumbers($routine_m_from_1_to_4_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_5_to_9_last_12_months'=>$this->getNumbers($routine_m_from_5_to_9_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_10_to_14_last_12_months'=>$this->getNumbers($routine_m_from_10_to_14_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_15_to_19_last_12_months'=>$this->getNumbers($routine_m_from_15_to_19_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_20_to_24_last_12_months'=>$this->getNumbers($routine_m_from_20_to_24_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_25_to_29_last_12_months'=>$this->getNumbers($routine_m_from_25_to_29_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_30_to_34_last_12_months'=>$this->getNumbers($routine_m_from_30_to_34_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_35_to_39_last_12_months'=>$this->getNumbers($routine_m_from_35_to_39_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_40_to_44_last_12_months'=>$this->getNumbers($routine_m_from_40_to_44_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_45_to_49_last_12_months'=>$this->getNumbers($routine_m_from_45_to_49_last_12_months,$row->dhis2_hf_id),
+            'routine_m_from_50_plus_last_12_months'=>$this->getNumbers($routine_m_from_50_plus_last_12_months,$row->dhis2_hf_id),
+
+            'targeted_f_below_1_last_12_months'=>$this->getNumbers($targeted_f_below_1_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_1_to_4_last_12_months'=>$this->getNumbers($targeted_f_from_1_to_4_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_5_to_9_last_12_months'=>$this->getNumbers($targeted_f_from_5_to_9_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_10_to_14_last_12_months'=>$this->getNumbers($targeted_f_from_10_to_14_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_15_to_19_last_12_months'=>$this->getNumbers($targeted_f_from_15_to_19_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_20_to_24_last_12_months'=>$this->getNumbers($targeted_f_from_20_to_24_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_25_to_29_last_12_months'=>$this->getNumbers($targeted_f_from_25_to_29_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_30_to_34_last_12_months'=>$this->getNumbers($targeted_f_from_30_to_34_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_35_to_39_last_12_months'=>$this->getNumbers($targeted_f_from_35_to_39_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_40_to_44_last_12_months'=>$this->getNumbers($targeted_f_from_40_to_44_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_45_to_49_last_12_months'=>$this->getNumbers($targeted_f_from_45_to_49_last_12_months,$row->dhis2_hf_id),
+            'targeted_f_from_50_plus_last_12_months'=>$this->getNumbers($targeted_f_from_50_plus_last_12_months,$row->dhis2_hf_id),
+
+            'targeted_m_below_1_last_12_months'=>$this->getNumbers($targeted_m_below_1_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_1_to_4_last_12_months'=>$this->getNumbers($targeted_m_from_1_to_4_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_5_to_9_last_12_months'=>$this->getNumbers($targeted_m_from_5_to_9_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_10_to_14_last_12_months'=>$this->getNumbers($targeted_m_from_10_to_14_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_15_to_19_last_12_months'=>$this->getNumbers($targeted_m_from_15_to_19_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_20_to_24_last_12_months'=>$this->getNumbers($targeted_m_from_20_to_24_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_25_to_29_last_12_months'=>$this->getNumbers($targeted_m_from_25_to_29_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_30_to_34_last_12_months'=>$this->getNumbers($targeted_m_from_30_to_34_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_35_to_39_last_12_months'=>$this->getNumbers($targeted_m_from_35_to_39_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_40_to_44_last_12_months'=>$this->getNumbers($targeted_m_from_40_to_44_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_45_to_49_last_12_months'=>$this->getNumbers($targeted_m_from_45_to_49_last_12_months,$row->dhis2_hf_id),
+            'targeted_m_from_50_plus_last_12_months'=>$this->getNumbers($targeted_m_from_50_plus_last_12_months,$row->dhis2_hf_id)
+
                 );
 
             array_push($final_pvls_report_array, $facility_pvls_report);
@@ -409,7 +604,7 @@ class ViralLoadJobs extends Command{
         
 
         echo ".... generating csv...\n";
-        $fp = fopen('/Users/simon/data/vl/pvls/pvls_report'.date('YmdHis').'.csv', 'w');
+        $fp = fopen('/tmp/pvls_report'.date('YmdHis').'.csv', 'w');
         foreach ($final_pvls_report_array as $fields) {
              fputcsv($fp, $fields);
         }
@@ -417,5 +612,31 @@ class ViralLoadJobs extends Command{
         
         fclose($fp);
     }
+
+    private function getDate12MonthsBack($date_parameter){
+        $ret;
+        $n=env('INIT_MONTHS');
+        $m=date('m');
+        $y=date('Y');
+
+        $date_array = explode('-', $date_parameter);
+
+        $y= $date_array[0];
+        $m= $date_array[1];
+
+        for($i=1;$i<=$n;$i++){
+            
+            if($m==0){
+                $m=12;
+                $y--;
+            }
+            if($i==$n){
+                $ret=$y."-".str_pad($m, 2,0, STR_PAD_LEFT);
+            } 
+            $m--;
+        }
+        return $ret;
+    }
+
 }
 
