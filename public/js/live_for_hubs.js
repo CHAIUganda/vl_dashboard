@@ -1323,7 +1323,7 @@ ctrllers.DashController = function($scope,$http){
                 facility: (isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
                 
                 dhis2_name: (isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_name,
-                dhis2_uid:(isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_uid,
+                dhis2_uid:(isEmpty(facility_labels[patientRecord.facility_id]))?'null':facility_labels[patientRecord.facility_id].dhis2_uid+'1',
                 
                 art_number:(typeof patientRecord.art_number === 'undefined')?'null':patientRecord.art_number,
                 date_collected:isEmpty(patientRecord.date_collected)?'null':patientRecord.date_collected,
