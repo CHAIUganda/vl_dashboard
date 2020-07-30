@@ -604,7 +604,7 @@ class ViralLoadJobs extends Command{
         
 
         echo ".... generating csv...\n";
-        $fp = fopen('/Users/simon/data/vl/pvls/pvls_report'.date('YmdHis').'.csv', 'w');
+        $fp = fopen('/tmp/pvls_report'.date('YmdHis').'.csv', 'w');
         foreach ($final_pvls_report_array as $fields) {
              fputcsv($fp, $fields);
         }
