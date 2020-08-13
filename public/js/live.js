@@ -184,7 +184,7 @@ ctrllers.DashController = function($scope,$http){
         for(var i in data.hubs){
             var obj = data.hubs[i];
             
-            $scope.hubs.push({"id":obj.id,"name":obj.hub});
+            $scope.hubs.push({"id":obj.id,"name":obj.name});
         }
 
         for(var i in data.facilities){

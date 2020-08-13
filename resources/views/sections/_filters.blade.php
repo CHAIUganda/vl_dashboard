@@ -111,7 +111,7 @@
         <td width='9%' id='dist_elmt'>
             <select ng-model="hub" ng-init="hub='all'" ng-change="filter('hub')">
                 <option value='all'>HUBS</option>
-                <option class="ng-cloak" ng-repeat="hb in hubs2|orderBy:'name'" value="<% hb.id %>">
+                <option class="ng-cloak" ng-repeat="hb in hubs|orderBy:'name'" value="<% hb.id %>">
                     <% hb.name %>
                 </option>
             </select>
