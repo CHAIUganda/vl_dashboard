@@ -197,10 +197,14 @@
                                     <th >Sample ID</th>
                                     <th >Facility</th>
                                     <th >ART Number</th>
+                                    <th>Date of Birth</th>
+                                    <th>Date Collected</th>
                                     <th >Date of Arrival at CPHL</th>
                                     <th> Date Tested</th>
+                                    
                                     <th >Results </th>
                                     <th >Suppression Status </th>
+                                    <th> Date Printed </th>
                                     
                                 </tr>
                             </thead>
@@ -213,17 +217,27 @@
                                   <td class="ng-cloak"><% validPatientResults_object.vl_sample_id %></td>
                                   <td class="ng-cloak"><% labels.facilities_details[validPatientResults_object.facility_id].dhis2_name %></td>
                                   <td class="ng-cloak"><% validPatientResults_object.art_number %></td>
+
+                                  <td class="ng-cloak"><% additionalColumnsObjectMap[validPatientResults_object.sample_id].date_of_birth %></td>
+
+                                  <td class="ng-cloak"><% additionalColumnsObjectMap[validPatientResults_object.sample_id].date_collected %></td>
+
                                   <td class="ng-cloak"><% validPatientResults_object.date_received %></td>
                                   <td class="ng-cloak"><% validPatientResults_object.test_date %></td>
+                                  
+                                  
+
                                   <td class="ng-cloak"><% validPatientResults_object.alpha_numeric_result %></td>
                                   <td class="ng-cloak"><% labels.suppression[validPatientResults_object.suppression_status] %></td>
+
+                                  <td class="ng-cloak"><% additionalColumnsObjectMap[validPatientResults_object.sample_id].date_printed %></td>
                               </tr>                 
                              </tbody>
                         </table>
                         <br>
                         <br>
                         <button id="exportValidPatientResults" type="button" ng-csv="export_valid_patient_results"  class="btn btn-success" filename="valid_patient_results_<%current_timestamp%>.csv" csv-header="['patient_id','vl_sample_id','facility','dhis2_name','dhis2_uid','art_number',
-                          'date_collected', 'date_of_arrival_at_cphl','result_numeric','result_alphanumeric','date_tested','suppression_status']">Download CSV</button>
+                          'date_collected', 'date_of_arrival_at_cphl','result_numeric','result_alphanumeric','date_tested','suppression_status','date_of_birth','date_printed']">Download CSV</button>
 
                       </div>
                </div><!--end v-patients tab-pane-->
@@ -236,10 +250,13 @@
                                     <th >Sample ID</th>
                                     <th >Facility</th>
                                     <th >ART Number</th>
+                                    <th>Date of Birth</th>
+                                    <th>Date Collected</th>
                                     <th >Date of Arrival at CPHL</th>
                                     <th>Date Tested</th>
                                     <th >Results </th>
                                     <th >Suppression Status </th>
+                                    <th >Date Printed </th>
                                     
                                 </tr>
                             </thead>
@@ -250,17 +267,24 @@
                                   <td class="ng-cloak"><% allPatientsResults_object.vl_sample_id %></td>
                                   <td class="ng-cloak"><% labels.facilities_details[allPatientsResults_object.facility_id].dhis2_name %></td>
                                   <td class="ng-cloak"><% allPatientsResults_object.art_number %></td>
+                                  <td class="ng-cloak"><% additionalColumnsObjectMap[allPatientsResults_object.sample_id].date_of_birth  %></td>
+                                  
+                                  <td class="ng-cloak"><% additionalColumnsObjectMap[allPatientsResults_object.sample_id].date_collected %></td>
+
+
                                   <td class="ng-cloak"><% allPatientsResults_object.date_received %></td>
                                   <td class="ng-cloak"><% allPatientsResults_object.test_date %></td>
                                   <td class="ng-cloak"><% allPatientsResults_object.alpha_numeric_result %></td>
                                   <td class="ng-cloak"><% labels.suppression[allPatientsResults_object.suppression_status] %></td>
+
+                                  <td class="ng-cloak"><% additionalColumnsObjectMap[allPatientsResults_object.sample_id].date_printed %></td>
                               
                           </tr>           
                              </tbody>
                         </table>
                          <br>
                         <br>
-                        <button id="exportAllPatientResults" type="button" ng-csv="export_all_patient_results"  class="btn btn-success" filename="all_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Date Tested','Suppression Status']">Download CSV</button>
+                        <button id="exportAllPatientResults" type="button" ng-csv="export_all_patient_results"  class="btn btn-success" filename="all_patient_results_<%current_timestamp%>.csv" csv-header="['PatientID','SampleID','Facility','Art Number', 'Date of Arrival at CPHL','Results','Date Tested','Suppression Status','date_of_birth','date_collected','date_printed']">Download CSV</button>
 
                       </div>
                </div><!--end a-patients tab-pane-->

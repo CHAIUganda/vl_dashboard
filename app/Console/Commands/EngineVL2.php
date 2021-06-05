@@ -157,7 +157,8 @@ class EngineVL2 extends Command
         $data["phone_number"]=$sample->contacts;
         $data["date_created"]=$sample->created_at;
         $data["date_collected"]=$sample->date_collected;
-        $data["date_received"]=$sample->date_received;                 
+        $data["date_received"]=$sample->date_received; 
+        $data["date_of_birth"] = $sample->dob;                
 
         $data["facility_id"] = (int)$sample->facility_id;
         $data['district_id'] = isset($sample->district_id)?(int)$sample->district_id:0;
@@ -165,6 +166,7 @@ class EngineVL2 extends Command
         $age = $this->_getAge($sample->dob, $sample->created_at);
         $data["age"] = $age;
         $data["age_group_id"] = $age;
+
         $data["gender"] = $this->_getGender($sample->gender);
         $data["treatment_indication_id"] = isset($sample->treatment_indication)?(int)$sample->treatment_indication:0;//treatment_initiation
 
