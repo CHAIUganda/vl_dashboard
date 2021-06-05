@@ -207,6 +207,7 @@ class DirectResultsController extends Controller {
 		$sql0 = $this->results_sql(implode(",", $cols), $cond2)." ORDER BY $orderby LIMIT $start, $length";
 		$results = $this->db->select($sql0);
 
+		
 		$sql1 = $this->results_sql(" count(r.id) AS num", $cond);
 		$recordsTotal = collect($this->db->select($sql1))->first()->num;
 

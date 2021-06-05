@@ -823,7 +823,7 @@ class LiveData extends Model
             where YEAR(s.created)=$year and MONTH(s.created)= $month group by s.vlSampleID";*/
         
            $sql="select s.id,s.patient_unique_id,GROUP_CONCAT(pp.phone separator ',') contacts, 
-              s.vl_sample_id,p.art_number, s.date_collected,s.date_received,s.created_at,
+              s.vl_sample_id,p.dob date_of_birth,p.art_number, s.date_collected,s.date_received,s.created_at,
               GROUP_CONCAT(r.result_alphanumeric separator ':') result_alphanumeric,
               rr.appendix rejection_reason, rr.tag rejection_category
 
@@ -841,21 +841,8 @@ class LiveData extends Model
     }
     public static function getDataToAugmentSampleRecordsByMonthWithLimits($year,$month,$firstRowIndex,$lastRowIndex){
       
-           /*$rejectionReasonCase = self::rjctnRsnCase();
-           $sql= "select sample.*,patient.* from (SELECT s.id sampleId,s.patientID,s.vlSampleID,
-            s.collectionDate,s.receiptDate,s.created, sr.created as date_tested, 
-            GROUP_CONCAT(sr.resultAlphanumeric separator ':') resultAlphanumeric ,
-            outcomeReasonsID ,$rejectionReasonCase as rejectionCategory
-            FROM vl_samples s 
-            left join vl_results_merged sr on s.vlSampleID = sr.vlSampleID 
-            left join vl_samples_verify r on s.vlSampleID= r.sampleID 
-            where YEAR(s.created)=$year and MONTH(s.created)= $month group by s.vlSampleID) sample  
-            left join (select p.id,p.artNumber,GROUP_CONCAT(c.phone separator ',') contacts from 
-            vl_patients p left join vl_patients_phone c on p.id=c.patientID group by p.id) patient 
-            on sample.patientID = patient.id LIMIT $firstRowIndex,$lastRowIndex";*/
-
             $sql="select s.id,s.patient_unique_id,GROUP_CONCAT(pp.phone separator ',') contacts, 
-              s.vl_sample_id,p.art_number, s.date_collected,s.date_received,s.created_at,
+              s.vl_sample_id,p.art_number,p.dob date_of_birth, s.date_collected,s.date_received,s.created_at,
               GROUP_CONCAT(r.result_alphanumeric separator ':') result_alphanumeric,
               DATE_FORMAT(r.test_date,'%Y-%m-%d') as test_date,
               rr.appendix rejection_reason, rr.tag rejection_category

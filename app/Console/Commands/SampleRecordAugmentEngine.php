@@ -40,7 +40,7 @@ class SampleRecordAugmentEngine extends Command
      */
     public function handle()
     {
-       ini_set('memory_limit','3384M');
+       ini_set('memory_limit','1028M');
         //
         $this->comment("Engine has started at :: ".date('YmdHis'));
 
@@ -88,8 +88,8 @@ class SampleRecordAugmentEngine extends Command
     }
     private function _loadData(){
         $turnAroundTimeInMonths=env('TAT_MONTHS', 3);//Number of Months to consider for worst turn -around-time
-
-        //$rejections_map = $this->getRejectionsMap();
+        
+        $this->comment("TAT months:  $turnAroundTimeInMonths");
         for ($month=0; $month < $turnAroundTimeInMonths; $month++) { 
             $turnAroundYear=intval(date("Y",strtotime("-$month month")));
             $turnAroundMonth=intval(date("m",strtotime("-$month month")));
@@ -108,7 +108,7 @@ class SampleRecordAugmentEngine extends Command
                     
                    $this->augmentSampleRecord(
                     $s->vl_sample_id,
-                    'test_date',isset($s->test_date)?$s->test_date: '0000-00-00 00:00:00'
+                    'date_of_birth',isset($s->date_of_birth)?$s->date_of_birth: '0000-00-00'
                     
                     );
 
@@ -139,7 +139,7 @@ class SampleRecordAugmentEngine extends Command
                     
                    $this->augmentSampleRecord(
                     $s->vl_sample_id,
-                    'test_date',isset($s->test_date)?$s->test_date: '0000-00-00 00:00:00'
+                    'date_of_birth',isset($s->date_of_birth)?$s->date_of_birth: '0000-00-00'
                     );
                    
                    $recordsUpdated ++;
@@ -167,7 +167,7 @@ class SampleRecordAugmentEngine extends Command
 
             echo "Rows: $countOfRows \n";
             //set number of rows per fetch/page
-            $rowsToBeFetched=5000;
+            $rowsToBeFetched=2000;
 
             //modulus
             $modulus = $countOfRows%$rowsToBeFetched;
@@ -219,7 +219,7 @@ class SampleRecordAugmentEngine extends Command
 
             echo "Rows: $countOfRows \n";
             //set number of rows per fetch/page
-            $rowsToBeFetched=20000;
+            $rowsToBeFetched=2000;
 
             //modulus
             $modulus = $countOfRows%$rowsToBeFetched;
@@ -267,7 +267,7 @@ class SampleRecordAugmentEngine extends Command
             ));
         $result=$this->mongo->dashboard_new_backend->update(array('vl_sample_id' => $vlSampleId), $addNewFieldArray);
        // var_dump($result);
-        //return $result['n'];//return 1 for when a record has been successfully removed,0 when nothing has been found.
+        
     }
     
 }

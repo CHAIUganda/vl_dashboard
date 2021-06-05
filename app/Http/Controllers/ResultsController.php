@@ -257,16 +257,12 @@ class ResultsController extends Controller {
 	
 	public function getPatientResults(){
 		
-		
-
-		
-
         //$valid_patient_results = $this->getValidPatientResults();
         $all_patient_results = $this->getAllPatientResults();
+        $additional_columns_resultset = $this->getAllPatientResultsAdditionalFields();
+     
 
-        
-        
-		return compact("all_patient_results");
+		return compact("all_patient_results","additional_columns_resultset");
 	}
 
 	public function getValidPatientResults(){
@@ -288,6 +284,69 @@ class ResultsController extends Controller {
         
 		return $res;
 		
+	}
+	private function generateFromDate($from_date){
+
+        $year_string=substr($from_date, 0,4);
+        $month_string=substr($from_date, 4,5);
+
+        $day_string="01";
+        $final_from_date = $year_string."-".$month_string."-".$day_string;
+
+        return $final_from_date;
+    }
+    private function generateToDate($to_date){
+
+        $year_string=substr($to_date, 0,4);
+        $month_string=substr($to_date, 4,5);
+
+        $day_string="01";
+        if(intval($month_string) == 1 || intval($month_string) == 3 || intval($month_string) == 5 || intval($month_string) == 7 || intval($month_string) == 8 || intval($month_string) == 10 || intval($month_string) == 12){
+            $day_string="31";
+        }elseif(intval($month_string) == 2){
+            $day_string="29";
+        }else{
+            $day_string="30";
+        }
+        $final_to_date = $year_string."-".$month_string."-".$day_string;
+
+        return $final_to_date;
+    }
+	private function getAllPatientResultsAdditionalFields(){
+		extract(\Request::all());
+	
+		if((empty($fro_date) && empty($to_date))||$fro_date=='all' && $to_date=='all'){
+			$to_date=date("Ym");
+			$fro_date=$this->_dateNMonthsBack();
+		}
+
+		$hub=intval(\Auth::user()->hub_id);
+        $facility=intval(\Auth::user()->facility_id);
+		$fro_date = $this->generateFromDate($fro_date);
+		$to_date = $this->generateToDate($to_date);
+
+		$condition_statement=array();
+		$sql_statement="";
+		if(empty(\Auth::user()->facility_id) || \Auth::user()->facility_id == 0 ){//Hub
+			$sql_statement="SELECT DISTINCT s.id sample_id,p.dob date_of_birth,s.date_collected,rd.dispatch_date date_printed FROM vl_samples s LEFT JOIN vl_patients p on p.id = s.patient_id LEFT JOIN vl_results_dispatch rd on rd.sample_id = s.id LEFT JOIN backend_facilities f on f.id = s.facility_id  WHERE s.created_at >='$fro_date' AND s.created_at <='$to_date' AND f.hub_id=$hub ";
+		}elseif(!empty(\Auth::user()->facility_id) && \Auth::user()->facility_id > 0 ){
+			
+			$sql_statement="SELECT DISTINCT s.id sample_id,p.dob date_of_birth,s.date_collected,rd.dispatch_date date_printed FROM vl_samples s LEFT JOIN vl_patients p on p.id = s.patient_id LEFT JOIN vl_results_dispatch rd on rd.sample_id = s.id LEFT JOIN backend_facilities f on f.id = s.facility_id  WHERE s.created_at >='$fro_date' AND s.created_at <='$to_date' AND f.id=$facility";
+		}
+
+		$additional_columns_resultset=[];
+		try{
+        	ini_set('memory_limit','384M');
+        	$additional_columns_resultset =  \DB::connection('direct_db')->select($sql_statement);
+        	
+
+        }catch(\Illuminate\Database\QueryException $e){
+        	
+        	Log::error($e->getMessage());
+        	
+        }
+	
+        return $additional_columns_resultset;
 	}
 	public function getAllPatientResults(){
 
