@@ -147,13 +147,18 @@ ctrllers.DashController = function($scope,$http){
         return clean_results;
     };
     var convertStringIntoDate=function(date_string){
-        var date_array=date_string.split("-");
+        var new_date = new Date(1970,1,1);
+        if(date_string !== null){
 
-        var year=date_array[0];
-        var month=date_array[1] - 1;
-        var day=date_array[2];
+        
+            var date_array=date_string.split("-");
 
-        var new_date = new Date(year,month,day);
+            var year=date_array[0];
+            var month=date_array[1] - 1;
+            var day=date_array[2];
+
+             new_date = new Date(year,month,day);
+        }
         return new_date;
     };
     var compareDates =function(a,b){//getTime() returns numberOfMilliSeconds from 1970
@@ -800,6 +805,7 @@ ctrllers.DashController = function($scope,$http){
             if(clean_results_object.sample_result_validity=='valid'){
                 valid_patient_record = {
                     "vl_sample_id":clean_results_object.vl_sample_id,
+                    "sample_id":clean_results_object.sample_id,
                     "created":clean_results_object.date_created,
                     "patient_unique_id":clean_results_object.patient_unique_id,
                     "alpha_numeric_result":isEmpty(clean_results_object.alpha_numeric_result)?'null':clean_results_object.alpha_numeric_result,
@@ -808,7 +814,7 @@ ctrllers.DashController = function($scope,$http){
                     "facility_id":clean_results_object.facility_id,
                     "date_collected":isEmpty(clean_results_object.date_collected)?'null':clean_results_object.date_collected,
                     "date_received":isEmpty(clean_results_object.date_received)?'null':clean_results_object.date_received,
-
+                    "date_of_birth":isEmpty(clean_results_object.date_of_birth)?'null':clean_results_object.date_of_birth,
                     "test_date":isEmpty(clean_results_object.test_date)?'null':clean_results_object.test_date,
 
                     "art_number":isEmpty(clean_results_object.art_number)?'null':clean_results_object.art_number,
@@ -821,6 +827,9 @@ ctrllers.DashController = function($scope,$http){
 
         return patients_with_valid_results;
     };
+
+    
+
     var getPatientsWithRejections = function(clean_results){
         var rejected_samples = [];
         
@@ -1134,7 +1143,7 @@ ctrllers.DashController = function($scope,$http){
                 var sorted_patient_records =null;
                 
                 
-
+                $scope.additionalColumnsObjectMap = getAdditionalColumns(data.additional_columns_resultset);
                 var valid_patient_results = getValidPatientResults(data.all_patient_results);
                 $scope.validPatientResults = valid_patient_results;
 
@@ -1161,6 +1170,9 @@ ctrllers.DashController = function($scope,$http){
 
 
 
+               
+                 
+               
 
                 $scope.allPatientsResults = data.all_patient_results;
 
@@ -1187,6 +1199,7 @@ ctrllers.DashController = function($scope,$http){
 
 
     getData();
+   
     function exportRetestNotSuppressingPatients(scopeInstance){
        
         var retest_not_suppressing_patients_array = [];
@@ -1224,6 +1237,18 @@ ctrllers.DashController = function($scope,$http){
         }
 
         return retest_not_suppressing_patients_array;
+    }
+    function getAdditionalColumns(result_set){
+        var mapped_result_set = [];
+        
+        for (var i = 0; i < result_set.length; i++) {
+            var obj = result_set[i];
+            mapped_result_set[obj.sample_id] = obj;
+           
+        }
+       
+
+        return mapped_result_set;
     }
     function isEmpty(val){
             return (val === undefined || typeof(val) === 'undefined' ||val == 'undefined'|| val == null || val == 'null' || val.length <= 0) ? true : false;
@@ -1334,7 +1359,9 @@ ctrllers.DashController = function($scope,$http){
                 result_alphanumeric:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
                 test_date:(typeof patientRecord.test_date === 'undefined')?'null':patientRecord.test_date,
 
-                suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status
+                suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status,
+                date_of_birth:scopeInstance.additionalColumnsObjectMap[patientRecord.sample_id].date_of_birth,
+                date_printed:scopeInstance.additionalColumnsObjectMap[patientRecord.sample_id].date_printed
 
             };
 
@@ -1364,8 +1391,10 @@ ctrllers.DashController = function($scope,$http){
                 alpha_numeric_result:(typeof patientRecord.alpha_numeric_result === 'undefined')?'null':patientRecord.alpha_numeric_result,
                 test_date:(typeof patientRecord.test_date === 'undefined')?'null':patientRecord.test_date,
 
-                suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status
-
+                suppression_status:(typeof patientRecord.suppression_status === 'undefined')?'null':patientRecord.suppression_status,
+                date_of_birth:scopeInstance.additionalColumnsObjectMap[patientRecord.sample_id].date_of_birth,
+                date_collected:scopeInstance.additionalColumnsObjectMap[patientRecord.sample_id].date_collected,
+                date_printed:scopeInstance.additionalColumnsObjectMap[patientRecord.sample_id].date_printed
             };
 
 
@@ -1539,7 +1568,6 @@ ctrllers.DashController = function($scope,$http){
                 
                 try{
                     $scope.drawProgessMap(progressMapType);
-                    console.log("finished fetching data");
                 }catch(err){
                     console.log(err.message);
                 }
