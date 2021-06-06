@@ -201,10 +201,11 @@
                                     <th>Date Collected</th>
                                     <th >Date of Arrival at CPHL</th>
                                     <th> Date Tested</th>
-                                    
+                                    <th> Date Printed </th>
+
                                     <th >Results </th>
                                     <th >Suppression Status </th>
-                                    <th> Date Printed </th>
+                                    
                                     
                                 </tr>
                             </thead>
@@ -224,13 +225,13 @@
 
                                   <td class="ng-cloak"><% validPatientResults_object.date_received %></td>
                                   <td class="ng-cloak"><% validPatientResults_object.test_date %></td>
-                                  
+                                  <td class="ng-cloak"><% additionalColumnsObjectMap[validPatientResults_object.sample_id].date_printed %></td>
                                   
 
                                   <td class="ng-cloak"><% validPatientResults_object.alpha_numeric_result %></td>
                                   <td class="ng-cloak"><% labels.suppression[validPatientResults_object.suppression_status] %></td>
 
-                                  <td class="ng-cloak"><% additionalColumnsObjectMap[validPatientResults_object.sample_id].date_printed %></td>
+                                  
                               </tr>                 
                              </tbody>
                         </table>
@@ -254,9 +255,11 @@
                                     <th>Date Collected</th>
                                     <th >Date of Arrival at CPHL</th>
                                     <th>Date Tested</th>
+                                    <th >Date Printed </th>
+
                                     <th >Results </th>
                                     <th >Suppression Status </th>
-                                    <th >Date Printed </th>
+                                    
                                     
                                 </tr>
                             </thead>
@@ -274,10 +277,13 @@
 
                                   <td class="ng-cloak"><% allPatientsResults_object.date_received %></td>
                                   <td class="ng-cloak"><% allPatientsResults_object.test_date %></td>
+                                  
+                                  <td class="ng-cloak"><% additionalColumnsObjectMap[allPatientsResults_object.sample_id].date_printed %></td>
+
                                   <td class="ng-cloak"><% allPatientsResults_object.alpha_numeric_result %></td>
                                   <td class="ng-cloak"><% labels.suppression[allPatientsResults_object.suppression_status] %></td>
 
-                                  <td class="ng-cloak"><% additionalColumnsObjectMap[allPatientsResults_object.sample_id].date_printed %></td>
+                                  
                               
                           </tr>           
                              </tbody>
